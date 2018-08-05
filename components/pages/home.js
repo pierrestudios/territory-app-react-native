@@ -1,28 +1,21 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 
-import {colors} from '../styles/main';
-import Logo from '../elements/logo';
-import Button from '../elements/button';
+import Logo from '../elements/Logo';
+import Button from '../elements/Button';
+import Heading from '../elements/Heading';
+import Loading from '../elements/Loading';
 
+import {colors} from '../styles/main';
+
+import NavigationService from '../common/nav-service';
 import Language from '../common/lang';
-// import History from '../../common/history';
 import Data from '../common/data';
 import UTILS from '../common/utils';
 import styles from '../styles/main';
-import Loading from '../elements/loading';
-
-/*
- * For other option for Elements:
- * https://github.com/react-native-training/react-native-elements
- * https://react-native-training.github.io/react-native-elements/docs/button.html
-*/
-
 
 export default class Home extends React.Component {
   static navigationOptions = {
-    // title: 'Home',
-    // headerTitle instead of title
     headerTitle: <Logo color={colors.white} />,
   };
   state = {
@@ -30,16 +23,21 @@ export default class Home extends React.Component {
 	};
 	componentWillMount() {
     this.setState({user: Data.user});
+	}
+	componentDidMount() {
+    NavigationService.setNavigator(this.props.navigation);
+		if (!Data.user)
+			Data.reLogin();
   }
   goToPage(path) {
-    this.props.navigation.navigate(path)
+    NavigationService.navigate(path)
   }
 	render() {
     // {}, state
 		// console.log('Data', Data);
-		// console.log('render:user', this.state);
+		console.log('render:user', this.state);
 		if (!this.state.user) return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Loading />
       </View> 
     )
@@ -48,7 +46,7 @@ export default class Home extends React.Component {
 			<ScrollView contentContainerStyle={styles["scroll-view"]}>
 				{this.state.user && this.state.user.isNoteEditor ?
 					[
-					<Text key="territory-heading" style={[styles.heading, styles["text-center"]]}>{Language.translate('Manage Your Congregation Territory')}</Text>,
+					<Heading key="territory-heading">{Language.translate('Manage Your Congregation Territory')}</Heading>,
 					<View key="menu-nav" style={styles["main-menu"]}>
 						{this.state.user.isAdmin ? <Button key="users" onPress={() => this.goToPage("Users")} title={Language.translate('Users')} /> : null}
 						{this.state.user.isManager ? [
@@ -59,7 +57,7 @@ export default class Home extends React.Component {
 						]: null}
 						<Button key="territories" onPress={() => this.goToPage("Territories")} title={Language.translate('My Territories')} /> 
 					</View>
-					] : <Text class={styles.center}>{Language.translate('You don\'t have privilege to manage territories')}</Text>
+					] : <Heading>{Language.translate('You don\'t have privilege to manage territories')}</Heading>
 				}
       </ScrollView>
 		);
