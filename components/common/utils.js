@@ -1,4 +1,17 @@
 export default {
+  getElementStyles(props, baseStyle) {
+    const elStyle = {
+      ...props,
+      style: [baseStyle]
+    }
+    if (!!props.customStyle) {
+      elStyle.style.push([props.customStyle]);
+    }
+    return elStyle;
+  },
+  logError(Error) {
+    console.log('error', error);
+  },
   diacritics(string, reverse = false) {
     if (!string) return '';
     const start = string.match('&');
