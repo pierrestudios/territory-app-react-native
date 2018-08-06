@@ -41,6 +41,9 @@ class Data {
 		user.isNoteEditor = user.isEditor || user.userType === 'NoteEditor';
 		return user;
 	}
+	get unAuthUser() {
+		return this._user;
+	}
 	set user(data) {
 		this._user = data;
 	}
@@ -57,12 +60,18 @@ class Data {
 	}
 	saveUser = async (user) => {
 		try {
-			await AsyncStorage.setItem('user', JSON.stringify(user));
+			await AsyncStorage.setItem('user', JSON.stringify({
+				userType: user.userType,
+				userId: user.userId,
+				email: user.email,
+				token: user.token
+			}));
 			this.user = this.getSavedUser();
 		} catch (error) {
 			UTILS.logError(error);
 		}
 	}
+	/*
 	removeUser = async () => {
 		this.user = null;
 		try {
@@ -71,6 +80,7 @@ class Data {
 			UTILS.logError(error);
 		}
 	}
+	*/
 
 	getApiData(url, data, type) {
 		if (!this.user) return Promise.reject('User is not logged in');
@@ -118,21 +128,10 @@ class Data {
 		return this._territoriesList;
 	}
 	reLogin() {
-		console.log('reLogin');
-		this.removeUser();
+		// Just remove token
+		const user = {...this._user, token: ''};
+		this.saveUser(user);
 		NavigationService.navigate('Login', {});
-
-    /*
-		setTimeout(() => {
-			History.push({
-				pathname: '/login',
-				state: {
-					...History.location.state,
-					error: 'Your session has expired. Please login.'
-				}
-			});
-    }, 1000);
-    */
 	}
 }
 

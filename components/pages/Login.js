@@ -6,11 +6,10 @@ import { Text, View, ScrollView } from 'react-native';
 
 import Data from '../common/data';
 import Api from '../common/api';
-// import History from '../../common/history';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
 
-import {TextInput, EmailInput, PasswordInput} from '../elements/FormInput'; 
+import {EmailInput, PasswordInput} from '../elements/FormInput'; 
 import Button, {Link as ALink} from '../elements/Button';
 import Heading from '../elements/Heading';
 import Message from '../elements/Message'; 
@@ -37,11 +36,18 @@ export default class Login extends React.Component {
 		},
 		waitingForResponse: false
 	}
-	componentDidMount() {
+	loadUserData() {
 		const { user } = Data;
 
-		if (!!user && !!user.token)
-			this.setState({data: user});
+		if (!!user && !!user.email)
+			this.setState({data: {...this.state.data, email: user.email}});
+	}
+	componentDidMount() {
+		this.props.navigation.addListener('willFocus', () => {
+			this.loadUserData()
+		});
+
+		this.loadUserData();
 
 		/*
 		// console.log('History.location', History.location);
@@ -60,14 +66,14 @@ export default class Login extends React.Component {
 	}
 	render() {
     const state = this.state;
-		// console.log('render() state', state)
+		// console.log('Login:render() state', state)
 
 		if (state.waitingForResponse)
 			return <Loading />;
 
 		const IconEmail = null;
 		const IconPassword = null;
-		
+
 		return (
 			<View style={[style.container]}>
 				<Heading>{Language.translate('Sign in')}</Heading>

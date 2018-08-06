@@ -28,8 +28,8 @@ export default styles = StyleSheet.create({
   },
   heading: {
     fontSize: 18,
-    marginBottom: 20,
-    marginTop: 20
+    marginBottom: 40,
+    marginTop: 40
   },
   "scroll-view": {
     paddingVertical: 3
