@@ -17,7 +17,7 @@ export default (url, data, type = 'GET', headerData = undefined) => (
 			// const json = res.json();
 			// console.log('json', json);
 			// catch HTTP "Token" Errors
-			if (!res.ok && (res.statusText.match('Token') || res.statusText.match('Unauthorized'))) {
+			if (!res.ok && (!!res.statusText && (res.statusText.match('Token') || res.statusText.match('Unauthorized')))) {
 				Data.reLogin();
 				return Promise.reject(res.statusText);
 			}

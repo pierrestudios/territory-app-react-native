@@ -1,5 +1,8 @@
+import { AsyncStorage } from "react-native"
 // import History from './history';
 import Api from './api';
+import UTILS from './utils';
+import NavigationService from './nav-service';
 
 let instance = null;
 class Data {
@@ -8,34 +11,28 @@ class Data {
 			instance = this;
 		}
 		
-		this._previousUrl = ''; // localStorage.getItem('previousUrl'); // Note: holds previousUrl for page
-		this._currentUrl = ''; // localStorage.getItem('currentUrl'); // Note: holds currentUrl for page
 		// Fake data
+		/*
 		this._user = {
-      userType: 'Admin',
-      email: 'fake@emal.com'
-    }; // JSON.parse(localStorage.getItem('user') || null);
+			userType: 'Admin',
+			userId: 2,
+			email: 'territoryapi@gmail.com',
+			token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6Ly90ZXJyaXRvcnktYXBpLWRldi5oZXJva3VhcHAuY29tL3YxL3NpZ25pbiIsImlhdCI6MTUzMzQwNjM1NCwiZXhwIjoxNTMzNDA5OTU0LCJuYmYiOjE1MzM0MDYzNTQsImp0aSI6ImQ3S0VlN1lIeGZtNW5McjQifQ.-Jp7sxcwHT_0pwPt_dWNa8VDYfUqTCKwpYPfv_y2LSU'
+		};
+		*/ 
+		
 		this._territories = null; // Note: holds loaded territories by title
 		this._territoriesList = null; // Note: holds the list of territories
+		this._user = this.getSavedUser();
+
+		// if (!this._user || !this._user.userId)
+			// this.reLogin();
+
 		return instance;
-	}
-	get previousUrl() {
-		return this._previousUrl;
-	}
-	set previousUrl(url) {
-		this._previousUrl = url;
-		// localStorage.setItem('previousUrl', url);
-	}
-	get currentUrl() {
-		return this._currentUrl;
-	}
-	set currentUrl(url) {
-		this._currentUrl = url;
-		// localStorage.setItem('currentUrl', url);
 	}
 	get user() {
 		const user = this._user;
-		if (!user) 
+		if (!user || !user.userId) 
 			return;
 
 		user.isAdmin = user.userType === 'Admin';
@@ -47,13 +44,33 @@ class Data {
 	set user(data) {
 		this._user = data;
 	}
-	saveUser(user) {
-		this.user = user;
-		// localStorage.setItem('user', JSON.stringify(user));
+	getSavedUser = async () => {
+		try {
+			const user = await AsyncStorage.getItem('user');
+			console.log('getSavedUser:user', user);
+			if (user) {
+				this.user = user;
+				return JSON.parse(user);
+			}
+		} catch (error) {
+			UTILS.logError(error);
+		}
 	}
-	removeUser() {
+	saveUser = async (user) => {
+		this.user = user;
+		try {
+			AsyncStorage.setItem('user', JSON.stringify(user));
+		} catch (error) {
+			UTILS.logError(error);
+		}
+	}
+	removeUser = async () => {
 		this.user = null;
-		// localStorage.removeItem('user');
+		try {
+			AsyncStorage.removeItem('user');
+		} catch (error) {
+			UTILS.logError(error);
+		}
 	}
 
 	getApiData(url, data, type) {
@@ -102,7 +119,10 @@ class Data {
 		return this._territoriesList;
 	}
 	reLogin() {
-    this.removeUser();
+		console.log('reLogin');
+		this.removeUser();
+		NavigationService.navigate('Login', {});
+
     /*
 		setTimeout(() => {
 			History.push({
