@@ -17,15 +17,30 @@ import styles from '../styles/main';
 export default class Home extends React.Component {
   static navigationOptions = {
     headerTitle: <Logo color={colors.white} />,
-  };
+	};
   state = {
 		user: null
 	};
 	componentWillMount() {
-    this.setState({user: Data.user});
+		// console.log('componentWillMount:user', Data.user);
+		this.setState({user: Data.user});
+		/*
+		this.subs = [
+      this.props.navigation.addListener('willFocus', () => console.log('will focus')),
+      this.props.navigation.addListener('willBlur', () => console.log('will blur')),
+      this.props.navigation.addListener('didFocus', () => console.log('did focus')),
+      this.props.navigation.addListener('didBlur', () => console.log('did blur')),
+		];
+		*/
 	}
 	componentDidMount() {
-    NavigationService.setNavigator(this.props.navigation);
+		// console.log('componentDidMount:user', Data.user);
+		this.props.navigation.addListener('willFocus', () => {
+			if (!this.state.user)
+				this.setState({user: Data.user});
+		});
+		NavigationService.setNavigator(this.props.navigation);
+
 		if (!Data.user)
 			Data.reLogin();
   }
@@ -35,7 +50,7 @@ export default class Home extends React.Component {
 	render() {
     // {}, state
 		// console.log('Data', Data);
-		console.log('render:user', this.state);
+		console.log('render:state', this.state);
 		if (!this.state.user) return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Loading />

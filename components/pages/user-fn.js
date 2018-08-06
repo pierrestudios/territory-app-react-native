@@ -1,18 +1,30 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 
 import Data from '../common/data';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
 
+import {Link} from '../elements/Button';
+import Strong from '../elements/Strong';
+
 import style from '../styles/main';
 
 class UserFn {	
 	getListings(data = [], caller, callerName) {
-		return data
-			.sort(UTILS.sortUser)
-			.map(list => (
-				<li>
+		return (
+			<FlatList
+				contentContainerStyle={style.list}
+				data={data.sort(UTILS.sortUser)}
+				keyExtractor={(item) => item.userId.toString()}
+				renderItem={({item}) => (
+					<Link customStyle={style['list-button']} onPress={(e) => this.editUserModal(item, caller, callerName)}>
+						<Text style={{fontSize: 12}}><Strong>{item.publisher ? (item.publisher.firstName + ' ' + item.publisher.lastName) : ''}</Strong> {item.email}</Text>
+					</Link>
+				)}
+			/>
+		);
+				{/*
 					<Link onClick={(e) => this.deleteUserModal(list, caller, callerName)} class={style['delete-user']}>
 						<span>{Language.translate('Delete')}</span>
 					</Link>
@@ -24,11 +36,7 @@ class UserFn {
 							<span>{Language.translate('Attach to publisher')}</span>
 						</Link>
 					: null}
-					<Link onClick={(e) => this.editUserModal(list, caller, callerName)}>
-						<span class={style['listings-name']}><strong>{list.publisher ? (list.publisher.firstName + ' ' + list.publisher.lastName) : ''}</strong> {list.email}</span>
-					</Link>
-				</li>
-			));
+					*/}
 	}
 	editUserModal(data = [], caller, callerName) {
 		const messageBlock = <div>
