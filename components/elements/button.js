@@ -1,14 +1,27 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 
+import UTILS from '../common/utils';
+
 import styles, {colors} from '../styles/main';
 
-const ALink = (props) => (
-  // <Link {...props}>{props.children}</Link>
-  <View>Link</View>
-);
+export class Link extends React.Component {
+  render() {
+    const buttonStyle = UTILS.getElementStyles(this.props, styles["main-menu-link"]);
+    if (!!this.props.disabled) {
+      buttonStyle.style.push([styles.disabled]);
+    }
 
-export {ALink};
+    return (
+      <TouchableOpacity
+        {...buttonStyle}
+        onPress={!!this.props.disabled ? () => console.log('disabled') : this.props.onPress}
+        >
+        <Text style={[styles["main-menu-button-text"], styles["text-color-blue"]]}> {this.props.children || this.props.title} </Text>
+      </TouchableOpacity>
+    )
+  }
+}
 
 const ButtonLink = (props) => {
 	// const classes = classNames(style['button-link'], {[style[props.class]]: props.class}, {[style.disabled]: props.disabled}, {[props.customClass]: props.customClass});
@@ -19,21 +32,14 @@ export {ButtonLink};
 
 export default class Button extends React.Component {
   render() {
-    // const classes = classNames(style.button, {[style[props.class]]: props.class}, {[style.disabled]: props.disabled}, {[props.customClass]: props.customClass});
-    // return <button {...props} class={classes}>{props.children}</button>
-    const buttonBlue = {
-      style: [styles["main-menu-button"]]
-    }
+    const buttonStyle = UTILS.getElementStyles(this.props, styles["main-menu-button"]);
     if (!!this.props.disabled) {
-      buttonBlue.style.push([styles.disabled]);
-    }
-    if (!!this.props.customStyle) {
-      buttonBlue.style.push([this.props.customStyle]);
+      buttonStyle.style.push([styles.disabled]);
     }
 
     return (
       <TouchableOpacity
-        {...buttonBlue}
+        {...buttonStyle}
         onPress={!!this.props.disabled ? () => console.log('disabled') : this.props.onPress}
         >
         <Text style={styles["main-menu-button-text"]}> {this.props.children || this.props.title} </Text>
