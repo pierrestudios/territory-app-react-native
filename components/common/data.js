@@ -47,19 +47,18 @@ class Data {
 	getSavedUser = async () => {
 		try {
 			const user = await AsyncStorage.getItem('user');
-			console.log('getSavedUser:user', user);
 			if (user) {
-				this.user = user;
-				return JSON.parse(user);
+				this.user = JSON.parse(user);
+				return this.user;
 			}
 		} catch (error) {
 			UTILS.logError(error);
 		}
 	}
 	saveUser = async (user) => {
-		this.user = user;
 		try {
-			AsyncStorage.setItem('user', JSON.stringify(user));
+			await AsyncStorage.setItem('user', JSON.stringify(user));
+			this.user = this.getSavedUser();
 		} catch (error) {
 			UTILS.logError(error);
 		}
