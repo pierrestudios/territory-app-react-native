@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 
 const colors = {
   "territory-blue": '#337ab7',
+  "grey-lite": '#ccc',
+  red: 'red',
   white: '#fff'
 };
 
@@ -17,7 +19,7 @@ export default styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    // justifyContent: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 18,
@@ -26,8 +28,8 @@ export default styles = StyleSheet.create({
   },
   heading: {
     fontSize: 18,
-    marginBottom: 40,
-    marginTop: 40
+    marginBottom: 20,
+    marginTop: 20
   },
   "scroll-view": {
     paddingVertical: 3
@@ -52,6 +54,20 @@ export default styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 5
   },
+  "main-menu-link": {
+    // minWidth: '80%',
+    alignItems: 'center',
+    borderRadius: 3,
+    padding: 10
+  },
+  list: {
+    alignItems: 'center',
+  },
+  "list-button": {
+    minWidth: '90%',
+    borderTopWidth: 1,
+    borderColor: colors['grey-lite']
+  },
   disabled: {
     // backgroundColor: '#ccc',
     opacity: 0.2,
@@ -60,11 +76,54 @@ export default styles = StyleSheet.create({
     fontSize: 18,
     color: colors.white
   },
+  "text-color-blue": {
+    color: colors["territory-blue"]
+  },
+
+  // Form Inputs
+  "input": {
+    minWidth: '90%',
+    borderWidth: 1,
+    borderRadius: 3,
+    height: 40,
+    padding: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    borderColor: colors['grey-lite'],
+    backgroundColor: colors.white
+  },
+
+  errors: {
+    padding: 10,
+    marginTop: 5,
+    borderRadius: 3,
+    marginBottom: 5,
+    backgroundColor: colors.red
+  },
+
+  "input-errors": {    
+    marginTop: -5,
+    borderBottomRightRadius: 3,
+    borderBottomLeftRadius: 3,
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+  },
 
   // Common styles:
 
   "text-center": {
     textAlign: 'center',
     width: '100%'
+  },
+
+  "text-strong": {
+    fontWeight: 'bold',
+  },
+
+  line: {
+    height: 2,
+    borderColor: '#ccc',
+    borderTopWidth: 1,
+    margin: 20
   }
 });
