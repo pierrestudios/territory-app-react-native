@@ -129,7 +129,8 @@ class Data {
 	}
 	reLogin() {
 		// Just remove token
-		const user = {...this._user, token: ''};
+		const user = this._user;
+		user.token = '';
 		this.saveUser(user);
 		NavigationService.navigate('Login', {});
 	}
