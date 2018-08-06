@@ -42,6 +42,8 @@ export default class Home extends React.Component {
 	}
 	componentDidMount() {
 		this.props.navigation.addListener('willFocus', () => {
+			// console.log('willFocus:state.user', this.state.user)
+			// console.log('willFocus:Data.user', Data.user)
 			if (!this.state.user || !this.state.user.token)
 				this.setState({user: Data.user});
 		});
@@ -73,8 +75,8 @@ export default class Home extends React.Component {
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Loading />
       </View> 
-    )
-  
+		)
+
 		return (  
 			[
 			<ScrollView contentContainerStyle={styles["scroll-view"]} key="home-page">

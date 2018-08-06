@@ -140,8 +140,17 @@ export default class Login extends React.Component {
 					Api('auth-user', null, 'GET', {Authorization: 'Bearer ' + data.token})
 					.then(user => {
 						user.token = data.token;
+						const newData = {...this.state.data, ...user};
 						Data.saveUser(user);
-						this.setState({data: user, waitingForResponse: false});
+						// Need to wait for "saveUser" to complete before switching screen
+						let waitForSaveUser = setInterval(() => {
+							// console.log('Data.user', Data.user);
+							if (Data.user && Data.user.token) {
+								this.setState({data: newData, waitingForResponse: false}, () => {
+									clearInterval(waitForSaveUser);
+								});
+							}
+						}, 100);
 					});
 				}
 			})
