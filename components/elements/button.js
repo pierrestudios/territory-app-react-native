@@ -30,20 +30,17 @@ const ButtonLink = (props) => {
 
 export {ButtonLink};
 
-export default class Button extends React.Component {
-  render() {
-    const buttonStyle = UTILS.getElementStyles(this.props, styles["main-menu-button"]);
-    if (!!this.props.disabled) {
-      buttonStyle.style.push([styles.disabled]);
-    }
-
-    return (
-      <TouchableOpacity
-        {...buttonStyle}
-        onPress={!!this.props.disabled ? () => console.log('disabled') : this.props.onPress}
-        >
-        <Text style={styles["main-menu-button-text"]}> {this.props.children || this.props.title} </Text>
-      </TouchableOpacity>
-    )
+export const Button = (props) => {
+  const buttonStyle = UTILS.getElementStyles(props, styles["main-menu-button"]);
+  if (!!props.disabled) {
+    buttonStyle.style.push([styles.disabled]);
   }
+  return (
+    <TouchableOpacity
+      {...buttonStyle}
+      onPress={!!props.disabled ? () => console.log('disabled') : props.onPress}
+      >
+      <Text style={styles["main-menu-button-text"]}> {props.children || props.title} </Text>
+    </TouchableOpacity>
+  )
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, ScrollView, Modal, TouchableHighlight } from 'react-native';
 
 import Logo from '../elements/Logo';
-import Button, {Link} from '../elements/Button';
+import {Button, Link} from '../elements/Button';
 import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
 
@@ -77,19 +77,19 @@ export default class Home extends React.Component {
       </View> 
 		)
 
-		return (  
+		return ( 
 			[
 			<ScrollView contentContainerStyle={styles["scroll-view"]} key="home-page">
 				{this.state.user && this.state.user.isNoteEditor ?
 					[
 					<Heading key="territory-heading">{Language.translate('Manage Your Congregation Territory')}</Heading>,
 					<View key="menu-nav" style={styles["main-menu"]}>
-						{this.state.user.isAdmin ? <Button key="users" onPress={() => this.goToPage("Users")} title={Language.translate('Users')} /> : null}
+						{this.state.user.isAdmin ? <Button disabled key="users" onPress={() => this.goToPage("Users")} title={Language.translate('Users')} /> : null}
 						{this.state.user.isManager ? [
-							<Button key="publishers" onPress={() => this.goToPage("Publishers")} title={Language.translate('Publishers')} />,
-							<Button key="boundaries" onPress={() => UTILS.openFrameUrl('boundaries')} title={Language.translate('Territory Map')} />,
+							<Button disabled key="publishers" onPress={() => this.goToPage("Publishers")} title={Language.translate('Publishers')} />,
+							<Button disabled key="boundaries" onPress={() => UTILS.openFrameUrl('boundaries')} title={Language.translate('Territory Map')} />,
 							<Button disabled key="s-13" onPress={() => UTILS.openFrameUrl('s-13')} title={Language.translate('Print_S-13', 'Print S-13 Form')} />,
-							<Button customStyle={{backgroundColor: 'red'}} key="territories-all" onPress={() => this.goToPage("Territories-all")} title={Language.translate('All Territories')} />
+							<Button key="territories-all" onPress={() => this.goToPage("Territories-all")} title={Language.translate('All Territories')} />
 						]: null}
 						<Button key="territories" onPress={() => this.goToPage("Territories")} title={Language.translate('My Territories')} /> 
 					</View>
@@ -99,7 +99,7 @@ export default class Home extends React.Component {
 			
 			<Modal
 				key="user-info"
-				// animationType="fade"
+				animationType="fade"
 				transparent={true}
 				visible={this.state.modalVisible}
 				// presentationStyle={'overFullScreen'}
@@ -129,6 +129,6 @@ export default class Home extends React.Component {
 				</View>
 			</Modal>
 			]
-		);
+		)
 	}
 }

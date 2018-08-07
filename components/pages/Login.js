@@ -10,7 +10,7 @@ import Language from '../common/lang';
 import UTILS from '../common/utils';
 
 import {EmailInput, PasswordInput} from '../elements/FormInput'; 
-import Button, {Link as ALink} from '../elements/Button';
+import {Button, Link as ALink} from '../elements/Button';
 import Heading from '../elements/Heading';
 import Message from '../elements/Message'; 
 import Loading from '../elements/Loading';
@@ -142,15 +142,11 @@ export default class Login extends React.Component {
 						user.token = data.token;
 						const newData = {...this.state.data, ...user};
 						Data.saveUser(user);
+
 						// Need to wait for "saveUser" to complete before switching screen
-						let waitForSaveUser = setInterval(() => {
-							// console.log('Data.user', Data.user);
-							if (Data.user && Data.user.token) {
-								this.setState({data: newData, waitingForResponse: false}, () => {
-									clearInterval(waitForSaveUser);
-								});
-							}
-						}, 100);
+						UTILS.waitForIt(!!Data.user && !!Data.user.token, () => {
+							this.setState({data: newData, waitingForResponse: false});
+						});
 					});
 				}
 			})
