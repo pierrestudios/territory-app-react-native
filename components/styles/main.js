@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const colors = {
   "territory-blue": '#337ab7',
   "grey-lite": '#ccc',
+  "grey-dark": '#333',
   red: 'red',
   white: '#fff'
 };
@@ -34,6 +35,12 @@ export default styles = StyleSheet.create({
   "scroll-view": {
     paddingVertical: 3
   },
+  section: {
+    height: '100%'
+  },
+
+  // Menu
+
   "main-menu": {
     flex: 1,
     flexDirection: 'column',
@@ -59,9 +66,6 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 3,
     padding: 10
-  },
-  list: {
-    alignItems: 'center',
   },
   "list-button": {
     minWidth: '90%',
@@ -107,6 +111,77 @@ export default styles = StyleSheet.create({
     borderBottomLeftRadius: 3,
     borderTopRightRadius: 0,
     borderTopLeftRadius: 0,
+  },
+
+  // Listings 
+
+  list: {
+    alignItems: 'center'
+  },
+
+  listings: {
+    // flex: 1,
+    // flexDirection: 'column',
+    // alignItems: 'flex-start', // center, flex-start, flex-end
+    backgroundColor: colors.white,
+    // borderColor: colors["grey-lite"],
+    // borderTopWidth: 1,
+    // borderBottomWidth: 1,
+    // padding: 2,
+    // height: '100%'
+  },
+
+  "listings-item": {
+    padding: 10,
+    height: 50,
+    borderTopWidth: 1,
+    borderColor: colors['grey-lite'],
+    // position: 'relative',
+    flex: 1, 
+    flexDirection: 'row',
+    // alignItems: 'flex-start', // 'flex-start', 'flex-end', 'center', 'stretch', 'baseline' (Vertical)
+    justifyContent: 'space-between' // enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly')
+  },
+
+  "listings-number": {
+    backgroundColor: colors["grey-dark"],
+    alignItems: 'center', 
+    padding: 5,
+    // margin: 5,
+    width: 35,
+    height: 30
+  },
+
+  "listings-number-text": {
+    color: colors.white,
+    fontSize: 18,
+  },
+
+  "listings-name": {
+    padding: 5,
+    marginTop: 10,
+    position: 'absolute', 
+    left: 50,
+    height: 40
+  },
+
+  "listings-name-text": {
+    color: colors["territory-blue"]
+  },
+
+  "listings-date": {
+    // alignSelf: 'flex-end',
+    position: 'absolute', 
+    right: 15,
+    marginTop: 15,
+    // borderTopWidth: 1, // Test
+    // borderColor: colors['red'], // Test
+    // padding: 7,
+    height: 40
+  },
+
+  "listings-date-text": {
+    color: colors["grey-lite"]
   },
 
   // Common styles:
