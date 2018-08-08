@@ -10,7 +10,7 @@ export default {
     return elStyle;
   },
   logError(Error) {
-    console.log('error', error);
+    console.log('error', Error);
   },
   diacritics(string, reverse = false) {
     if (!string) return '';
