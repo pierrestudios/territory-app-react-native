@@ -10,7 +10,7 @@ import Strong from '../elements/Strong';
 
 import style from '../styles/main';
 
-class UserFn {	
+export default class UserFn {	
 	getListings(data = [], caller, callerName) {
 		return (
 			<FlatList
@@ -308,4 +308,3 @@ class UserFn {
 		});
 	}
 }
-export default new UserFn();
