@@ -144,7 +144,7 @@ export default class Login extends React.Component {
 						Data.saveUser(user);
 
 						// Need to wait for "saveUser" to complete before switching screen
-						UTILS.waitForIt(!!Data.user && !!Data.user.token, () => {
+						UTILS.waitForIt(() => !!Data.user && !!Data.user.token, () => {
 							this.setState({data: newData, waitingForResponse: false});
 						});
 					});
