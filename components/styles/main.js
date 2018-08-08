@@ -67,6 +67,17 @@ export default styles = StyleSheet.create({
     borderRadius: 3,
     padding: 10
   },
+  "button-link": {
+    // borderColor: 'blue',
+    // borderWidth: 2,
+    borderRadius: 3,
+    padding: 2,
+    height: 30
+  },
+  "button-link-text": {
+    fontSize: 14,
+    color: colors["territory-blue"],
+  },
   "list-button": {
     minWidth: '90%',
     borderTopWidth: 1,
@@ -182,6 +193,29 @@ export default styles = StyleSheet.create({
 
   "listings-date-text": {
     color: colors["grey-lite"]
+  },
+
+  // Territory Details
+  
+  "territory-heading": {
+    // flex: 1, 
+    flexDirection: 'row-reverse', // enum('row', 'row-reverse', 'column', 'column-reverse')
+    // alignItems: 'flex-end', // 'flex-start', 'flex-end', 'center', 'stretch', 'baseline' (Vertical)
+    justifyContent: 'flex-start',
+    // width: '100%',
+    height: 60,
+    padding: 20
+  },
+
+  "heading-number": {
+    backgroundColor: colors["grey-dark"],
+    alignItems: 'center', 
+    padding: 5,
+    marginTop: 15,
+    width: 35,
+    height: 30,
+    position: 'absolute', 
+    right: 20,
   },
 
   // Common styles:
