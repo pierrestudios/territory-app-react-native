@@ -91,7 +91,15 @@ class Data {
 				if (!!apiData.refreshedToken && !!this.user && !!this.user.token) {
 					console.log('refreshedToken', apiData.refreshedToken);
 					this.saveUser({...this._user, token: apiData.refreshedToken});
-					return Api(url, data, type, {Authorization: 'Bearer ' + this.user.token})
+
+					// Need to wait for "saveUser" to complete before switching screen
+					return new Promise((resolve, reject) => {
+						UTILS.waitForIt(() => !!this.user && !!this.user.token && this.user.token === apiData.refreshedToken, () => {
+							resolve(Api(url, data, type, {Authorization: 'Bearer ' + this.user.token}))
+						});
+					})
+					.then(newPromise => newPromise)
+					
 				}
 
 				return apiData;
