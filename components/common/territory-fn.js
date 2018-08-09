@@ -5,7 +5,7 @@ import Data from '../common/data';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
 
-import {Link} from '../elements/Button';
+import {Link, ButtonLink} from '../elements/Button';
 import Strong from '../elements/Strong';
 
 import style from '../styles/main';
@@ -81,7 +81,7 @@ export default class TerritoryFn {
                 </Text>
               ] : [
                 // <Text class={style['listings-notes-action']}>{getActionButtons(item)}</Text>,
-                <Text key="listings-add-notes" style={[style['add-notes']]}>{'Add Notes'}</Text>
+                <ButtonLink key="listings-add-notes" customStyle={[style['add-notes']]}>{Language.translate('Add Notes')}</ButtonLink>
               ]}
             </View>	
             <View style={[style['listings-name'], style['address-listings-name']]}>

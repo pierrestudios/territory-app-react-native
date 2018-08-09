@@ -205,9 +205,11 @@ export default styles = StyleSheet.create({
 
   "listings-name": {
     padding: 5,
+    overflow: 'hidden',
     marginTop: 10,
     position: 'absolute', 
     left: 50,
+    width: '65%',
     height: 40
   },
 
@@ -231,13 +233,23 @@ export default styles = StyleSheet.create({
   },
 
   "listings-notes": {
-    width: '45%',
+    width: '35%',
     height: 40,
     position: 'absolute', 
     right: 0,
     padding: 5,
+    overflow: 'hidden',
     // borderWidth: 1, // Test
     // borderColor: colors['red'], // Test
+  },
+
+  "add-notes": {
+    // padding: 5,
+    marginTop: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors["grey-lite"]
   },
 
   "address-listings-name": {
