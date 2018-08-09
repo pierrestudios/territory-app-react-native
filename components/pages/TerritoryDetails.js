@@ -12,12 +12,11 @@ import {Link, ButtonLink, ButtonHeader} from '../elements/Button';
 // import Notice from '../elements/PopupNotice';
 
 import style from '../styles/main';
-import Line from '../elements/Line';
 
 export default class TerritoryDetails extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Territory ' + navigation.getParam('territoryNumber', '...'),
+      title: `${Language.translate('Territory')} ${navigation.getParam('territoryNumber', '...')}`,
       headerTitle: null,
       headerTintColor: '#fff',
       headerRight: (
