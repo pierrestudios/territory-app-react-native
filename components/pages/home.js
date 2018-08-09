@@ -16,8 +16,6 @@ import styles from '../styles/main';
 
 export default class Home extends React.Component {
   static navigationOptions = ({navigation}) => {
-		// const params = navigation.state.params || {};
-		// console.log('params', params);
 		return {
 			headerTitle: <Logo color={colors.white} />,
 			headerRight: (
@@ -54,8 +52,8 @@ export default class Home extends React.Component {
 	}
 	componentWillReceiveProps(props) {
 		// console.log('props', props);
-		if (props.navigation && props.navigation.state && props.navigation.state.params) {
-			this.setModalVisible(!!props.navigation.state.params.openDrawer)
+		if (props.navigation) {
+			this.setModalVisible(props.navigation.getParam('openDrawer'))
 		}
 	}
   goToPage(path) {

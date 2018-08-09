@@ -5,7 +5,7 @@ import UTILS from '../common/utils';
 
 export const Link = (props) => {
   return (
-    <Button {...props} baseStyle={styles["main-menu-link"]} />
+    <Button {...props} baseStyle={styles["main-menu-link"]} textStyle={styles["text-color-blue"]} />
   )
 }
 

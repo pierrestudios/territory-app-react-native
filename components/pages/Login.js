@@ -10,7 +10,7 @@ import Language from '../common/lang';
 import UTILS from '../common/utils';
 
 import {EmailInput, PasswordInput} from '../elements/FormInput'; 
-import {Button, Link as ALink} from '../elements/Button';
+import {Button, Link } from '../elements/Button';
 import Heading from '../elements/Heading';
 import Message from '../elements/Message'; 
 import Loading from '../elements/Loading';
@@ -77,7 +77,7 @@ export default class Login extends React.Component {
 		return (
 			<View style={[style.container]}>
 				<Heading>{Language.translate('Sign in')}</Heading>
-				{!!state.data && !!state.data.token ? <ALink href="/">{Language.translate('Home', 'Home')}</ALink> :
+				{!!state.data && !!state.data.token ? <Link href="/">{Language.translate('Home', 'Home')}</Link> :
         <ScrollView contentContainerStyle={style["scroll-view"]}>
 						<Message error={state.errors.message} message={state.data.message} />
 						<EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={IconEmail} />
@@ -87,9 +87,9 @@ export default class Login extends React.Component {
 						<Line />
 
 						<View style={style['inner-content']}>
-							<ALink href="/password-retrieve" inline>{Language.translate('Lost your password')} </ALink> 
+							<Link href="/password-retrieve" >{Language.translate('Lost your password')} </Link> 
 							<Text style={style["text-center"]}>{Language.translate('Or')}</Text> 
-							<ALink href="/signup" inline>{Language.translate('Create an account')} </ALink>
+							<Link href="/signup" >{Language.translate('Create an account')} </Link>
 						</View>
 
 					</ScrollView>

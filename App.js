@@ -19,7 +19,7 @@ const App = createStackNavigator({
   Users: { screen: Users },
   "Territories-all": { screen: Territories },
   Territories: { screen: MyTerritories },
-  TerritoryDetails: { screen: TerritoryDetails}
+  TerritoryDetails: { screen: TerritoryDetails }
 },
 {
   initialRouteName: 'Home',
