@@ -1,14 +1,13 @@
 import { StyleSheet } from 'react-native';
 
-const colors = {
+export const colors = {
   "territory-blue": '#337ab7',
   "grey-lite": '#ccc',
   "grey-dark": '#333',
-  red: 'red',
+  orange: '#F99538',
+  red: '#F44336',
   white: '#fff'
 };
-
-export {colors}
 
 /*
  * View Style Props: https://facebook.github.io/react-native/docs/view-style-props
@@ -36,6 +35,7 @@ export default styles = StyleSheet.create({
     paddingVertical: 3
   },
   section: {
+    flex: 1,
     height: '100%'
   },
 
@@ -71,12 +71,24 @@ export default styles = StyleSheet.create({
     // borderColor: 'blue',
     // borderWidth: 2,
     borderRadius: 3,
-    padding: 2,
+    paddingTop: 6,
+    paddingBottom: 6,
+    marginLeft: 2,
+    marginRight: 2,
     height: 30
   },
   "button-link-text": {
     fontSize: 14,
     color: colors["territory-blue"],
+  },
+  "header-button": {
+    alignItems: 'center',
+    borderRadius: 3,
+    padding: 10
+  },
+  "header-button-text": {
+    fontSize: 14,
+    color: colors.white
   },
   "list-button": {
     minWidth: '90%',
@@ -142,6 +154,11 @@ export default styles = StyleSheet.create({
     // height: '100%'
   },
 
+  "listings-results": {
+    // marginBottom: 120,
+    // flex: 1,
+  },
+
   "listings-item": {
     padding: 10,
     height: 50,
@@ -185,14 +202,29 @@ export default styles = StyleSheet.create({
     position: 'absolute', 
     right: 15,
     marginTop: 15,
-    // borderTopWidth: 1, // Test
+    // borderWidth: 1, // Test
     // borderColor: colors['red'], // Test
     // padding: 7,
     height: 40
   },
 
   "listings-date-text": {
-    color: colors["grey-lite"]
+    color: colors["grey-dark"]
+  },
+
+  "listings-notes": {
+    width: '45%',
+    height: 40,
+    position: 'absolute', 
+    right: 0,
+    padding: 5,
+    // borderWidth: 1, // Test
+    // borderColor: colors['red'], // Test
+  },
+
+  "address-listings-name": {
+    left: 0,
+    marginTop: 0
   },
 
   // Territory Details
@@ -218,6 +250,18 @@ export default styles = StyleSheet.create({
     right: 20,
   },
 
+  "view-map-button": {
+    backgroundColor: colors["territory-blue"],
+  },
+
+  "pdf-button": {
+    backgroundColor: colors["orange"],
+  },
+
+  "csv-button": {
+    backgroundColor: colors["orange"],
+  },
+
   // Common styles:
 
   "text-center": {
@@ -227,6 +271,10 @@ export default styles = StyleSheet.create({
 
   "text-strong": {
     fontWeight: 'bold',
+  },
+
+  "text-white": {
+    color: colors.white
   },
 
   line: {

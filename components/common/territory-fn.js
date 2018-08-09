@@ -70,13 +70,13 @@ export default class TerritoryFn {
 				keyExtractor={(item) => item.addressId.toString()}
 				renderItem={({item}) => (
           <TouchableOpacity key={item.addressId} style={style['listings-item']} onPress={() => false}>
-            <View style={style['listings-name']}>
+            <View style={style['listings-notes']}>
               {item.notes && item.notes.length ? [
                 // {/*<Text class={style['listings-notes-action']}>{getActionButtons(item)}</Text>,*/}
-                <Text key="listings-date" style={[style['listings-date'], style['listings-notes-date']]}>
+                <Text key="listings-date" style={[style['listings-date-text'], style['listings-notes-date-text']]}>
                   {item.notes[0].date}
                 </Text>,
-                <Text key="listings-notes" style={style['listings-notes']}>
+                <Text key="listings-notes" style={style['listings-notes-note']}>
                   {UTILS.diacritics(item.notes[0].note)}
                 </Text>
               ] : [
@@ -84,7 +84,7 @@ export default class TerritoryFn {
                 <Text key="listings-add-notes" style={[style['add-notes']]}>{'Add Notes'}</Text>
               ]}
             </View>	
-            <View style={style['listings-name']}>
+            <View style={[style['listings-name'], style['address-listings-name']]}>
               <Text style={[style['listings-name-text'], style['listings-address-name']]}>{UTILS.diacritics(item.name)} </Text>
               <Text style={style['listings-address']}>
 							  {this.getListingAddress(item)}

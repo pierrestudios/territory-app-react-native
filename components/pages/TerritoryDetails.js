@@ -8,7 +8,7 @@ import TerritoryFn from '../common/territory-fn';
 
 import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
-import {Link, ButtonLink} from '../elements/Button';
+import {Link, ButtonLink, ButtonHeader} from '../elements/Button';
 // import Notice from '../elements/PopupNotice';
 
 import style from '../styles/main';
@@ -17,9 +17,18 @@ import Line from '../elements/Line';
 export default class TerritoryDetails extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Territory # ' + navigation.getParam('territoryNumber', '...'),
+      title: 'Territory ' + navigation.getParam('territoryNumber', '...'),
       headerTitle: null,
       headerTintColor: '#fff',
+      headerRight: (
+        !!navigation.getParam('isEditor') ? 
+				<ButtonHeader
+					onPress={() => {navigation.setParams({openDrawer: true})}}
+					title={Language.translate('Add')}
+					color="#fff"
+        />
+        : null
+			),
     }
   }
 
@@ -38,42 +47,31 @@ export default class TerritoryDetails extends React.Component {
 				.then(data => {
 
 					// Get "addressId" if reloading page
-					const addressId = null; // parseInt(this.props.addressId || 0);
+          const addressId = null; // parseInt(this.props.addressId || 0);
+          const {user} = Data
 
           // console.log('data', data);
           if (!!data && !!data.territoryId) {
             this.setState({
               data: data,
-              user: Data.user,
+              user: user,
               addressActive: (!!addressId ? data.addresses.find(a => a.addressId === addressId) : null),
               streetsList: UTILS.getStreetsList(data.addresses),
               noticeMessage: null,
               shouldRender: 'Territory'
-            }, () => console.log('state', this.state));
-            this.props.navigation.setParams({'territoryNumber': data.number})
+            });
+
+            // Set params for Navigation Header
+            this.props.navigation.setParams({
+              territoryNumber: data.number, 
+              isEditor: user.isEditor
+            })
           }
            
         })
         .catch(UTILS.logError)
 		}
 	}
-
-  /* 
-  shouldComponentUpdate(nextProps, nextState) {
-		return !!nextState.shouldRender;
-  } 
-	
-	componentDidUpdate(prevProps, prevState) {
-		if (!!this.props.isTerritory) {
-			// Note: need to delay this function to prevent "addressActive" to be set to null, when view... is clicked
-			setTimeout(() => {
-				// this.scrollToActiveAddress()
-			}, 1000);
-		}
-
-		// this.clearRenderTrigger()
-	}
-  */
 
 	render() {
     const state = this.state || {};
@@ -111,22 +109,21 @@ export default class TerritoryDetails extends React.Component {
 		return (
 			<View style={[style.section, style.content]}>
         <View style={style['territory-heading']}>
-          {state.user.isEditor ?
-            <ButtonLink onPress={this.viewAddressAdd} customClass={style['add-address-button']}> {Language.translate('Add')} </ButtonLink>
-          : null }
-          <ButtonLink onPress={this.viewMap} customClass={style['view-map-button']}> {Language.translate('Map')} </ButtonLink>
+          <ButtonLink onPress={this.viewMap} customStyle={style['view-map-button']} textColorWhite> {Language.translate('Map')} </ButtonLink>
           {state.user.isManager ? [
-            <ButtonLink key="pdf-button" onPress={() => UTILS.openFrameUrl(`pdf/${state.data.number}`)} customClass={style['pdf-button']}> {Language.translate('PDF')} </ButtonLink>,
-            <ButtonLink key="csv-button" onPress={() => UTILS.openFrameUrl(`csv/${state.data.number}`)} customClass={style['csv-button']}> {Language.translate('CSV')} </ButtonLink>
+            <ButtonLink key="pdf-button" onPress={() => UTILS.openFrameUrl(`pdf/${state.data.number}`)} customStyle={style['pdf-button']} textColorWhite> {Language.translate('PDF')} </ButtonLink>,
+            <ButtonLink key="csv-button" onPress={() => UTILS.openFrameUrl(`csv/${state.data.number}`)} customStyle={style['csv-button']} textColorWhite> {Language.translate('CSV')} </ButtonLink>
           ] : null }
           <View style={style['heading-number']}><Text style={style["listings-number-text"]}>{state.data.number}</Text></View>
+          {/*
           {this.allTerritories && state.data.publisher ?
-            <Link style={style['heading-name-link']} onPress={(e) => this.viewPublisherDetails(state.data.publisher)}>
+            <ButtonLink style={style['heading-name-link']} onPress={(e) => this.viewPublisherDetails(state.data.publisher)}>
               <Text style={style['heading-name']}>{state.data.publisher.firstName} {state.data.publisher.lastName}</Text>
-            </Link>
+            </ButtonLink>
             : null}
+          */}  
         </View>  
-				<View style={[style['listings-results'], style['listings-results-address']]}>
+				<View style={[style.section, style['listings-results'], style['listings-results-address']]}>
           {listings}
 				</View>
 				{/*<Notice data={state.noticeMessage} />*/}
@@ -136,35 +133,35 @@ export default class TerritoryDetails extends React.Component {
 	viewNotes(data) {
 		this.setState({ addressActive: data, shouldRender: 'Notes' }, () => {
 			this.props.entity && typeof this.props.entity.viewNotes === 'function' ?
-			this.props.entity.viewNotes(data) :
-			History.push({
+			this.props.entity.viewNotes(data) : false
+			/* History.push({
 				pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/address/${data.addressId}/notes`
-			})
+			}) */
 		});
 	}
 	viewAddress(data) {
 		this.setState({ addressActive: data, shouldRender: 'addressId' }, () => {
 			this.props.entity && typeof this.props.entity.viewAddress === 'function' ?
-			this.props.entity.viewAddress(data) :
-			History.push({
+			this.props.entity.viewAddress(data) : false
+			/* History.push({
 				pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/address/${data.addressId}`
-			})
+			}) */
 		});
 	}
 	viewAddressAdd = () => {
 		this.props.entity && typeof this.props.entity.viewAddressAdd === 'function' ?
-		this.props.entity.viewAddressAdd() :
-		History.push({
+		this.props.entity.viewAddressAdd() : false
+		/* History.push({
 			pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/address/add`
-		})
+		}) */
 		this.setState({shouldRender: 'Address', addressActive: null})
 	}
 	viewMap = () => {
 		this.props.entity && typeof this.props.entity.viewMap === 'function' ?
-		this.props.entity.viewMap() :
-		History.push({
+		this.props.entity.viewMap() : false
+		/* History.push({
 			pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/map`
-		})
+		}) */
 		this.setState({shouldRender: 'Map', addressActive: null})
 	}
 	updateAddress = (updatedAddress, isDelete = false, allowGoBack = true) => {
@@ -182,7 +179,8 @@ export default class TerritoryDetails extends React.Component {
 			data: updatedData,
 			noticeMessage: null,
 			shouldRender: 'Territory'
-		}, () => !!allowGoBack && History.goBack()) 
+    }, () => false // !!allowGoBack // && History.goBack()
+    ) 
 	}
 	addAddress = (newAddress) => {
 		if (!newAddress) return;

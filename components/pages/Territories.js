@@ -66,7 +66,7 @@ export default class Territories extends React.Component {
     )  
 	}
 	viewDetails(data) {
-    NavigationService.navigate('TerritoryDetails', {territoryId: data.territoryId})
+    NavigationService.navigate('TerritoryDetails', {territoryId: data.territoryId, allTerritories: this.allTerritories})
 	}
 	
 	render() {
