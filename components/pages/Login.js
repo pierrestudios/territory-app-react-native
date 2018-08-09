@@ -21,7 +21,7 @@ import navService from '../common/nav-service';
 
 export default class Login extends React.Component {
 	static navigationOptions = {
-		headerTintColor: '#fff',
+		...UTILS.headerNavOptionsDefault,
 		headerBackImage: <Text /> // Disabled
   };
 	state = {

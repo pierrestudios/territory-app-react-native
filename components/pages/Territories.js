@@ -15,9 +15,8 @@ import styles from '../styles/main';
 
 export default class Territories extends React.Component {
   static navigationOptions = {
-    headerTitle: null,
+    ...UTILS.headerNavOptionsDefault,
     title: Language.translate('All Territories'),
-    headerTintColor: '#fff',
   };
   loadingTerritories = false;
   allTerritories = true;

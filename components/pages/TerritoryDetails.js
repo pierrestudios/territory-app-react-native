@@ -16,9 +16,8 @@ import style from '../styles/main';
 export default class TerritoryDetails extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
+      ...UTILS.headerNavOptionsDefault,
       title: `${Language.translate('Territory')} ${navigation.getParam('territoryNumber', '...')}`,
-      headerTitle: null,
-      headerTintColor: '#fff',
       headerRight: (
         !!navigation.getParam('isEditor') ? 
 				<ButtonHeader

@@ -164,6 +164,11 @@ export default {
       }
     }, time)
   },
+  headerNavOptionsDefault: {
+    headerTitle: null,
+    headerTintColor: '#fff',
+    headerBackTitle: null
+  },
   userTypes: [
     {value: 'Viewer', label: 'Viewer'},
     {value: 'NoteEditor', label: 'NoteEditor'},
