@@ -4,6 +4,7 @@ export const colors = {
   "territory-blue": '#337ab7',
   "grey-lite": '#ccc',
   "grey-dark": '#333',
+  "grey": '#999',
   orange: '#F99538',
   red: '#F44336',
   white: '#fff'
@@ -229,7 +230,7 @@ export default styles = StyleSheet.create({
   },
 
   "listings-date-text": {
-    color: colors["grey-dark"]
+    color: colors["grey"]
   },
 
   "listings-notes": {

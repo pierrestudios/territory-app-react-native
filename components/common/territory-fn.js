@@ -76,7 +76,7 @@ export default class TerritoryFn {
                 <Text key="listings-date" style={[style['listings-date-text'], style['listings-notes-date-text']]}>
                   {item.notes[0].date}
                 </Text>,
-                <Text key="listings-notes" style={style['listings-notes-note']}>
+                <Text key="listings-notes" numberOfLines={1} style={style['listings-notes-note-text']}>
                   {UTILS.diacritics(item.notes[0].note)}
                 </Text>
               ] : [
@@ -85,8 +85,8 @@ export default class TerritoryFn {
               ]}
             </View>	
             <View style={[style['listings-name'], style['address-listings-name']]}>
-              <Text style={[style['listings-name-text'], style['listings-address-name']]}>{UTILS.diacritics(item.name)} </Text>
-              <Text style={style['listings-address']}>
+              <Strong numberOfLines={1} style={[style['listings-name-text'], style['listings-address-name']]}>{UTILS.diacritics(item.name)} </Strong>
+              <Text numberOfLines={1} style={style['listings-address']}>
 							  {this.getListingAddress(item)}
 						  </Text>
             </View>
