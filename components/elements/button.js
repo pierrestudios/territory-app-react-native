@@ -15,6 +15,12 @@ export const ButtonLink = (props) => {
   )
 }; 
 
+export const ButtonHeader = (props) => {
+	return (
+    <Button {...props} baseStyle={styles["header-button"]} textStyle={styles["header-button-text"]} />
+  )
+}; 
+
 export const Button = (props) => {
   const buttonStyle = UTILS.getElementStyles(props, (props.baseStyle || styles["main-menu-button"]));
   if (!!props.disabled) {
@@ -25,7 +31,7 @@ export const Button = (props) => {
       {...buttonStyle}
       onPress={!!props.disabled ? () => console.log('disabled') : props.onPress}
       >
-      <Text style={[styles["main-menu-button-text"], props.textStyle || null]}> {props.children || props.title} </Text>
+      <Text style={[styles["main-menu-button-text"], (props.textStyle || null), (props.textColorWhite ? styles["text-white"] : null)]}> {props.children || props.title} </Text>
     </TouchableOpacity>
   )
 }

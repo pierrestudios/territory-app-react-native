@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, ScrollView, Modal, TouchableHighlight } from 'react-native';
 
 import Logo from '../elements/Logo';
-import {Button, Link} from '../elements/Button';
+import {Button, Link, ButtonHeader} from '../elements/Button';
 import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
 
@@ -21,7 +21,7 @@ export default class Home extends React.Component {
 		return {
 			headerTitle: <Logo color={colors.white} />,
 			headerRight: (
-				<Button
+				<ButtonHeader
 					onPress={() => {navigation.setParams({openDrawer: true})}}
 					title="Info"
 					color="#fff"
