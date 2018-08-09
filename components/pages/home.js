@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, Modal, TouchableHighlight } from 'react-native';
+import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
 
 import Logo from '../elements/Logo';
 import {Button, Link, ButtonHeader} from '../elements/Button';
@@ -21,7 +22,7 @@ export default class Home extends React.Component {
 			headerRight: (
 				<ButtonHeader
 					onPress={() => {navigation.setParams({openDrawer: true})}}
-					title="Info"
+					title={<FontAwesome name="user-circle" size={20} color="#fff" />}
 					color="#fff"
 				/>
 			),

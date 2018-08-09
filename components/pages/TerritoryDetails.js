@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
 
 import Data from '../common/data';
 import Language from '../common/lang';
@@ -22,7 +23,7 @@ export default class TerritoryDetails extends React.Component {
         !!navigation.getParam('isEditor') ? 
 				<ButtonHeader
 					onPress={() => {navigation.setParams({openDrawer: true})}}
-					title={Language.translate('Add')}
+					title={<Feather name="plus" size={20} color="#fff" />}
 					color="#fff"
         />
         : null

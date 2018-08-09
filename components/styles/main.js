@@ -120,6 +120,24 @@ export default styles = StyleSheet.create({
     backgroundColor: colors.white
   },
 
+  "input-icon-wrapper": {
+    width: 18,
+    position: 'absolute',
+    bottom: 18,
+    left: 10,
+    zIndex: 9,
+    // borderWidth: 1, // Test
+    // borderColor: colors['red'], // Test
+  },
+
+  "input-icon": {
+    color: colors["grey-lite"]
+  },
+
+  "with-icon": {
+    paddingLeft: 30
+  },
+
   errors: {
     padding: 10,
     marginTop: 5,
@@ -223,7 +241,7 @@ export default styles = StyleSheet.create({
   },
 
   "address-listings-name": {
-    left: 0,
+    left: 8,
     marginTop: 0
   },
 

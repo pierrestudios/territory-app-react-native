@@ -3,6 +3,7 @@ import { Text, View, ScrollView } from 'react-native';
 
 // import IconEmail from 'preact-icons/lib/fa/envelope';
 // import IconPassword from 'preact-icons/lib/fa/key';
+import { FontAwesome } from '@expo/vector-icons';
 
 import Data from '../common/data';
 import Api from '../common/api';
@@ -71,17 +72,14 @@ export default class Login extends React.Component {
 		if (state.waitingForResponse)
 			return <Loading />;
 
-		const IconEmail = null;
-		const IconPassword = null;
-
 		return (
 			<View style={[style.container]}>
 				<Heading>{Language.translate('Sign in')}</Heading>
 				{!!state.data && !!state.data.token ? <Link href="/">{Language.translate('Home', 'Home')}</Link> :
         <ScrollView contentContainerStyle={style["scroll-view"]}>
 						<Message error={state.errors.message} message={state.data.message} />
-						<EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={IconEmail} />
-						<PasswordInput name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={IconPassword} />
+						<EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: FontAwesome, name:"envelope"}} />
+						<PasswordInput name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={{el: FontAwesome, name:"key"}} />
 						<Button onPress={this.sendLogin}>{Language.translate('Sign in')}</Button>
 
 						<Line />

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Text, View, TextInput as TextInputRN } from 'react-native';
  
+import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
+// import FaAlert from 'preact-icons/lib/fa/exclamation';
+
 import UTILS from '../common/utils';
  
 import style from '../styles/main';
 import {colors} from '../styles/main';
 
-// import FaAlert from 'preact-icons/lib/fa/exclamation';
 
 const getStyles = (props) => {
   const styles = [style.input];
@@ -26,7 +28,7 @@ const getLabel = (props) => {
 }
 
 const getIcon = (props) => {
-	return null; // props.icon ? <span class={style['input-icon']}><props.icon size={14} /></span> : null
+	return props.icon ? <View style={style['input-icon-wrapper']}><props.icon.el size={14} name={props.icon.name} style={style['input-icon']} /></View> : null
 }
 
 const getError = (props) => {
