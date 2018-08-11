@@ -1,35 +1,35 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import {Modal, TouchableHighlight, View, Text} from 'react-native';
 
 // import FaAlert from 'preact-icons/lib/fa/exclamation-circle';
 // import Heading from '../Heading';
 // import {ALink} from '../Button';
-import TextInput from '../TextInput';
-import Switch from '../Switch';
-import SelectBox from '../SelectBox';
-import RadioBox from '../RadioBox';
-import DateInput from '../DateInput';
-import Message from '../FormMessage';
+import {TextInput, DateInput, SelectBox, RadioBox} from './FormInput';
+import Message from './Message';
+import Heading from './Heading';
+import Line from './Line';
 
-import style from './style.less';
+import style from '../styles/main.js';
 
-export default class PopupNotice extends Component {
-	componentWillMount() {
-		this.state = {
-			SoftKeyBoard: false,
-			openedDropDown: null
-		}
-	}
-	render(props, state) {
-		// console.log('state', state)
+export default class PopupNotice extends React.Component {
+	state = {
+    popupVisible: false,
+  };
+
+  setPopupVisible(visible) {
+    this.setState({popupVisible: visible});
+  }
+
+  render() {
+		const props = this.props;
 		const data = props.data;
-		if (!data) return;
+		if (!data) return null;
 
 		// console.log('data', data);
 
-		const icon = props.showIcon ? <FaAlert size={20} />  : null;
-		const classes = classNames(style.input, style['with-icon']);
-		const activeOptClass = classNames(style['input-options'], style['input-options-active']); 
+		const icon = null;//props.showIcon ? <FaAlert size={20} />  : null;
+		// const classes = classNames(style.input, style['with-icon']);
+		// const activeOptClass = classNames(style['input-options'], style['input-options-active']); 
 		const inputsData = {};
 		const inputsError = {};
 		const minWindowHeight = 400;
@@ -123,6 +123,60 @@ export default class PopupNotice extends Component {
 				this.setState({openedDropDown: hide ? null : e.target});
 			}
 		}
+
+    return (
+      <View style={{marginTop: 22}}>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.popupVisible}
+          onRequestClose={() => {
+            // alert('Modal has been closed.');
+          }}>
+          <View style={{marginTop: 22}}>
+            <View>							
+							<Heading>
+								{icon}
+								<Text>{data.title || 'Notice!'}</Text>
+							</Heading>
+							<Text style={style['notice-box-message']}>{data.description}</Text>
+							<Message error={data.errorMesage} message={data.message} />
+							{data.inputs ? 
+								<Line />
+							: null}
+							<View style={style['notice-box-inputs']}>
+								{getInputs(data)}
+							</View>
+							{data.actions ? 
+							<Line />
+							: null }
+							<View style={style['notice-box-actions']}>
+								{getActions(data)}
+							</View>
+
+
+              <TouchableHighlight
+                onPress={() => {
+                  this.setPopupVisible(!this.state.popupVisible);
+                }}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+
+        <TouchableHighlight
+          onPress={() => {
+            this.setPopupVisible(true);
+          }}>
+          <Text>Show Modal</Text>
+        </TouchableHighlight>
+      </View>
+    );
+  }
+	renderOld(props, state) {
+		// console.log('state', state)
+		
 		return (
 			<div>
 				<div class={style['notice-box-container']}>

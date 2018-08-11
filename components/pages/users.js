@@ -3,11 +3,11 @@ import { Text, View } from 'react-native';
 
 import Data from '../common/data';
 import Language from '../common/lang';
-import UserFn from './user-fn';
+import UserFn from '../common/user-fn';
 
 import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
-// import Notice from '../elements/popup-notice';
+// import Notice from '../elements/PopupNotice';
 
 import styles from '../styles/main';
 
