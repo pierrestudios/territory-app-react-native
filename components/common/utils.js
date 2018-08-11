@@ -166,6 +166,9 @@ export default {
   },
   headerNavOptionsDefault: {
     headerTitle: null,
+    headerTitleStyle: {
+      fontSize: 22
+    },
     headerTintColor: '#fff',
     headerBackTitle: null
   },
