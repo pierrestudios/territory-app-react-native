@@ -5,19 +5,19 @@ import UTILS from '../common/utils';
 
 export const Link = (props) => {
   return (
-    <Button {...props} baseStyle={styles["main-menu-link"]} textStyle={styles["text-color-blue"]} />
+    <Button {...props} baseStyle={styles["main-menu-link"]} textStyle={[styles["button-link-text"], styles["text-color-blue"], props.textStyle]} />
   )
 }
 
 export const ButtonLink = (props) => {
 	return (
-    <Button {...props} baseStyle={styles["button-link"]} textStyle={styles["button-link-text"]} />
+    <Button {...props} baseStyle={styles["button-link"]} textStyle={[styles["button-link-text"], props.textStyle]} />
   )
 }; 
 
 export const ButtonHeader = (props) => {
 	return (
-    <Button {...props} baseStyle={styles["header-button"]} textStyle={styles["header-button-text"]} />
+    <Button {...props} baseStyle={styles["header-button"]} textStyle={[styles["header-button-text"], props.textStyle]} />
   )
 }; 
 
