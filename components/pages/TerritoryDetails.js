@@ -20,10 +20,10 @@ export default class TerritoryDetails extends React.Component {
       ...UTILS.headerNavOptionsDefault,
       title: `${Language.translate('Territory')} ${navigation.getParam('territoryNumber', '...')}`,
       headerRight: (
-        !!navigation.getParam('isEditor') ? 
+        !!navigation.getParam('isEditor') && !!navigation.getParam('streetsList') ? 
 				<ButtonHeader
-					onPress={() => {navigation.setParams({openDrawer: true})}}
-					title={<Feather name="plus" size={20} color="#fff" />}
+					onPress={() => {navigation.navigate('AddressEdit', {streetsList: navigation.getParam('streetsList'), territoryId: this.territoryId})}}
+					title={<Feather name="plus" size={24} color="#fff" />}
 					color="#fff"
         />
         : null
@@ -51,11 +51,12 @@ export default class TerritoryDetails extends React.Component {
 
           // console.log('data', data);
           if (!!data && !!data.territoryId) {
+            const streetsList = UTILS.getStreetsList(data.addresses);
             this.setState({
               data: data,
               user: user,
               addressActive: (!!addressId ? data.addresses.find(a => a.addressId === addressId) : null),
-              streetsList: UTILS.getStreetsList(data.addresses),
+              streetsList: streetsList,
               noticeMessage: null,
               shouldRender: 'Territory'
             });
@@ -63,7 +64,8 @@ export default class TerritoryDetails extends React.Component {
             // Set params for Navigation Header
             this.props.navigation.setParams({
               territoryNumber: data.number, 
-              isEditor: user.isEditor
+              isEditor: user.isEditor,
+              streetsList: streetsList
             })
           }
            
@@ -108,10 +110,10 @@ export default class TerritoryDetails extends React.Component {
 		return (
 			<View style={[style.section, style.content]}>
         <View style={style['territory-heading']}>
-          <ButtonLink onPress={this.viewMap} customStyle={style['view-map-button']} textColorWhite> {Language.translate('Map')} </ButtonLink>
+          <ButtonLink onPress={this.viewMap} customStyle={[style["heading-button-link"], style['view-map-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('Map')} </ButtonLink>
           {state.user.isManager ? [
-            <ButtonLink key="pdf-button" onPress={() => UTILS.openFrameUrl(`pdf/${state.data.number}`)} customStyle={style['pdf-button']} textColorWhite> {Language.translate('PDF')} </ButtonLink>,
-            <ButtonLink key="csv-button" onPress={() => UTILS.openFrameUrl(`csv/${state.data.number}`)} customStyle={style['csv-button']} textColorWhite> {Language.translate('CSV')} </ButtonLink>
+            <ButtonLink key="pdf-button" onPress={() => UTILS.openFrameUrl(`pdf/${state.data.number}`)} customStyle={[style["heading-button-link"], style['pdf-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('PDF')} </ButtonLink>,
+            <ButtonLink key="csv-button" onPress={() => UTILS.openFrameUrl(`csv/${state.data.number}`)} customStyle={[style["heading-button-link"], style['csv-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('CSV')} </ButtonLink>
           ] : null }
           <View style={style['heading-number']}><Text style={style["listings-number-text"]}>{state.data.number}</Text></View>
           {/*
