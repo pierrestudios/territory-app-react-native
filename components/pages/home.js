@@ -18,7 +18,7 @@ import styles from '../styles/main';
 export default class Home extends React.Component {
   static navigationOptions = ({navigation}) => {
 		return {
-			headerTitle: <Logo color={colors.white} />,
+			headerTitle: <Logo />,
 			headerRight: (
 				<ButtonHeader
 					onPress={() => {navigation.setParams({openDrawer: true})}}
