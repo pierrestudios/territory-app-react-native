@@ -7,6 +7,7 @@ export const colors = {
   "grey": '#999',
   orange: '#F99538',
   red: '#F44336',
+  "off-white": '#F3f3f3',
   white: '#fff'
 };
 
@@ -23,7 +24,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#fff'
   },
@@ -33,7 +34,7 @@ export default styles = StyleSheet.create({
     marginTop: 40
   },
   "scroll-view": {
-    paddingVertical: 3
+    paddingVertical: 20
   },
   section: {
     flex: 1,
@@ -69,13 +70,12 @@ export default styles = StyleSheet.create({
     padding: 10
   },
   "button-link": {
-    // borderColor: 'blue',
-    // borderWidth: 2,
     borderRadius: 3,
-    paddingTop: 6,
-    paddingBottom: 6,
-    marginLeft: 2,
-    marginRight: 2,
+    paddingTop: 3,
+    paddingBottom: 3,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 0,
     height: 30
   },
   "button-link-text": {
@@ -104,17 +104,15 @@ export default styles = StyleSheet.create({
     fontSize: 18,
     color: colors.white
   },
-  "text-color-blue": {
-    color: colors["territory-blue"]
-  },
 
   // Form Inputs
   "input": {
     minWidth: '90%',
     borderWidth: 1,
     borderRadius: 3,
-    height: 40,
+    height: 50,
     padding: 10,
+    fontSize: 18,
     marginTop: 5,
     marginBottom: 5,
     borderColor: colors['grey-lite'],
@@ -137,6 +135,11 @@ export default styles = StyleSheet.create({
 
   "with-icon": {
     paddingLeft: 30
+  },
+
+  "input-label": {
+    marginTop: 10,
+    marginBottom: 5
   },
 
   errors: {
@@ -258,6 +261,71 @@ export default styles = StyleSheet.create({
     marginTop: 0
   },
 
+  "input-options-container": {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginTop: 5,
+    marginBottom: 15
+  },
+
+  "input-options-button": {
+    // width: '30%',
+    height: 60,
+  },
+
+  "input-options": {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 60,
+    padding: 5,
+    margin: 5,
+    backgroundColor: colors.white,
+    borderColor: colors["grey-lite"],
+    borderWidth: 1,
+    borderRadius: 5
+  },
+
+  "input-options-active": {
+    backgroundColor: colors["territory-blue"]
+  },
+
+  "input-options-icon": {
+    color: colors["grey-lite"]
+  },
+
+  "input-options-icon-active": {
+    color: colors.white
+  },
+
+  "input-options-label-active" : {
+    color: colors.white
+  },
+
+  "select-options-wrapper": { 
+    backgroundColor: colors.white,
+    borderColor: colors["grey-lite"], 
+    borderWidth: 1, 
+    alignItems: 'center',
+  },
+
+  "select-options": {
+    height: 160, // iOS default: 216
+    width: 200,
+    fontSize: 22,
+    // fontWeight: 'bold',
+    // margin: 0,
+    marginTop: 0,
+    marginBottom: 0,
+    // padding: 0
+    // borderWidth: 1, // Test
+    // borderColor: colors['red'], // Test
+  },
+
+
   // Territory Details
   
   "territory-heading": {
@@ -281,6 +349,19 @@ export default styles = StyleSheet.create({
     right: 20,
   },
 
+  "heading-button-link": {
+    borderRadius: 3,
+    padding: 5,
+    marginLeft: 5,
+    marginRight: 5,
+    marginTop: -3,
+    height: 32
+  },
+
+  "heading-button-link-text": {
+    fontSize: 18,
+  },
+
   "view-map-button": {
     backgroundColor: colors["territory-blue"],
   },
@@ -293,19 +374,44 @@ export default styles = StyleSheet.create({
     backgroundColor: colors["orange"],
   },
 
+  "add-new-street": {
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginTop: 15,
+    height: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors["grey-lite"],
+    backgroundColor: colors.white
+  },
+
   // Common styles:
 
   "text-center": {
     textAlign: 'center',
     width: '100%'
   },
-
   "text-strong": {
     fontWeight: 'bold',
   },
-
   "text-white": {
     color: colors.white
+  },
+  "text-color-blue": {
+    color: colors["territory-blue"]
+  },
+
+  label: {
+    marginBottom: 5,
+    marginTop: 10
+  },
+
+  "label-medium": {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    marginTop: 15
   },
 
   line: {

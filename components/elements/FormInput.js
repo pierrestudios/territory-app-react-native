@@ -1,13 +1,13 @@
 import React from 'react';
-import { Text, View, TextInput as TextInputRN } from 'react-native';
+import { Text, View, TextInput as TextInputRN, Switch as SwitchRN, Picker } from 'react-native';
  
 import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
 // import FaAlert from 'preact-icons/lib/fa/exclamation';
 
 import UTILS from '../common/utils';
  
-import style from '../styles/main';
-import {colors} from '../styles/main';
+import style, {colors} from '../styles/main';
+import {ButtonLink} from './Button';
 
 
 const getStyles = (props) => {
@@ -23,7 +23,7 @@ const getStyles = (props) => {
 
 const getLabel = (props) => {
 	return props.showLabel ? 
-		<Text style={style['input-label']}>{props.label || props.placeholder}</Text>
+		<Text style={[style['label-medium'], style["text-color-blue"]]}>{props.label || props.placeholder}</Text>
 	: null
 }
 
@@ -51,66 +51,177 @@ const elemWrapper = (props, el) => {
 	)
 }
  
-export class TextBox extends React.Component {
-  render() {
-    const props = {
-      ...this.props,
-      multiline: true,
-      numberOfLines: 4
-    };
-    return (
-      <TextInput {...props} />
-    )
-  }
+export const DateInput = (props) => {
+  return null;
 }
 
-export class EmailInput extends React.Component {
-  render() {
-    const props = {
-      ...this.props,
-      keyboardType: 'email-address',
-      autoCapitalize: 'none'
-    };
-    return (
-      <TextInput {...props} />
-    )
-  }
+export const RadioBox = (props) => {
+  // const styles = classNames(style.input, style['with-icon']);
+	const activeOptStyle = [style['input-options'], style['input-options-active']]; 
+	const activeIconStyle = [style['input-options-icon'], style['input-options-icon-active']]; 
+	const activeLabelStyle = [style['input-options-label'], style['input-options-label-active']]; 
+	const chooseOption = (option) => {
+    /*
+		if (props.onChange)
+			props.onChange(new CustomEvent("onSelect", {
+        'detail': {
+					name: props.name,
+					option: {'label': option.label, 'value': option.value}
+        }
+      }));
+    */  
+	}
+
+	return (
+		<View>
+			<Text style={[style['options-label'], style["label-medium"], style["text-color-blue"]]}>{props.label}</Text>
+			<View style={style['input-options-container']}>
+				{props.options.map(o => (
+          <ButtonLink key={`${o.value}-key`} customStyle={style['input-options-button']} onPress={() => chooseOption(o)}>
+            <View style={o.active ? activeOptStyle : style['input-options']}>
+              <Text style={o.active ? activeIconStyle : style['input-options-icon']}>
+                <FontAwesome name="check-circle" size={24} />
+              </Text>
+              <Text style={o.active ? activeLabelStyle : style['input-options-label']}>{o.label}</Text>
+            </View>
+					</ButtonLink>
+				))}
+			</View>
+			{props.error ?
+				<View style={style['error-field']}>
+					<FontAwesome name="check-circle" size={14} />{props.error} 
+				</View>
+				: null}
+		</View>	
+	);
 }
 
-export class PasswordInput extends React.Component {
-  render() {
-    const props = {
-      ...this.props,
-      secureTextEntry: true
-    };
-    return (
-      <TextInput {...props} />
-    )
+export const Switch = (props) => {
+  // <input type="checkbox" name={props.name || ''} onClick={(e) => props.onChange && props.onChange(e)} checked={props.value} />
+  return (
+    <View>
+      <Text style={[style["label-medium"], style["text-color-blue"]]}>{props.label}</Text>
+      <SwitchRN 
+        onValueChange={ (value) => props.onChange && props.onChange(value)} 
+        value={ props.value } 
+        onTintColor={colors["territory-blue"]}
+        tintColor={colors["grey-lite"]}
+      /> 
+    </View>
+  )
+}
+
+export const SelectBox = (props) => {
+  /*
+		return (
+			<div>
+				{props.showLabel ? 
+					<label class={style['select-label']}>{props.label}</label>
+				: null}
+				<div class={classes}>
+					<span class={style['input-icon']}>{
+						state.dropDown ? <IconUp size={18} /> : <IconDown size={18} />
+					}</span>
+					<Link class={style.value} onClick={this.showDropDown}>
+						<span>{(props.value && props.value.label) || 'Select ' + props.label}</span>
+					</Link>
+					{state.dropDown ? <div class={style.dropdown}>{this.showOptions(props.options)}</div> : null}
+				</div>
+				{props.error ?
+					<span class={style['error-field']}>
+						<FaAlert size={14} />{props.error}
+					</span>
+					: null}
+			</div>
+		);
+  */
+
+  renderOptions = (options = []) => {
+    options.unshift({value: '', label: props.label})
+    return options.map((o) => (
+      <Picker.Item key={`${o.value}-key`} label={o.label} value={o.value} />
+    ));
   }
+ 
+  // console.log('props', props); 
+  
+  return (
+    <View>
+      <Text style={[style['label-medium'], style["text-color-blue"]]}>{props.label || props.placeholder}</Text>
+      <Picker
+        prompt={props.label}
+        selectedValue={props.value.value}
+        style={style["select-options-wrapper"]}
+        itemStyle={style["select-options"]}
+        // onValueChange={(value) => props.onInput && props.onInput({[props.name]: value})}
+        >
+        {this.renderOptions(props.options)}
+      </Picker>
+    </View>
+  );
+
+}
+
+export const TextBox = (props) => {
+  const finalProps = {
+    ...props,
+    multiline: true,
+    numberOfLines: 4
+  };
+  return (
+    <TextInput {...finalProps} />
+  )
+}
+
+export const PhoneInput = (props) => {
+  const finalProps = {
+    ...props,
+    keyboardType: 'phone-pad'
+  };
+  return (
+    <TextInput {...finalProps} />
+  )
+}
+
+export const EmailInput = (props) => {
+  const finalProps = {
+    ...props,
+    keyboardType: 'email-address',
+    autoCapitalize: 'none'
+  };
+  return (
+    <TextInput {...finalProps} />
+  )
+}
+
+export const PasswordInput = (props) => {
+  const finalProps = {
+    ...props,
+    secureTextEntry: true
+  };
+  return (
+    <TextInput {...finalProps} />
+  )
 }
  
-export class NumberInput extends React.Component {
-  render() {
-    const props = {
-      ...this.props,
-      keyboardType: 'numeric'
-    };
-    return (
-      <TextInput {...props} />
-    )
-  }
+export const NumberInput = (props) => {
+  const finalProps = {
+    ...props,
+    keyboardType: 'number-pad'
+  };
+  return (
+    <TextInput {...finalProps} />
+  )
 }
 
-export class TextInput extends React.Component {
-  render() {
-    const props = {
-      ...this.props,
-      onChangeText: (value) => this.props.onInput({[this.props.name]: value}), 
-      placeholder: (this.props.removePlaceholder ? "" : (this.props.placeholder || this.props.label)),
-      style: getStyles(this.props)
-    };
-    return (
-      elemWrapper(props, <TextInputRN {...props} />)
-    )
-  }
+export const TextInput = (props) => {
+  const finalProps = {
+    ...props,
+    onChangeText: (value) => props.onInput({[props.name]: value}), 
+    placeholder: (props.removePlaceholder ? "" : (props.placeholder || props.label)),
+    style: getStyles(props)
+  };
+  return (
+    elemWrapper(finalProps, <TextInputRN {...finalProps} />)
+  )
 }
