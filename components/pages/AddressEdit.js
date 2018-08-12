@@ -16,7 +16,7 @@ import {Link, ButtonLink, Button, ButtonHeader} from '../elements/Button';
 import Notice from '../elements/PopupNotice';
 import {TextInput, NumberInput, PhoneInput, DateInput, RadioBox, Switch, SelectBox} from '../elements/FormInput';
 
-import style from '../styles/main';
+import style, { colors } from '../styles/main';
 
 export default class AddressEdit extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -107,7 +107,7 @@ export default class AddressEdit extends React.Component {
         <KeyboardAwareScrollView 
           contentContainerStyle={[style["scroll-view"], {marginBottom: 40}]}
           // keyboardShouldPersistTaps="always"
-          // keyboardDismissMode="interactive"
+          keyboardDismissMode="interactive"
           // alwaysBounceVertical={true}
           >
 
@@ -147,22 +147,22 @@ export default class AddressEdit extends React.Component {
               error={state.errors.streetId} 
               onInput={this.saveOptionData} 
             />
-          : null }  
+          : <TextInput name="newStreet" placeholder={state.data.isApt ? Language.translate('New Building') : Language.translate('New Street')} onInput={this.saveData} value={state.newStreetData ? state.newStreetData.street : ''} error={state.errors.newStreet} showLabel={true} />
+          }  
+
 
           {/*
             <Switch label={state.data.isApt ? Language.translate('Add New Building') : Language.translate('Add New Street')} name="isNewStreet" onChange={this.saveData} value={state.data.isNewStreet} />
           */}
           {!!state.data.addressId ? null :
-            <ButtonLink onClick={() => {
+            <ButtonLink onPress={() => {
               this.saveData({isNewStreet: !state.data.isNewStreet})
-            }} customStyle={[style['add-new-street']]} textStyle={{fontSize: 18}}>{state.data.isApt ? Language.translate('Add New Building') : Language.translate('Add New Street')}</ButtonLink>
+            }} customStyle={[style['add-new-street']]} textStyle={{fontSize: 18, color: (state.data.isNewStreet ? colors.red : colors.green)}}>{
+              state.data.isNewStreet ? Language.translate('Cancel') :
+              state.data.isApt ? Language.translate('Add New Building') : Language.translate('Add New Street')
+            }</ButtonLink>
           }
 					
-					{state.data.isNewStreet ? 
-					  <TextInput name="newStreet" placeholder={state.data.isApt ? Language.translate('New Building') : Language.translate('New Street')} onInput={this.saveData} value={state.newStreetData ? state.newStreetData.street : ''} error={state.errors.newStreet} />
-					:
-            null
-					}
 
 					<NumberInput 
 						name="address" 
@@ -174,17 +174,19 @@ export default class AddressEdit extends React.Component {
 						/>
 					
 					{ (state.data.apt || state.data.isDuplex) ?
-						<TextInput name="apt" placeholder={Language.translate('Duplex Door')} showLabel={true} onInput={this.saveData} value={state.data.apt} error={state.errors.apt} />
+						<TextInput name="apt" placeholder={Language.translate('Duplex Door')} showLabel={true} onInput={this.saveData} value={state.data.apt} error={state.errors.apt} showLabel={true} />
 					: null }
 
 					{state.user.isManager ?
 						<Switch label={Language.translate('Active')} name="inActive" onChange={this.saveData} value={!state.data.inActive} /> 
-					: null }
+          : null }
+          
+          <Line />
 
 					{/*** Include Notes fields for new Address ***/}
 					{state.user.isEditor && !state.data.addressId ?
 						[
-						<TextInput key="note" name="note" placeholder={Language.translate('Add Notes')} onInput={this.saveData} value={state.noteData.note} error={this.state.errors.note} />					
+						<TextInput key="note" name="note" placeholder={Language.translate('Add Notes')} onInput={this.saveData} value={state.noteData.note} error={this.state.errors.note} showLabel={true} />					
 						,
             <DateInput
               key="note-date"
@@ -203,12 +205,12 @@ export default class AddressEdit extends React.Component {
           
           <View style={{ height: 60 }} />
 
-					{/*<Button onClick={this.saveAddress} class="button-action">{Language.translate('Save')}</Button>
+					{/*<Button onPress={this.saveAddress} class="button-action">{Language.translate('Save')}</Button>
 					
           <Line />
 
 					{state.user.isEditor && !!state.data.addressId ?
-						<Button disabled={!state.data.addressId} onClick={(e) => TerritoryFn.notifyDelete(e, state.data, this, state.user, 'Address')} class="button-delete">{Language.translate('Remove Address')}</Button>
+						<Button disabled={!state.data.addressId} onPress={(e) => TerritoryFn.notifyDelete(e, state.data, this, state.user, 'Address')} class="button-delete">{Language.translate('Remove Address')}</Button>
           : null }
           */}
 
@@ -235,12 +237,11 @@ export default class AddressEdit extends React.Component {
 			}
 		});
 	}
-	saveAddressType = (e) => {
-		const dataObj = e.detail;
-		if (!dataObj) return;
+	saveAddressType = (data) => {
+		if (!data) return;
 
 		let newData;
-		switch(dataObj.option.value) {
+		switch(data.option.value) {
 			case 'house' :
 				newData = {...this.state.data, isApt: false, apt: '', isDuplex: false};
 				break;
@@ -287,10 +288,10 @@ export default class AddressEdit extends React.Component {
 	saveData = (data) => {
 		console.log('data', data);
     let newData;
-    return;
 
-		// Get Note data
-		if ((e.detail && !!e.detail.option) || (e.target && this.isNoteField(e.target.name))) {
+    // Get Note data
+    /*
+		if ((data.detail && !!data.detail.option) || (data.target && this.isNoteField(e.target.name))) {
 			if (e.detail && !!e.detail.option) {
 				newData = {...this.state.noteData, date: e.detail.option}
 			} else if (e.type === 'click') 
@@ -307,19 +308,20 @@ export default class AddressEdit extends React.Component {
 				}
 			});
 			return;
-		}
+    }
+    */
 
-		if (e.target.name === 'inActive') // Reverse for "inActive"
-			newData = {...this.state.data, [e.target.name]: !e.target.checked};
-		else if (e.type === 'click') 
-			newData = {...this.state.data, [e.target.name]: e.target.checked};
-		else if (this.state.data.isNewStreet && e.target.name === 'newStreet')
-			newData = {...this.state.newStreetData, street: e.target.value, isAptBuilding: !!this.state.data.isApt ? 1 : 0}
+		if ('inActive' in data) // Reverse for "inActive"
+			newData = {...this.state.data, 'inActive': !data['inActive']};
+		// else if (e.type === 'click') 
+			// newData = {...this.state.data, [e.target.name]: e.target.checked};
+		else if (this.state.data.isNewStreet && 'newStreet' in data)
+			newData = {...this.state.newStreetData, street: data['street'], isAptBuilding: !!this.state.data.isApt ? 1 : 0}
 		else 
-			newData = {...this.state.data, [e.target.name]: e.target.value};
+			newData = {...this.state.data, ...data};
 
 		// formatPhoneNumber
-		if (e.target.name === 'phone') {
+		if ('phone' in data) {
 			const digits = newData.phone.replace(/\D/g, '');
 
 			if (digits.length === 10) // Allow only 10 digits
@@ -330,22 +332,22 @@ export default class AddressEdit extends React.Component {
 		}
 
 		// format number input
-		else if (e.target.name === 'address') {
+		else if ('address' in  data) {
 			// console.log('newData', newData);
 			/*
 			 * Note: input[type=number] does remove alpha strings, need to remove them here
 			 */
 			// Remove non-digits
-			const digits = newData[e.target.name].replace(/\D/g, '') || this.state.data[e.target.name];
+			const digits = newData['address'].replace(/\D/g, '') || this.state.data['address'];
 
 			// If value is "" and validity.valid is "true", use that else assigned "digits" 
-			if (!e.target.value && !!e.target.validity && !!e.target.validity.valid) // (!!newData[e.target.name]) 
-				newData[e.target.name] = ""
+			if (!data['address']) //  && !!e.target.validity && !!e.target.validity.valid // (!!newData[e.target.name]) 
+				newData['address'] = ""
 			else	
-				newData[e.target.name] = digits;
+				newData['address'] = digits;
 		}
 
-		if (e.target.name === 'newStreet')
+		if ('newStreet' in data)
 			this.setState({newStreetData: newData});
 		else
 			this.setState({data: newData});

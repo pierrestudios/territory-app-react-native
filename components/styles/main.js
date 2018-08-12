@@ -8,7 +8,8 @@ export const colors = {
   orange: '#F99538',
   red: '#F44336',
   "off-white": '#F3f3f3',
-  white: '#fff'
+  white: '#fff',
+  green: '#2f9e44'
 };
 
 /*
@@ -351,15 +352,18 @@ export default styles = StyleSheet.create({
 
   "heading-button-link": {
     borderRadius: 3,
-    padding: 5,
+    // flex: 1,
+    alignItems: 'center',
+    // padding: 5,
+    paddingTop: 5,
     marginLeft: 5,
     marginRight: 5,
     marginTop: -3,
-    height: 32
+    // height: 30
   },
 
   "heading-button-link-text": {
-    fontSize: 18,
+    fontSize: 16,
   },
 
   "view-map-button": {

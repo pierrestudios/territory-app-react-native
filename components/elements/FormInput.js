@@ -55,21 +55,18 @@ export const DateInput = (props) => {
   return null;
 }
 
+
 export const RadioBox = (props) => {
-  // const styles = classNames(style.input, style['with-icon']);
 	const activeOptStyle = [style['input-options'], style['input-options-active']]; 
 	const activeIconStyle = [style['input-options-icon'], style['input-options-icon-active']]; 
 	const activeLabelStyle = [style['input-options-label'], style['input-options-label-active']]; 
 	const chooseOption = (option) => {
-    /*
-		if (props.onChange)
-			props.onChange(new CustomEvent("onSelect", {
-        'detail': {
-					name: props.name,
-					option: {'label': option.label, 'value': option.value}
-        }
-      }));
-    */  
+		if (typeof props.onChange === 'function') {
+			props.onChange({
+        name: props.name,
+        option: {'label': option.label, 'value': option.value}
+      });
+    }  
 	}
 
 	return (
@@ -97,12 +94,11 @@ export const RadioBox = (props) => {
 }
 
 export const Switch = (props) => {
-  // <input type="checkbox" name={props.name || ''} onClick={(e) => props.onChange && props.onChange(e)} checked={props.value} />
   return (
     <View>
       <Text style={[style["label-medium"], style["text-color-blue"]]}>{props.label}</Text>
       <SwitchRN 
-        onValueChange={ (value) => props.onChange && props.onChange(value)} 
+        onValueChange={ (value) => props.onChange && props.onChange({[props.name]: value})} 
         value={ props.value } 
         onTintColor={colors["territory-blue"]}
         tintColor={colors["grey-lite"]}
