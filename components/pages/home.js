@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, Modal, TouchableHighlight } from 'react-native';
+import { Text, View, ScrollView, Modal, TouchableHighlight, SafeAreaView, StatusBar } from 'react-native';
 import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
 
 import Logo from '../elements/Logo';
@@ -77,6 +77,10 @@ export default class Home extends React.Component {
 		)
 
 		return ( 
+			<SafeAreaView style={[ { backgroundColor: '#ecf0f1' }]}>
+        <StatusBar
+          barStyle="light-content"
+        />
 			[
 			<ScrollView contentContainerStyle={styles["scroll-view"]} key="home-page">
 				{this.state.user && this.state.user.isNoteEditor ?
@@ -128,6 +132,7 @@ export default class Home extends React.Component {
 				</View>
 			</Modal>
 			]
+			</SafeAreaView>
 		)
 	}
 }
