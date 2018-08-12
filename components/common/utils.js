@@ -167,7 +167,9 @@ export default {
   headerNavOptionsDefault: {
     headerTitle: null,
     headerTitleStyle: {
-      fontSize: 22
+      fontSize: 22,
+      alignSelf: 'center',
+      // textAlign: 'center',
     },
     headerTintColor: '#fff',
     headerBackTitle: null

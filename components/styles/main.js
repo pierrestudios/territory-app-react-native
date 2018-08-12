@@ -123,7 +123,7 @@ export default styles = StyleSheet.create({
   "input-icon-wrapper": {
     width: 18,
     position: 'absolute',
-    bottom: 18,
+    top: 23,
     left: 10,
     zIndex: 9,
     // borderWidth: 1, // Test

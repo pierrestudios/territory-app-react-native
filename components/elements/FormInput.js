@@ -149,7 +149,11 @@ export const SelectBox = (props) => {
         selectedValue={props.value.value}
         style={style["select-options-wrapper"]}
         itemStyle={style["select-options"]}
-        // onValueChange={(value) => props.onInput && props.onInput({[props.name]: value})}
+        onValueChange={(selectedValue) => !!props.onInput && props.onInput({
+          name: props.name,
+          'data-name': props['data-name'],
+          option: props.options.find(o => o.value === selectedValue)
+        })}
         >
         {this.renderOptions(props.options)}
       </Picker>
@@ -213,6 +217,8 @@ export const NumberInput = (props) => {
 export const TextInput = (props) => {
   const finalProps = {
     ...props,
+    underlineColorAndroid: 'transparent', // 
+    inlineImageLeft: null, // The image resource must be inside /android/app/src/main/res/drawable and referenced like (inlineImageLeft='search_icon')
     onChangeText: (value) => props.onInput({[props.name]: value}), 
     placeholder: (props.removePlaceholder ? "" : (props.placeholder || props.label)),
     style: getStyles(props)

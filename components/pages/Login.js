@@ -10,6 +10,7 @@ import Api from '../common/api';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
 
+import Logo from '../elements/Logo';
 import {EmailInput, PasswordInput} from '../elements/FormInput'; 
 import {Button, Link } from '../elements/Button';
 import Heading from '../elements/Heading';
@@ -23,7 +24,10 @@ import navService from '../common/nav-service';
 export default class Login extends React.Component {
 	static navigationOptions = {
 		...UTILS.headerNavOptionsDefault,
-		headerBackImage: <Text /> // Disabled
+		headerTitle: <Logo />,
+		headerLeft: (<View />), // To center on Andriod
+		headerRight: (<View />), // To center on Andriod
+		headerBackImage: <View /> // Disabled
   };
 	state = {
 		data: {
