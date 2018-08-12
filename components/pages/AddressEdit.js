@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Text, View, ScrollView } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
 
 import Data from '../common/data';
@@ -104,6 +104,9 @@ export default class AddressEdit extends React.Component {
 		return (
       <View style={[style.container]}>
 
+        {/* 
+        * KeyboardAwareScrollView - details: https://medium.freecodecamp.org/how-to-make-your-react-native-app-respond-gracefully-when-the-keyboard-pops-up-7442c1535580 
+        */}
         <KeyboardAwareScrollView 
           contentContainerStyle={[style["scroll-view"], {marginBottom: 40}]}
           // keyboardShouldPersistTaps="always"
@@ -219,21 +222,21 @@ export default class AddressEdit extends React.Component {
 			</View>
 		);
 	}
-	saveOptionData = (e) => {
-		const dataObj = e.detail;
-		let newData = {...this.state.data}; // , [dataObj.name]: dataObj.option
-		if (dataObj['data-name'])
-			newData[dataObj['data-name']] = dataObj.option.value; // streetId
-		if (dataObj.option && dataObj.option.label)
-			newData.streetName = dataObj.option.label; // streetName
+	saveOptionData = (data) => {
+		let newData = {...this.state.data}; 
+		if (data['data-name'])
+      newData[data['data-name']] = data.option.value; // streetId
+      
+		if (data.option && data.option.label)
+			newData.streetName = data.option.label; // streetName
 
-		// console.log('newData', newData);
+		console.log('newData', newData);
 
 		this.setState({
 			data: newData,
 			errors: {
 				...this.state.errors,
-				[dataObj.name]: ''
+				[data.name]: ''
 			}
 		});
 	}
