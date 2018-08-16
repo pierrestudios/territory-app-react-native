@@ -19,6 +19,7 @@ export default class Home extends React.Component {
   static navigationOptions = ({navigation}) => {
 		return {
 			headerTitle: <Logo />,
+			headerLeft: (<View />), // To center on Andriod
 			headerRight: (
 				<ButtonHeader
 					onPress={() => {navigation.setParams({openDrawer: true})}}

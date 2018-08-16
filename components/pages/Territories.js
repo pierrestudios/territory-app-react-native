@@ -16,6 +16,7 @@ import styles from '../styles/main';
 export default class Territories extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
+		headerRight: (<View />), // To center on Andriod
     title: Language.translate('All Territories'),
   };
   loadingTerritories = false;
