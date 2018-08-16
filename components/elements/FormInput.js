@@ -74,13 +74,15 @@ export const RadioBox = (props) => {
 			<Text style={[style['options-label'], style["label-medium"], style["text-color-blue"]]}>{props.label}</Text>
 			<View style={style['input-options-container']}>
 				{props.options.map(o => (
-          <ButtonLink key={`${o.value}-key`} customStyle={style['input-options-button']} onPress={() => chooseOption(o)}>
-            <View style={o.active ? activeOptStyle : style['input-options']}>
-              <Text style={o.active ? activeIconStyle : style['input-options-icon']}>
-                <FontAwesome name="check-circle" size={24} />
-              </Text>
-              <Text style={o.active ? activeLabelStyle : style['input-options-label']}>{o.label}</Text>
-            </View>
+          <ButtonLink key={`${o.value}-key`} customStyle={style['input-options-button']} onPress={() => chooseOption(o)}
+            customView={
+              <View style={o.active ? activeOptStyle : style['input-options']}>
+                <Text style={o.active ? activeIconStyle : style['input-options-icon']}>
+                  <FontAwesome name="check-circle" size={24} />
+                </Text>
+                <Text style={o.active ? activeLabelStyle : style['input-options-label']}>{o.label}</Text>
+              </View>
+            }>
 					</ButtonLink>
 				))}
 			</View>

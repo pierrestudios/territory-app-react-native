@@ -272,8 +272,8 @@ export default styles = StyleSheet.create({
   },
 
   "input-options-button": {
-    // width: '30%',
-    height: 60,
+    width: '30%',
+    height: 90,
   },
 
   "input-options": {
@@ -281,13 +281,17 @@ export default styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 60,
+    height: 90,
     padding: 5,
     margin: 5,
     backgroundColor: colors.white,
     borderColor: colors["grey-lite"],
     borderWidth: 1,
     borderRadius: 5
+  },
+
+  "input-options-label": {
+    padding: 5,
   },
 
   "input-options-active": {

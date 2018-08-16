@@ -31,7 +31,9 @@ export const Button = (props) => {
       {...buttonStyle}
       onPress={!!props.disabled ? () => console.log('disabled') : props.onPress}
       >
-      <Text style={[styles["main-menu-button-text"], (props.textStyle || null), (props.textColorWhite ? styles["text-white"] : null)]}> {props.children || props.title} </Text>
+      {props.customView ? props.customView :
+        <Text style={[styles["main-menu-button-text"], (props.textStyle || null), (props.textColorWhite ? styles["text-white"] : null)]}> {props.children || props.title} </Text>
+      }
     </TouchableOpacity>
   )
 }
