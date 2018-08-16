@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import {
   createStackNavigator,
 } from 'react-navigation';
@@ -29,7 +30,9 @@ const App = createStackNavigator({
     headerStyle: {
       backgroundColor: colors['territory-blue'],
     },
-    headerTitle: <Logo />
+    headerTitle: <Logo />,
+		headerLeft: (<View />), // To center on Andriod
+		headerRight: (<View />), // To center on Andriod
   },
 })
 

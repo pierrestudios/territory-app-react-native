@@ -1,3 +1,5 @@
+import { colors } from "../styles/main";
+
 export default {
   getElementStyles(props, baseStyle) {
     const elStyle = {
@@ -168,8 +170,15 @@ export default {
     headerTitle: null,
     headerTitleStyle: {
       fontSize: 22,
+      textAlign: 'center',
+      // borderWidth: 1,
+      // borderColor: colors.red,
+      width: '90%',
+    },
+    headerStyle: {
       alignSelf: 'center',
-      // textAlign: 'center',
+      width: '100%',
+      backgroundColor: colors["territory-blue"]
     },
     headerTintColor: '#fff',
     headerBackTitle: null
