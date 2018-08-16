@@ -23,17 +23,16 @@ class Data {
 		
 		this._territories = null; // Note: holds loaded territories by title
 		this._territoriesList = null; // Note: holds the list of territories
-		this._user = this.getSavedUser();
-
-		// if (!this._user || !this._user.userId)
-			// this.reLogin();
+		this.loadSavedUser();
 
 		return instance;
 	}
 	get user() {
 		const user = this._user;
+		console.log('get :user', user);
+
 		if (!user || !user.userId) 
-			return;
+			return null;
 
 		user.isAdmin = user.userType === 'Admin';
 		user.isManager = user.isAdmin || user.userType === 'Manager';
@@ -46,6 +45,18 @@ class Data {
 	}
 	set user(data) {
 		this._user = data;
+	}
+	loadSavedUser = async () => {
+		return this.getSavedUser()
+			.then(user => {
+				console.log('loadSavedUser:user', user);
+				if (!user || !user.userId) {
+					this.reLogin();
+					return Promise.reject('Please log in');
+				}
+				this._user = user;
+				return user;
+			})
 	}
 	getSavedUser = async () => {
 		try {
@@ -60,17 +71,18 @@ class Data {
 	}
 	saveUser = async (user) => {
 		try {
-			await AsyncStorage.setItem('user', JSON.stringify({
+			await AsyncStorage.setItem('user', JSON.stringify({ // Save without Promise data
 				userType: user.userType,
 				userId: user.userId,
 				email: user.email,
 				token: user.token
 			}));
-			this.user = this.getSavedUser();
+			this.user = user;
 		} catch (error) {
 			UTILS.logError(error);
 		}
 	}
+
 	/*
 	removeUser = async () => {
 		this.user = null;
@@ -138,8 +150,11 @@ class Data {
 	reLogin() {
 		// Just remove token
 		const user = this._user;
+		console.log('reLogin:user', user);
+		console.log('reLogin:getSavedUser', this.getSavedUser());
+
 		user.token = '';
-		this.saveUser(user);
+		// this.saveUser(user);
 		NavigationService.navigate('Login', {});
 	}
 }
