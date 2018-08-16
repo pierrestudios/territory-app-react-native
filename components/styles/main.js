@@ -205,7 +205,7 @@ export default styles = StyleSheet.create({
 
   "listings-number-text": {
     color: colors.white,
-    fontSize: 18,
+    fontSize: 16,
   },
 
   "listings-name": {
