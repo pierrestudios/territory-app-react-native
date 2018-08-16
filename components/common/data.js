@@ -149,9 +149,8 @@ class Data {
 	}
 	reLogin() {
 		// Just remove token
-		const user = this._user;
+		const user = this._user || {};
 		console.log('reLogin:user', user);
-		console.log('reLogin:getSavedUser', this.getSavedUser());
 
 		user.token = '';
 		// this.saveUser(user);

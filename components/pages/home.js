@@ -38,18 +38,19 @@ export default class Home extends React.Component {
   }
 	componentWillMount() {
 		NavigationService.setNavigator(this.props.navigation);
-		
+
 		const user = Data.user;
 
 		if (!user || !user.token) {
 			Data.loadSavedUser()
 				.then(user => {
 					this.setState({user});
-					console.log('componentWillMount:loadSavedUser.user', user);
+					// console.log('componentWillMount:loadSavedUser.user', user);
 				})
+				.catch(UTILS.logError)
 		} else {
 			this.setState({user});
-			console.log('componentWillMount:Data.user', user);
+			// console.log('componentWillMount:Data.user', user);
 		}
 	}
 	componentDidMount() {
