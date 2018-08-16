@@ -1,5 +1,4 @@
 import { AsyncStorage } from "react-native"
-// import History from './history';
 import Api from './api';
 import UTILS from './utils';
 import NavigationService from './nav-service';
@@ -11,16 +10,6 @@ class Data {
 			instance = this;
 		}
 		
-		// Fake data
-		/*
-		this._user = {
-			userType: 'Admin',
-			userId: 2,
-			email: 'territoryapi@gmail.com',
-			token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlzcyI6Imh0dHA6Ly90ZXJyaXRvcnktYXBpLWRldi5oZXJva3VhcHAuY29tL3YxL3NpZ25pbiIsImlhdCI6MTUzMzQwNjM1NCwiZXhwIjoxNTMzNDA5OTU0LCJuYmYiOjE1MzM0MDYzNTQsImp0aSI6ImQ3S0VlN1lIeGZtNW5McjQifQ.-Jp7sxcwHT_0pwPt_dWNa8VDYfUqTCKwpYPfv_y2LSU'
-		};
-		*/ 
-		
 		this._territories = null; // Note: holds loaded territories by title
 		this._territoriesList = null; // Note: holds the list of territories
 		this.loadSavedUser();
@@ -29,7 +18,6 @@ class Data {
 	}
 	get user() {
 		const user = this._user;
-		console.log('get :user', user);
 
 		if (!user || !user.userId) 
 			return null;
@@ -49,7 +37,6 @@ class Data {
 	loadSavedUser = async () => {
 		return this.getSavedUser()
 			.then(user => {
-				console.log('loadSavedUser:user', user);
 				if (!user || !user.userId) {
 					this.reLogin();
 					return Promise.reject('Please log in');
