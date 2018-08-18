@@ -43,7 +43,8 @@ export default class Territories extends React.Component {
 			.then(data => {
 				this.loadingTerritories = false
 				this.setState({territories: data});
-			});
+      })
+      .catch(UTILS.logError);
 	}
 	getListings(data = []) {
     return (

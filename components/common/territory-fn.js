@@ -69,7 +69,7 @@ export default class TerritoryFn {
 				data={data.addresses.sort(UTILS.sortAddresses)}
 				keyExtractor={(item) => item.addressId.toString()}
 				renderItem={({item}) => (
-          <TouchableOpacity key={item.addressId} style={style['listings-item']} onPress={() => false}>
+          <TouchableOpacity key={item.addressId} style={style['listings-item']} onPress={() => user.isEditor ? caller.viewAddress(item) : console.log('Not Editor')}>
             <View style={style['listings-notes']}>
               {item.notes && item.notes.length ? [
                 // {/*<Text class={style['listings-notes-action']}>{getActionButtons(item)}</Text>,*/}

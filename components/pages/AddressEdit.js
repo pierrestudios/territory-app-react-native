@@ -24,13 +24,11 @@ export default class AddressEdit extends React.Component {
       ...UTILS.headerNavOptionsDefault,
       title: Language.translate('Edit Address'),
       headerRight: (
-        !!navigation.getParam('isEditor') ? 
 				<ButtonHeader
 					onPress={() => {false}}
 					title="Save"
 					color="#fff"
         />
-        : null
 			),
     }
   }
@@ -71,10 +69,10 @@ export default class AddressEdit extends React.Component {
 	}
 	componentWillMount() {
     const {navigation} = this.props;
-		if (!!this.props.address && !!this.props.streetsList) {
+		if (!!navigation.getParam('addressActive') && !!navigation.getParam('streetsList')) {
 			this.setState({
-				data: {...this.props.address, address: (this.props.address.address.replace('APT ', ''))},
-				streetsList: this.props.streetsList,
+				data: {...navigation.getParam('addressActive'), address: (navigation.getParam('addressActive').address.replace('APT ', ''))},
+				streetsList: navigation.getParam('streetsList'),
 				user: Data.user
 			});
 		} else if (!!navigation.getParam('streetsList')) {
@@ -129,7 +127,7 @@ export default class AddressEdit extends React.Component {
 					{/* 
 						Rework logic to have 3 options: Street, Apartment, Duplex (has a letter on door)  
 						1 - Show the 3 options with graphics
-						2 - If apt is a letter show notice to choose "Duplex", if Duplex is number do prompt "Are there more than 4 apt in this complex, sif Yes, suggest Apt"
+						2 - If apt is a letter show notice to choose "Duplex", if Duplex is number do prompt "Are there more than 4 apt in this complex?", if Yes, suggest Apt"
 						3 - Show Duplex Door  on for Duplex
 					*/}
 
@@ -195,7 +193,7 @@ export default class AddressEdit extends React.Component {
               key="note-date"
 							placeholder={Language.translate('Date')}
 							name="date"
-							selected={state.noteData.date}
+							value={state.noteData.date}
 							onChange={this.saveData} />
 						]
 					: null}
@@ -289,18 +287,12 @@ export default class AddressEdit extends React.Component {
 	}
 
 	saveData = (data) => {
-		console.log('data', data);
+    console.log('data', data);
     let newData;
 
     // Get Note data
-    /*
-		if ((data.detail && !!data.detail.option) || (data.target && this.isNoteField(e.target.name))) {
-			if (e.detail && !!e.detail.option) {
-				newData = {...this.state.noteData, date: e.detail.option}
-			} else if (e.type === 'click') 
-				newData = {...this.state.noteData, [e.target.name]: e.target.checked};
-			else
-			newData = {...this.state.noteData, [e.target.name]: e.target.value};
+		if (this.isNoteField((Object.keys(data) || [])[0])) {
+      newData = {...this.state.noteData, ...data};
 	
 			this.setState({
 				noteData: newData, 
@@ -312,7 +304,6 @@ export default class AddressEdit extends React.Component {
 			});
 			return;
     }
-    */
 
 		if ('inActive' in data) // Reverse for "inActive"
 			newData = {...this.state.data, 'inActive': !data['inActive']};
@@ -337,9 +328,6 @@ export default class AddressEdit extends React.Component {
 		// format number input
 		else if ('address' in  data) {
 			// console.log('newData', newData);
-			/*
-			 * Note: input[type=number] does remove alpha strings, need to remove them here
-			 */
 			// Remove non-digits
 			const digits = newData['address'].replace(/\D/g, '') || this.state.data['address'];
 

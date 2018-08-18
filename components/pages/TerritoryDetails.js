@@ -6,6 +6,7 @@ import Data from '../common/data';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
 import TerritoryFn from '../common/territory-fn';
+import NavigationService from '../common/nav-service';
 
 import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
@@ -143,7 +144,8 @@ export default class TerritoryDetails extends React.Component {
 	viewAddress(data) {
 		this.setState({ addressActive: data, shouldRender: 'addressId' }, () => {
 			this.props.entity && typeof this.props.entity.viewAddress === 'function' ?
-			this.props.entity.viewAddress(data) : false
+      this.props.entity.viewAddress(data) : 
+      NavigationService.navigate('AddressEdit', {addressActive: data, streetsList: this.state.streetsList, territoryId: data.territoryId});
 			/* History.push({
 				pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/address/${data.addressId}`
 			}) */
