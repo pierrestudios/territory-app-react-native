@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, TextInput as TextInputRN, Switch as SwitchRN, Picker } from 'react-native';
- 
+import DatePicker from 'react-native-datepicker';
+
 import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
 // import FaAlert from 'preact-icons/lib/fa/exclamation';
 
@@ -8,15 +9,16 @@ import UTILS from '../common/utils';
  
 import style, {colors} from '../styles/main';
 import {ButtonLink} from './Button';
+import Language from '../common/lang';
 
 
 const getStyles = (props) => {
-  const styles = [style.input];
+  const styles = props.baseStyle ? [props.baseStyle] : [style.input];
   if (!!props.icon)
     styles.push(style['with-icon']);
 
-	if (!!props.customClass)
-    styles.push(props.customClass);
+	if (!!props.customStyle)
+    styles.push(props.customStyle);
 
 	return styles;
 }
@@ -52,9 +54,29 @@ const elemWrapper = (props, el) => {
 }
  
 export const DateInput = (props) => {
-  return null;
+  const format = 'YYYY-MM-DD';
+  return (
+    <DatePicker
+      style={getStyles({...props, baseStyle: style["date-input-wrapper"]})}
+      date={props.value}
+      mode="date"
+      placeholder={props.placeholder}
+      format={format}
+      // minDate="2018-05-01"
+      // maxDate="2018-06-01"
+      confirmBtnText={Language.translate('OK')}
+      cancelBtnText={Language.translate('Cancel')}
+      customStyles={{
+        dateText: {
+          fontSize: 16
+        },
+        dateInput: style["date-input"]
+      }}
+      showIcon={false}
+      onDateChange={(date) => {props.onChange({date})}}
+    />
+  )
 }
-
 
 export const RadioBox = (props) => {
 	const activeOptStyle = [style['input-options'], style['input-options-active']]; 
@@ -110,30 +132,6 @@ export const Switch = (props) => {
 }
 
 export const SelectBox = (props) => {
-  /*
-		return (
-			<div>
-				{props.showLabel ? 
-					<label class={style['select-label']}>{props.label}</label>
-				: null}
-				<div class={classes}>
-					<span class={style['input-icon']}>{
-						state.dropDown ? <IconUp size={18} /> : <IconDown size={18} />
-					}</span>
-					<Link class={style.value} onClick={this.showDropDown}>
-						<span>{(props.value && props.value.label) || 'Select ' + props.label}</span>
-					</Link>
-					{state.dropDown ? <div class={style.dropdown}>{this.showOptions(props.options)}</div> : null}
-				</div>
-				{props.error ?
-					<span class={style['error-field']}>
-						<FaAlert size={14} />{props.error}
-					</span>
-					: null}
-			</div>
-		);
-  */
-
   renderOptions = (options = []) => {
     options.unshift({value: '', label: props.label})
     return options.map((o) => (
@@ -141,8 +139,6 @@ export const SelectBox = (props) => {
     ));
   }
  
-  // console.log('props', props); 
-  
   return (
     <View>
       <Text style={[style['label-medium'], style["text-color-blue"]]}>{props.label || props.placeholder}</Text>

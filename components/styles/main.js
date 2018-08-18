@@ -120,6 +120,25 @@ export default styles = StyleSheet.create({
     backgroundColor: colors.white
   },
 
+  "date-input-wrapper": {
+    width: '100%',
+    borderWidth: 1,
+    borderRadius: 3,
+    height: 50,
+    padding: 7,
+    marginTop: 5,
+    marginBottom: 5,
+    borderColor: colors['grey-lite'],
+    backgroundColor: colors.white
+  },
+
+  "date-input": {
+    width: '100%',
+    borderWidth: 0,
+    justifyContent: 'center',
+    alignItems: 'flex-start'
+  },
+
   "input-icon-wrapper": {
     width: 18,
     position: 'absolute',
@@ -190,8 +209,8 @@ export default styles = StyleSheet.create({
     // position: 'relative',
     flex: 1, 
     flexDirection: 'row',
-    // alignItems: 'flex-start', // 'flex-start', 'flex-end', 'center', 'stretch', 'baseline' (Vertical)
-    justifyContent: 'space-between' // enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly')
+    // alignItems: 'flex-start', // 'flex-start', 'flex-end', 'center', 'stretch', 'baseline' 
+    justifyContent: 'space-between' // enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly') (Vertical)
   },
 
   "listings-number": {
