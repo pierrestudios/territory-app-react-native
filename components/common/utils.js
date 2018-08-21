@@ -183,6 +183,9 @@ export default {
     headerTintColor: '#fff',
     headerBackTitle: null
   },
+  brToLineBreaks(strData) {
+    return strData.replace(/<br>/g, "\n");
+  },
   userTypes: [
     {value: 'Viewer', label: 'Viewer'},
     {value: 'NoteEditor', label: 'NoteEditor'},
