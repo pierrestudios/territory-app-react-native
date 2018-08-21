@@ -1,19 +1,18 @@
 import React from 'react';
-import { Text, View, ScrollView, Modal, TouchableHighlight, SafeAreaView, StatusBar } from 'react-native';
+import { Text, View, ScrollView, TouchableHighlight, SafeAreaView, StatusBar } from 'react-native';
 import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
 
 import Logo from '../elements/Logo';
-import {Button, Link, ButtonHeader} from '../elements/Button';
+import {Button, ButtonLink, Link, ButtonHeader} from '../elements/Button';
 import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
-
-import {colors} from '../styles/main';
+import Modal from '../elements/Modal';
 
 import NavigationService from '../common/nav-service';
 import Language from '../common/lang';
 import Data from '../common/data';
 import UTILS from '../common/utils';
-import styles from '../styles/main';
+import styles, {colors} from '../styles/main';
 
 export default class Home extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -22,7 +21,7 @@ export default class Home extends React.Component {
 			headerLeft: (<View />), // To center on Andriod
 			headerRight: (
 				<ButtonHeader
-					onPress={() => {navigation.setParams({openDrawer: true})}}
+					onPress={() => {navigation.setParams({openUserInfo: !navigation.getParam('openUserInfo')})}}
 					title={<FontAwesome name="user-circle" size={20} color="#fff" />}
 					color="#fff"
 				/>
@@ -34,9 +33,6 @@ export default class Home extends React.Component {
 		drawerOpened: false,
 		modalVisible: false
 	}; 
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
 	componentWillMount() {
 		NavigationService.setNavigator(this.props.navigation);
 
@@ -65,9 +61,12 @@ export default class Home extends React.Component {
 	componentWillReceiveProps(props) {
 		// console.log('props', props);
 		if (props.navigation) {
-			this.setModalVisible(props.navigation.getParam('openDrawer'))
+			this.setModalVisible(props.navigation.getParam('openUserInfo'))
 		}
 	}
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible}); // , () => this.props.navigation.setParams({openUserInfo: visible}) // Bug: causes crash
+  }
   goToPage(path) {
     NavigationService.navigate(path)
 	}
@@ -112,34 +111,23 @@ export default class Home extends React.Component {
 				</ScrollView>
 				
 				<Modal
-					key="user-info"
 					animationType="fade"
-					transparent={true}
 					visible={this.state.modalVisible}
-					// presentationStyle={'overFullScreen'}
-					onRequestClose={() => {
-						// alert('Modal has been closed.');
+					onCloseModal={() => {
+						this.setModalVisible(!this.state.modalVisible);
 					}}
-					style={{flex: 1, alignItems: 'center', justifyContent: 'center', shadowRadius: 5, shadowOpacity: .5}}
 					>
-					<View style={{marginTop: 63, backgroundColor: colors.white, padding: 20}}>
-						<View>
-							<Heading>{Language.translate('My User Account')}</Heading>
+					<View style={{padding: 20}}>
+						<Heading textStyle={{marginBottom: 20, marginTop: 0}}>{Language.translate('My User Account')}</Heading>
 
-							<Link
-								onPress={() => {
-									this.sendLogout();
-								}}>
-								<Text>{Language.translate('Sign Out')}</Text>
-							</Link>
+						<ButtonLink
+							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, borderColor: colors["grey-lite"], borderWidth: 1}]}
+							// textStyle={[styles["heading-button-link-text"],{borderColor: colors["red"], borderWidth: 1}]}
+							onPress={() => {
+								this.sendLogout();
+							}}>{Language.translate('Sign Out')} 
+						</ButtonLink>
 
-							<TouchableHighlight
-								onPress={() => {
-									this.setModalVisible(!this.state.modalVisible);
-								}}>
-								<Text>{Language.translate('Close')}</Text>
-							</TouchableHighlight>
-						</View>
 					</View>
 				</Modal>
 

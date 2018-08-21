@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
 
@@ -12,9 +12,10 @@ import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
 import Message from '../elements/Message';
 import Line from '../elements/Line';
-import {Link, ButtonLink, Button, ButtonHeader} from '../elements/Button';
+import {Link, ButtonLink, Button, ButtonIcon, ButtonHeader} from '../elements/Button';
 import Notice from '../elements/PopupNotice';
 import {TextInput, NumberInput, PhoneInput, DateInput, RadioBox, Switch, SelectBox} from '../elements/FormInput';
+import Modal from '../elements/Modal';
 
 import style, { colors } from '../styles/main';
 
@@ -65,8 +66,12 @@ export default class AddressEdit extends React.Component {
 			message: ''
 		},
 		newStreetData: null,
-		user: null
-	}
+    user: null,
+    AddressTypeModal: false
+  }
+  setModalVisible(modal) {
+    this.setState(modal);
+  }
 	componentWillMount() {
     const {navigation} = this.props;
 		if (!!navigation.getParam('addressActive') && !!navigation.getParam('streetsList')) {
@@ -113,9 +118,9 @@ export default class AddressEdit extends React.Component {
           >
 
           <Heading>
-            <Text>{state.data && state.data.addressId ? Language.translate('Edit Address') : Language.translate('Add New Address')}</Text>
+            {state.data && state.data.addressId ? Language.translate('Edit Address') : Language.translate('Add New Address')}
           </Heading>
-        
+
 					<Message error={state.errors.message} message={state.data.message} />
 
 					<Notice data={state.noticeMessage} />
@@ -131,7 +136,15 @@ export default class AddressEdit extends React.Component {
 						3 - Show Duplex Door  on for Duplex
 					*/}
 
-					<RadioBox name="addressType" label="Address Type" options={[
+					<RadioBox name="addressType" labelView={
+              <View style={{flex: 1, flexDirection: 'row'}}>
+                <Text style={[style['label-medium'], style["text-color-blue"]]}>Address Type</Text>
+                <ButtonIcon 
+                  onPress={() => this.setModalVisible({AddressTypeModal: true})} 
+                  title={<FontAwesome name="info-circle" size={20} color={colors["territory-blue"]} />} 
+                />
+              </View>
+            } options={[
 						{label: "House", value: "house", active: (!state.data.isApt && !state.data.apt && !state.data.isDuplex)},
 						{label: "Apartment", value: "apartment", active: state.data.isApt},
 						{label: "Duplex", value: "duplex", active: (!state.data.isApt && (state.data.apt || state.data.isDuplex))}
@@ -151,7 +164,6 @@ export default class AddressEdit extends React.Component {
           : <TextInput name="newStreet" placeholder={state.data.isApt ? Language.translate('New Building') : Language.translate('New Street')} onInput={this.saveData} value={state.newStreetData ? state.newStreetData.street : ''} error={state.errors.newStreet} showLabel={true} />
           }  
 
-
           {/*
             <Switch label={state.data.isApt ? Language.translate('Add New Building') : Language.translate('Add New Street')} name="isNewStreet" onChange={this.saveData} value={state.data.isNewStreet} />
           */}
@@ -163,7 +175,6 @@ export default class AddressEdit extends React.Component {
               state.data.isApt ? Language.translate('Add New Building') : Language.translate('Add New Street')
             }</ButtonLink>
           }
-					
 
 					<NumberInput 
 						name="address" 
@@ -216,6 +227,29 @@ export default class AddressEdit extends React.Component {
           */}
 
         </KeyboardAwareScrollView>
+
+        <Modal
+          visible={this.state.AddressTypeModal}
+          // style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+          onCloseModal={() => {
+            this.setModalVisible({AddressTypeModal: false});
+          }}
+          customButtons={[
+            {label: 'Save Test', textStyle: {color: colors.green}},
+            {label: 'Cancel', onPress: () => {
+              this.setModalVisible({AddressTypeModal: false});
+            }}
+          ]}
+					>
+					<View style={{ padding: 10, }}>
+            <Heading textStyle={{marginBottom: 0, marginTop: 0, borderWidth: 0, borderColor: colors.red}}>{Language.translate('Address Type')}</Heading>
+            <View>
+              <Text style={{flexWrap: 'wrap', fontSize: 18, margin: 10, padding: 10, color: colors["territory-blue"], backgroundColor: colors.white}}>
+                {UTILS.brToLineBreaks(Language.translate('Add_New_Address_Explanation'))}
+              </Text>
+            </View>
+					</View>
+				</Modal>
         
 			</View>
 		);

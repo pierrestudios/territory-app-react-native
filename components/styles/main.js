@@ -413,6 +413,36 @@ export default styles = StyleSheet.create({
     backgroundColor: colors.white
   },
 
+  "icon-button": {
+    alignItems: 'center',
+    padding: 10
+  },
+
+  // Modal
+  "modal-container": {
+    position: 'absolute', 
+    top: 20,
+    // flex: 1,
+    // alignItems: 'center',
+    alignSelf: 'center',
+    width: '90%',
+    padding: 5,
+    borderWidth: 0,
+    borderRadius: 5,
+    // borderColor: colors["grey-lite"],
+    backgroundColor: colors.white,
+    // iOS Shadow
+    shadowColor: colors["grey-dark"],
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 15,
+    // Android Shadow
+    elevation: 5,
+    marginLeft: 25,
+    marginRight: 25,
+    marginTop: 0,
+  },
+
   // Common styles:
 
   "text-center": {
