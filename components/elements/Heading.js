@@ -5,10 +5,8 @@ import UTILS from '../common/utils';
 
 import styles from '../styles/main';
 
-export default class Heading extends React.Component {
-  render() {
-    return (
-      <View {...UTILS.getElementStyles(this.props)}><Text style={[styles.heading, styles["text-center"]]}>{this.props.children}</Text></View>
-    )
-  }
+export default Heading = (props) => {
+  return (
+    <View {...UTILS.getElementStyles(props)}><Text style={[styles.heading, styles["text-center"], props.textStyle ? props.textStyle : null]}>{props.children}</Text></View>
+  )
 }

@@ -9,28 +9,28 @@ import {Link} from '../elements/Button'
 
 class AnimatedModal extends React.Component {
   state = {
-    fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
+    fadeAnim: new Animated.Value(0), 
   }
 
   componentDidMount() {
-    Animated.timing(                  // Animate over time
-      this.state.fadeAnim,            // The animated value to drive
+    Animated.timing( 
+      this.state.fadeAnim,  
       {
-        toValue: 1,                   // Animate to opacity: 1 (opaque)
-        duration: 300,              // Make it take a while
+        toValue: 1, 
+        duration: 300,  
       }
-    ).start();                        // Starts the animation
+    ).start(); 
   }
 
   render() {
     let { fadeAnim } = this.state;
 
     return (
-      <Animated.View                 // Special animatable View
+      <Animated.View  
         style={
           [styles["modal-container"], {
           ...this.props.style,
-          opacity: fadeAnim,         // Bind opacity to animated value
+          opacity: fadeAnim, 
         }]}
       >
         {this.props.children}

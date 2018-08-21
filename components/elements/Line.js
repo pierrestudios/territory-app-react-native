@@ -3,10 +3,8 @@ import { View } from 'react-native';
  
 import style from '../styles/main';
 
-export default class Line extends React.Component {
-  render() {
-    return (
-      <View style={style.line} />
-    )
-  }
+export default Line = () => {
+  return (
+    <View style={style.line} />
+  )
 }
