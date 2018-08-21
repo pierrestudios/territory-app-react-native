@@ -21,6 +21,12 @@ export const ButtonHeader = (props) => {
   )
 }; 
 
+export const ButtonIcon = (props) => {
+	return (
+    <Button {...props} baseStyle={styles["icon-button"]} textStyle={[props.textStyle]} />
+  )
+}; 
+
 export const Button = (props) => {
   const buttonStyle = UTILS.getElementStyles(props, (props.baseStyle || styles["main-menu-button"]));
   if (!!props.disabled) {
