@@ -92,8 +92,10 @@ export const RadioBox = (props) => {
 	}
 
 	return (
-		<View>
-			<Text style={[style['options-label'], style["label-medium"], style["text-color-blue"]]}>{props.label}</Text>
+    <View>
+      {props.labelView ? props.labelView : 
+        <Text style={[style['options-label'], style["label-medium"], style["text-color-blue"]]}>{props.label}</Text>
+      }
 			<View style={style['input-options-container']}>
 				{props.options.map(o => (
           <ButtonLink key={`${o.value}-key`} customStyle={style['input-options-button']} onPress={() => chooseOption(o)}
