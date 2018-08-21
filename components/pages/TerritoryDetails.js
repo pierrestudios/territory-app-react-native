@@ -23,7 +23,7 @@ export default class TerritoryDetails extends React.Component {
       headerRight: (
         !!navigation.getParam('isEditor') && !!navigation.getParam('streetsList') ? 
 				<ButtonHeader
-					onPress={() => {navigation.navigate('AddressEdit', {streetsList: navigation.getParam('streetsList'), territoryId: this.territoryId})}}
+					onPress={() => {navigation.navigate('AddressAdd', {streetsList: navigation.getParam('streetsList'), territoryId: this.territoryId})}}
 					title={<Feather name="plus" size={24} color="#fff" />}
 					color="#fff"
         />
