@@ -74,7 +74,7 @@ export default (url, data, type = 'GET', headerData = undefined) => (
 		})
 );
 
-const FileUpload = (url, formData, headerData) => (
+export const FileUpload = (url, formData, headerData) => (
 	fetch('/api/' + url, {
 		method: 'POST',
 		headers: {
@@ -83,6 +83,4 @@ const FileUpload = (url, formData, headerData) => (
 		body: formData
 	})
 	.then(Response => Response.json())
-)
-
-export {FileUpload}
+);
