@@ -12,7 +12,8 @@ class Data {
 		
 		this._territories = null; // Note: holds loaded territories by title
 		this._territoriesList = null; // Note: holds the list of territories
-		this.loadSavedUser();
+		this.loadSavedUser()
+			.catch(UTILS.logError);
 
 		return instance;
 	}
@@ -37,7 +38,7 @@ class Data {
 	loadSavedUser = async () => {
 		return this.getSavedUser()
 			.then(user => {
-				if (!user || !user.userId) {
+				if (!user || !user.userId || !user.token) {
 					this.reLogin();
 					return Promise.reject('Please log in');
 				}
@@ -92,7 +93,7 @@ class Data {
 					this.saveUser({...this._user, token: apiData.refreshedToken});
 
 					// Need to wait for "saveUser" to complete before switching screen
-					return new Promise((resolve, reject) => {
+					return new Promise((resolve) => {
 						UTILS.waitForIt(() => !!this.user && !!this.user.token && this.user.token === apiData.refreshedToken, () => {
 							resolve(Api(url, data, type, {Authorization: 'Bearer ' + this.user.token}))
 						});
@@ -104,16 +105,20 @@ class Data {
 				return apiData;
 			})
 			.catch(e => {
-				console.log('getApiData > catch() Error', e);
+				console.log('getApiData > catch() Error:', e);
 	
 				// Unauthorized
-				if (typeof e === 'string' && e.match('Unauthorized')) {
+				if (typeof e === 'string' && (e.match('Unauthorized') || e.match('Token has expired' )) ) {
 					return this.reLogin();
 				}
 
 				// Do not display DB errors
 				if (typeof e === 'string' && e.match('SQLSTATE')) {
 					return Promise.reject('Error: Operation Failed');
+				}
+
+				if (e.toString().match('Network request failed')) {
+					return this.reLogin();
 				}
 
 				// Display error
@@ -137,11 +142,18 @@ class Data {
 	reLogin() {
 		// Just remove token
 		const user = this._user || {};
+		user.token = '';
 		console.log('reLogin:user', user);
 
-		user.token = '';
-		// this.saveUser(user);
-		NavigationService.navigate('Login', {});
+		this.saveUser(user);
+		
+		// Need to wait for "saveUser" to complete before switching screen
+		return new Promise((resolve) => {
+			UTILS.waitForIt(() => user.token === this._user.token, () => {
+				resolve(true);
+			});
+		})
+		.then(() => NavigationService.navigate('Login', {}));
 	}
 }
 
