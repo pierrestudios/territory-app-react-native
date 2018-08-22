@@ -3,7 +3,7 @@ import {Modal, TouchableHighlight, View, Text} from 'react-native';
 
 // import FaAlert from 'preact-icons/lib/fa/exclamation-circle';
 // import Heading from '../Heading';
-// import {ALink} from '../Button';
+import {Link} from './Button';
 import {TextInput, DateInput, SelectBox, RadioBox} from './FormInput';
 import Message from './Message';
 import Heading from './Heading';
@@ -23,7 +23,8 @@ export default class PopupNotice extends React.Component {
   render() {
 		const props = this.props;
 		const data = props.data;
-		if (!data) return null;
+		// if (!data) 
+			return null;
 
 		// console.log('data', data);
 
@@ -114,7 +115,7 @@ export default class PopupNotice extends React.Component {
 		const getActions = (data) => {
 			if (data.actions) {
 				return data.actions.map(a => (
-					<ALink onClick={a.action} style={a.style}>{a.label}</ALink>
+					<Link onClick={a.action} style={a.style}>{a.label}</Link>
 				))
 			}
 		}
