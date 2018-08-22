@@ -25,6 +25,8 @@ export default class Login extends React.Component {
 	static navigationOptions = {
 		...UTILS.headerNavOptionsDefault,
 		headerTitle: <Logo />,
+		headerLeft: (<View />), // To center on Andriod
+		headerRight: (<View />), // To center on Andriod
 		headerBackImage: <View /> // Disabled
   };
 	state = {
