@@ -206,6 +206,9 @@ export default styles = StyleSheet.create({
     height: 50,
     borderTopWidth: 1,
     borderColor: colors['grey-lite'],
+    borderBottomWidth: 1,
+    borderBottomColor: colors["off-white"],
+    backgroundColor: colors.white,
     // position: 'relative',
     flex: 1, 
     flexDirection: 'row',
@@ -233,7 +236,7 @@ export default styles = StyleSheet.create({
     marginTop: 10,
     position: 'absolute', 
     left: 50,
-    width: '65%',
+    width: '55%',
     height: 40
   },
 
@@ -258,9 +261,9 @@ export default styles = StyleSheet.create({
 
   "listings-notes": {
     width: '35%',
-    height: 40,
+    // height: 40,
     position: 'absolute', 
-    right: 0,
+    right: 20,
     padding: 5,
     overflow: 'hidden',
     // borderWidth: 1, // Test
