@@ -23,7 +23,11 @@ export default class TerritoryDetails extends React.Component {
       headerRight: (
         !!navigation.getParam('isEditor') && !!navigation.getParam('streetsList') ? 
 				<ButtonHeader
-					onPress={() => {navigation.navigate('AddressAdd', {streetsList: navigation.getParam('streetsList'), territoryId: this.territoryId})}}
+					onPress={() => {navigation.navigate('AddressAdd', {
+						streetsList: navigation.getParam('streetsList'), 
+						territoryId: navigation.getParam('territoryId'),
+						addAddress: (newAddress) => navigation.setParams({newAddress})
+					})}}
 					title={<Feather name="plus" size={24} color="#fff" />}
 					color="#fff"
         />
@@ -37,6 +41,12 @@ export default class TerritoryDetails extends React.Component {
   territoryId = null;
   allTerritories = false;
 
+	componentWillReceiveProps(props) {
+		if (props.navigation) {			
+			if (!!props.navigation.getParam('newAddress'))
+				this.addAddress(props.navigation.getParam('newAddress'));
+		}
+	}
 	componentWillMount() {
     this.territoryId = this.props.navigation.getParam('territoryId');
     this.allTerritories = !!this.props.navigation.getParam('allTerritories');
@@ -145,7 +155,12 @@ export default class TerritoryDetails extends React.Component {
 		this.setState({ addressActive: data, shouldRender: 'addressId' }, () => {
 			this.props.entity && typeof this.props.entity.viewAddress === 'function' ?
       this.props.entity.viewAddress(data) : 
-      NavigationService.navigate('AddressEdit', {addressActive: data, streetsList: this.state.streetsList, territoryId: data.territoryId});
+      NavigationService.navigate('AddressEdit', {
+				addressActive: data, 
+				streetsList: this.state.streetsList, 
+				territoryId: data.territoryId,
+				updateAddress: this.updateAddress
+			});
 			/* History.push({
 				pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/address/${data.addressId}`
 			}) */
@@ -214,7 +229,7 @@ export default class TerritoryDetails extends React.Component {
 
 		console.log('newAddress', newAddress);
 
-		this.setState({ data: { ...this.state.data, addresses: addresses}, streetsList: streetsList, shouldRender: 'Territory', addressActive: newAddress }, () => History.goBack());
+		this.setState({ data: { ...this.state.data, addresses: addresses}, streetsList: streetsList, shouldRender: 'Territory', addressActive: newAddress });
 	}
 	viewPublisherDetails() {
 		// Disable for now

@@ -26,7 +26,7 @@ export default class AddressEdit extends React.Component {
       title: Language.translate('Edit Address'),
       headerRight: (
 				<ButtonHeader
-					onPress={() => {false}}
+					onPress={() => {navigation.setParams({saveAddress: true})}}
 					title="Save"
 					color="#fff"
         />
@@ -71,7 +71,13 @@ export default class AddressEdit extends React.Component {
   }
   setModalVisible(modal) {
     this.setState(modal);
-  }
+	}
+	componentWillReceiveProps(props) {
+		if (props.navigation) {			
+			if (!!props.navigation.getParam('saveAddress'))
+				this.saveAddress();
+		}
+	}
 	componentWillMount() {
     const {navigation} = this.props;
 		if (!!navigation.getParam('addressActive') && !!navigation.getParam('streetsList')) {
@@ -117,10 +123,6 @@ export default class AddressEdit extends React.Component {
           // alwaysBounceVertical={true}
           >
 
-          <Heading>
-            {state.data && state.data.addressId ? Language.translate('Edit Address') : Language.translate('Add New Address')}
-          </Heading>
-
 					<Message error={state.errors.message} message={state.data.message} />
 
 					<Notice data={state.noticeMessage} />
@@ -138,16 +140,16 @@ export default class AddressEdit extends React.Component {
 
 					<RadioBox name="addressType" labelView={
               <View style={{flex: 1, flexDirection: 'row'}}>
-                <Text style={[style['label-medium'], style["text-color-blue"]]}>Address Type</Text>
+                <Text style={[style['label-medium'], style["text-color-blue"]]}>{Language.translate('Address Type')}</Text>
                 <ButtonIcon 
                   onPress={() => this.setModalVisible({AddressTypeModal: true})} 
                   title={<FontAwesome name="info-circle" size={20} color={colors["territory-blue"]} />} 
                 />
               </View>
             } options={[
-						{label: "House", value: "house", active: (!state.data.isApt && !state.data.apt && !state.data.isDuplex)},
-						{label: "Apartment", value: "apartment", active: state.data.isApt},
-						{label: "Duplex", value: "duplex", active: (!state.data.isApt && (state.data.apt || state.data.isDuplex))}
+						{label: Language.translate('House'), value: "house", active: (!state.data.isApt && !state.data.apt && !state.data.isDuplex)},
+						{label: Language.translate('Apartment'), value: "apartment", active: state.data.isApt},
+						{label: Language.translate('Duplex'), value: "duplex", active: (!state.data.isApt && (state.data.apt || state.data.isDuplex))}
 						]} onChange={this.saveAddressType} />
 
           {!state.data.isNewStreet ? 
@@ -349,6 +351,7 @@ export default class AddressEdit extends React.Component {
 			newData = {...this.state.data, ...data};
 
 		// formatPhoneNumber
+		// TODO: intl phone number
 		if ('phone' in data) {
 			const digits = newData.phone.replace(/\D/g, '');
 
@@ -373,9 +376,9 @@ export default class AddressEdit extends React.Component {
 		}
 
 		if ('newStreet' in data)
-			this.setState({newStreetData: newData});
+			this.setState({newStreetData: newData, errors: {}});
 		else
-			this.setState({data: newData});
+			this.setState({data: newData, errors: {}});
 	}
 
 	saveAddress = (e) => {
@@ -384,7 +387,8 @@ export default class AddressEdit extends React.Component {
 		if (!this.state.data.address || (!this.state.data.streetId && !(this.state.newStreetData && this.state.newStreetData.street)))
 			return this.setState({errors: {
 				...this.state.errors,
-				address: !this.state.data.address ? Language.translate('Address is empty') : '',
+				message: Language.translate('Enter required fields'),
+				address: !this.state.data.address ? Language.translate('Enter Address') : '',
 				streetId: !this.state.data.streetId ? (this.state.data.isApt ? Language.translate('Select a Building') : Language.translate('Select a Street')) : ''
 			}});
 
@@ -420,7 +424,7 @@ export default class AddressEdit extends React.Component {
 				}
 			}, () => {
 				// add new Address to list
-				if (typeof this.props.addAddress === 'function') {
+				if (typeof this.props.navigation.getParam('addAddress') === 'function') {
 					const newAddress = {...this.state.data}
 
 					// If new Notes
@@ -452,10 +456,10 @@ export default class AddressEdit extends React.Component {
 						newAddress.address = 'APT ' + newAddress.address;
 					}
 
-					this.props.addAddress(newAddress);
+					this.props.navigation.getParam('addAddress')(newAddress);
 				} else 
 				// update current Address in list
-				if (typeof this.props.updateAddress === 'function') {
+				if (typeof this.props.navigation.getParam('updateAddress') === 'function') {
 					const newAddress = {...this.state.data}
 
 					if (newAddress.isApt) {
@@ -463,8 +467,9 @@ export default class AddressEdit extends React.Component {
 						newAddress.address = 'APT ' + newAddress.address;
 					}
 
-				 	this.props.updateAddress(newAddress);
+					this.props.navigation.getParam('updateAddress')(newAddress);
 			 }
+			 this.props.navigation.goBack();
 
 			})
 		})
