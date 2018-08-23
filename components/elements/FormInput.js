@@ -157,6 +157,7 @@ export const SelectBox = (props) => {
         >
         {this.renderOptions(props.options)}
       </Picker>
+      {getError(props)}
     </View>
   );
 
