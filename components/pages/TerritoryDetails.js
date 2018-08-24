@@ -6,7 +6,6 @@ import Swipeout from 'react-native-swipeout';
 import Data from '../common/data';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
-import TerritoryFn from '../common/territory-fn';
 import NavigationService from '../common/nav-service';
 
 import Heading from '../elements/Heading';
@@ -101,16 +100,6 @@ export default class TerritoryDetails extends React.Component {
 			return (<Notes address={state.addressActive} updateAddress={this.updateAddress} all={this.allTerritories} user={state.user}  />);
 		}
 
-		// if "addressId", Load Address Details
-		if (!!props.addressId && !!state.addressActive) {
-			return (<Address address={state.addressActive} streetsList={state.streetsList} updateAddress={this.updateAddress} all={this.allTerritories} user={state.user} />);
-		}
-
-		// if "isAddress", Load Add New Address 
-		if (!!props.isAddress) {
-			return (<Address streetsList={state.streetsList} territoryId={state.data.territoryId} addAddress={this.addAddress} all={this.allTerritories} user={state.user} />);
-		}
-
 		// if "isMap", Load Map
 		if (!!props.isMap) {
 			return (<div class={style['map-content']}><Map data={state.data} user={state.user} /></div>);
@@ -202,17 +191,11 @@ export default class TerritoryDetails extends React.Component {
 				territoryId: data.territoryId,
 				updateAddress: this.updateAddress
 			});
-			/* History.push({
-				pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/address/${data.addressId}`
-			}) */
 		});
 	}
 	viewAddressAdd = () => {
 		this.props.entity && typeof this.props.entity.viewAddressAdd === 'function' ?
 		this.props.entity.viewAddressAdd() : false
-		/* History.push({
-			pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/address/add`
-		}) */
 		this.setState({shouldRender: 'Address', addressActive: null})
 	}
 	viewMap = () => {
@@ -225,9 +208,6 @@ export default class TerritoryDetails extends React.Component {
 	}
 
 	notifyDelete = (list, user) => {
-
-		// console.log('notifyDelete'); return;
-
 		const messageBlock = (
 			<View>
 				<Text style={{fontSize: 16}}>{Language.translate('Delete_Address_Sure')}</Text>
@@ -288,22 +268,6 @@ export default class TerritoryDetails extends React.Component {
 								// NOTE: "Reason" note not included in Address.notes
 							}
 
-							/*
-              // if Territory
-							if (this && thisName === 'Territory') {
-								if (this.updateAddress && typeof this.updateAddress === 'function') {
-									this.updateAddress({...list, inActive: !postData.delete}, postData.delete, false);
-									// NOTE: "Reason" note not included in Address.notes
-								}
-              }
-              
-              // if Notes || Address
-              else if (this && (thisName === 'Notes' || thisName === 'Address')) {
-								if (this.props.updateAddress && typeof this.props.updateAddress === 'function') {
-									this.props.updateAddress({...list, inActive: !postData.delete}, postData.delete);
-								}
-							}
-							*/
 						})
 						.catch(e => {
 							this.setState({noticeMessage: {

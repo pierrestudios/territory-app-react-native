@@ -6,7 +6,6 @@ import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
 import Data from '../common/data';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
-import TerritoryFn from '../common/territory-fn';
 
 import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
@@ -166,9 +165,6 @@ export default class AddressEdit extends React.Component {
           : <TextInput name="newStreet" placeholder={state.data.isApt ? Language.translate('New Building') : Language.translate('New Street')} onInput={this.saveData} value={state.newStreetData ? state.newStreetData.street : ''} error={state.errors.newStreet} showLabel={true} />
           }  
 
-          {/*
-            <Switch label={state.data.isApt ? Language.translate('Add New Building') : Language.translate('Add New Street')} name="isNewStreet" onChange={this.saveData} value={state.data.isNewStreet} />
-          */}
           {!!state.data.addressId ? null :
             <ButtonLink onPress={() => {
               this.saveData({isNewStreet: !state.data.isNewStreet})
@@ -218,15 +214,6 @@ export default class AddressEdit extends React.Component {
           {/*** End Notes ***/}
           
           <View style={{ height: 60 }} />
-
-					{/*<Button onPress={this.saveAddress} class="button-action">{Language.translate('Save')}</Button>
-					
-          <Line />
-
-					{state.user.isEditor && !!state.data.addressId ?
-						<Button disabled={!state.data.addressId} onPress={(e) => TerritoryFn.notifyDelete(e, state.data, this, state.user, 'Address')} class="button-delete">{Language.translate('Remove Address')}</Button>
-          : null }
-          */}
 
         </KeyboardAwareScrollView>
 

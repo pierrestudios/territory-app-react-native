@@ -1,8 +1,6 @@
 import React from 'react';
 import {TouchableHighlight, View, Text} from 'react-native';
 
-// import FaAlert from 'preact-icons/lib/fa/exclamation-circle';
-// import Heading from '../Heading';
 import {Link} from './Button';
 import {TextInput, DateInput, SelectBox, RadioBox, Switch} from './FormInput';
 import Message from './Message';
@@ -26,7 +24,7 @@ export default class PopupNotice extends React.Component {
 			return null;
 
 		// console.log('data', data);
-		console.log('state', this.state);
+		// console.log('state', this.state);
 
 		const icon = null;//props.showIcon ? <FaAlert size={20} />  : null;
 		// const classes = classNames(style.input, style['with-icon']);
@@ -88,7 +86,7 @@ export default class PopupNotice extends React.Component {
 		const getInputs = (data) => {
 			if (data.inputs) {
 				return data.inputs.map(a => {
-					console.log('a', a);
+					// console.log('a', a);
 					a.removePlaceholder = true;
 					switch(a.type) {
 						case 'TextInput':
@@ -163,34 +161,4 @@ export default class PopupNotice extends React.Component {
 
 		);
   }
-	renderOld(props, state) {
-		// console.log('state', state)
-		
-		return (
-			<div>
-				<div class={style['notice-box-container']}>
-					<div class={style['notice-box']} style={getCustomStyle('notice-box')}>
-						<Heading level={3} customClass={style['notice-box-title']}>
-							{icon}
-							<span>{data.title || 'Notice!'}</span>
-						</Heading>
-						<label class={style['notice-box-message']}>{data.description}</label>
-						<Message error={data.errorMesage} message={data.message} />
-						{data.inputs ? 
-							<div class={classNames(style.line, style['widescreen'])} />
-						: null}
-						<div class={style['notice-box-inputs']}>
-							{getInputs(data)}
-						</div>
-						{data.actions ? 
-						<div class={classNames(style.line, style['widescreen'])} />
-						: null }
-						<div class={style['notice-box-actions']}>
-							{getActions(data)}
-						</div>	
-					</div>
-				</div>
-			</div>	
-		);
-	}
 }
