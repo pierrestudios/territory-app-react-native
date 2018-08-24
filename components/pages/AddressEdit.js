@@ -305,8 +305,7 @@ export default class AddressEdit extends React.Component {
 	}
 
 	isNoteField(name) {
-		const noteFields = ['note', 'date', 'retain'];
-		return noteFields.includes(name) !== false;
+		return ['note', 'date', 'retain'].includes(name) !== false;
 	}
 
 	saveData = (data) => {
@@ -317,7 +316,10 @@ export default class AddressEdit extends React.Component {
 		if (this.isNoteField((Object.keys(data) || [])[0])) {
       newData = {...this.state.noteData, ...data};
 	
-			this.setState({
+			console.log('newData', newData);
+
+			// Return to stop function
+			return this.setState({
 				noteData: newData, 
 				errors: {
 					note: '',
@@ -325,7 +327,6 @@ export default class AddressEdit extends React.Component {
 					message: ''
 				}
 			});
-			return;
     }
 
 		if ('inActive' in data) // Reverse for "inActive"
@@ -384,6 +385,7 @@ export default class AddressEdit extends React.Component {
 
 		if (this.state.noteData && this.state.noteData.note) {
 			data.notes = [{
+				"retain": !!this.state.noteData.retain,
 				"note": this.state.noteData.note,
 				"date": UTILS.getDateString(this.state.noteData.date)
 			}];
@@ -456,6 +458,7 @@ export default class AddressEdit extends React.Component {
 
 					this.props.navigation.getParam('updateAddress')(newAddress);
 			 }
+			 
 			 this.props.navigation.goBack();
 
 			})
