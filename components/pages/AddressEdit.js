@@ -316,8 +316,6 @@ export default class AddressEdit extends React.Component {
 		if (this.isNoteField((Object.keys(data) || [])[0])) {
       newData = {...this.state.noteData, ...data};
 	
-			console.log('newData', newData);
-
 			// Return to stop function
 			return this.setState({
 				noteData: newData, 
@@ -331,10 +329,8 @@ export default class AddressEdit extends React.Component {
 
 		if ('inActive' in data) // Reverse for "inActive"
 			newData = {...this.state.data, 'inActive': !data['inActive']};
-		// else if (e.type === 'click') 
-			// newData = {...this.state.data, [e.target.name]: e.target.checked};
 		else if (this.state.data.isNewStreet && 'newStreet' in data)
-			newData = {...this.state.newStreetData, street: data['street'], isAptBuilding: !!this.state.data.isApt ? 1 : 0}
+			newData = {...this.state.newStreetData, street: data['newStreet'], isAptBuilding: !!this.state.data.isApt ? 1 : 0}
 		else 
 			newData = {...this.state.data, ...data};
 
@@ -352,12 +348,11 @@ export default class AddressEdit extends React.Component {
 
 		// format number input
 		else if ('address' in  data) {
-			// console.log('newData', newData);
 			// Remove non-digits
 			const digits = newData['address'].replace(/\D/g, '') || this.state.data['address'];
 
-			// If value is "" and validity.valid is "true", use that else assigned "digits" 
-			if (!data['address']) //  && !!e.target.validity && !!e.target.validity.valid // (!!newData[e.target.name]) 
+			// If value is "" 
+			if (!data['address']) 
 				newData['address'] = ""
 			else	
 				newData['address'] = digits;
@@ -371,6 +366,7 @@ export default class AddressEdit extends React.Component {
 
 	saveAddress = (e) => {
 		// console.log('this.state.data', this.state.data)
+		// console.log('this.state.newStreetData', this.state.newStreetData)
 		// Validate
 		if (!this.state.data.address || (!this.state.data.streetId && !(this.state.newStreetData && this.state.newStreetData.street)))
 			return this.setState({errors: {
@@ -436,6 +432,7 @@ export default class AddressEdit extends React.Component {
 						newAddress.streetName = this.state.newStreetData ? this.state.newStreetData.street : '';
 						newAddress.street = {streetId: newAddress.streetId, street: newAddress.streetName, isAptBuilding: newAddress.isApt};
  
+						// Note:
 						// Api glitch: When notes added, "street_id" is not returned
 						// Need to fix in Api
 					}
@@ -458,7 +455,7 @@ export default class AddressEdit extends React.Component {
 
 					this.props.navigation.getParam('updateAddress')(newAddress);
 			 }
-			 
+
 			 this.props.navigation.goBack();
 
 			})
