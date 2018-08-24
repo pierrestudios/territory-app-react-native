@@ -35,7 +35,7 @@ export default styles = StyleSheet.create({
     marginTop: 40
   },
   "scroll-view": {
-    paddingVertical: 20
+    paddingVertical: 20,
   },
   section: {
     flex: 1,
@@ -425,6 +425,8 @@ export default styles = StyleSheet.create({
   "modal-container": {
     position: 'absolute', 
     top: 20,
+    maxHeight: '100%',
+    // bottom: 20,
     // flex: 1,
     // alignItems: 'center',
     alignSelf: 'center',
@@ -444,6 +446,12 @@ export default styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 25,
     marginTop: 0,
+  },
+
+  "modal-view": {padding: 20},
+
+  "notice-box-message": {
+    // fontSize: 16
   },
 
   // Common styles:

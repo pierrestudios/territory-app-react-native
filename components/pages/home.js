@@ -117,7 +117,7 @@ export default class Home extends React.Component {
 						this.setModalVisible(!this.state.modalVisible);
 					}}
 					>
-					<View style={{padding: 20}}>
+					<View style={styles["modal-view"]}>
 						<Heading textStyle={{marginBottom: 20, marginTop: 0}}>{Language.translate('My User Account')}</Heading>
 
 						<ButtonLink

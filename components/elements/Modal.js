@@ -1,5 +1,6 @@
 import React from 'react';
 import { Animated, View, Text } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Language from '../common/lang';
 
@@ -30,28 +31,38 @@ class AnimatedModal extends React.Component {
         style={
           [styles["modal-container"], {
           ...this.props.style,
+          // borderColor: colors.red, borderWidth: 1, 
+          // height: '100%', bottom: 20,
+          
           opacity: fadeAnim, 
-        }]}
-      >
-        {this.props.children}
-        <View style={{flex: 1, flexDirection: 'row-reverse', justifyContent: 'space-between', padding: 20}}>
-          {this.props.customButtons ? 
-            this.props.customButtons.map(buttonProps => (
-              <Link
-                key={`${buttonProps.label}-key`}
-                customStyle={[{borderColor: colors["grey-lite"], borderWidth: 1, marginTop: 20, borderRadius: 5}, buttonProps.buttonStyle]}
-                onPress={buttonProps.onPress}>
-                <Text style={buttonProps.textStyle}>{buttonProps.label}</Text>
-              </Link>
-            ))
-          :
-          <Link
-            customStyle={{borderColor: colors["grey-lite"], borderWidth: 1, marginTop: 20, borderRadius: 5}}
-            onPress={this.props.onCloseModal}>
-            <Text style={{color:colors.red}}>{Language.translate('Close')}</Text>
-          </Link>
-          }
-        </View>
+        }]}>
+        <KeyboardAwareScrollView 
+          contentContainerStyle={[styles["scroll-view"]]}
+          // keyboardShouldPersistTaps="always"
+          keyboardDismissMode="interactive"
+          // alwaysBounceVertical={true}
+          // style={styles["modal-view"]}
+          >
+          {this.props.children}
+          <View style={{flex: 1, flexDirection: 'row-reverse', justifyContent: 'space-between', paddingRight: 20, paddingLeft: 20, borderColor: colors.green, borderWidth: 0}}>
+            {this.props.customButtons ? 
+              this.props.customButtons.map(buttonProps => (
+                <Link
+                  key={`${buttonProps.label}-key`}
+                  customStyle={[{borderColor: colors["grey-lite"], borderWidth: 1, borderRadius: 5}, buttonProps.buttonStyle]}
+                  onPress={buttonProps.onPress}>
+                  <Text style={buttonProps.textStyle}>{buttonProps.label}</Text>
+                </Link>
+              ))
+            :
+            <Link
+              customStyle={{borderColor: colors["grey-lite"], borderWidth: 1, borderRadius: 5}}
+              onPress={this.props.onCloseModal}>
+              <Text style={{color:colors.red}}>{Language.translate('Close')}</Text>
+            </Link>
+            }
+          </View>
+        </KeyboardAwareScrollView>
       </Animated.View>
     );
   }

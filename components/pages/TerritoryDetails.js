@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
+import { FlatList, TouchableOpacity, Text, View } from 'react-native';
+import { FontAwesome, Ionicons, Feather } from '@expo/vector-icons';
+import Swipeout from 'react-native-swipeout';
 
 import Data from '../common/data';
 import Language from '../common/lang';
@@ -11,9 +12,9 @@ import NavigationService from '../common/nav-service';
 import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
 import {Link, ButtonLink, ButtonHeader} from '../elements/Button';
-// import Notice from '../elements/PopupNotice';
+import Notice from '../elements/PopupNotice';
 
-import style from '../styles/main';
+import style, {colors} from '../styles/main';
 
 export default class TerritoryDetails extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -116,7 +117,47 @@ export default class TerritoryDetails extends React.Component {
     }
     */
 
-		const listings = TerritoryFn.getListings(state.data, this, state.user, 'Territory');
+		const listings = (
+			<FlatList
+				contentContainerStyle={style.listings}
+				data={state.data.addresses.sort(UTILS.sortAddress)}
+				keyExtractor={(item) => item.addressId.toString()}
+				renderItem={({item}) => (
+					<Swipeout key={item.addressId} right={[
+						{
+							text: Language.translate('Notes'), type: 'primary', onPress: () => this.viewNotes(list) 
+						}, 
+						state.user.isEditor ? {
+							text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) // backgroundColor: colors.red
+						} : { text: ''}
+					]} autoClose={true} close={true}>
+					<View style={[style['listings-item']]}>
+            <TouchableOpacity style={style['listings-notes']} onPress={() => state.user.isNoteEditor ? this.viewNotes(item) : console.log('Not Note Editor')}>
+              {item.notes && item.notes.length ? [
+                <Text key="listings-date" style={[style['listings-date-text'], style['listings-notes-date-text']]}>
+                  {item.notes[0].date}
+                </Text>,
+                <Text key="listings-notes" numberOfLines={1} style={style['listings-notes-note-text']}>
+                  {UTILS.diacritics(item.notes[0].note)}
+                </Text>
+              ] : [
+                <ButtonLink key="listings-add-notes" customStyle={[style['add-notes']]}>{Language.translate('Add Notes')}</ButtonLink>
+              ]}
+            </TouchableOpacity>	
+            <TouchableOpacity style={[style['listings-name'], style['address-listings-name']]} onPress={() => state.user.isEditor ? this.viewAddress(item) : console.log('Not Editor')}>
+              <Text numberOfLines={1} style={[style['listings-name-text'], style['listings-address-name']]}>{UTILS.diacritics(item.name)} </Text>
+              <Text numberOfLines={1} style={style['listings-address']}>
+							  {UTILS.getListingAddress(item)}
+						  </Text>
+						</TouchableOpacity>
+						<View style={{position: 'absolute', width: 10, height: '100%', top: 15, right: 5}}>
+							<Ionicons name="ios-arrow-forward" size={24} color={colors["grey-lite"]} />
+						</View>
+					</View>
+					</Swipeout>
+				)}
+			/>
+		);
 
 		return (
 			<View style={[style.section, style.content]}>
@@ -138,7 +179,7 @@ export default class TerritoryDetails extends React.Component {
 				<View style={[style.section, style['listings-results'], style['listings-results-address']]}>
           {listings}
 				</View>
-				{/*<Notice data={state.noticeMessage} />*/}
+				<Notice data={state.noticeMessage} closeNotice={() => this.setState({noticeMessage: null})} />
 			</View>
 		);
 	}
@@ -182,6 +223,123 @@ export default class TerritoryDetails extends React.Component {
 		}) */
 		this.setState({shouldRender: 'Map', addressActive: null})
 	}
+
+	notifyDelete = (list, user) => {
+
+		// console.log('notifyDelete'); return;
+
+		const messageBlock = (
+			<View>
+				<Text style={{fontSize: 16}}>{Language.translate('Delete_Address_Sure')}</Text>
+				<Text style={[style["text-strong"], {fontSize: 16}]}>{list.name} {UTILS.getListingAddress(list)}</Text>
+			</View>
+		);
+
+		this.setState({
+			noticeMessage: {
+				title: Language.translate('Remove Address'),
+				description: messageBlock,
+				inputs: [
+					{label: Language.translate("Reason"), type: 'TextInput', name: 'note', required: true},
+					{label: Language.translate("Remove Completely"), name: 'delete', type: user.isManager ? 'Switch' : ''},
+				],
+				actions: [
+					{label: Language.translate("Continue"), action: () => {
+						const errors = this.state.noticeMessage.inputs.filter(d => (
+							d.required && !d.value
+						));
+						
+						console.log('errors', errors);
+
+						if (errors.length) {
+							const newData = this.state.noticeMessage.inputs.map(d => (
+								d.required && !d.value ? {...d, error: d.name === 'note' ? Language.translate('Enter your reason for removing address') : d.name + ' is required'} : d
+							));
+			
+							this.setState({noticeMessage: {
+								...this.state.noticeMessage,
+								inputs: newData
+							}, shouldRender: 'Modal'}, () => console.log('state', this.state));
+
+							return;
+						}
+
+						let postData = {};
+						this.state.noticeMessage.inputs.forEach(d => {
+							postData[d.name] = d.value;
+						})
+
+						console.log('postData', postData); // return;
+						
+						// Delete address
+						Data.getApiData(`addresses/remove/${list.addressId}`, {delete: postData.delete, note: postData.note}, 'POST')
+						.then(data => {
+							console.log('then() data', data)
+							
+							if (!data) {
+								return this.setState({noticeMessage: {
+									...this.state.noticeMessage,
+									errorMesage: 'An error occured: ' + e
+								}, shouldRender: 'Modal'});
+							}
+
+							if (typeof this.updateAddress === 'function') {
+								this.updateAddress({...list, inActive: !postData.delete}, postData.delete, false);
+								// NOTE: "Reason" note not included in Address.notes
+							}
+
+							/*
+              // if Territory
+							if (this && thisName === 'Territory') {
+								if (this.updateAddress && typeof this.updateAddress === 'function') {
+									this.updateAddress({...list, inActive: !postData.delete}, postData.delete, false);
+									// NOTE: "Reason" note not included in Address.notes
+								}
+              }
+              
+              // if Notes || Address
+              else if (this && (thisName === 'Notes' || thisName === 'Address')) {
+								if (this.props.updateAddress && typeof this.props.updateAddress === 'function') {
+									this.props.updateAddress({...list, inActive: !postData.delete}, postData.delete);
+								}
+							}
+							*/
+						})
+						.catch(e => {
+							this.setState({noticeMessage: {
+								...this.state.noticeMessage,
+								errorMesage: 'An error occured: ' + e
+							}, shouldRender: 'Modal'});
+						});
+						
+					}, 
+					style: {backgroundColor: colors.red}, 
+					textStyle: { color: colors.white }
+				},
+				{label: Language.translate("Cancel"), action: () => this.setState({noticeMessage: null, shouldRender: 'Territory'})},
+			],
+				saveData: (data) => {
+					console.log('data', data);
+
+					const newData = this.state.noticeMessage.inputs.map(d => {
+						if (d.name === (Object.keys(data) || {})[0]) return {
+							...d,
+							value: data[d.name],
+							error: ''
+						}
+						return d;
+					});
+	
+					this.setState({noticeMessage: {
+						...this.state.noticeMessage,
+						inputs: newData,
+						errorMesage: ''
+					}, shouldRender: 'Modal'});
+				}
+			},
+			shouldRender: 'Territory'
+		});
+	}
 	updateAddress = (updatedAddress, isDelete = false, allowGoBack = true) => {
 		const updatedAddresses = isDelete ? this.state.data.addresses.filter(a => (
 			a.addressId !== updatedAddress.addressId
@@ -197,7 +355,7 @@ export default class TerritoryDetails extends React.Component {
 			data: updatedData,
 			noticeMessage: null,
 			shouldRender: 'Territory'
-    }, () => false // !!allowGoBack // && History.goBack()
+    }, () => false 
     ) 
 	}
 	addAddress = (newAddress) => {
