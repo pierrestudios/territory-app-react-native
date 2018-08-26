@@ -62,57 +62,32 @@ export default class Notes extends React.Component {
 	render() {
     const state = this.state || {};
     const props = this.props || {};
-		// console.log('state', state)
+	  // console.log('state', state)
 		if (!state.data)
       return <Loading />;
       
-    // const notes = this.getNotes(state.data);
-    /*
-    this.state.user.isManager || this.state.user.userId === note.userId ? 
-      <li class={note.noteId ===  this.state.noteData.noteId ? style.active : ''}>
-        <Link onClick={(e) => this.editNotes(note)}>
-          <span class={style['listings-notes-edit']}><IconEdit size={20} /></span>
-          <span class={style['listings-notes-date']}>{note.date}</span>
-          <span class={style['listings-notes-note']}>{UTILS.diacritics(note.note)}</span> 
-        </Link>
-      </li>
-      : 
-      <li>
-        <Link>
-          <span class={style['listings-notes-edit']}></span>
-          <span class={style['listings-notes-date']}>{note.date}</span>
-          <span class={style['listings-notes-note']}>{UTILS.diacritics(note.note)}</span> 
-        </Link>
-      </li>
-    */
-
     const notes = (
 			<FlatList
 				contentContainerStyle={style.listings}
-				data={state.data.notes}
+        data={state.data.notes}
+        extraData={this.state}
 				keyExtractor={(item) => item.noteId.toString()}
 				renderItem={({item}) => (
-					<Swipeout key={item.noteId} right={this.state.user.isManager || this.state.user.userId === item.userId ? [{
-							text: Language.translate('Edit'), type: 'secondary', onPress: () => this.editNotes(item) 
-						}
-					] : null} autoClose={true} close={true}>
-            <View style={[style['listings-item']]}>
-              <TouchableOpacity style={style['listings-notes']} onPress={() => this.state.user.isManager || this.state.user.userId === item.userId ? this.editNotes(item) : console.log('Not Note Editor')}>
-                <Text>{Language.translate('Edit')}</Text>
-              </TouchableOpacity>	
-              <TouchableOpacity style={[style['listings-name'], style['address-listings-name']]} onPress={() => state.user.isEditor ? this.viewAddress(item) : console.log('Not Editor')}>
-                <Text key="listings-date" style={[style['listings-date-text'], style['listings-notes-date-text']]}>
-                  {item.date}
-                </Text>
-                <Text key="listings-notes" numberOfLines={1} style={style['listings-notes-note-text']}>
-                  {UTILS.diacritics(item.note)}
-                </Text>
-              </TouchableOpacity>
-              <View style={style["listings-right-arrow"]}>
-                <Ionicons name="ios-arrow-forward" size={24} color={colors["grey-lite"]} />
-              </View>
+          <View style={[style['listings-item'], (item.noteId === state.noteData.noteId ? style['listings-item-active'] : null)]}>
+            {state.user.isManager || state.user.userId === item.userId ?
+              <ButtonLink customStyle={[style['listings-notes'], style['listings-notes-edit']]} onPress={() => this.editNotes(item)}>
+                {Language.translate('Edit')} 
+              </ButtonLink>	
+            : null}
+            <View style={[style['listings-name'], style['address-listings-name']]}>
+              <Text style={[style['listings-date-text'], style['listings-notes-date-text']]}>
+                {item.date}
+              </Text>
+              <Text numberOfLines={1} style={style['listings-notes-note-text']}>
+                {UTILS.diacritics(item.note)}
+              </Text>
             </View>
-					</Swipeout>
+          </View>
 				)}
 			/>
 		);
@@ -140,7 +115,7 @@ export default class Notes extends React.Component {
               key="note-date"
 							placeholder={Language.translate('Date')}
 							name="date"
-							selected={state.noteData.date}
+							value={state.noteData.date}
 							onChange={this.saveData} />  
               
             {state.user.isManager ?	
@@ -159,13 +134,7 @@ export default class Notes extends React.Component {
           <Line />
 
           <Notice data={state.noticeMessage} />
-
-          {/*state.user.isEditor ?	
-          <div style="padding: 0 20px;">
-            <Button onClick={(e) => TerritoryFn.notifyDelete(e, state.data, this, state.user, 'Notes')} class="button-delete">{Language.translate('Remove Address')}</Button>
-          </div>
-          : null */}
-
+ 
         </KeyboardAwareScrollView>
       </View>
 		);
@@ -216,7 +185,7 @@ export default class Notes extends React.Component {
 		console.log('editNotes', data);
 		this.setState({noteData: {
 			note: UTILS.diacritics(data.note),
-			date: UTILS.getDateString(data.date),
+			date: UTILS.getDateObject(data.date),
 			retain: data.retain || false,
 			noteId: data.noteId
 		}})

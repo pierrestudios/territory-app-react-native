@@ -216,6 +216,10 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between' // enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly') (Vertical)
   },
 
+  "listings-item-active": {
+    backgroundColor: colors["grey-lite"],
+  },
+
   "listings-number": {
     backgroundColor: colors["grey-dark"],
     alignItems: 'center', 
@@ -273,6 +277,15 @@ export default styles = StyleSheet.create({
   "add-notes": {
     // padding: 5,
     marginTop: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors["grey-lite"]
+  },
+
+  "listings-notes-edit": {
+    right: 10,
+    marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
