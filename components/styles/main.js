@@ -284,6 +284,8 @@ export default styles = StyleSheet.create({
     marginTop: 0
   },
 
+  "listings-right-arrow": {position: 'absolute', width: 10, height: '100%', top: 15, right: 5},
+
   "input-options-container": {
     flex: 1,
     flexDirection: 'row',

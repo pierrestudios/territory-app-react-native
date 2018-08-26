@@ -114,7 +114,7 @@ export default class TerritoryDetails extends React.Component {
 				renderItem={({item}) => (
 					<Swipeout key={item.addressId} right={[
 						{
-							text: Language.translate('Notes'), type: 'primary', onPress: () => this.viewNotes(list) 
+							text: Language.translate('Notes'), type: 'primary', onPress: () => this.viewNotes(item) 
 						}, 
 						state.user.isEditor ? {
 							text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) // backgroundColor: colors.red
@@ -139,7 +139,7 @@ export default class TerritoryDetails extends React.Component {
 							  {UTILS.getListingAddress(item)}
 						  </Text>
 						</TouchableOpacity>
-						<View style={{position: 'absolute', width: 10, height: '100%', top: 15, right: 5}}>
+						<View style={style["listings-right-arrow"]}>
 							<Ionicons name="ios-arrow-forward" size={24} color={colors["grey-lite"]} />
 						</View>
 					</View>
@@ -173,12 +173,15 @@ export default class TerritoryDetails extends React.Component {
 		);
 	}
 	viewNotes(data) {
+		console.log('viewNotes', data)
 		this.setState({ addressActive: data, shouldRender: 'Notes' }, () => {
 			this.props.entity && typeof this.props.entity.viewNotes === 'function' ?
-			this.props.entity.viewNotes(data) : false
-			/* History.push({
-				pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/address/${data.addressId}/notes`
-			}) */
+			this.props.entity.viewNotes(data) : 
+			NavigationService.navigate('Notes', {
+				addressActive: data, 
+				// streetsList: this.state.streetsList, 
+				territoryId: data.territoryId,
+			});
 		});
 	}
 	viewAddress(data) {

@@ -12,6 +12,7 @@ import MyTerritories from './components/pages/MyTerritories';
 import TerritoryDetails from './components/pages/TerritoryDetails';
 import AddressEdit from './components/pages/AddressEdit';
 import AddressAdd from './components/pages/AddressAdd';
+import Notes from './components/pages/Notes';
 
 import {colors} from './components/styles/main';
 
@@ -23,7 +24,8 @@ const App = createStackNavigator({
   Territories: { screen: MyTerritories },
   TerritoryDetails: { screen: TerritoryDetails },
   AddressEdit: { screen: AddressEdit },
-  AddressAdd: { screen: AddressAdd }
+  AddressAdd: { screen: AddressAdd },
+  Notes: { screen: Notes }
 },
 {
   initialRouteName: 'Home',
