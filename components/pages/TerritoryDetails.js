@@ -95,10 +95,6 @@ export default class TerritoryDetails extends React.Component {
 			return <Loading />;
 
     /*  
-		// if "isNotes", Load Address Details
-		if (!!props.isNotes && !!state.addressActive) {
-			return (<Notes address={state.addressActive} updateAddress={this.updateAddress} all={this.allTerritories} user={state.user}  />);
-		}
 
 		// if "isMap", Load Map
 		if (!!props.isMap) {
