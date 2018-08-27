@@ -109,7 +109,11 @@ export default class TerritoryDetails extends React.Component {
 		const listings = (
 			<FlatList
 				contentContainerStyle={style.listings}
-				data={state.data.addresses.sort(UTILS.sortAddress)}
+				data={
+					state.data.addresses
+						.filter(a => !a.inActive || !!state.user.isManager)
+						.sort(UTILS.sortAddress)
+				}
 				keyExtractor={(item) => item.addressId.toString()}
 				renderItem={({item}) => (
 					<Swipeout key={item.addressId} right={[
@@ -120,7 +124,7 @@ export default class TerritoryDetails extends React.Component {
 							text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) // backgroundColor: colors.red
 						} : { text: ''}
 					]} autoClose={true} close={true}>
-					<View style={[style['listings-item']]}>
+					<View style={[style['listings-item'], (item.inActive ? style['listings-item-active'] : null)]}>
             <TouchableOpacity style={style['listings-notes']} onPress={() => state.user.isNoteEditor ? this.viewNotes(item) : console.log('Not Note Editor')}>
               {item.notes && item.notes.length ? [
                 <Text key="listings-date" style={[style['listings-date-text'], style['listings-notes-date-text']]}>
