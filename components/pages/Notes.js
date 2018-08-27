@@ -229,7 +229,7 @@ export default class Notes extends React.Component {
 					if (this.state.noteData.noteId && resData) {
 						newNotes = this.state.data.notes.map(n => {
 							if (n.noteId === this.state.noteData.noteId)
-								return {...n, date: data.date, note: data.note, retain: data.retain};
+								return {...n, date: data.date, note: data.note, retain: !!data.retain};
 							return n;
 						})
 						.sort(UTILS.sortNotes);
@@ -245,7 +245,8 @@ export default class Notes extends React.Component {
 							userId: resData.user_id
 						});
 						newNotes = newNotes.sort(UTILS.sortNotes);
-					}
+          }
+          
 					const newAddress = {...this.state.data, notes: newNotes}
           this.props.navigation.getParam('updateAddress')(newAddress);
 				}
