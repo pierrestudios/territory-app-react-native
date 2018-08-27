@@ -56,8 +56,11 @@ export default class Notes extends React.Component {
 			});
 		}
 	}
-	componentDidMount() {
-		// this.notesContainer && this.notesContainer.scrollIntoView()
+	componentWillReceiveProps(props) {
+		if (props.navigation) {			
+			if (!!props.navigation.getParam('saveNotes'))
+				this.saveNotes();
+		}
 	}
 	render() {
     const state = this.state || {};
@@ -139,15 +142,10 @@ export default class Notes extends React.Component {
       </View>
 		);
 	}
-	saveData = (e) => {
-		console.log('e', e);
-		let newData;
-		if (!!e.detail && !!e.detail.option) {
-			newData = {...this.state.noteData, date: e.detail.option}
-		} else if (e.type === 'click') 
-			newData = {...this.state.noteData, [e.target.name]: e.target.checked};
-		else
-		newData = {...this.state.noteData, [e.target.name]: e.target.value};
+	saveData = (data) => {
+		console.log('data', data);
+
+    const newData = {...this.state.noteData, ...data};
 
 		this.setState({
 			noteData: newData, 
@@ -186,13 +184,12 @@ export default class Notes extends React.Component {
 		this.setState({noteData: {
 			note: UTILS.diacritics(data.note),
 			date: UTILS.getDateObject(data.date),
-			retain: data.retain || false,
+			retain: !!data.retain,
 			noteId: data.noteId
 		}})
 	}
-	saveNotes = (e) => {
-		e.preventDefault();
-		// console.log('noteData', this.state.noteData);
+	saveNotes = () => {
+		console.log('noteData', this.state.noteData);
 		// console.log('this.state.data', this.state.data)
 		// Validate
 		if (!this.state.noteData.note || !this.state.noteData.date)
@@ -210,7 +207,9 @@ export default class Notes extends React.Component {
 		? `territories/${this.state.data.territoryId}/notes/edit/${this.state.noteData.noteId}`
 		: `territories/${this.state.data.territoryId}/addresses/${this.state.data.addressId}/notes/add`;
 
-		// save note
+		// console.log('data', data); // return;
+
+    // save note
 		Data.getApiData(url, data, 'POST')
 		.then(resData => {
 			// console.log('then() resData', resData)
@@ -224,7 +223,7 @@ export default class Notes extends React.Component {
 			}, () => {
 				// console.log('this.state', this.state)
 				// update current Address
-				if (this.props.updateAddress && typeof this.props.updateAddress === 'function') {
+				if (typeof this.props.navigation.getParam('updateAddress') === 'function') {
 					let newNotes;
 					// editting notes?
 					if (this.state.noteData.noteId && resData) {
@@ -248,8 +247,9 @@ export default class Notes extends React.Component {
 						newNotes = newNotes.sort(UTILS.sortNotes);
 					}
 					const newAddress = {...this.state.data, notes: newNotes}
-					this.props.updateAddress(newAddress);
+          this.props.navigation.getParam('updateAddress')(newAddress);
 				}
+        this.props.navigation.goBack();
 			})
 		})
 		.catch(e => {

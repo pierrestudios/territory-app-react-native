@@ -130,7 +130,9 @@ export default class TerritoryDetails extends React.Component {
                   {UTILS.diacritics(item.notes[0].note)}
                 </Text>
               ] : [
-                <ButtonLink key="listings-add-notes" customStyle={[style['add-notes']]}>{Language.translate('Add Notes')}</ButtonLink>
+								state.user.isNoteEditor ? 
+									<ButtonLink key="listings-add-notes" customStyle={[style['add-notes']]} onPress={() => this.viewNotes(item)}>{Language.translate('Add Notes')}</ButtonLink>
+									: null
               ]}
             </TouchableOpacity>	
             <TouchableOpacity style={[style['listings-name'], style['address-listings-name']]} onPress={() => state.user.isEditor ? this.viewAddress(item) : console.log('Not Editor')}>
@@ -179,7 +181,7 @@ export default class TerritoryDetails extends React.Component {
 			this.props.entity.viewNotes(data) : 
 			NavigationService.navigate('Notes', {
 				addressActive: data, 
-				// streetsList: this.state.streetsList, 
+				updateAddress: this.updateAddress, 
 				territoryId: data.territoryId,
 			});
 		});
@@ -322,8 +324,7 @@ export default class TerritoryDetails extends React.Component {
 			data: updatedData,
 			noticeMessage: null,
 			shouldRender: 'Territory'
-    }, () => false 
-    ) 
+    }) 
 	}
 	addAddress = (newAddress) => {
 		if (!newAddress) return;
@@ -352,7 +353,7 @@ export default class TerritoryDetails extends React.Component {
 			
 		}
 
-		console.log('newAddress', newAddress);
+		// console.log('newAddress', newAddress);
 
 		this.setState({ data: { ...this.state.data, addresses: addresses}, streetsList: streetsList, shouldRender: 'Territory', addressActive: newAddress });
 	}
