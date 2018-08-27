@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, View, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 import Data from '../common/data';
 import Language from '../common/lang';
@@ -105,9 +105,6 @@ export default class AddressEdit extends React.Component {
 
 		if (!state.user)
       return <Loading />;
-      
-		// if (!!state.errors.message || !!state.data.message) 
-			// this.scrollToTop();	
 
 		return (
       <View style={[style.container]}>
@@ -131,7 +128,7 @@ export default class AddressEdit extends React.Component {
 					<PhoneInput name="phone" placeholder={Language.translate('Phone')} onInput={this.saveData} value={state.data.phone} error={state.errors.phone} showLabel={true} />
 
 					{/* 
-						Rework logic to have 3 options: Street, Apartment, Duplex (has a letter on door)  
+						"addressType" logic to have 3 options: Street, Apartment, Duplex (has a letter on door)  
 						1 - Show the 3 options with graphics
 						2 - If apt is a letter show notice to choose "Duplex", if Duplex is number do prompt "Are there more than 4 apt in this complex?", if Yes, suggest Apt"
 						3 - Show Duplex Door  on for Duplex
@@ -222,13 +219,15 @@ export default class AddressEdit extends React.Component {
           // style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
           onCloseModal={() => {
             this.setModalVisible({AddressTypeModal: false});
-          }}
+					}}
+					/*
           customButtons={[
             {label: 'Save Test', textStyle: {color: colors.green}},
             {label: 'Cancel', onPress: () => {
               this.setModalVisible({AddressTypeModal: false});
             }}
-          ]}
+					]}
+					*/
 					>
 					<View style={{ padding: 10, }}>
             <Heading textStyle={{marginBottom: 0, marginTop: 0, borderWidth: 0, borderColor: colors.red}}>{Language.translate('Address Type')}</Heading>
@@ -251,7 +250,7 @@ export default class AddressEdit extends React.Component {
 		if (data.option && data.option.label)
 			newData.streetName = data.option.label; // streetName
 
-		console.log('newData', newData);
+		// console.log('newData', newData);
 
 		this.setState({
 			data: newData,

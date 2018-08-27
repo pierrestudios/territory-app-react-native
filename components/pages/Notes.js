@@ -1,8 +1,6 @@
 import React from 'react';
-import { FlatList, Text, View, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { FontAwesome, Ionicons, Feather } from '@expo/vector-icons';
-import Swipeout from 'react-native-swipeout';
 
 import Data from '../common/data';
 import Language from '../common/lang';
@@ -12,10 +10,9 @@ import Heading, { HeadingBlue } from '../elements/Heading';
 import Loading from '../elements/Loading';
 import Message from '../elements/Message';
 import Line from '../elements/Line';
-import {Link, ButtonLink, Button, ButtonIcon, ButtonHeader} from '../elements/Button';
+import {ButtonLink, ButtonHeader} from '../elements/Button';
 import Notice from '../elements/PopupNotice';
-import {TextInput, NumberInput, PhoneInput, DateInput, RadioBox, Switch, SelectBox} from '../elements/FormInput';
-import Modal from '../elements/Modal';
+import {TextInput, DateInput,  Switch} from '../elements/FormInput';
 
 import style, { colors } from '../styles/main';
 
@@ -124,9 +121,7 @@ export default class Notes extends React.Component {
             {state.user.isManager ?	
             <Switch label={Language.translate('Retain Note')} name="retain" onChange={this.saveData} value={this.state.noteData.retain}/>
             : null }
-            
-            {/* saveNotes */}
-            
+
           </View>
 
           <View class={style['notes-results']}>
@@ -156,31 +151,8 @@ export default class Notes extends React.Component {
 			}
 		});
   }
-  /*
-	getNotes(data = {}) {
-		return data.notes && data.notes
-			.map(note => (
-				this.state.user.isManager || this.state.user.userId === note.userId ? 
-				<li class={note.noteId ===  this.state.noteData.noteId ? style.active : ''}>
-					<Link onClick={(e) => this.editNotes(note)}>
-						<span class={style['listings-notes-edit']}><IconEdit size={20} /></span>
-						<span class={style['listings-notes-date']}>{note.date}</span>
-						<span class={style['listings-notes-note']}>{UTILS.diacritics(note.note)}</span> 
-					</Link>
-				</li>
-				: 
-				<li>
-					<Link>
-						<span class={style['listings-notes-edit']}></span>
-						<span class={style['listings-notes-date']}>{note.date}</span>
-						<span class={style['listings-notes-note']}>{UTILS.diacritics(note.note)}</span> 
-					</Link>
-				</li>
-			));
-  }
-  */
 	editNotes(data) {
-		console.log('editNotes', data);
+		// console.log('editNotes', data);
 		this.setState({noteData: {
 			note: UTILS.diacritics(data.note),
 			date: UTILS.getDateObject(data.date),
@@ -189,7 +161,7 @@ export default class Notes extends React.Component {
 		}})
 	}
 	saveNotes = () => {
-		console.log('noteData', this.state.noteData);
+		// console.log('noteData', this.state.noteData);
 		// console.log('this.state.data', this.state.data)
 		// Validate
 		if (!this.state.noteData.note || !this.state.noteData.date)
