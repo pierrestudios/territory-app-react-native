@@ -36,7 +36,7 @@
   "Create Account": "Kreye kont",
   "Create an account": "Kreye yon kont",
   "Or": "Oubien",
-  "Manage Your Congregation Territory": "Administre teritwa kongregasyon w",
+  "Manage Your Congregation Territory": "Jere teritwa kongregasyon w",
   "Lost your password": "Pèdi password ou?",
   "Profile": "Profile",
   "Settings": "Settings",
@@ -150,5 +150,7 @@
   "House": "Kay",
   "Duplex": "Duplex",
   "House Number": "Nimero Kay",
-  "Retain Note": "Konsève Nòt Lan"
+  "Retain Note": "Konsève Nòt Lan",
+  "Changing_Address_Type": "Si w chanjé \"Jan Adrès\" lan wap pedi ",
+  "You have no territories": "Ou pa gen teritwa"
 }
