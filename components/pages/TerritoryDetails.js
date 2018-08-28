@@ -152,12 +152,14 @@ export default class TerritoryDetails extends React.Component {
 
 		return (
 			<View style={[style.section, style.content]}>
-        <View style={style['territory-heading']}>
+				<View style={style['territory-heading']}>
           <ButtonLink onPress={this.viewMap} customStyle={[style["heading-button-link"], style['view-map-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('Map')} </ButtonLink>
+					{/*
           {state.user.isManager ? [
-            <ButtonLink key="pdf-button" onPress={() => UTILS.openFrameUrl(`pdf/${state.data.number}`)} customStyle={[style["heading-button-link"], style['pdf-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('PDF')} </ButtonLink>,
-            <ButtonLink key="csv-button" onPress={() => UTILS.openFrameUrl(`csv/${state.data.number}`)} customStyle={[style["heading-button-link"], style['csv-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('CSV')} </ButtonLink>
-          ] : null }
+            <ButtonLink key="pdf-button" onPress={() => this.openApiWebView(`pdf/${state.data.number}`)} customStyle={[style["heading-button-link"], style['pdf-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('PDF')} </ButtonLink>,
+            <ButtonLink key="csv-button" onPress={() => this.openApiWebView(`csv/${state.data.number}`)} customStyle={[style["heading-button-link"], style['csv-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('CSV')} </ButtonLink>
+					] : null }
+					*/}
           <View style={style['heading-number']}><Text style={style["listings-number-text"]}>{state.data.number}</Text></View>
           {/*
           {this.allTerritories && state.data.publisher ?
@@ -175,7 +177,7 @@ export default class TerritoryDetails extends React.Component {
 		);
 	}
 	viewNotes(data) {
-		console.log('viewNotes', data)
+		// console.log('viewNotes', data)
 		this.setState({ addressActive: data, shouldRender: 'Notes' }, () => {
 			this.props.entity && typeof this.props.entity.viewNotes === 'function' ?
 			this.props.entity.viewNotes(data) : 
@@ -204,12 +206,20 @@ export default class TerritoryDetails extends React.Component {
 		this.setState({shouldRender: 'Address', addressActive: null})
 	}
 	viewMap = () => {
+		return;
+		
 		this.props.entity && typeof this.props.entity.viewMap === 'function' ?
-		this.props.entity.viewMap() : false
-		/* History.push({
-			pathname: `/territories${this.allTerritories ? '-all' : ''}/${this.props.id}/map`
-		}) */
-		this.setState({shouldRender: 'Map', addressActive: null})
+		this.props.entity.viewMap() : 
+		NavigationService.navigate('TerritoryMap', {
+			addressActive: this.state.data, 
+			territoryId: this.state.data.territoryId,
+		});
+	}
+	openApiWebView = (url) => {
+		NavigationService.navigate('ApiWebView', {
+			url: url, 
+			data: this.state.data,
+		});
 	}
 
 	notifyDelete = (list, user) => {
@@ -244,7 +254,7 @@ export default class TerritoryDetails extends React.Component {
 							this.setState({noticeMessage: {
 								...this.state.noticeMessage,
 								inputs: newData
-							}, shouldRender: 'Modal'}, () => console.log('state', this.state));
+							}, shouldRender: 'Modal'});
 
 							return;
 						}
@@ -254,12 +264,12 @@ export default class TerritoryDetails extends React.Component {
 							postData[d.name] = d.value;
 						})
 
-						console.log('postData', postData); // return;
+						// console.log('postData', postData); // return;
 						
 						// Delete address
 						Data.getApiData(`addresses/remove/${list.addressId}`, {delete: postData.delete, note: postData.note}, 'POST')
 						.then(data => {
-							console.log('then() data', data)
+							// console.log('then() data', data)
 							
 							if (!data) {
 								return this.setState({noticeMessage: {
@@ -288,7 +298,7 @@ export default class TerritoryDetails extends React.Component {
 				{label: Language.translate("Cancel"), action: () => this.setState({noticeMessage: null, shouldRender: 'Territory'})},
 			],
 				saveData: (data) => {
-					console.log('data', data);
+					// console.log('data', data);
 
 					const newData = this.state.noticeMessage.inputs.map(d => {
 						if (d.name === (Object.keys(data) || {})[0]) return {
