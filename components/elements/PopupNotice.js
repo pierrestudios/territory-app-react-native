@@ -110,13 +110,6 @@ export default class PopupNotice extends React.Component {
 			if ( typeof data.saveData === 'function')
 				data.saveData(e);
 		}
-		const getActions = (data) => {
-			if (data.actions) {
-				return data.actions.map(a => (
-					<Link key={`${a.label}-key`} onClick={a.action} style={a.style}>{a.label}</Link>
-				))
-			}
-		}
 		const getCustomButtons = (data) => {
 			if (data.actions) {
 				return data.actions.map(a => (
@@ -146,9 +139,10 @@ export default class PopupNotice extends React.Component {
 						{data.title || 'Notice!'}
 					</HeadingBlue>
 					
-					<View style={styles['notice-box-message']}>{data.description}</View>
+					<View style={styles['notice-box-message']}>{typeof data.description === 'string' ? <Text>{data.description}</Text> : null}</View>
 					
 					<Message error={data.errorMesage} message={data.message} />
+
 					{data.inputs ? 
 						<Line />
 					: null}

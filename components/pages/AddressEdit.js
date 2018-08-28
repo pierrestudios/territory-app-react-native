@@ -120,8 +120,6 @@ export default class AddressEdit extends React.Component {
           >
 
 					<Message error={state.errors.message} message={state.data.message} />
-
-					<Notice data={state.noticeMessage} />
 					 
 					<TextInput name="name" placeholder={Language.translate('Name')} onInput={this.saveData} value={UTILS.diacritics(state.data.name)} error={state.errors.name} showLabel={true}  />
 
@@ -216,18 +214,9 @@ export default class AddressEdit extends React.Component {
 
         <Modal
           visible={this.state.AddressTypeModal}
-          // style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
           onCloseModal={() => {
             this.setModalVisible({AddressTypeModal: false});
 					}}
-					/*
-          customButtons={[
-            {label: 'Save Test', textStyle: {color: colors.green}},
-            {label: 'Cancel', onPress: () => {
-              this.setModalVisible({AddressTypeModal: false});
-            }}
-					]}
-					*/
 					>
 					<View style={{ padding: 10, }}>
             <Heading textStyle={{marginBottom: 0, marginTop: 0, borderWidth: 0, borderColor: colors.red}}>{Language.translate('Address Type')}</Heading>
@@ -238,6 +227,8 @@ export default class AddressEdit extends React.Component {
             </View>
 					</View>
 				</Modal>
+
+				<Notice data={state.noticeMessage} />
         
 			</View>
 		);
@@ -278,19 +269,19 @@ export default class AddressEdit extends React.Component {
 		// Check for change in Address Type
 		const notice = (newData.streetName && newData.street) 
 			? (newData.isApt === (!!newData.street.isAptBuilding)
-				? '' : Language.translate('Changing "Address Type" will remove ') + (newData.street.isAptBuilding ? Language.translate('Building') : Language.translate('Street')))
+				? '' : Language.translate('Changing_Address_Type') + (newData.street.isAptBuilding ? Language.translate('Building') : Language.translate('Street')))
 				: '';
 
 		// if notice, show Notice prompt. On Notice OK, save new data
 		if (notice)
 		return this.setState({noticeMessage: {
 			title: Language.translate('Notice!'),
-			message: notice,
+			description: notice,
 			actions: [
-				{label: Language.translate("Cancel"), action: () => this.setState({noticeMessage: null})},
 				{label: Language.translate("Continue"), action: () => {
 					this.setState({data: newData, noticeMessage: null})
-				}, style: {float: 'right', backgroundColor: 'red', color: '#fff'}}
+				}, style: {backgroundColor: 'red'}, textStyle: {color: '#fff'}},
+				{label: Language.translate("Cancel"), action: () => this.setState({noticeMessage: null})}
 			]
 		}})
 

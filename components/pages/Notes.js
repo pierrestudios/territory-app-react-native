@@ -138,7 +138,7 @@ export default class Notes extends React.Component {
 		);
 	}
 	saveData = (data) => {
-		console.log('data', data);
+		// console.log('data', data);
 
     const newData = {...this.state.noteData, ...data};
 

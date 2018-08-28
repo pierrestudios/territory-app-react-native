@@ -1,7 +1,7 @@
 import Data from './data';
-import siteSettings from './settings';
+import getSiteSetting from './settings';
 
-const API_URL = siteSettings('apiPath') + '/';
+const API_URL = getSiteSetting('apiPath') + '/';
 
 export default (url, data, type = 'GET', headerData = undefined) => (
 	fetch( API_URL + url, {
