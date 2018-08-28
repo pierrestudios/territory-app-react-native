@@ -15,6 +15,7 @@ import AddressAdd from './components/pages/AddressAdd';
 import Notes from './components/pages/Notes';
 import TerritoryMap from './components/pages/TerritoryMap';
 import ApiWebView from './components/pages/ApiWebView';
+import TerritoryMapWebView from './components/pages/TerritoryMapWebView';
 
 import {colors} from './components/styles/main';
 
@@ -29,7 +30,8 @@ const App = createStackNavigator({
   AddressAdd: { screen: AddressAdd },
   Notes: { screen: Notes },
   TerritoryMap: { screen: TerritoryMap },
-  ApiWebView: { screen: ApiWebView }
+  ApiWebView: { screen: ApiWebView },
+  TerritoryMapWebView: { screen: TerritoryMapWebView}
 },
 {
   initialRouteName: 'Home',

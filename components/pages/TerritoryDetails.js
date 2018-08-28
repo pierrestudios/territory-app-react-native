@@ -206,11 +206,9 @@ export default class TerritoryDetails extends React.Component {
 		this.setState({shouldRender: 'Address', addressActive: null})
 	}
 	viewMap = () => {
-		return;
-		
 		this.props.entity && typeof this.props.entity.viewMap === 'function' ?
 		this.props.entity.viewMap() : 
-		NavigationService.navigate('TerritoryMap', {
+		NavigationService.navigate('TerritoryMapWebView', {
 			addressActive: this.state.data, 
 			territoryId: this.state.data.territoryId,
 		});
