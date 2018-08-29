@@ -209,8 +209,7 @@ export default class TerritoryDetails extends React.Component {
 		this.props.entity && typeof this.props.entity.viewMap === 'function' ?
 		this.props.entity.viewMap() : 
 		NavigationService.navigate('TerritoryMapWebView', {
-			addressActive: this.state.data, 
-			territoryId: this.state.data.territoryId,
+			data: this.state.data
 		});
 	}
 	openApiWebView = (url) => {
