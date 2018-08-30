@@ -139,7 +139,7 @@ export default class PopupNotice extends React.Component {
 						{data.title || 'Notice!'}
 					</HeadingBlue>
 					
-					<View style={styles['notice-box-message']}>{typeof data.description === 'string' ? <Text>{data.description}</Text> : null}</View>
+					<View style={styles['notice-box-message']}>{typeof data.description === 'string' ? <Text>{data.description}</Text> : data.description}</View>
 					
 					<Message error={data.errorMesage} message={data.message} />
 
