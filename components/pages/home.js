@@ -21,7 +21,7 @@ export default class Home extends React.Component {
 			headerLeft: (<View />), // To center on Andriod
 			headerRight: (
 				<ButtonHeader
-					onPress={() => {navigation.setParams({openUserInfo: !navigation.getParam('openUserInfo')})}}
+					onPress={() => {navigation.setParams({openUserInfo: !navigation.getParam('openUserInfo'), headerTriggered: true})}}
 					title={<FontAwesome name="user-circle" size={20} color="#fff" />}
 					color="#fff"
 				/>
@@ -60,12 +60,12 @@ export default class Home extends React.Component {
 	}
 	componentWillReceiveProps(props) {
 		// console.log('props', props);
-		if (props.navigation) {
+		if (props.navigation && !!props.navigation.getParam('headerTriggered')) {
 			this.setModalVisible(props.navigation.getParam('openUserInfo'))
 		}
 	}
   setModalVisible(visible) {
-    this.setState({modalVisible: visible}); // , () => this.props.navigation.setParams({openUserInfo: visible}) // Bug: causes crash
+    this.setState({modalVisible: visible}, () => this.props.navigation.setParams({openUserInfo: visible, headerTriggered: false})) // Bug: causes crash
   }
   goToPage(path) {
     NavigationService.navigate(path)
