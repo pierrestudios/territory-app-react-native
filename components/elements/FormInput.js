@@ -102,7 +102,7 @@ export const RadioBox = (props) => {
             customView={
               <View style={o.active ? activeOptStyle : style['input-options']}>
                 <Text style={o.active ? activeIconStyle : style['input-options-icon']}>
-                  <FontAwesome name="check-circle" size={24} />
+                  <FontAwesome name={(o['icon-name'] || "check-circle")} size={24} />
                 </Text>
                 <Text style={o.active ? activeLabelStyle : style['input-options-label']}>{o.label}</Text>
               </View>

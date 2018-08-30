@@ -141,9 +141,9 @@ export default class AddressEdit extends React.Component {
                 />
               </View>
             } options={[
-						{label: Language.translate('House'), value: "house", active: (!state.data.isApt && !state.data.apt && !state.data.isDuplex)},
-						{label: Language.translate('Apartment'), value: "apartment", active: state.data.isApt},
-						{label: Language.translate('Duplex'), value: "duplex", active: (!state.data.isApt && (state.data.apt || state.data.isDuplex))}
+						{label: Language.translate('House'), value: "house", 'icon-name': 'home', active: (!state.data.isApt && !state.data.apt && !state.data.isDuplex)},
+						{label: Language.translate('Apartment'), value: "apartment", 'icon-name': 'building', active: state.data.isApt},
+						{label: Language.translate('Duplex'), value: "duplex", 'icon-name': 'columns', active: (!state.data.isApt && (state.data.apt || state.data.isDuplex))}
 						]} onChange={this.saveAddressType} />
 
           {!state.data.isNewStreet ? 
