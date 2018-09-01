@@ -102,7 +102,7 @@ export default class Home extends React.Component {
 								<Button disabled key="publishers" onPress={() => this.goToPage("Publishers")} title={Language.translate('Publishers')} />,
 								<Button disabled key="boundaries" onPress={() => UTILS.openFrameUrl('boundaries')} title={Language.translate('Territory Map')} />,
 								<Button disabled key="s-13" onPress={() => UTILS.openFrameUrl('s-13')} title={Language.translate('Print_S-13', 'Print S-13 Form')} />,
-								<Button key="territories-all" onPress={() => this.goToPage("Territories-all")} title={Language.translate('All Territories')} />
+								<Button key="territories-all" onPress={() => this.goToPage("TerritoriesAll")} title={Language.translate('All Territories')} />
 							]: null}
 							<Button key="territories" onPress={() => this.goToPage("Territories")} title={Language.translate('My Territories')} /> 
 						</View>
