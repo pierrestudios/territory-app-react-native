@@ -23,21 +23,13 @@ export default class TerritoryMapWebView extends React.Component {
     // console.log('addressesStr', addressesStr);
     // console.log('boundariesStr', boundariesStr);
 
-    // const jsScript = `MapFn.init('${apiKey}', function(){MapFn.initializeMap(${addressesStr}, ${boundariesStr})});`;
-    // console.log('jsScript', jsScript);
-
     const jsScript2 = 'MapFn.initScript("https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&libraries=drawing,geometry&callback=MapFn.initGA", function(){MapFn.initializeMap(' + addressesStr + ', ' + boundariesStr + ')})';
 
     return (
       <WebView
-        // source={{html: testHtml}}
         source={html}
-        // ref={ref => (this.webview = ref)}
         geolocationEnabled={true}
         javaScriptEnabled={true}
-        // injecteJavaScript="alert(1)"
-        // injectedJavaScript="alert(1)"
-        // injectedJavaScript={jsScript}
         injectedJavaScript={jsScript2}
         onError={() => console.log('onError')}
         onLoadEnd={() => {
@@ -45,7 +37,7 @@ export default class TerritoryMapWebView extends React.Component {
         }}
         onLoadStart={() => console.log('onLoadStart')}
         onLoad={() => console.log('onLoad')}
-        onMessage={(event) => console.log('onMessage', event.nativeEvent.data)} // event.nativeEvent.data
+        // onMessage={(event) => console.log('onMessage', event.nativeEvent.data)}  
       />
     );
   }
