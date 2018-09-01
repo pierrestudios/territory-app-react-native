@@ -1,5 +1,15 @@
 {
   "expo": {
+    "name": "TerritoryApp",
+    "icon": "./assets/app-icon.png",
+    "version": "1.31",
+    "slug": "territory-app",
+    "ios": {
+      "bundleIdentifier": "pierrestudios.com.TerritoryApp.1"
+    },
+    "android": {
+      "package": "com.pierrestudios.jehu.territoryap"
+    },
     "sdkVersion": "27.0.0"
   }
 }
