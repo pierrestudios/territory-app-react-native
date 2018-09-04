@@ -36,6 +36,7 @@ export default styles = StyleSheet.create({
   },
   "scroll-view": {
     paddingVertical: 20,
+    maxWidth: '90%'
   },
   section: {
     flex: 1,
@@ -109,6 +110,7 @@ export default styles = StyleSheet.create({
   // Form Inputs
   "input": {
     minWidth: '90%',
+    // maxWidth: '90%',
     borderWidth: 1,
     borderRadius: 3,
     height: 50,
@@ -502,5 +504,11 @@ export default styles = StyleSheet.create({
     borderColor: '#ccc',
     borderTopWidth: 1,
     margin: 20
+  },
+
+  "line-blank": {
+    height: 2,
+    borderTopWidth: 0,
+    margin: 10
   }
 });
