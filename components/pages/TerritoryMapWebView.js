@@ -15,7 +15,7 @@ export default class TerritoryMapWebView extends React.Component {
   } 
   render() {
     const html = require('../../assets/map-view-web-page.html');
-    const apiKey = getSiteSetting('GOOGLE_API_KEY');
+    const apiKey = getSiteSetting('GAKey');
     const data = this.props.navigation.getParam('data');
     const addressesStr = `${JSON.stringify(data.addresses)}`;
     const boundariesStr = data.boundaries.toString();
