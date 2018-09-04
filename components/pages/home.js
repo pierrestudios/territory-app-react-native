@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, View, ScrollView, TouchableHighlight, SafeAreaView, StatusBar } from 'react-native';
-import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
+import { View, ScrollView, SafeAreaView, StatusBar } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 import Logo from '../elements/Logo';
-import {Button, ButtonLink, Link, ButtonHeader} from '../elements/Button';
+import {Button, ButtonLink, ButtonHeader} from '../elements/Button';
 import Heading from '../elements/Heading';
 import Loading from '../elements/Loading';
 import Modal from '../elements/Modal';
@@ -42,12 +42,10 @@ export default class Home extends React.Component {
 			Data.loadSavedUser()
 				.then(user => {
 					this.setState({user});
-					// console.log('componentWillMount:loadSavedUser.user', user);
 				})
 				.catch(UTILS.logError)
 		} else {
 			this.setState({user});
-			// console.log('componentWillMount:Data.user', user);
 		}
 	}
 	componentDidMount() {
