@@ -135,7 +135,11 @@ export const Switch = (props) => {
 
 export const SelectBox = (props) => {
   renderOptions = (options = []) => {
-    options.unshift({value: '', label: props.label})
+    // If no Label option, add it
+    if (!options.find(o => o.value === '' && o.label === props.label)) {
+      options.unshift({value: '', label: props.label})
+    }
+
     return options.map((o) => (
       <Picker.Item key={`${o.value}-key`} label={o.label} value={o.value} />
     ));
@@ -143,7 +147,9 @@ export const SelectBox = (props) => {
  
   return (
     <View>
-      <Text style={[style['label-medium'], style["text-color-blue"]]}>{props.label || props.placeholder}</Text>
+      {props.showLabel ? 
+        <Text style={[style['label-medium'], style["text-color-blue"]]}>{props.label || props.placeholder}</Text>
+      : null }
       <Picker
         prompt={props.label}
         selectedValue={props.value.value}
