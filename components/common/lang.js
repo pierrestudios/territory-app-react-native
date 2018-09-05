@@ -7,12 +7,14 @@ class Language {
 		if (!instance) {
 			instance = this;
 		}
-		this.lang = siteSettings('lang') || 'en';
-		this.settings = siteSettings();
+		UTILS.waitForIt(() => !!siteSettings(), () => {
+			this.lang = siteSettings('lang');
+			this.settings = siteSettings();
+		})
 	}
 	
 	translate = (key, defaultStr = '') => {
-		if (!this.settings['langPacks']) 
+		if (!this.settings || !this.settings['langPacks']) 
 			return defaultStr || key;
 
 		return this.settings['langPacks'][this.lang] && this.settings['langPacks'][this.lang][key] || this.settings['langPacks'][this.lang][UTILS.upperCaseFirst(key)] || defaultStr || key;
