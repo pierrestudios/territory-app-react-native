@@ -15,7 +15,6 @@ import TerritoryDetails from './components/pages/TerritoryDetails';
 import AddressEdit from './components/pages/AddressEdit';
 import AddressAdd from './components/pages/AddressAdd';
 import Notes from './components/pages/Notes';
-import TerritoryMap from './components/pages/TerritoryMap';
 import ApiWebView from './components/pages/ApiWebView';
 import TerritoryMapWebView from './components/pages/TerritoryMapWebView';
 
@@ -33,7 +32,6 @@ const App = createStackNavigator({
   AddressEdit: { screen: AddressEdit },
   AddressAdd: { screen: AddressAdd },
   Notes: { screen: Notes },
-  TerritoryMap: { screen: TerritoryMap },
   ApiWebView: { screen: ApiWebView },
   TerritoryMapWebView: { screen: TerritoryMapWebView}
 },
