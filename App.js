@@ -4,6 +4,8 @@ import {
 } from 'react-navigation';
 
 import Logo from './components/elements/Logo';
+import Splash from './components/pages/Splash';
+import UserPrefs from './components/pages/UserPrefs';
 import Login from './components/pages/Login';
 import Home from './components/pages/Home';
 import Users from './components/pages/Users';
@@ -20,6 +22,8 @@ import TerritoryMapWebView from './components/pages/TerritoryMapWebView';
 import {colors} from './components/styles/main';
 
 const App = createStackNavigator({
+  Splash: { screen: Splash },
+  UserPrefs: { screen: UserPrefs },
   Login: { screen: Login },
   Home: { screen: Home },
   Users: { screen: Users },
@@ -34,7 +38,7 @@ const App = createStackNavigator({
   TerritoryMapWebView: { screen: TerritoryMapWebView}
 },
 {
-  initialRouteName: 'Home',
+  initialRouteName: 'Splash',
   navigationOptions: {
     headerStyle: {
       backgroundColor: colors['territory-blue'],

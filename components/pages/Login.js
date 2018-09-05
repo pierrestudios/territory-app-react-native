@@ -1,8 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 
-// import IconEmail from 'preact-icons/lib/fa/envelope';
-// import IconPassword from 'preact-icons/lib/fa/key';
 import { FontAwesome } from '@expo/vector-icons';
 
 import Data from '../common/data';
@@ -19,7 +17,7 @@ import Loading from '../elements/Loading';
 import Line from '../elements/Line';
 
 import style from '../styles/main';
-import navService from '../common/nav-service';
+import NavigationService from '../common/nav-service';
 
 export default class Login extends React.Component {
 	static navigationOptions = {
@@ -53,21 +51,19 @@ export default class Login extends React.Component {
 		});
 
 		this.loadUserData();
-
-		/*
-		// console.log('History.location', History.location);
-		if (History.location && History.location.state && History.location.state.error)
-			this.setState({errors: {
-				...this.state.errors,
-				message: History.location.state.error
-			}});
-		*/
 	}
 	componentWillUpdate(props, state) {
-		// console.log('componentWillUpdate() props', props)
 		// console.log('componentWillUpdate() state', state)
-    if (!!state.data && !!state.data.token)
-      navService.navigate('Home')
+
+		const user = Data.unAuthUser;
+
+		if (!user || !user.apiUrl) {
+			NavigationService.navigate('UserPrefs')
+		}
+
+    if (!!state.data && !!state.data.token) {
+			NavigationService.navigate('Home')
+		}
 	}
 	render() {
     const state = this.state;
@@ -92,6 +88,7 @@ export default class Login extends React.Component {
 							<Link href="/password-retrieve" >{Language.translate('Lost your password')} </Link> 
 							<Text style={style["text-center"]}>{Language.translate('Or')}</Text> 
 							<Link href="/signup" >{Language.translate('Create an account')} </Link>
+							<Link onPress={() => NavigationService.navigate('UserPrefs')}>{Language.translate('Server Url')} </Link>
 						</View>
 
 					</ScrollView>

@@ -4,6 +4,7 @@ import UTILS from './utils';
 import NavigationService from './nav-service';
 
 let instance = null;
+
 class Data {
 	constructor() {
 		if (!instance) {
@@ -38,7 +39,7 @@ class Data {
 	loadSavedUser = async () => {
 		return this.getSavedUser()
 			.then(user => {
-				if (!user || !user.userId || !user.token) {
+				if ((!user || !user.userId || !user.token) && !!user.apiPath) {
 					this.reLogin();
 					return Promise.reject('Please log in');
 				}
@@ -50,8 +51,8 @@ class Data {
 		try {
 			const user = await AsyncStorage.getItem('user');
 			if (user) {
-				this.user = JSON.parse(user);
-				return this.user;
+				this._user = JSON.parse(user);
+				return this._user;
 			}
 		} catch (error) {
 			UTILS.logError(error);
@@ -63,7 +64,10 @@ class Data {
 				userType: user.userType,
 				userId: user.userId,
 				email: user.email,
-				token: user.token
+				token: user.token,
+				apiUrl: user.apiUrl,
+				apiPath: user.apiPath, 
+				lang: user.lang
 			}));
 			this.user = user;
 		} catch (error) {
@@ -106,7 +110,7 @@ class Data {
 			})
 			.catch(e => {
 				console.log('getApiData > catch() Error:', e);
-	
+
 				// Unauthorized
 				if (typeof e === 'string' && (e.match('Unauthorized') || e.match('Token has expired' )) ) {
 					return this.reLogin();
