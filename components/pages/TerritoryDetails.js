@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, Text, View } from 'react-native';
-import { FontAwesome, Ionicons, Feather } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, Feather } from 'react-native-vector-icons';
 import Swipeout from 'react-native-swipeout';
 
 import Data from '../common/data';
@@ -215,7 +215,7 @@ export default class TerritoryDetails extends React.Component {
 	openApiWebView = (url) => {
 		NavigationService.navigate('ApiWebView', {
 			url: url, 
-			data: this.state.data,
+			data: {...this.state.data, title: Language.translate('Territory')},
 		});
 	}
 

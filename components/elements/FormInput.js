@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TextInput as TextInputRN, Switch as SwitchRN, Picker } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 
-import { FontAwesome, EvilIcons, Feather } from '@expo/vector-icons';
+import { FontAwesome } from 'react-native-vector-icons';
 // import FaAlert from 'preact-icons/lib/fa/exclamation';
 
 import UTILS from '../common/utils';

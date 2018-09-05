@@ -1,12 +1,9 @@
 import React from 'react';
 import { Text, View, ScrollView, Alert } from 'react-native';
 
-// import IconEmail from 'preact-icons/lib/fa/envelope';
-// import IconPassword from 'preact-icons/lib/fa/key';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from 'react-native-vector-icons';
 
 import Data from '../common/data';
-import Api from '../common/api';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
 import NavigationService from '../common/nav-service';
@@ -63,7 +60,7 @@ export default class UserPrefs extends React.Component {
 	}
 	render() {
     const state = this.state;
-		console.log('UserPrefs:render() state', state)
+		// console.log('UserPrefs:render() state', state)
 
 		if (state.waitingForResponse)
 			return <Loading />;
@@ -152,7 +149,7 @@ export default class UserPrefs extends React.Component {
 			}, waitingForResponse: false});
 
 		// All good, validate
-		fetch( this.state.data['api-url'] + (this.state.data['api-url'].slice(-1) === '/' ? '' : '/') + 'validate')
+		fetch( this.state.data['api-url'] + UTILS.addSlashToUrl(this.state.data['api-url']) + 'validate')
 			.then(data => {
 				console.log('data', data)
 				if (!!data) {
@@ -161,7 +158,6 @@ export default class UserPrefs extends React.Component {
 					// Get "apiUrl" from "apiPath" (Server Url) by removing the version path (for now)
 					const apiPathSegs = apiPath.split('/');
 					const apiUrl = (apiPathSegs.slice(0, -1)).join('/');
-
 					// console.log('data save', {apiUrl, apiPath})
 
 					Data.saveUser({...Data.unAuthUser, apiUrl, apiPath, lang: this.state.data['language'].value });
@@ -172,7 +168,7 @@ export default class UserPrefs extends React.Component {
 							'Server Url Saved',
 							'Your "Server Url" has been saved',
 							[
-								{text: 'OK', onPress: () => NavigationService.navigate('Login')} // {this.setState({waitingForResponse: false}, () => console.log('Alert:Ok'))}},
+								{text: 'OK', onPress: () => NavigationService.navigate('Login')}
 							],
 							// { cancelable: false }
 						);

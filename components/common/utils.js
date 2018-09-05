@@ -128,13 +128,14 @@ export default {
 		);
   },
   openFrameUrl(url) {
-    /*History.push({
-      pathname: '/api-frame/' + url
-    });*/
+    // disable
   },
 	navigateToUrl(url) {
 		window.open(window.location.protocol + '//'+ window.location.host + url, '_blank');
 		return false;
+  },
+  addSlashToUrl(url) {
+    return url + (url.slice(-1) === '/' ? '' : '/');
   },
   loadExternalScript(url, propName) {
     return new Promise((resolve, reject) => { 
