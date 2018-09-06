@@ -37,7 +37,7 @@ class AnimatedModal extends React.Component {
           opacity: fadeAnim, 
         }]}>
         <KeyboardAwareScrollView 
-          contentContainerStyle={[styles["scroll-view"]]}
+          contentContainerStyle={[styles["scroll-view"], {maxWidth: '100%'}]}
           // keyboardShouldPersistTaps="always"
           keyboardDismissMode="interactive"
           // alwaysBounceVertical={true}
