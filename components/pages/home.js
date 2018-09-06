@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, SafeAreaView, StatusBar } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import { FontAwesome } from 'react-native-vector-icons';
 
 import Logo from '../elements/Logo';
@@ -85,7 +85,7 @@ export default class Home extends React.Component {
 		)
 
 		return ( 
-			<SafeAreaView style={[ { backgroundColor: '#ecf0f1' }]}>
+			<SafeAreaView style={[styles.container, { backgroundColor: '#ecf0f1' }]}>
         <StatusBar
           barStyle="light-content"
 				/>
@@ -104,7 +104,12 @@ export default class Home extends React.Component {
 							]: null}
 							<Button key="territories" onPress={() => this.goToPage("Territories")} title={Language.translate('My Territories')} /> 
 						</View>
-						] : <Heading>{Language.translate('You don\'t have privilege to manage territories')}</Heading>
+						] : [
+							<Heading key="no-territories" >{Language.translate('No territories')}</Heading>,
+							<View key="menu-nav" style={[styles["main-menu"], {}]}>
+								<Text textStyle={{fontSize: 16}}>{Language.translate('You don\'t have privilege to manage territories')}</Text>
+							</View>
+						]
 					}
 				</ScrollView>
 				
@@ -119,7 +124,21 @@ export default class Home extends React.Component {
 						<Heading textStyle={{marginBottom: 20, marginTop: 0}}>{Language.translate('My User Account')}</Heading>
 
 						<ButtonLink
-							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, borderColor: colors["grey-lite"], borderWidth: 1}]}
+							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
+							onPress={() => {
+								NavigationService.navigate('UserPrefs');
+							}}>{Language.translate('Settings')} 
+						</ButtonLink>
+
+						<ButtonLink
+							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
+							onPress={() => {
+								NavigationService.navigate('Login');
+							}}>{Language.translate('Account')} 
+						</ButtonLink>
+
+						<ButtonLink
+							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
 							// textStyle={[styles["heading-button-link-text"],{borderColor: colors["red"], borderWidth: 1}]}
 							onPress={() => {
 								this.sendLogout();

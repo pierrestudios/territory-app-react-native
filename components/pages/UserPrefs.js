@@ -7,7 +7,7 @@ import Data from '../common/data';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
 import NavigationService from '../common/nav-service';
-import getSiteSetting from '../common/settings';
+import getSiteSetting, {userData} from '../common/settings';
 
 import Logo from '../elements/Logo';
 import {TextInput, SelectBox} from '../elements/FormInput'; 
@@ -44,18 +44,19 @@ export default class UserPrefs extends React.Component {
 		// Hardcode for now
 		// TODO: store the language name in the JSON files
 
-		const user = Data.unAuthUser;
 		const languageLabels = {
 			en: 'English',
 			creole: 'Creole'
 		};
 		const languages = getSiteSetting('languages');
-		const defaultLang = !!user && user.lang || getSiteSetting('defaultLang');
+		const apiPath = getSiteSetting('apiPath');
+		const lang = getSiteSetting('lang');
+		const defaultLang = lang || getSiteSetting('defaultLang');
 		this.setState({languages: languages ? Object.keys(languages).map(l => ({
 				value: l, label: languageLabels[l]
 			})) : [],
 			// Set Default Lang "language" and get "api-url"
-			data: {...this.state.data, language: this.state.data.language || {value: defaultLang, label: languageLabels[defaultLang]}, "api-url": user.apiPath},
+			data: {...this.state.data, language: this.state.data.language || {value: defaultLang, label: languageLabels[defaultLang]}, "api-url": apiPath},
 		});
 	}
 	render() {
@@ -65,16 +66,19 @@ export default class UserPrefs extends React.Component {
 		if (state.waitingForResponse)
 			return <Loading />;
 
-		return (
+		const apiPath = getSiteSetting('apiPath');
+		const user = Data.user;
+
+			return (
 			<View style={[style.container]}>
 				<Heading>{Language.translate('Account Settings')}</Heading>
         	<ScrollView contentContainerStyle={style["scroll-view"]}>
 						<Message error={state.errors.message} message={state.data.message} />
-						<TextInput showLabel={false} name="api-url" placeholder={Language.translate('Server Url')} onInput={this.saveData} value={this.state.data['api-url']} error={this.state.errors['api-url']} />
+						<TextInput showLabel={true} name="api-url" placeholder={Language.translate('Server Url')} onInput={this.saveData} value={this.state.data['api-url']} error={this.state.errors['api-url']} />
 						{/* <TextInput name="api-version" placeholder={Language.translate('Version')} onInput={this.saveData} value={this.state.data['api-version']} error={this.state.errors['api-version']} icon={{el: FontAwesome, name:"key"}} /> */}
 						<SelectBox 
               name="language" 
-              showLabel={false} 
+              showLabel={true} 
               label={Language.translate('Select Language')} 
               options={state.languages} 
 							value={{value: state.data.language.value, label: state.data.language.label}} 
@@ -89,11 +93,12 @@ export default class UserPrefs extends React.Component {
 						<Line />
 
 						<View style={style['inner-content']}> 
-							<Link onPress={() => NavigationService.navigate('Login')}>{Language.translate('Sign in')} </Link>
-							{/* http://www.territory-app.net/ */}
-							<FontAwesome.Button name="info-circle" size={20} onPress={() => console.log('Information')} color={colors["territory-blue"]} underlayColor={'transparent'} backgroundColor={'transparent'} iconStyle={{marginRight: 10}} style={{justifyContent: 'center'}}>
-								{Language.translate('More Information')} 
-							</FontAwesome.Button>
+							{!!apiPath && (!user || !user.token) ? 
+								<Link onPress={() => NavigationService.navigate('Login')} textStyle={{fontSize: 16}}>{Language.translate('Sign in')} </Link>
+							: !!user || !!user.token ? 
+									<Link onPress={() => NavigationService.navigate('Home')} textStyle={{fontSize: 16}}>{Language.translate('Home')} </Link>
+							: null }
+							<Link onPress={() => NavigationService.navigate('WebViewExternal', {url: 'http://www.territory-app.net/'})} textStyle={{fontSize: 16}}>{Language.translate('More Information')} </Link>
 						</View>
 
 					</ScrollView>
@@ -160,19 +165,31 @@ export default class UserPrefs extends React.Component {
 					const apiUrl = (apiPathSegs.slice(0, -1)).join('/');
 					// console.log('data save', {apiUrl, apiPath})
 
+					// Save the user data, first
 					Data.saveUser({...Data.unAuthUser, apiUrl, apiPath, lang: this.state.data['language'].value });
 
+					// Wait for the user data to save
 					UTILS.waitForIt(() => Data.unAuthUser.apiUrl === apiUrl, () => {
-						console.log('Alert:start')
-						Alert.alert(
-							'Server Url Saved',
-							'Your "Server Url" has been saved',
-							[
-								{text: 'OK', onPress: () => NavigationService.navigate('Login')}
-							],
-							// { cancelable: false }
-						);
-					});
+
+						// Then reload the Settings for the app
+						userData.loadSavedUser();
+
+						// Wait for the Settings to load
+						UTILS.waitForIt(() => getSiteSetting('apiPath') === apiPath && getSiteSetting('lang') === this.state.data['language'].value, () => {
+							console.log('Alert:start')
+							console.log('getSiteSetting(lang)', getSiteSetting('lang'));
+							Alert.alert(
+								'Settings Saved',
+								'Your Settings has been saved',
+								[
+									{text: 'OK', onPress: () => NavigationService.navigate('Login')}
+								],
+								// { cancelable: false }
+							);
+
+						});
+
+					});	
 
 				} else {
 					const errorMessage = typeof e === 'string' ? e : Language.translate('Server Url is not correct');

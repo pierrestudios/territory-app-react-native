@@ -7,6 +7,8 @@ import Data from '../common/data';
 import Api from '../common/api';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
+import getSiteSetting from '../common/settings';
+import NavigationService from '../common/nav-service';
 
 import Logo from '../elements/Logo';
 import {EmailInput, PasswordInput} from '../elements/FormInput'; 
@@ -17,7 +19,6 @@ import Loading from '../elements/Loading';
 import Line from '../elements/Line';
 
 import style from '../styles/main';
-import NavigationService from '../common/nav-service';
 
 export default class Login extends React.Component {
 	static navigationOptions = {
@@ -72,6 +73,9 @@ export default class Login extends React.Component {
 		if (state.waitingForResponse)
 			return <Loading />;
 
+		const apiPath = getSiteSetting('apiPath');
+		const user = Data.user;	
+
 		return (
 			<View style={[style.container]}>
 				<Heading>{Language.translate('Sign in')}</Heading>
@@ -85,10 +89,13 @@ export default class Login extends React.Component {
 						<Line />
 
 						<View style={style['inner-content']}>
-							<Link href="/password-retrieve" >{Language.translate('Lost your password')} </Link> 
-							<Text style={style["text-center"]}>{Language.translate('Or')}</Text> 
-							<Link href="/signup" >{Language.translate('Create an account')} </Link>
-							<Link onPress={() => NavigationService.navigate('UserPrefs')}>{Language.translate('Server Url')} </Link>
+							{!!apiPath && (!user || !user.token) ? [
+								<Link key="PasswordRetrieve" onPress={() => NavigationService.navigate('PasswordRetrieve')}  textStyle={{fontSize: 16}}>{Language.translate('Lost your password')} </Link>, 
+								<Link key="Signup" onPress={() => NavigationService.navigate('Signup')} textStyle={{fontSize: 16}}>{Language.translate('Create an account')} </Link>
+							] : !!user || !!user.token ? 
+									<Link onPress={() => NavigationService.navigate('Home')} textStyle={{fontSize: 16}}>{Language.translate('Home')} </Link>
+							: null }
+							<Link onPress={() => NavigationService.navigate('UserPrefs')} textStyle={{fontSize: 16}}>{Language.translate('Server Url')} </Link>
 						</View>
 
 					</ScrollView>
