@@ -67,7 +67,7 @@ class UserData {
 		}
 	}
 	getSetting(key) {
-		console.log('getSetting:key', key);
+		// console.log('getSetting:key', key);
 		
 		if (!!this._settings && !!key) 
 			return this._settings[key]

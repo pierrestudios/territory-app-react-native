@@ -176,8 +176,8 @@ export default class UserPrefs extends React.Component {
 
 						// Wait for the Settings to load
 						UTILS.waitForIt(() => getSiteSetting('apiPath') === apiPath && getSiteSetting('lang') === this.state.data['language'].value, () => {
-							console.log('Alert:start')
-							console.log('getSiteSetting(lang)', getSiteSetting('lang'));
+							// console.log('Alert:start')
+							// console.log('getSiteSetting(lang)', getSiteSetting('lang'));
 							Alert.alert(
 								'Settings Saved',
 								'Your Settings has been saved',
