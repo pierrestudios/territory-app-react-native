@@ -1,10 +1,15 @@
 import Data from './data';
 import getSiteSetting from './settings';
+import UTILS from './utils';
 
-const API_URL = getSiteSetting('apiPath') + '/';
+export default (url, data, type = 'GET', headerData = undefined) => {
+	const API_URL = getSiteSetting('apiPath');
 
-export default (url, data, type = 'GET', headerData = undefined) => (
-	fetch( API_URL + url, {
+	if (!API_URL) {
+		return Promise.reject('"Server Url" is not set');
+	}
+
+	return fetch( UTILS.addSlashToUrl(API_URL) + url, {
 		method: type,
 		headers: {
 			...headerData,
@@ -13,9 +18,7 @@ export default (url, data, type = 'GET', headerData = undefined) => (
 		body: data ? JSON.stringify(data) : undefined // Fix for Edge "TypeMismatchError"
 	})
 		.then((res) => {
-			console.log('res', res);
-			// const json = res.json();
-			// console.log('json', json);
+			// console.log('res', res);
 			// catch HTTP "Token" Errors
 			if (!res.ok && (!!res.statusText && (res.statusText.match('Token') || res.statusText.match('Unauthorized')))) {
 				Data.reLogin();
@@ -72,7 +75,7 @@ export default (url, data, type = 'GET', headerData = undefined) => (
 
 			return Promise.reject(e);
 		})
-);
+};
 
 export const FileUpload = (url, formData, headerData) => (
 	fetch('/api/' + url, {
