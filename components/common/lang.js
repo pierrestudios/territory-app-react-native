@@ -1,8 +1,9 @@
 import siteSettings from './settings';
 import UTILS from './utils';
 
-let instance = null;
+// let instance = null;
 class Language {
+	/*
 	constructor() {
 		if (!instance) {
 			instance = this;
@@ -12,8 +13,12 @@ class Language {
 			this.settings = siteSettings();
 		})
 	}
+	*/
 	
-	translate = (key, defaultStr = '') => {
+	static translate = (key, defaultStr = '') => {
+		this.lang = siteSettings('lang');
+		this.settings = siteSettings();
+
 		if (!this.settings || !this.settings['langPacks']) 
 			return defaultStr || key;
 
@@ -21,4 +26,4 @@ class Language {
 	}
 }
 
-export default new Language();
+export default Language;
