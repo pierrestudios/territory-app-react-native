@@ -3,6 +3,8 @@ import Api from './api';
 import UTILS from './utils';
 import NavigationService from './nav-service';
 
+// import FakeData from './fake-data';
+
 let instance = null;
 
 class Data {
@@ -33,9 +35,11 @@ class Data {
 	get unAuthUser() {
 		return this._user;
 	}
+	/*
 	set user(data) {
 		this._user = data;
 	}
+	*/
 	loadSavedUser = async () => {
 		return this.getSavedUser()
 			.then(user => {
@@ -59,17 +63,21 @@ class Data {
 		}
 	}
 	saveUser = async (user) => {
-		try {
-			await AsyncStorage.setItem('user', JSON.stringify({ // Save without Promise data
+		try { 
+			const newUser = { 
 				userType: user.userType,
 				userId: user.userId,
 				email: user.email,
 				token: user.token,
-				apiUrl: user.apiUrl,
-				apiPath: user.apiPath, 
-				lang: user.lang
-			}));
-			this.user = user;
+
+				// Preferences may be null in new data, use old data
+				apiUrl: user.apiUrl || this._user.apiUrl,
+				apiPath: user.apiPath || this._user.apiPath, 
+				lang: user.lang || this._user.lang
+			}
+			await AsyncStorage.setItem('user', JSON.stringify(newUser));
+			// console.log('newUser', newUser);
+			this._user = newUser;
 		} catch (error) {
 			UTILS.logError(error);
 		}
@@ -111,6 +119,21 @@ class Data {
 			.catch(e => {
 				console.log('getApiData > catch() Error:', e);
 
+				console.log('url', url);
+				/*
+				// console.log('FakeData', {t: FakeData.territories.length, terr: FakeData.territory})
+
+				if (url === 'territories' || url === 'territories/filter') 
+					return Promise.resolve(FakeData.territories.data);
+
+				if (url.match('territories') !== false)
+					return Promise.resolve(FakeData.territory.data);
+
+				return;
+				*/
+
+				// console.log('Api', {url, data, type, header: {Authorization: 'Bearer ' + this.user.token}});
+	
 				// Unauthorized
 				if (typeof e === 'string' && (e.match('Unauthorized') || e.match('Token has expired' )) ) {
 					return this.reLogin();
