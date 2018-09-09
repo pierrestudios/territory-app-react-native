@@ -95,7 +95,7 @@ export default class UserPrefs extends React.Component {
 						<View style={style['inner-content']}> 
 							{!!apiPath && (!user || !user.token) ? 
 								<Link onPress={() => NavigationService.navigate('Login')} textStyle={{fontSize: 16}}>{Language.translate('Sign in')} </Link>
-							: !!user || !!user.token ? 
+							: !!user && !!user.token ? 
 									<Link onPress={() => NavigationService.navigate('Home')} textStyle={{fontSize: 16}}>{Language.translate('Home')} </Link>
 							: null }
 							<Link onPress={() => NavigationService.navigate('WebViewExternal', {url: 'http://www.territory-app.net/'})} textStyle={{fontSize: 16}}>{Language.translate('More Information')} </Link>
@@ -154,7 +154,7 @@ export default class UserPrefs extends React.Component {
 			}, waitingForResponse: false});
 
 		// All good, validate
-		fetch( this.state.data['api-url'] + UTILS.addSlashToUrl(this.state.data['api-url']) + 'validate')
+		fetch( UTILS.addSlashToUrl(this.state.data['api-url']) + 'validate')
 			.then(data => {
 				console.log('data', data)
 				if (!!data) {
@@ -178,11 +178,12 @@ export default class UserPrefs extends React.Component {
 						UTILS.waitForIt(() => getSiteSetting('apiPath') === apiPath && getSiteSetting('lang') === this.state.data['language'].value, () => {
 							// console.log('Alert:start')
 							// console.log('getSiteSetting(lang)', getSiteSetting('lang'));
+							const user = Data.user;
 							Alert.alert(
 								'Settings Saved',
 								'Your Settings has been saved',
 								[
-									{text: 'OK', onPress: () => NavigationService.navigate('Login')}
+									{text: 'OK', onPress: () => !!user && !!user.token ? NavigationService.navigate('Home') : NavigationService.navigate('Login')}
 								],
 								// { cancelable: false }
 							);
