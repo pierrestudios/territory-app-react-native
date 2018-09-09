@@ -61,10 +61,6 @@ export default class Login extends React.Component {
 		if (!user || !user.apiUrl) {
 			NavigationService.navigate('UserPrefs')
 		}
-
-    if (!!state.data && !!state.data.token) {
-			NavigationService.navigate('Home')
-		}
 	}
 	render() {
     const state = this.state;
@@ -75,31 +71,32 @@ export default class Login extends React.Component {
 
 		const apiPath = getSiteSetting('apiPath');
 		const user = Data.user;	
+		const isLoggedIn = !!user && !!user.token;
 
 		return (
 			<View style={[style.container]}>
 				<Heading>{Language.translate('Sign in')}</Heading>
-				{!!state.data && !!state.data.token ? <Link href="/">{Language.translate('Home', 'Home')}</Link> :
         <ScrollView contentContainerStyle={style["scroll-view"]}>
-						<Message error={state.errors.message} message={state.data.message} />
-						<EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: FontAwesome, name:"envelope"}} />
-						<PasswordInput name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={{el: FontAwesome, name:"key"}} />
-						<Button onPress={this.sendLogin}>{Language.translate('Sign in')}</Button>
+					<Message error={state.errors.message} message={state.data.message} />
+					<EmailInput disabled={isLoggedIn} name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: FontAwesome, name:"envelope"}} />
+					{isLoggedIn ? null : [
+						<PasswordInput key="password" name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={{el: FontAwesome, name:"key"}} />,
+						<Button key="send-login" onPress={this.sendLogin}>{Language.translate('Sign in')}</Button>
+					]}
 
-						<Line />
+					<Line />
 
-						<View style={style['inner-content']}>
-							{!!apiPath && (!user || !user.token) ? [
-								<Link key="PasswordRetrieve" onPress={() => NavigationService.navigate('PasswordRetrieve')}  textStyle={{fontSize: 16}}>{Language.translate('Lost your password')} </Link>, 
-								<Link key="Signup" onPress={() => NavigationService.navigate('Signup')} textStyle={{fontSize: 16}}>{Language.translate('Create an account')} </Link>
-							] : !!user || !!user.token ? 
-									<Link onPress={() => NavigationService.navigate('Home')} textStyle={{fontSize: 16}}>{Language.translate('Home')} </Link>
-							: null }
-							<Link onPress={() => NavigationService.navigate('UserPrefs')} textStyle={{fontSize: 16}}>{Language.translate('Server Url')} </Link>
-						</View>
+					<View style={style['inner-content']}>
+						{!!apiPath && (!user || !user.token) ? [
+							<Link key="PasswordRetrieve" onPress={() => NavigationService.navigate('PasswordRetrieve')}  textStyle={{fontSize: 16}}>{Language.translate('Lost your password')} </Link>, 
+							<Link key="Signup" onPress={() => NavigationService.navigate('Signup')} textStyle={{fontSize: 16}}>{Language.translate('Create an account')} </Link>
+						] : isLoggedIn ? 
+								<Link onPress={() => NavigationService.navigate('Home')} textStyle={{fontSize: 16}}>{Language.translate('Home')} </Link>
+						: null }
+						<Link onPress={() => NavigationService.navigate('UserPrefs')} textStyle={{fontSize: 16}}>{Language.translate('Server Url')} </Link>
+					</View>
 
-					</ScrollView>
-				}
+				</ScrollView>
 			</View>
 		);
 	}
@@ -139,8 +136,6 @@ export default class Login extends React.Component {
 			.then(data => {
 				// console.log('data', data)
 				if (data && data.token) {
-					// if (History.location.state && History.location.state.error)
-						// History.location.state.error = '';
 
 					// Get User data
 					Api('auth-user', null, 'GET', {Authorization: 'Bearer ' + data.token})
@@ -151,7 +146,7 @@ export default class Login extends React.Component {
 
 						// Need to wait for "saveUser" to complete before switching screen
 						UTILS.waitForIt(() => !!Data.user && !!Data.user.token, () => {
-							this.setState({data: newData, waitingForResponse: false});
+							this.setState({data: newData, waitingForResponse: false}, () => NavigationService.navigate('Home'));
 						});
 					});
 				}
