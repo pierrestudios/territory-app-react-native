@@ -164,14 +164,6 @@ export default styles = StyleSheet.create({
     marginBottom: 5
   },
 
-  errors: {
-    padding: 10,
-    marginTop: 5,
-    borderRadius: 3,
-    marginBottom: 5,
-    backgroundColor: colors.red
-  },
-
   "input-errors": {    
     marginTop: -5,
     borderBottomRightRadius: 3,
@@ -510,5 +502,21 @@ export default styles = StyleSheet.create({
     height: 2,
     borderTopWidth: 0,
     margin: 10
-  }
+  },
+
+  errors: {
+    padding: 10,
+    marginTop: 5,
+    borderRadius: 3,
+    marginBottom: 5,
+    backgroundColor: colors.red
+  },
+  
+  success: {
+    padding: 10,
+    marginTop: 5,
+    borderRadius: 3,
+    marginBottom: 5,
+    backgroundColor: colors.green
+  },
 });

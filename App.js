@@ -6,6 +6,7 @@ import {
 import Logo from './components/elements/Logo';
 import Splash from './components/pages/Splash';
 import UserPrefs from './components/pages/UserPrefs';
+import PasswordRetrieve from './components/pages/PasswordRetrieve';
 import Signup from './components/pages/Signup';
 import Login from './components/pages/Login';
 import Home from './components/pages/Home';
@@ -24,6 +25,7 @@ import {colors} from './components/styles/main';
 const App = createStackNavigator({
   Splash: { screen: Splash },
   UserPrefs: { screen: UserPrefs },
+  PasswordRetrieve: { screen: PasswordRetrieve },
   Signup: { screen: Signup },
   Login: { screen: Login },
   Home: { screen: Home },
