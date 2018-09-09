@@ -224,7 +224,8 @@ export const NumberInput = (props) => {
 export const TextInput = (props) => {
   const finalProps = {
     ...props,
-    underlineColorAndroid: 'transparent', // 
+    underlineColorAndroid: 'transparent', // Hide underline on Android
+    editable: !props.disabled,
     inlineImageLeft: null, // The image resource must be inside /android/app/src/main/res/drawable and referenced like (inlineImageLeft='search_icon')
     onChangeText: (value) => props.onInput({[props.name]: value}), 
     placeholder: (props.removePlaceholder ? "" : (props.placeholder || props.label)),
