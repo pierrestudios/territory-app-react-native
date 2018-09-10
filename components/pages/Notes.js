@@ -119,7 +119,7 @@ export default class Notes extends React.Component {
 							onChange={this.saveData} />  
               
             {state.user.isManager ?	
-            <Switch label={Language.translate('Retain Note')} name="retain" onChange={this.saveData} value={this.state.noteData.retain}/>
+            <Switch label={Language.translate('Essential Note')} name="retain" onChange={this.saveData} value={this.state.noteData.retain}/>
             : null }
 
           </View>

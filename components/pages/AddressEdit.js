@@ -203,7 +203,7 @@ export default class AddressEdit extends React.Component {
 					: null}
 
 					{state.user.isManager && !state.data.addressId ?	
-						<Switch label={Language.translate('Retain Note')} name="retain" onChange={this.saveData} value={state.noteData.retain} />
+						<Switch label={Language.translate('Essential Note')} name="retain" onChange={this.saveData} value={state.noteData.retain} />
 					: null }
 
           {/*** End Notes ***/}
