@@ -154,10 +154,11 @@ export default class TerritoryDetails extends React.Component {
 			<View style={[style.section, style.content]}>
 				<View style={style['territory-heading']}>
           <ButtonLink onPress={this.viewMap} customStyle={[style["heading-button-link"], style['view-map-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('Map')} </ButtonLink>
+					{/** Note: Issues with PDF and CSV buttons - WebViews cannot handle download of files (.pdf and .csv) **/}
 					{/*
           {state.user.isManager ? [
-            <ButtonLink key="pdf-button" onPress={() => this.openApiWebView(`pdf/${state.data.number}`)} customStyle={[style["heading-button-link"], style['pdf-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('PDF')} </ButtonLink>,
-            <ButtonLink key="csv-button" onPress={() => this.openApiWebView(`csv/${state.data.number}`)} customStyle={[style["heading-button-link"], style['csv-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('CSV')} </ButtonLink>
+            <ButtonLink key="pdf-button" onPress={() => this.openWebViewApi(`pdf/${state.data.number}`)} customStyle={[style["heading-button-link"], style['pdf-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('PDF')} </ButtonLink>,
+            <ButtonLink key="csv-button" onPress={() => this.openWebViewApi(`csv/${state.data.number}`)} customStyle={[style["heading-button-link"], style['csv-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('CSV')} </ButtonLink>
 					] : null }
 					*/}
           <View style={style['heading-number']}><Text style={style["listings-number-text"]}>{state.data.number}</Text></View>
@@ -208,12 +209,12 @@ export default class TerritoryDetails extends React.Component {
 	viewMap = () => {
 		this.props.entity && typeof this.props.entity.viewMap === 'function' ?
 		this.props.entity.viewMap() : 
-		NavigationService.navigate('TerritoryMapWebView', {
+		NavigationService.navigate('WebViewTerritoryMap', {
 			data: this.state.data
 		});
 	}
-	openApiWebView = (url) => {
-		NavigationService.navigate('ApiWebView', {
+	openWebViewApi = (url) => {
+		NavigationService.navigate('WebViewApi', {
 			url: url, 
 			data: {...this.state.data, title: Language.translate('Territory')},
 		});
