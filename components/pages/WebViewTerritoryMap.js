@@ -5,7 +5,7 @@ import Language from '../common/lang';
 import UTILS from '../common/utils';
 import getSiteSetting from '../common/settings';
 
-export default class TerritoryMapWebView extends React.Component {
+export default class WebViewTerritoryMap extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,

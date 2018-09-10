@@ -98,7 +98,9 @@ export default class UserPrefs extends React.Component {
 							: !!user && !!user.token ? 
 									<Link onPress={() => NavigationService.navigate('Home')} textStyle={{fontSize: 16}}>{Language.translate('Home')} </Link>
 							: null }
-							<Link onPress={() => NavigationService.navigate('WebViewExternal', {url: 'http://www.territory-app.net/'})} textStyle={{fontSize: 16}}>{Language.translate('More Information')} </Link>
+							<Link onPress={() => NavigationService.navigate('WebViewExternal', {
+								url: 'http://www.territory-app.net/', title: 'More Information'
+							})} textStyle={{fontSize: 16}}>{Language.translate('More Information')} </Link>
 						</View>
 
 					</ScrollView>

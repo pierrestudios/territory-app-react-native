@@ -123,6 +123,13 @@ export default class Home extends React.Component {
 					<View style={styles["modal-view"]}>
 						<Heading textStyle={{marginBottom: 20, marginTop: 0}}>{Language.translate('My User Account')}</Heading>
 
+						<ButtonLink 
+							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
+							onPress={() => NavigationService.navigate('WebViewExternal', {
+								url: 'http://www.territory-app.net/', title: 'More Information'
+							})}>{Language.translate('About')} 
+						</ButtonLink>
+					
 						<ButtonLink
 							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
 							onPress={() => {

@@ -17,8 +17,9 @@ import TerritoryDetails from './components/pages/TerritoryDetails';
 import AddressEdit from './components/pages/AddressEdit';
 import AddressAdd from './components/pages/AddressAdd';
 import Notes from './components/pages/Notes';
-import ApiWebView from './components/pages/ApiWebView';
-import TerritoryMapWebView from './components/pages/TerritoryMapWebView';
+import WebViewApi from './components/pages/WebViewApi';
+import WebViewExternal from './components/pages/WebViewExternal';
+import WebViewTerritoryMap from './components/pages/WebViewTerritoryMap';
 
 import {colors} from './components/styles/main';
 
@@ -36,8 +37,9 @@ const App = createStackNavigator({
   AddressEdit: { screen: AddressEdit },
   AddressAdd: { screen: AddressAdd },
   Notes: { screen: Notes },
-  ApiWebView: { screen: ApiWebView },
-  TerritoryMapWebView: { screen: TerritoryMapWebView}
+  WebViewApi: { screen: WebViewApi },
+  WebViewExternal: { screen: WebViewExternal },
+  WebViewTerritoryMap: { screen: WebViewTerritoryMap}
 },
 {
   initialRouteName: 'Splash',
