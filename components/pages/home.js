@@ -90,6 +90,9 @@ export default class Home extends React.Component {
           barStyle="light-content"
 				/>
 
+				{/** Note: WebView cannot handle PDF download **/}
+				{/* <Button disabled key="s-13" onPress={() => UTILS.openFrameUrl('s-13')} title={Language.translate('Print_S-13', 'Print S-13 Form')} />, */}
+				
 				<ScrollView contentContainerStyle={styles["scroll-view"]} key="home-page">
 					{this.state.user && this.state.user.isNoteEditor ?
 						[
@@ -97,9 +100,10 @@ export default class Home extends React.Component {
 						<View key="menu-nav" style={styles["main-menu"]}>
 							{this.state.user.isAdmin ? <Button disabled key="users" onPress={() => this.goToPage("Users")} title={Language.translate('Users')} /> : null}
 							{this.state.user.isManager ? [
-								<Button disabled key="publishers" onPress={() => this.goToPage("Publishers")} title={Language.translate('Publishers')} />,
-								<Button disabled key="boundaries" onPress={() => UTILS.openFrameUrl('boundaries')} title={Language.translate('Territory Map')} />,
-								<Button disabled key="s-13" onPress={() => UTILS.openFrameUrl('s-13')} title={Language.translate('Print_S-13', 'Print S-13 Form')} />,
+								<Button key="publishers" onPress={() => this.goToPage("Publishers")} title={Language.translate('Publishers')} />,
+								<Button key="boundaries" onPress={() => NavigationService.navigate('WebViewApi', {
+									url: 'boundaries', title: Language.translate('Territory Map')
+								})} title={Language.translate('Territory Map')} />,
 								<Button key="territories-all" onPress={() => this.goToPage("TerritoriesAll")} title={Language.translate('All Territories')} />
 							]: null}
 							<Button key="territories" onPress={() => this.goToPage("Territories")} title={Language.translate('My Territories')} /> 
@@ -126,7 +130,7 @@ export default class Home extends React.Component {
 						<ButtonLink 
 							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
 							onPress={() => NavigationService.navigate('WebViewExternal', {
-								url: 'http://www.territory-app.net/', title: 'More Information'
+								url: 'http://www.territory-app.net/', title: Language.translate('More Information')
 							})}>{Language.translate('About')} 
 						</ButtonLink>
 					
