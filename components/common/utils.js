@@ -99,6 +99,16 @@ export default {
   getDateSingleDigit(dateInt) {
     return dateInt < 10 ? "0" + dateInt : dateInt;
   },
+  isPassedDueDate(date) {
+    var d = new Date(); 
+      d.setMonth(d.getMonth() - 3);
+    const passDueDate = d.toDateString();
+    if (!/Invalid|NaN/.test(new Date(date))) {
+      return new Date(date) < new Date(passDueDate);
+    }
+
+    return false; // For invalid date
+  },
   getStreetsList(addresses) {
 		const streetsList = [];
 		addresses

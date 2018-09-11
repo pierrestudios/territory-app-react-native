@@ -11,6 +11,10 @@ import Signup from './components/pages/Signup';
 import Login from './components/pages/Login';
 import Home from './components/pages/Home';
 import Users from './components/pages/Users';
+import Publishers from './components/pages/Publishers';
+import PublisherDetails from './components/pages/PublisherDetails';
+import PublisherEdit from './components/pages/PublisherEdit';
+import PublisherAdd from './components/pages/PublisherAdd';
 import Territories from './components/pages/Territories';
 import MyTerritories from './components/pages/MyTerritories';
 import TerritoryDetails from './components/pages/TerritoryDetails';
@@ -31,6 +35,10 @@ const App = createStackNavigator({
   Login: { screen: Login },
   Home: { screen: Home },
   Users: { screen: Users },
+  Publishers: { screen: Publishers },
+  PublisherDetails: { screen: PublisherDetails },
+  PublisherEdit: { screen: PublisherEdit },
+  PublisherAdd: { screen: PublisherAdd },
   TerritoriesAll: { screen: Territories },
   Territories: { screen: MyTerritories },
   TerritoryDetails: { screen: TerritoryDetails },

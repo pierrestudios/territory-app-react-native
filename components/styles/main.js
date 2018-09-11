@@ -54,7 +54,7 @@ export default styles = StyleSheet.create({
     padding: 0
   },
   "main-menu-button": {
-    minWidth: '80%',
+    minWidth: '90%',
     alignItems: 'center',
     // borderStyle: 'solid',
     // borderWidth: 2,
@@ -291,6 +291,11 @@ export default styles = StyleSheet.create({
     marginTop: 0
   },
 
+  "publisher-listings-name": {
+    left: 8,
+    marginTop: 10
+  },
+
   "listings-right-arrow": {position: 'absolute', width: 10, height: '100%', top: 15, right: 5},
 
   "input-options-container": {
@@ -423,6 +428,15 @@ export default styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors["grey-lite"],
     backgroundColor: colors.white
+  },
+
+  // Publisher Details
+  "heading-publisher-name": {
+    position: 'absolute', 
+    color: colors["territory-blue"],
+    right: 20,
+    top: 20,
+    fontSize: 18,
   },
 
   "icon-button": {
