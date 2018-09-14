@@ -15,6 +15,7 @@ import Publishers from './components/pages/Publishers';
 import PublisherDetails from './components/pages/PublisherDetails';
 import PublisherEdit from './components/pages/PublisherEdit';
 import PublisherAdd from './components/pages/PublisherAdd';
+import PublisherAssignTerritory from './components/pages/PublisherAssignTerritory';
 import Territories from './components/pages/Territories';
 import MyTerritories from './components/pages/MyTerritories';
 import TerritoryDetails from './components/pages/TerritoryDetails';
@@ -44,6 +45,7 @@ const App = createStackNavigator({
   TerritoryDetails: { screen: TerritoryDetails },
   AddressEdit: { screen: AddressEdit },
   AddressAdd: { screen: AddressAdd },
+  PublisherAssignTerritory: { screen: PublisherAssignTerritory },
   Notes: { screen: Notes },
   WebViewApi: { screen: WebViewApi },
   WebViewExternal: { screen: WebViewExternal },

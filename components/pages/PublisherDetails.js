@@ -5,8 +5,10 @@ import Language from '../common/lang';
 import UTILS from '../common/utils';
 import NavigationService from '../common/nav-service';
 
+import Line from '../elements/Line';
 import Heading from '../elements/Heading';
 import {Link, ButtonLink} from '../elements/Button';
+import ListTerritories from '../elements/ListTerritories';
 
 import styles, { colors } from '../styles/main';
 
@@ -18,46 +20,31 @@ export default class PublisherDetails extends React.Component {
   };
 	componentWillMount() {
 		const {navigation} = this.props;
-    const data = navigation.getParam('data');
+		const data = navigation.getParam('data');
+		const availableTerritories = navigation.getParam('availableTerritories');
     if (!!data) {
-      this.setState({data});
+      this.setState({data, availableTerritories});
     }
 	}
-	getListings(data = []) {
-    return (
-      <FlatList
-				contentContainerStyle={styles.listings}
-				data={data.sort(UTILS.sortTerritory)}
-				keyExtractor={(item) => item.territoryId.toString()}
-				renderItem={({item}) => (
-          <TouchableOpacity style={styles['listings-item']} onPress={() => this.viewDetails(item)}>
-            <View style={styles['listings-number']}>
-              <Text style={styles['listings-number-text']}>{item.number}</Text>
-						</View>
-						<View style={[styles['listings-date'], {left: 60}]}>
-							<Text style={[styles['listings-date-text'], (this.getDateStatusColor(item.date))]}>{item.date}</Text>
-						</View>
-						<View style={styles['listings-delete']}>
-							<ButtonLink onPress={() => this.editPublisher(state.data)} customStyle={[styles["heading-button-link"], {borderColor: colors["grey-lite"], borderWidth: 1, backgroundColor: colors.white}]} textStyle={[styles["heading-button-link-text"], {color: colors.red}]}> {Language.translate('Unassign Territory')} </ButtonLink>
-						</View>
-					</TouchableOpacity>
-				)}
-			/>
-    )  
-	}
-	getDateStatusColor(date) {
-		return UTILS.isPassedDueDate(date) ? {color: colors.red} : null;
-	}
-	viewDetails(data) {
-    NavigationService.navigate('TerritoryDetails', {territoryId: data.territoryId, allTerritories: false})
-	}
-	editPublisher(data) {
-		NavigationService.navigate('PublisherEdit', {data, updatePublisher: (newPublisher) => {
+	editPublisher = (data) => {
+		NavigationService.navigate('PublisherEdit', {data, updatePublisher: (newPublisher, availableTerritories) => {
 			if (typeof this.props.navigation.getParam('updatePublisher') === 'function') {
-        this.props.navigation.getParam('updatePublisher')(newPublisher);
+        this.props.navigation.getParam('updatePublisher')(newPublisher, availableTerritories);
 			}
 			this.setState({data: newPublisher});
 		}});
+	}
+	assignTerritory(data) {
+		NavigationService.navigate('PublisherAssignTerritory', {data, availableTerritories: this.state.availableTerritories, updatePublisher: (newPublisher, availableTerritories) => {
+			this.updatePublisher(newPublisher, availableTerritories);
+		}});
+	}
+	updatePublisher = (data, availableTerritories = null) => {
+		this.setState({data, availableTerritories: availableTerritories || this.state.availableTerritories}, () => {
+			if (typeof this.props.navigation.getParam('updatePublisher') === 'function') {
+        this.props.navigation.getParam('updatePublisher')(data, availableTerritories);
+			}
+		})
 	}
 	render() {
     const state = this.state || {};
@@ -65,7 +52,7 @@ export default class PublisherDetails extends React.Component {
     // console.log('Territories:render:props', props)
     // console.log('Territories:render:state', state)
 
-		const listings = state.data.territories && state.data.territories.length ? this.getListings(state.data.territories) : <Heading>{Language.translate('Publisher has no territories')}</Heading>;
+		const listings = state.data.territories && state.data.territories.length ? <ListTerritories data={state.data} updatePublisher={this.updatePublisher} /> : <Heading>{Language.translate('Publisher has no territories')}</Heading>;
 
 		return (
       <View style={[styles.section, styles.content]}>
@@ -74,8 +61,11 @@ export default class PublisherDetails extends React.Component {
           <ButtonLink onPress={() => this.editPublisher(state.data)} customStyle={[styles["heading-button-link"], {backgroundColor: colors["territory-blue"]}]} textStyle={styles["heading-button-link-text"]} textColorWhite> {Language.translate('Edit Publisher')} </ButtonLink>
 				</View>  
 				<View style={[styles['territory-heading'], {height: 40, paddingTop: 5, borderColor: colors.red, borderWidth: 0}]}>
-					<ButtonLink onPress={this.assignTerritory} customStyle={[styles["heading-button-link"], {backgroundColor: colors.green}]} textStyle={styles["heading-button-link-text"]} textColorWhite> {Language.translate('Assign Territory')} </ButtonLink>
+					<ButtonLink onPress={() => this.assignTerritory(state.data)} customStyle={[styles["heading-button-link"], {backgroundColor: colors.green}]} textStyle={styles["heading-button-link-text"]} textColorWhite> {Language.translate('Assign Territory')} </ButtonLink>
 				</View>	
+
+				<Line />
+
 				<View style={[styles.section, styles['listings-results'], styles['listings-results-address']]}>
           {listings}
 				</View>
