@@ -88,9 +88,6 @@ export default class PublisherAssignTerritory extends React.Component {
 		);
   }
   updatePublisherAfterRemoveTerritory = (data, territoryId = null) => {
-    // console.log('PublisherAssignTerritory > updatePublisherAfterRemoveTerritory:data.territories', data.territories.length);
-    // console.log('territoryId', territoryId);
-
     const availableTerritories = this.state.availableTerritories.slice();
     const territory = this.state.data.territories.find(t => t.territoryId === territoryId);
     // console.log('territory', territory);

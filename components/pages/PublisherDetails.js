@@ -40,19 +40,35 @@ export default class PublisherDetails extends React.Component {
 		}});
 	}
 	updatePublisher = (data, availableTerritories = null) => {
+
 		this.setState({data, availableTerritories: availableTerritories || this.state.availableTerritories}, () => {
 			if (typeof this.props.navigation.getParam('updatePublisher') === 'function') {
         this.props.navigation.getParam('updatePublisher')(data, availableTerritories);
 			}
 		})
 	}
+	updatePublisherAfterRemoveTerritory = (data, territoryId = null) => {
+    const availableTerritories = this.state.availableTerritories.slice();
+    const territory = this.state.data.territories.find(t => t.territoryId === territoryId);
+    // console.log('territory', territory);
+
+    if (!!territory) {
+      availableTerritories.push(territory);
+    }
+    
+		this.setState({data, availableTerritories}, () => {
+      if (typeof this.props.navigation.getParam('updatePublisher') === 'function') {
+        this.props.navigation.getParam('updatePublisher')(data, availableTerritories);
+      }
+    })
+  }
 	render() {
     const state = this.state || {};
     const props = this.props || {};
     // console.log('Territories:render:props', props)
     // console.log('Territories:render:state', state)
 
-		const listings = state.data.territories && state.data.territories.length ? <ListTerritories data={state.data} updatePublisher={this.updatePublisher} /> : <Heading>{Language.translate('Publisher has no territories')}</Heading>;
+		const listings = state.data.territories && state.data.territories.length ? <ListTerritories data={state.data} updatePublisherAfterRemoveTerritory={this.updatePublisherAfterRemoveTerritory} /> : <Heading>{Language.translate('Publisher has no territories')}</Heading>;
 
 		return (
       <View style={[styles.section, styles.content]}>
