@@ -99,6 +99,9 @@ export default {
   getDateSingleDigit(dateInt) {
     return dateInt < 10 ? "0" + dateInt : dateInt;
   },
+	getDateStatusColor(date) {
+		return this.isPassedDueDate(date) ? {color: colors.red} : null;
+	},
   isPassedDueDate(date) {
     var d = new Date(); 
       d.setMonth(d.getMonth() - 3);
