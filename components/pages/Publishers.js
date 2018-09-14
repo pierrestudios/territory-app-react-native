@@ -37,7 +37,7 @@ export default class Publishers extends React.Component {
 				this.setState({publishers}, () => {
 					publishers && Data.getApiData('available-territories')
 						.then(territories => {
-							this.setState({availableTerritories: territories}); 
+							this.setState({availableTerritories: territories.sort(UTILS.sortTerritory)}); 
 						});	
 				}); 
       })
@@ -55,7 +55,7 @@ export default class Publishers extends React.Component {
 		// console.log('render:props', props)
 		// console.log('state', state)
 
-		if (!state.publishers || !state.availableTerritories)
+		if (!state.publishers)
 			return <Loading />;
 
 		const listings = state.publishers.length ? this.getListings(state.publishers, this, 'Publishers') : <Text>{Language.translate('There are no publishers')}</Text>;
@@ -102,189 +102,6 @@ export default class Publishers extends React.Component {
   editPublisher(data) {
     NavigationService.navigate('PublisherEdit', {data, updatePublisher: this.updatePublisher});
   }
-  addPublisherModal(caller, callerName) {
-		caller.setState({
-			noticeMessage: {
-				title: Language.translate('Add Publisher'),
-				inputs: [
-					{label: Language.translate("First Name"), type: 'TextInput', name: 'firstName', autoComplete:"given-name", required: true},
-					{label: Language.translate("Last Name"), type: 'TextInput', name: 'lastName', autoComplete:"family-name", required: true},
-				],
-				actions: [
-					{label: Language.translate("Cancel"), action: () => caller.setState({noticeMessage: null})},
-					{label: Language.translate("Save"), action: () => {
-
-						const errors = caller.state.noticeMessage.inputs.filter(d => (
-							d.required && !d.value
-						));
-						
-						console.log('errors', errors);
-
-						if (errors.length) {
-							const newData = caller.state.noticeMessage.inputs.map(d => (
-								d.required && !d.value ? {...d, error: Language.translate(d.label) + ' ' + Language.translate('is required')} : d
-							));
-			
-							return caller.setState({noticeMessage: {
-								...caller.state.noticeMessage,
-								inputs: newData
-							}});
-						}
-
-						const postData = {
-							"firstName": (caller.state.noticeMessage.inputs.find(i => i.name === 'firstName') || {})['value'],
-							"lastName": (caller.state.noticeMessage.inputs.find(i => i.name === 'lastName') || {})['value']
-						};
-
-						// console.log('postData', postData);
-						
-						// Add Publisher
-						Data.getApiData(`publishers/add`, postData, 'POST')
-						.then(res => {
-							console.log('then() res', res)
-
-							if (!res || res.error) {
-								caller.setState({noticeMessage: {
-									...caller.state.noticeMessage,
-									errorMesage: 'An error occured: ' 
-								}});
-							}
-
-							else {
-								const newData = caller.state.publishers || [];
-								newData.push(res);
-								caller.setState({
-									noticeMessage: null,
-									publishers: newData
-								});
-							}
-
-						})
-						.catch(e => {
-							caller.setState({noticeMessage: {
-								...caller.state.noticeMessage,
-								errorMesage: 'An error occured: ' + e
-							}});
-						});
-						
-					}, style: {float: 'right', backgroundColor: '#337ab7', color: '#fff'}}
-				],
-				saveData: (e) => {
-					// console.log('e', e);
-
-					const newData = caller.state.noticeMessage.inputs
-						.map(i => i.name === e.target.name ? {...i, value: e.target.value, error: ''} : i);	
-
-					// console.log('newData', newData);
-	
-					caller.setState({noticeMessage: {
-						...caller.state.noticeMessage,
-						inputs: newData,
-						errorMesage: ''
-					}});
-				}
-			}
-		});
-	}
-	editPublisherModal(data = [], caller, callerName) {
-		caller.setState({
-			noticeMessage: {
-				title: Language.translate('Edit Publisher Name'),
-				inputs: [
-					{label: Language.translate("First Name"), type: 'TextInput', name: 'firstName', value: data.firstName, autoComplete:"given-name", required: true},
-					{label: Language.translate("Last Name"), type: 'TextInput', name: 'lastName', value: data.lastName, autoComplete:"family-name", required: true},
-				],
-				actions: [
-					{label: Language.translate("Cancel"), action: () => caller.setState({noticeMessage: null})},
-					{label: Language.translate("Save"), action: () => {
-
-						const errors = caller.state.noticeMessage.inputs.filter(d => (
-							d.required && !d.value
-						));
-						
-						console.log('errors', errors);
-
-						if (errors.length) {
-							const newData = caller.state.noticeMessage.inputs.map(d => (
-								d.required && !d.value ? {...d, error: Language.translate(d.label) + ' ' + Language.translate('is required')} : d
-							));
-			
-							return caller.setState({noticeMessage: {
-								...caller.state.noticeMessage,
-								inputs: newData
-							}});
-						}
-
-						const postData = {
-							"firstName": (caller.state.noticeMessage.inputs.find(i => i.name === 'firstName') || {})['value'],
-							"lastName": (caller.state.noticeMessage.inputs.find(i => i.name === 'lastName') || {})['value']
-						};
-
-						// console.log('postData', postData);
-						
-						// Update Publisher
-						Data.getApiData(`publishers/${data.publisherId}/save`, postData, 'POST')
-						.then(res => {
-							// console.log('then() data', data)
-
-							if (!res || res.error) {
-								caller.setState({noticeMessage: {
-									...caller.state.noticeMessage,
-									errorMesage: 'An error occured: ' 
-								}});
-							}
-
-							else if (callerName === 'Publishers') {
-								const newData = (caller.state.publishers || []).map(p => {
-									if (p.publisherId === data.publisherId)
-										return {...data, firstName: postData.firstName, lastName: postData.lastName};
-									return p;	
-								});
-								caller.setState({
-									noticeMessage: null,
-									publishers: newData
-								});
-							}
-
-							else if (callerName === 'Publisher') {
-								const newData = {...data, firstName: postData.firstName, lastName: postData.lastName};
-								caller.setState({
-									noticeMessage: null,
-									data: newData
-								}, () => {
-									if (caller.props.updatePublisher && typeof caller.props.updatePublisher === 'function') {
-										caller.props.updatePublisher(newData);
-									}
-								});
-							}
-
-						})
-						.catch(e => {
-							caller.setState({noticeMessage: {
-								...caller.state.noticeMessage,
-								errorMesage: 'An error occured: ' + e
-							}});
-						});
-						
-					}, style: {float: 'right', backgroundColor: '#337ab7', color: '#fff'}}
-				],
-				saveData: (e) => {
-					// console.log('e', e);
-
-					const newData = caller.state.noticeMessage.inputs
-						.map(i => i.name === e.target.name ? {...i, value: e.target.value, error: ''} : i);	
-
-					// console.log('newData', newData);
-	
-					caller.setState({noticeMessage: {
-						...caller.state.noticeMessage,
-						inputs: newData,
-						errorMesage: ''
-					}});
-				}
-			}
-		});
-	}
 	deletePublisherModal(data = [], caller, callerName) {
 		const messageBlock = <div>
 			<p>{Language.translate('sure_want_remove_publisher')}</p>
@@ -348,7 +165,7 @@ export default class Publishers extends React.Component {
 		});
 	}
 	viewDetails(data) {
-    NavigationService.navigate('PublisherDetails', {data, updatePublisher: this.updatePublisher})
+    NavigationService.navigate('PublisherDetails', {data, availableTerritories: this.state.availableTerritories, updatePublisher: this.updatePublisher})
 	}
 	addPublisher = (addedPublisher) => {
     const publishers = (this.state.publishers || []);
@@ -362,8 +179,9 @@ export default class Publishers extends React.Component {
 			publishers: this.state.publishers.filter(p => p.publisherId !== publisherId)
 		})
 	}
-	updatePublisher = (updatedPublisher) => {
+	updatePublisher = (updatedPublisher, availableTerritories = null) => {
 		this.setState({
+      availableTerritories: availableTerritories.sort(UTILS.sortTerritory),
 			publishers: this.state.publishers.map(p => {
 				if (p.publisherId === updatedPublisher.publisherId) {
 					return updatedPublisher;
