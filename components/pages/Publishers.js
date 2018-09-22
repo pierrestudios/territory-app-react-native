@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView, FlatList, TouchableOpacity } from 'react-native';
-import { FontAwesome, Ionicons, Feather } from 'react-native-vector-icons';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Swipeout from 'react-native-swipeout';
 
 import Data from '../common/data';
@@ -84,7 +85,7 @@ export default class Publishers extends React.Component {
             {
 							text: Language.translate('Edit'), backgroundColor: colors.green, onPress: () => this.editPublisher(item) 
             }, 
-            { text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) } // backgroundColor: colors.red  
+            // { text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) } // backgroundColor: colors.red  
 					]} autoClose={true} close={true}>
 					<View style={[styles['listings-item']]}>
             <TouchableOpacity style={[styles['listings-name'], styles['publisher-listings-name']]} onPress={() => this.viewDetails(item) }>

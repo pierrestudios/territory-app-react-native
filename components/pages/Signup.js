@@ -1,8 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 
-import { FontAwesome } from 'react-native-vector-icons';
-
 import Data from '../common/data';
 import Api from '../common/api';
 import Language from '../common/lang';
@@ -73,9 +71,9 @@ export default class Signup extends React.Component {
 				<Heading>{Language.translate('Create an account')}</Heading>
         <ScrollView contentContainerStyle={style["scroll-view"]}>
           <Message error={state.errors.message} message={state.data.message} />
-          <EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: FontAwesome, name:"envelope"}} />
-          <PasswordInput name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={{el: FontAwesome, name:"key"}} />
-          <PasswordInput name="passwordConfirm" placeholder={Language.translate('Password confirm')} onInput={this.saveData} value={this.state.data.passwordConfirm} error={this.state.errors.passwordConfirm} icon={{el: FontAwesome, name:"key"}} />
+          <EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: 'FontAwesome', name:"envelope"}} />
+          <PasswordInput name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={{el: 'FontAwesome', name:"key"}} />
+          <PasswordInput name="passwordConfirm" placeholder={Language.translate('Password confirm')} onInput={this.saveData} value={this.state.data.passwordConfirm} error={this.state.errors.passwordConfirm} icon={{el: 'FontAwesome', name:"key"}} />
           
           <Button onPress={this.sendSignup}>{Language.translate('Create Account')}</Button>
 

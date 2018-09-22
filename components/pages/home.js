@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, SafeAreaView, StatusBar } from 'react-native';
-import { FontAwesome } from 'react-native-vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import Logo from '../elements/Logo';
 import {Button, ButtonLink, ButtonHeader} from '../elements/Button';

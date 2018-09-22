@@ -1,8 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 
-import { FontAwesome } from 'react-native-vector-icons';
-
 import Data from '../common/data';
 import Api from '../common/api';
 import Language from '../common/lang';
@@ -78,9 +76,9 @@ export default class Login extends React.Component {
 				<Heading>{Language.translate('Sign in')}</Heading>
         <ScrollView contentContainerStyle={style["scroll-view"]}>
 					<Message error={state.errors.message} message={state.data.message} />
-					<EmailInput disabled={isLoggedIn} name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: FontAwesome, name:"envelope"}} />
+					<EmailInput disabled={isLoggedIn} name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: 'FontAwesome', name:"envelope"}} />
 					{isLoggedIn ? null : [
-						<PasswordInput key="password" name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={{el: FontAwesome, name:"key"}} />,
+						<PasswordInput key="password" name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={{el: 'FontAwesome', name:"key"}} />,
 						<Button key="send-login" onPress={this.sendLogin}>{Language.translate('Sign in')}</Button>
 					]}
 

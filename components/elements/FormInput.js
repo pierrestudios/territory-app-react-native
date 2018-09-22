@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, View, TextInput as TextInputRN, Switch as SwitchRN, Picker } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-
-import { FontAwesome } from 'react-native-vector-icons';
-// import FaAlert from 'preact-icons/lib/fa/exclamation';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 
 import UTILS from '../common/utils';
  
@@ -29,8 +29,24 @@ const getLabel = (props) => {
 	: null
 }
 
+const getIconEl = (name, props) => {
+  switch(name) {
+    case 'Feather' :
+      return <Feather {...props} />
+    case 'Ionicons' :
+      return <Ionicons {...props} />
+    case 'FontAwesome' :
+    default :
+      return <FontAwesome {...props} />
+  }
+}
+
 const getIcon = (props) => {
-	return props.icon ? <View style={style['input-icon-wrapper']}><props.icon.el size={14} name={props.icon.name} style={style['input-icon']} /></View> : null
+  return !!props.icon ? 
+    <View style={style['input-icon-wrapper']}>
+      {getIconEl(props.icon.el, {size:14, name:props.icon.name, style: style['input-icon']})}
+    </View> 
+    : null
 }
 
 const getError = (props) => {
@@ -53,6 +69,27 @@ const elemWrapper = (props, el) => {
 	)
 }
  
+
+/*
+ * Here we export the components 
+ * TextInput, DateInput, RadioBox, SelectBox, TextBox, Switch, etc...
+ */
+
+export const TextInput = (props) => {
+  const finalProps = {
+    ...props,
+    underlineColorAndroid: 'transparent', // Hide underline on Android
+    editable: !props.disabled,
+    inlineImageLeft: null, // The image resource must be inside /android/app/src/main/res/drawable and referenced like (inlineImageLeft='search_icon')
+    onChangeText: (value) => props.onInput({[props.name]: value}), 
+    placeholder: (props.removePlaceholder ? "" : (props.placeholder || props.label)),
+    style: getStyles(props)
+  };
+  return (
+    elemWrapper(finalProps, <TextInputRN {...finalProps} />)
+  )
+}
+
 export const DateInput = (props) => {
   const format = 'YYYY-MM-DD';
   return (
@@ -218,20 +255,5 @@ export const NumberInput = (props) => {
   };
   return (
     <TextInput {...finalProps} />
-  )
-}
-
-export const TextInput = (props) => {
-  const finalProps = {
-    ...props,
-    underlineColorAndroid: 'transparent', // Hide underline on Android
-    editable: !props.disabled,
-    inlineImageLeft: null, // The image resource must be inside /android/app/src/main/res/drawable and referenced like (inlineImageLeft='search_icon')
-    onChangeText: (value) => props.onInput({[props.name]: value}), 
-    placeholder: (props.removePlaceholder ? "" : (props.placeholder || props.label)),
-    style: getStyles(props)
-  };
-  return (
-    elemWrapper(finalProps, <TextInputRN {...finalProps} />)
   )
 }

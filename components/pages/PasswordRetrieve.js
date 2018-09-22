@@ -1,8 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 
-import { FontAwesome } from 'react-native-vector-icons';
-
 import Data from '../common/data';
 import Api from '../common/api';
 import Language from '../common/lang';
@@ -70,7 +68,7 @@ export default class PasswordRetrieve extends React.Component {
 				<Heading>{Language.translate('Lost your password')}</Heading>
         <ScrollView contentContainerStyle={style["scroll-view"]}>
           <Message error={state.errors.message} message={state.data.message} />
-          <EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: FontAwesome, name:"envelope"}} />
+          <EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: 'FontAwesome', name:"envelope"}} />
           <Button onPress={this.sendRetrieve}>{Language.translate('Continue')}</Button>
 
           <Line />

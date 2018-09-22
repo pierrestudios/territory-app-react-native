@@ -1,8 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, Alert } from 'react-native';
 
-import { FontAwesome } from 'react-native-vector-icons';
-
 import Data from '../common/data';
 import Language from '../common/lang';
 import UTILS from '../common/utils';
@@ -75,7 +73,7 @@ export default class UserPrefs extends React.Component {
         	<ScrollView contentContainerStyle={style["scroll-view"]}>
 						<Message error={state.errors.message} message={state.data.message} />
 						<TextInput showLabel={true} name="api-url" placeholder={Language.translate('Server Url')} onInput={this.saveData} value={this.state.data['api-url']} error={this.state.errors['api-url']} />
-						{/* <TextInput name="api-version" placeholder={Language.translate('Version')} onInput={this.saveData} value={this.state.data['api-version']} error={this.state.errors['api-version']} icon={{el: FontAwesome, name:"key"}} /> */}
+						{/* <TextInput name="api-version" placeholder={Language.translate('Version')} onInput={this.saveData} value={this.state.data['api-version']} error={this.state.errors['api-version']} icon={{el: 'FontAwesome', name:"key"}} /> */}
 						<SelectBox 
               name="language" 
               showLabel={true} 
@@ -157,15 +155,15 @@ export default class UserPrefs extends React.Component {
 
 		// All good, validate
 		fetch( UTILS.addSlashToUrl(this.state.data['api-url']) + 'validate')
-			.then(data => {
-				console.log('data', data)
-				if (!!data) {
+			.then(res => {
+				// console.log('res', res)
+				if (!!res.ok) {
 					const apiPath = this.state.data['api-url'];
 
 					// Get "apiUrl" from "apiPath" (Server Url) by removing the version path (for now)
 					const apiPathSegs = apiPath.split('/');
 					const apiUrl = (apiPathSegs.slice(0, -1)).join('/');
-					// console.log('data save', {apiUrl, apiPath})
+					console.log('data save', {apiUrl, apiPath})
 
 					// Save the user data, first
 					Data.saveUser({...Data.unAuthUser, apiUrl, apiPath, lang: this.state.data['language'].value });
@@ -195,7 +193,7 @@ export default class UserPrefs extends React.Component {
 					});	
 
 				} else {
-					const errorMessage = typeof e === 'string' ? e : Language.translate('Server Url is not correct');
+					const errorMessage = res.statusText || Language.translate('Server Url is not correct');
 					this.setState({errors: {
 							...errors,
 							message: errorMessage

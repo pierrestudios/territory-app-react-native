@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, Text, View } from 'react-native';
-import { FontAwesome, Ionicons, Feather } from 'react-native-vector-icons';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Swipeout from 'react-native-swipeout';
 
 import Data from '../common/data';

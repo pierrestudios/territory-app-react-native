@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { FontAwesome } from 'react-native-vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import Data from '../common/data';
 import Language from '../common/lang';
