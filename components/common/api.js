@@ -20,7 +20,7 @@ export default (url, data, type = 'GET', headerData = undefined) => {
 		.then((res) => {
 			// console.log('res', res);
 			// catch HTTP "Token" Errors
-			if (!res.ok && (!!res.statusText && (res.statusText.match('Token') || res.statusText.match('Unauthorized')))) {
+			if (!res.ok && (res.status === 401 || (!!res.statusText && (res.statusText.match('Token') || res.statusText.match('Unauthorized'))))) {
 				Data.reLogin();
 				return Promise.reject(res.statusText);
 			}
