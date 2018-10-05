@@ -63,7 +63,11 @@ export default class Home extends React.Component {
 		}
 	}
   setModalVisible(visible) {
-    this.setState({modalVisible: visible}, () => this.props.navigation.setParams({openUserInfo: visible, headerTriggered: false})) // Bug: causes crash
+    this.setState({
+			modalVisible: visible
+		}, () => this.props.navigation.setParams({
+			openUserInfo: visible, headerTriggered: false
+		})) // Bug: causes crash
   }
   goToPage(path) {
     NavigationService.navigate(path)
@@ -98,7 +102,10 @@ export default class Home extends React.Component {
 						[
 						<Heading key="territory-heading">{Language.translate('Manage Your Congregation Territory')}</Heading>,
 						<View key="menu-nav" style={styles["main-menu"]}>
-							{this.state.user.isAdmin ? <Button disabled key="users" onPress={() => this.goToPage("Users")} title={Language.translate('Users')} /> : null}
+							{this.state.user.isAdmin 
+								? <Button key="users" onPress={() => this.goToPage("Users")} title={Language.translate('Users')} /> 
+								: null
+							}
 							{this.state.user.isManager ? [
 								<Button key="publishers" onPress={() => this.goToPage("Publishers")} title={Language.translate('Publishers')} />,
 								<Button key="boundaries" onPress={() => NavigationService.navigate('WebViewApi', {
@@ -128,29 +135,36 @@ export default class Home extends React.Component {
 						<Heading textStyle={{marginBottom: 20, marginTop: 0}}>{Language.translate('My User Account')}</Heading>
 
 						<ButtonLink 
-							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
+							customStyle={[styles["heading-button-link"], {
+								width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1
+							}]}
 							onPress={() => NavigationService.navigate('WebViewExternal', {
 								url: 'http://www.territory-app.net/', title: Language.translate('More Information')
 							})}>{Language.translate('About')} 
 						</ButtonLink>
 					
 						<ButtonLink
-							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
+							customStyle={[styles["heading-button-link"], {
+								width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1
+							}]}
 							onPress={() => {
 								NavigationService.navigate('UserPrefs');
 							}}>{Language.translate('Settings')} 
 						</ButtonLink>
 
 						<ButtonLink
-							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
+							customStyle={[styles["heading-button-link"], {
+								width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1
+							}]}
 							onPress={() => {
 								NavigationService.navigate('Login');
 							}}>{Language.translate('Account')} 
 						</ButtonLink>
 
 						<ButtonLink
-							customStyle={[styles["heading-button-link"], {width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1}]}
-							// textStyle={[styles["heading-button-link-text"],{borderColor: colors["red"], borderWidth: 1}]}
+							customStyle={[styles["heading-button-link"], {
+								width: 100, alignSelf: 'center', padding: 15, marginBottom: 10, borderColor: colors["grey-lite"], borderWidth: 1
+							}]}
 							onPress={() => {
 								this.sendLogout();
 							}}>{Language.translate('Sign Out')} 

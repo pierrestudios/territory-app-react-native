@@ -95,14 +95,6 @@ export default class TerritoryDetails extends React.Component {
 		if (!state.data)
 			return <Loading />;
 
-    /*  
-
-		// if "isMap", Load Map
-		if (!!props.isMap) {
-			return (<div class={style['map-content']}><Map data={state.data} user={state.user} /></div>);
-    }
-    */
-
 		const listings = (
 			<FlatList
 				contentContainerStyle={style.listings}
@@ -122,7 +114,10 @@ export default class TerritoryDetails extends React.Component {
 						} : { text: ''}
 					]} autoClose={true} close={true}>
 					<View style={[style['listings-item'], (item.inActive ? style['listings-item-active'] : null)]}>
-            <TouchableOpacity style={style['listings-notes']} onPress={() => state.user.isNoteEditor ? this.viewNotes(item) : console.log('Not Note Editor')}>
+						<TouchableOpacity 
+							style={style['listings-notes']} 
+							onPress={() => state.user.isNoteEditor ? this.viewNotes(item) : console.log('Not Note Editor')}
+							>
               {item.notes && item.notes.length ? [
                 <Text key="listings-date" style={[style['listings-date-text'], style['listings-notes-date-text']]}>
                   {item.notes[0].date}
@@ -132,12 +127,19 @@ export default class TerritoryDetails extends React.Component {
                 </Text>
               ] : [
 								state.user.isNoteEditor ? 
-									<ButtonLink key="listings-add-notes" customStyle={[style['add-notes']]} onPress={() => this.viewNotes(item)}>{Language.translate('Add Notes')}</ButtonLink>
+									<ButtonLink key="listings-add-notes" customStyle={[style['add-notes']]} onPress={() => this.viewNotes(item)}>
+										{Language.translate('Add Notes')}
+									</ButtonLink>
 									: null
               ]}
             </TouchableOpacity>	
-            <TouchableOpacity style={[style['listings-name'], style['address-listings-name']]} onPress={() => state.user.isEditor ? this.viewAddress(item) : console.log('Not Editor')}>
-              <Text numberOfLines={1} style={[style['listings-name-text'], style['listings-address-name']]}>{UTILS.diacritics(item.name)} </Text>
+						<TouchableOpacity 
+							style={[style['listings-name'], style['address-listings-name']]} 
+							onPress={() => state.user.isEditor ? this.viewAddress(item) : console.log('Not Editor')}
+							>
+							<Text numberOfLines={1} style={[style['listings-name-text'], style['listings-address-name']]}>
+								{UTILS.diacritics(item.name)}
+							</Text>
               <Text numberOfLines={1} style={style['listings-address']}>
 							  {UTILS.getListingAddress(item)}
 						  </Text>
@@ -154,12 +156,33 @@ export default class TerritoryDetails extends React.Component {
 		return (
 			<View style={[style.section, style.content]}>
 				<View style={style['territory-heading']}>
-          <ButtonLink onPress={this.viewMap} customStyle={[style["heading-button-link"], style['view-map-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('Map')} </ButtonLink>
+					<ButtonLink 
+						onPress={this.viewMap} 
+						customStyle={[style["heading-button-link"], style['view-map-button']]} 
+						textStyle={style["heading-button-link-text"]} 
+						textColorWhite
+						>
+						{Language.translate('Map')}
+					</ButtonLink>
 					{/** Note: Issues with PDF and CSV buttons - WebViews cannot handle download of files (.pdf and .csv) **/}
 					{/*
           {state.user.isManager ? [
-            <ButtonLink key="pdf-button" onPress={() => this.openWebViewApi(`pdf/${state.data.number}`)} customStyle={[style["heading-button-link"], style['pdf-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('PDF')} </ButtonLink>,
-            <ButtonLink key="csv-button" onPress={() => this.openWebViewApi(`csv/${state.data.number}`)} customStyle={[style["heading-button-link"], style['csv-button']]} textStyle={style["heading-button-link-text"]} textColorWhite> {Language.translate('CSV')} </ButtonLink>
+						<ButtonLink key="pdf-button" 
+							onPress={() => this.openWebViewApi(`pdf/${state.data.number}`)} 
+							customStyle={[style["heading-button-link"], style['pdf-button']]} 
+							textStyle={style["heading-button-link-text"]} 
+							textColorWhite
+							>
+							{Language.translate('PDF')}
+						</ButtonLink>,
+						<ButtonLink key="csv-button" 
+							onPress={() => this.openWebViewApi(`csv/${state.data.number}`)} 
+							customStyle={[style["heading-button-link"], style['csv-button']]} 
+							textStyle={style["heading-button-link-text"]} 
+							textColorWhite
+							>
+							{Language.translate('CSV')}
+						</ButtonLink>
 					] : null }
 					*/}
           <View style={style['heading-number']}><Text style={style["listings-number-text"]}>{state.data.number}</Text></View>
@@ -247,7 +270,10 @@ export default class TerritoryDetails extends React.Component {
 
 						if (errors.length) {
 							const newData = this.state.noticeMessage.inputs.map(d => (
-								d.required && !d.value ? {...d, error: d.name === 'note' ? Language.translate('Enter your reason for removing address') : d.name + ' is required'} : d
+								d.required && !d.value ? {
+									...d, 
+									error: d.name === 'note' ? Language.translate('Enter your reason for removing address') : d.name + ' is required'
+								} : d
 							));
 			
 							this.setState({noticeMessage: {
@@ -364,51 +390,12 @@ export default class TerritoryDetails extends React.Component {
 
 		// console.log('newAddress', newAddress);
 
-		this.setState({ data: { ...this.state.data, addresses: addresses}, streetsList: streetsList, shouldRender: 'Territory', addressActive: newAddress });
+		this.setState({ data: {
+				...this.state.data, addresses: addresses
+			}, streetsList: streetsList, shouldRender: 'Territory', addressActive: newAddress 
+		});
 	}
 	viewPublisherDetails() {
 		// Disable for now
-	}
-	scrollToActiveAddress = () => {
-		if (!!this.state.addressActive && !!this.addressList && this.state.data && this.state.data.addresses) {
-			// console.log('scrollToActiveAddress:addressActive', this.state.addressActive)
-			const inx = this.state.data.addresses.findIndex(({addressId}) => addressId === this.state.addressActive.addressId);
-			const inxAbove = (inx - 1);
-			const listElms = this.addressList.getElementsByTagName('li');
-			// offsetTop
-			inxAbove > 5 && listElms && listElms[inxAbove] && !this.isInViewport(listElms[inxAbove]) && listElms[inxAbove].scrollIntoView();
-			// console.log('listElms[inxAbove]', listElms[inxAbove])
-		}
-	}
-	isInViewport = function(el) {
-		const elementTop = el.offsetTop;
-		const elementBottom = elementTop + el.offsetHeight;
-		const viewportTop = window.screen.top;
-		const viewportBottom = viewportTop + window.screen.height;
-		// console.log('pos', {elementBottom, viewportTop, elementTop, viewportBottom});
-		
-		return elementBottom > viewportTop && elementTop < viewportBottom;
-	}
-	clearRenderTrigger = () => {
-		// Note: Need to remove triggers for update, "shouldRender" for each entity (Territory, Address, addressId, Notes, Map)
-		if (this.state.shouldRender && this.state.data) {
-			if (!!this.props.isTerritory && this.state.shouldRender === 'Territory')
-				this.setState({shouldRender: ''})
-
-			else if (!!this.props.addressId && this.state.shouldRender === 'addressId')
-				this.setState({shouldRender: 'Territory'})	// Note: it should render  "Territory" next
-
-			else if (!!this.props.isAddress && this.state.shouldRender === 'Address')
-				this.setState({shouldRender: 'Territory'})	// Note: it should render  "Territory" next
-
-			else if (!!this.props.isNotes && this.state.shouldRender === 'Notes')
-				this.setState({shouldRender: 'Territory'})	// Note: it should render  "Territory" next
-
-			else if (!!this.props.isMap && this.state.shouldRender === 'Map')
-				this.setState({shouldRender: 'Territory'})	// Note: it should render  "Territory" next
-
-			else if (!!this.props.isMap && this.state.shouldRender === 'Modal')
-				this.setState({shouldRender: 'Territory'})	// Note: it should render  "Territory" next	
-		}
 	}
 }

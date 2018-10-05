@@ -35,9 +35,13 @@ export default class PublisherDetails extends React.Component {
 		}});
 	}
 	assignTerritory(data) {
-		NavigationService.navigate('PublisherAssignTerritory', {data, availableTerritories: this.state.availableTerritories, updatePublisher: (newPublisher, availableTerritories) => {
-			this.updatePublisher(newPublisher, availableTerritories);
-		}});
+		NavigationService.navigate('PublisherAssignTerritory', {
+			data, 
+			availableTerritories: this.state.availableTerritories, 
+			updatePublisher: (newPublisher, availableTerritories) => {
+				this.updatePublisher(newPublisher, availableTerritories);
+			}
+		});
 	}
 	updatePublisher = (data, availableTerritories = null) => {
 
@@ -68,16 +72,34 @@ export default class PublisherDetails extends React.Component {
     // console.log('Territories:render:props', props)
     // console.log('Territories:render:state', state)
 
-		const listings = state.data.territories && state.data.territories.length ? <ListTerritories data={state.data} updatePublisherAfterRemoveTerritory={this.updatePublisherAfterRemoveTerritory} /> : <Heading>{Language.translate('Publisher has no territories')}</Heading>;
+		const listings = state.data.territories && state.data.territories.length 
+			? <ListTerritories data={state.data} updatePublisherAfterRemoveTerritory={this.updatePublisherAfterRemoveTerritory} /> 
+			: <Heading>{Language.translate('Publisher has no territories')}</Heading>;
 
 		return (
       <View style={[styles.section, styles.content]}>
 				<View style={[styles['territory-heading']]}>
-					<Text style={[styles['heading-name'], styles['heading-publisher-name']]}>{state.data.firstName} {state.data.lastName}</Text>
-          <ButtonLink onPress={() => this.editPublisher(state.data)} customStyle={[styles["heading-button-link"], {backgroundColor: colors["territory-blue"]}]} textStyle={styles["heading-button-link-text"]} textColorWhite> {Language.translate('Edit Publisher')} </ButtonLink>
+					<Text style={[styles['heading-name'], styles['heading-publisher-name']]}>
+						{state.data.firstName} {state.data.lastName}
+					</Text>
+					<ButtonLink 
+						onPress={() => this.editPublisher(state.data)} 
+						customStyle={[styles["heading-button-link"], {backgroundColor: colors["territory-blue"]}]} 
+						textStyle={styles["heading-button-link-text"]} 
+						textColorWhite
+						>
+						{Language.translate('Edit')}
+					</ButtonLink>
 				</View>  
 				<View style={[styles['territory-heading'], {height: 40, paddingTop: 5, borderColor: colors.red, borderWidth: 0}]}>
-					<ButtonLink onPress={() => this.assignTerritory(state.data)} customStyle={[styles["heading-button-link"], {backgroundColor: colors.green}]} textStyle={styles["heading-button-link-text"]} textColorWhite> {Language.translate('Assign Territory')} </ButtonLink>
+					<ButtonLink 
+						onPress={() => this.assignTerritory(state.data)} 
+						customStyle={[styles["heading-button-link"], {backgroundColor: colors.green}]} 
+						textStyle={styles["heading-button-link-text"]} 
+						textColorWhite
+						>
+						{Language.translate('Assign Territory')}
+					</ButtonLink>
 				</View>	
 
 				<Line />
