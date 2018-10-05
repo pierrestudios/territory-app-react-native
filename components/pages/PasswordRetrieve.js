@@ -67,15 +67,31 @@ export default class PasswordRetrieve extends React.Component {
 			<View style={[style.container]}>
 				<Heading>{Language.translate('Lost your password')}</Heading>
         <ScrollView contentContainerStyle={style["scroll-view"]}>
-          <Message error={state.errors.message} message={state.data.message} />
-          <EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: 'FontAwesome', name:"envelope"}} />
-          <Button onPress={this.sendRetrieve}>{Language.translate('Continue')}</Button>
+					<Message 
+						error={state.errors.message} 
+						message={state.data.message} 
+						/>
+					<EmailInput 
+						name="email" 
+						placeholder={Language.translate('Email')} 
+						onInput={this.saveData} 
+						value={this.state.data.email} 
+						error={this.state.errors.email} 
+						icon={{el: 'FontAwesome', name:"envelope"}} 
+						/>
+					<Button onPress={this.sendRetrieve}>
+						{Language.translate('Continue')}
+					</Button>
 
           <Line />
 
           <View style={style['inner-content']}>
-            <Link onPress={() => NavigationService.navigate('Login')} textStyle={{fontSize: 16}}>{Language.translate('Sign in')} </Link>
-            <Link onPress={() => NavigationService.navigate('UserPrefs')} textStyle={{fontSize: 16}}>{Language.translate('Server Url')} </Link>
+						<Link onPress={() => NavigationService.navigate('Login')} textStyle={{fontSize: 16}}>
+							{Language.translate('Sign in')} 
+						</Link>
+						<Link onPress={() => NavigationService.navigate('UserPrefs')} textStyle={{fontSize: 16}}>
+							{Language.translate('Server Url')} 
+						</Link>
           </View>
 
         </ScrollView>
@@ -105,7 +121,9 @@ export default class PasswordRetrieve extends React.Component {
 		if (!this.state.data.email)
 			return this.setState({errors: {
 				...errors,
-				email: (!this.state.data.email ? Language.translate('Email is missing') : (!UTILS.validEmail(this.state.data.email) ? Language.translate('Invalid email') : '')),
+				email: (!this.state.data.email 
+					? Language.translate('Email is missing') 
+					: (!UTILS.validEmail(this.state.data.email) ? Language.translate('Invalid email') : '')),
 			}, waitingForResponse: false});
       
 		// All good, send to api

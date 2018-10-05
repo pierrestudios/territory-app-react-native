@@ -59,7 +59,9 @@ export default class Publishers extends React.Component {
 		if (!state.publishers)
 			return <Loading />;
 
-		const listings = state.publishers.length ? this.getListings(state.publishers, this, 'Publishers') : <Text>{Language.translate('There are no publishers')}</Text>;
+		const listings = state.publishers.length 
+			? this.getListings(state.publishers, this, 'Publishers') 
+			: <Text>{Language.translate('There are no publishers')}</Text>;
     
     return (
 			<View style={[styles.section, styles.content]}>
@@ -85,11 +87,16 @@ export default class Publishers extends React.Component {
             {
 							text: Language.translate('Edit'), backgroundColor: colors.green, onPress: () => this.editPublisher(item) 
             }, 
-            // { text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) } // backgroundColor: colors.red  
+            // { text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) }  
 					]} autoClose={true} close={true}>
 					<View style={[styles['listings-item']]}>
-            <TouchableOpacity style={[styles['listings-name'], styles['publisher-listings-name']]} onPress={() => this.viewDetails(item) }>
-              <Text numberOfLines={1} style={[styles['listings-name-text']]}>{UTILS.diacritics(item.firstName)} {UTILS.diacritics(item.lastName)}</Text>
+						<TouchableOpacity 
+							style={[styles['listings-name'], styles['publisher-listings-name']]} 
+							onPress={() => this.viewDetails(item) }
+							>
+							<Text numberOfLines={1} style={[styles['listings-name-text']]}>
+								{UTILS.diacritics(item.firstName)} {UTILS.diacritics(item.lastName)}
+							</Text>
 						</TouchableOpacity>
 						<View style={styles["listings-right-arrow"]}>
 							<Ionicons name="ios-arrow-forward" size={24} color={colors["grey-lite"]} />
@@ -101,7 +108,9 @@ export default class Publishers extends React.Component {
     )
   }
   editPublisher(data) {
-    NavigationService.navigate('PublisherEdit', {data, updatePublisher: this.updatePublisher});
+    NavigationService.navigate('PublisherEdit', {
+			data, updatePublisher: this.updatePublisher
+		});
   }
 	deletePublisherModal(data = [], caller, callerName) {
 		const messageBlock = <div>
@@ -166,7 +175,9 @@ export default class Publishers extends React.Component {
 		});
 	}
 	viewDetails(data) {
-    NavigationService.navigate('PublisherDetails', {data, availableTerritories: this.state.availableTerritories, updatePublisher: this.updatePublisher})
+    NavigationService.navigate('PublisherDetails', {
+			data, availableTerritories: this.state.availableTerritories, updatePublisher: this.updatePublisher
+		})
 	}
 	addPublisher = (addedPublisher) => {
     const publishers = (this.state.publishers || []);

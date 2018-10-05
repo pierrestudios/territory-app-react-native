@@ -23,7 +23,10 @@ export default class WebViewTerritoryMap extends React.Component {
     // console.log('addressesStr', addressesStr);
     // console.log('boundariesStr', boundariesStr);
 
-    const jsScript2 = 'MapFn.initScript("https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&libraries=drawing,geometry&callback=MapFn.initGA", function(){MapFn.initializeMap(' + addressesStr + ', ' + boundariesStr + ')})';
+    const jsScript2 = 'MapFn.initScript("https://maps.googleapis.com/maps/api/js?key=' 
+      + apiKey + '&libraries=drawing,geometry&callback=MapFn.initGA", function(){MapFn.initializeMap(' 
+      + addressesStr + ', ' + boundariesStr 
+      + ')})';
 
     return (
       <WebView

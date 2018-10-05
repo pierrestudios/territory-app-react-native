@@ -44,7 +44,6 @@ export default class PublisherDetails extends React.Component {
 		});
 	}
 	updatePublisher = (data, availableTerritories = null) => {
-
 		this.setState({data, availableTerritories: availableTerritories || this.state.availableTerritories}, () => {
 			if (typeof this.props.navigation.getParam('updatePublisher') === 'function') {
         this.props.navigation.getParam('updatePublisher')(data, availableTerritories);
@@ -82,16 +81,18 @@ export default class PublisherDetails extends React.Component {
 					<Text style={[styles['heading-name'], styles['heading-publisher-name']]}>
 						{state.data.firstName} {state.data.lastName}
 					</Text>
+				</View>  
+				<View style={[styles['territory-heading'], {
+						flexDirection: 'row', height: 40, paddingTop: 5, borderColor: colors.red, borderWidth: 0
+					}]}>
 					<ButtonLink 
 						onPress={() => this.editPublisher(state.data)} 
-						customStyle={[styles["heading-button-link"], {backgroundColor: colors["territory-blue"]}]} 
+						customStyle={[styles["heading-button-link"], {marginRight: 10, backgroundColor: colors["territory-blue"]}]} 
 						textStyle={styles["heading-button-link-text"]} 
 						textColorWhite
 						>
 						{Language.translate('Edit')}
 					</ButtonLink>
-				</View>  
-				<View style={[styles['territory-heading'], {height: 40, paddingTop: 5, borderColor: colors.red, borderWidth: 0}]}>
 					<ButtonLink 
 						onPress={() => this.assignTerritory(state.data)} 
 						customStyle={[styles["heading-button-link"], {backgroundColor: colors.green}]} 

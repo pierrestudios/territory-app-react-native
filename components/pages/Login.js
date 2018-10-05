@@ -76,22 +76,51 @@ export default class Login extends React.Component {
 				<Heading>{Language.translate('Sign in')}</Heading>
         <ScrollView contentContainerStyle={style["scroll-view"]}>
 					<Message error={state.errors.message} message={state.data.message} />
-					<EmailInput disabled={isLoggedIn} name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: 'FontAwesome', name:"envelope"}} />
+					<EmailInput 
+						disabled={isLoggedIn} 
+						name="email" 
+						placeholder={Language.translate('Email')} 
+						onInput={this.saveData} 
+						value={this.state.data.email} 
+						error={this.state.errors.email} 
+						icon={{el: 'FontAwesome', name:"envelope"}} 
+						/>
 					{isLoggedIn ? null : [
-						<PasswordInput key="password" name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={{el: 'FontAwesome', name:"key"}} />,
-						<Button key="send-login" onPress={this.sendLogin}>{Language.translate('Sign in')}</Button>
+						<PasswordInput 
+							key="password" 
+							name="password" 
+							placeholder={Language.translate('Password')} 
+							onInput={this.saveData} 
+							value={this.state.data.password} 
+							error={this.state.errors.password} 
+							icon={{el: 'FontAwesome', name:"key"}} />,
+						<Button key="send-login" onPress={this.sendLogin}>
+							{Language.translate('Sign in')}
+						</Button>
 					]}
 
 					<Line />
 
 					<View style={style['inner-content']}>
 						{!!apiPath && (!user || !user.token) ? [
-							<Link key="PasswordRetrieve" onPress={() => NavigationService.navigate('PasswordRetrieve')}  textStyle={{fontSize: 16}}>{Language.translate('Lost your password')} </Link>, 
-							<Link key="Signup" onPress={() => NavigationService.navigate('Signup')} textStyle={{fontSize: 16}}>{Language.translate('Create an account')} </Link>
+							<Link 
+								key="PasswordRetrieve" 
+								onPress={() => NavigationService.navigate('PasswordRetrieve')} 
+								textStyle={{fontSize: 16}}
+								>
+								{Language.translate('Lost your password')} 
+							</Link>, 
+							<Link key="Signup" onPress={() => NavigationService.navigate('Signup')} textStyle={{fontSize: 16}}>
+								{Language.translate('Create an account')} 
+							</Link>
 						] : isLoggedIn ? 
-								<Link onPress={() => NavigationService.navigate('Home')} textStyle={{fontSize: 16}}>{Language.translate('Home')} </Link>
+								<Link onPress={() => NavigationService.navigate('Home')} textStyle={{fontSize: 16}}>
+									{Language.translate('Home')} 
+								</Link>
 						: null }
-						<Link onPress={() => NavigationService.navigate('UserPrefs')} textStyle={{fontSize: 16}}>{Language.translate('Server Url')} </Link>
+						<Link onPress={() => NavigationService.navigate('UserPrefs')} textStyle={{fontSize: 16}}>
+							{Language.translate('Server Url')} 
+						</Link>
 					</View>
 
 				</ScrollView>
@@ -119,7 +148,9 @@ export default class Login extends React.Component {
 		if (!this.state.data.email || !this.state.data.password)
 			return this.setState({errors: {
 				...errors,
-				email: (!this.state.data.email ? Language.translate('Email is missing') : (!UTILS.validEmail(this.state.data.email) ? Language.translate('Invalid email') : '')),
+				email: (!this.state.data.email 
+					? Language.translate('Email is missing') 
+					: (!UTILS.validEmail(this.state.data.email) ? Language.translate('Invalid email') : '')),
 				password: !this.state.data.password ? Language.translate('Password is missing') : ''
 			}, waitingForResponse: false});
 
@@ -144,14 +175,18 @@ export default class Login extends React.Component {
 
 						// Need to wait for "saveUser" to complete before switching screen
 						UTILS.waitForIt(() => !!Data.user && !!Data.user.token, () => {
-							this.setState({data: newData, waitingForResponse: false}, () => NavigationService.navigate('Home'));
+							this.setState({
+								data: newData, waitingForResponse: false
+							}, () => NavigationService.navigate('Home'));
 						});
 					});
 				}
 			})
 			.catch(e => {
 				console.log('error', e);
-				const errorMessage = typeof e === 'string' && (e.match('email') || e.match('password')) ? e : Language.translate('Sign in failed');
+				const errorMessage = typeof e === 'string' && (e.match('email') || e.match('password')) 
+					? e 
+					: Language.translate('Sign in failed');
 				this.setState({errors: {
 						...errors,
 						message: errorMessage

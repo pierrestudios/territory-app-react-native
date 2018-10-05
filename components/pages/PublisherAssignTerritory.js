@@ -55,10 +55,18 @@ export default class PublisherAssignTerritory extends React.Component {
 		if (!state.data || !state.availableTerritories)
       return <Loading />;
 
-    const listings = state.data.territories && state.data.territories.length ? <ListTerritories data={state.data} updatePublisherAfterRemoveTerritory={this.updatePublisherAfterRemoveTerritory} /> : <Heading>{Language.translate('Publisher has no territories')}</Heading>;
+    const listings = state.data.territories && state.data.territories.length 
+      ? <ListTerritories 
+        data={state.data} 
+        updatePublisherAfterRemoveTerritory={this.updatePublisherAfterRemoveTerritory} 
+        /> 
+      : <Heading>{Language.translate('Publisher has no territories')}</Heading>;
 
     return (
-      <View style={[styles.section, styles.content, {borderColor: colors.red, borderWidth: 0, paddingRight: 20, paddingLeft: 20, minWidth: '90%'}]}>
+      <View 
+        style={[styles.section, styles.content, {
+          borderColor: colors.red, borderWidth: 0, paddingRight: 20, paddingLeft: 20, minWidth: '90%'
+        }]}>
         <Message error={state.errors.message} message={state.data.message} />
         
         <SelectBox 
@@ -66,15 +74,25 @@ export default class PublisherAssignTerritory extends React.Component {
           data-name="territoryId" 
           showLabel={true} 
           label={Language.translate("Select Territory")} 
-          options={state.availableTerritories.map(t => (
-            {label: Language.translate('Territory') + ' ' + t.number + ' (' + t.date + ')', value: t.territoryId}
-          ))} 
-          value={{value: state.newTerritory && state.newTerritory.value, label: state.newTerritory && state.newTerritory.label}} 
+          options={state.availableTerritories.map(t => ({
+            label: Language.translate('Territory') + ' ' + t.number + ' (' + t.date + ')', 
+            value: t.territoryId
+          }))} 
+          value={{
+            value: state.newTerritory && state.newTerritory.value, 
+            label: state.newTerritory && state.newTerritory.label
+          }} 
           error={state.errors.territoryId} 
           onInput={this.saveData} 
         />
 
-        <Button customStyle={{backgroundColor: colors.green}} disabled={!state.newTerritory || !state.newTerritory.value} onPress={this.assignTerritory}>{Language.translate('Assign Territory')}</Button>
+        <Button 
+          customStyle={{backgroundColor: colors.green}} 
+          disabled={!state.newTerritory || !state.newTerritory.value} 
+          onPress={this.assignTerritory}
+          >
+          {Language.translate('Assign Territory')}
+        </Button>
 
         <Line />
 

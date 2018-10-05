@@ -73,9 +73,19 @@ export default class Notes extends React.Component {
         extraData={this.state}
 				keyExtractor={(item) => item.noteId.toString()}
 				renderItem={({item}) => (
-          <View style={[style['listings-item'], (item.noteId === state.noteData.noteId ? style['listings-item-active'] : null)]}>
+					<View 
+						style={[
+							style['listings-item'], 
+							(item.noteId === state.noteData.noteId 
+							? style['listings-item-active'] 
+							: null)
+						]}
+						>
             {state.user.isManager || state.user.userId === item.userId ?
-              <ButtonLink customStyle={[style['listings-notes'], style['listings-notes-edit']]} onPress={() => this.editNotes(item)}>
+							<ButtonLink 
+								customStyle={[style['listings-notes'], style['listings-notes-edit']]} 
+								onPress={() => this.editNotes(item)}
+								>
                 {Language.translate('Edit')} 
               </ButtonLink>	
             : null}
@@ -99,7 +109,11 @@ export default class Notes extends React.Component {
           keyboardDismissMode="interactive"
           >
           <HeadingBlue>
-            {state.noteData && state.noteData.noteId ? Language.translate('Update Notes') : Language.translate('Add Notes')}
+						{
+							state.noteData && state.noteData.noteId 
+							? Language.translate('Update Notes') 
+							: Language.translate('Add Notes')
+						}
           </HeadingBlue>
 
           <Text style={[style["text-strong"], {padding: 5, minHeight: 50}]}>
@@ -107,19 +121,34 @@ export default class Notes extends React.Component {
           </Text>
 
           <View style={[style.content, style['notes-content'], {padding: 5, minHeight: 250}]}>
-            <Message error={state.errors.message} message={state.data.message} />
+						<Message 
+							error={state.errors.message} 
+							message={state.data.message} 
+							/>
   
-            <TextInput name="note" placeholder={Language.translate('Add Notes')} onInput={this.saveData} value={this.state.noteData.note} error={this.state.errors.note} />					
+						<TextInput 
+							name="note" 
+							placeholder={Language.translate('Add Notes')} 
+							onInput={this.saveData} 
+							value={this.state.noteData.note} 
+							error={this.state.errors.note} 
+							/>					
 
             <DateInput
               key="note-date"
 							placeholder={Language.translate('Date')}
 							name="date"
 							value={state.noteData.date}
-							onChange={this.saveData} />  
+							onChange={this.saveData} 
+							/>  
               
             {state.user.isManager ?	
-            <Switch label={Language.translate('Essential Note')} name="retain" onChange={this.saveData} value={this.state.noteData.retain}/>
+							<Switch 
+								label={Language.translate('Essential Note')} 
+								name="retain" 
+								onChange={this.saveData} 
+								value={this.state.noteData.retain}
+								/>
             : null }
 
           </View>

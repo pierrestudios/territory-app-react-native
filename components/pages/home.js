@@ -21,7 +21,9 @@ export default class Home extends React.Component {
 			headerLeft: (<View />), // To center on Andriod
 			headerRight: (
 				<ButtonHeader
-					onPress={() => {navigation.setParams({openUserInfo: !navigation.getParam('openUserInfo'), headerTriggered: true})}}
+					onPress={() => {navigation.setParams({
+						openUserInfo: !navigation.getParam('openUserInfo'), headerTriggered: true
+					})}}
 					title={<FontAwesome name="user-circle" size={20} color="#fff" />}
 					color="#fff"
 				/>
@@ -95,30 +97,60 @@ export default class Home extends React.Component {
 				/>
 
 				{/** Note: WebView cannot handle PDF download **/}
-				{/* <Button disabled key="s-13" onPress={() => UTILS.openFrameUrl('s-13')} title={Language.translate('Print_S-13', 'Print S-13 Form')} />, */}
+				{/* 
+					<Button 
+						disabled key="s-13"	
+						onPress={() => UTILS.openFrameUrl('s-13')} 
+						title={Language.translate('Print_S-13', 'Print S-13 Form')} 
+						/>, 
+				*/}
 				
 				<ScrollView contentContainerStyle={styles["scroll-view"]} key="home-page">
 					{this.state.user && this.state.user.isNoteEditor ?
 						[
-						<Heading key="territory-heading">{Language.translate('Manage Your Congregation Territory')}</Heading>,
+						<Heading key="territory-heading">
+							{Language.translate('Manage Your Congregation Territory')}
+						</Heading>,
 						<View key="menu-nav" style={styles["main-menu"]}>
 							{this.state.user.isAdmin 
-								? <Button key="users" onPress={() => this.goToPage("Users")} title={Language.translate('Users')} /> 
+								? <Button 
+									key="users" 
+									onPress={() => this.goToPage("Users")} 
+									title={Language.translate('Users')} 
+									/> 
 								: null
 							}
 							{this.state.user.isManager ? [
-								<Button key="publishers" onPress={() => this.goToPage("Publishers")} title={Language.translate('Publishers')} />,
-								<Button key="boundaries" onPress={() => NavigationService.navigate('WebViewApi', {
-									url: 'boundaries', title: Language.translate('Territory Map')
-								})} title={Language.translate('Territory Map')} />,
-								<Button key="territories-all" onPress={() => this.goToPage("TerritoriesAll")} title={Language.translate('All Territories')} />
+								<Button 
+									key="publishers" 
+									onPress={() => this.goToPage("Publishers")} 
+									title={Language.translate('Publishers')} 
+									/>,
+								<Button 
+									key="boundaries" 
+									onPress={() => NavigationService.navigate('WebViewApi', {
+										url: 'boundaries', title: Language.translate('Territory Map')
+									})} 
+									title={Language.translate('Territory Map')} 
+									/>,
+								<Button 
+									key="territories-all" 
+									onPress={() => this.goToPage("TerritoriesAll")} 
+									title={Language.translate('All Territories')} 
+									/>
 							]: null}
-							<Button key="territories" onPress={() => this.goToPage("Territories")} title={Language.translate('My Territories')} /> 
+							<Button 
+								key="territories" 
+								onPress={() => this.goToPage("Territories")} 
+								title={Language.translate('My Territories')} 
+								/> 
 						</View>
 						] : [
 							<Heading key="no-territories" >{Language.translate('No territories')}</Heading>,
 							<View key="menu-nav" style={[styles["main-menu"], {}]}>
-								<Text textStyle={{fontSize: 16}}>{Language.translate('You don\'t have privilege to manage territories')}</Text>
+								<Text textStyle={{fontSize: 16}}>
+									{Language.translate('You don\'t have privilege to manage territories')}
+								</Text>
 							</View>
 						]
 					}

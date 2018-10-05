@@ -110,7 +110,7 @@ export default class TerritoryDetails extends React.Component {
 							text: Language.translate('Notes'), type: 'primary', onPress: () => this.viewNotes(item) 
 						}, 
 						state.user.isEditor ? {
-							text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) // backgroundColor: colors.red
+							text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user)
 						} : { text: ''}
 					]} autoClose={true} close={true}>
 					<View style={[style['listings-item'], (item.inActive ? style['listings-item-active'] : null)]}>
@@ -194,10 +194,15 @@ export default class TerritoryDetails extends React.Component {
             : null}
           */}  
         </View>  
-				<View style={[style.section, style['listings-results'], style['listings-results-address']]}>
+				<View 
+					style={[style.section, style['listings-results'], style['listings-results-address']]}
+					>
           {listings}
 				</View>
-				<Notice data={state.noticeMessage} closeNotice={() => this.setState({noticeMessage: null})} />
+				<Notice 
+					data={state.noticeMessage} 
+					closeNotice={() => this.setState({noticeMessage: null})} 
+					/>
 			</View>
 		);
 	}
@@ -247,8 +252,12 @@ export default class TerritoryDetails extends React.Component {
 	notifyDelete = (list, user) => {
 		const messageBlock = (
 			<View>
-				<Text style={{fontSize: 16}}>{Language.translate('Delete_Address_Sure')}</Text>
-				<Text style={[style["text-strong"], {fontSize: 16}]}>{list.name} {UTILS.getListingAddress(list)}</Text>
+				<Text style={{fontSize: 16}}>
+					{Language.translate('Delete_Address_Sure')}
+				</Text>
+				<Text style={[style["text-strong"], {fontSize: 16}]}>
+					{list.name} {UTILS.getListingAddress(list)}
+				</Text>
 			</View>
 		);
 
@@ -258,7 +267,11 @@ export default class TerritoryDetails extends React.Component {
 				description: messageBlock,
 				inputs: [
 					{label: Language.translate("Reason"), type: 'TextInput', name: 'note', required: true},
-					{label: Language.translate("Remove Completely"), name: 'delete', type: user.isManager ? 'Switch' : ''},
+					{
+						label: Language.translate("Remove Completely"), name: 'delete', type: user.isManager 
+						? 'Switch' 
+						: ''
+					},
 				],
 				actions: [
 					{label: Language.translate("Continue"), action: () => {
@@ -272,7 +285,9 @@ export default class TerritoryDetails extends React.Component {
 							const newData = this.state.noticeMessage.inputs.map(d => (
 								d.required && !d.value ? {
 									...d, 
-									error: d.name === 'note' ? Language.translate('Enter your reason for removing address') : d.name + ' is required'
+									error: d.name === 'note' 
+										? Language.translate('Enter your reason for removing address') 
+										: d.name + ' is required'
 								} : d
 							));
 			
@@ -292,7 +307,10 @@ export default class TerritoryDetails extends React.Component {
 						// console.log('postData', postData); // return;
 						
 						// Delete address
-						Data.getApiData(`addresses/remove/${list.addressId}`, {delete: postData.delete, note: postData.note}, 'POST')
+						Data.getApiData(`addresses/remove/${list.addressId}`, {
+							delete: postData.delete, 
+							note: postData.note
+						}, 'POST')
 						.then(data => {
 							// console.log('then() data', data)
 							
@@ -304,7 +322,10 @@ export default class TerritoryDetails extends React.Component {
 							}
 
 							if (typeof this.updateAddress === 'function') {
-								this.updateAddress({...list, inActive: !postData.delete}, postData.delete, false);
+								this.updateAddress({
+									...list, 
+									inActive: !postData.delete
+								}, postData.delete, false);
 								// NOTE: "Reason" note not included in Address.notes
 							}
 
@@ -320,7 +341,10 @@ export default class TerritoryDetails extends React.Component {
 					style: {backgroundColor: colors.red}, 
 					textStyle: { color: colors.white }
 				},
-				{label: Language.translate("Cancel"), action: () => this.setState({noticeMessage: null, shouldRender: 'Territory'})},
+				{
+					label: Language.translate("Cancel"), 
+					action: () => this.setState({noticeMessage: null, shouldRender: 'Territory'})
+				},
 			],
 				saveData: (data) => {
 					// console.log('data', data);

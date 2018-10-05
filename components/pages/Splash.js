@@ -25,11 +25,8 @@ export default class Splash extends React.Component {
   }
   doRedirect() {
     const state = this.state;
-		// console.log('Splash:doRedirect() state', state)
-
     UTILS.waitForIt(() => !!getSiteSetting('defaultLang'), () => {
       const user = Data.unAuthUser;
-      // console.log('user', user);
 
       if (!user || !user.apiUrl) {
         return NavigationService.navigate('UserPrefs')

@@ -69,8 +69,22 @@ export default class PublisherEdit extends React.Component {
           keyboardDismissMode="interactive"
           >
 					<Message error={state.errors.message} message={state.data.message} />
-					<TextInput name="firstName" placeholder={Language.translate('First Name')} onInput={this.saveData} value={UTILS.diacritics(state.data.firstName)} error={state.errors.firstName} showLabel={true}  />
-					<TextInput name="lastName" placeholder={Language.translate('Last Name')} onInput={this.saveData} value={UTILS.diacritics(state.data.lastName)} error={state.errors.lastName} showLabel={true}  />
+          <TextInput 
+            name="firstName" 
+            placeholder={Language.translate('First Name')} 
+            onInput={this.saveData} 
+            value={UTILS.diacritics(state.data.firstName)} 
+            error={state.errors.firstName} 
+            showLabel={true}
+            />
+          <TextInput 
+            name="lastName" 
+            placeholder={Language.translate('Last Name')} 
+            onInput={this.saveData} 
+            value={UTILS.diacritics(state.data.lastName)} 
+            error={state.errors.lastName} 
+            showLabel={true}
+            />
 
           <View style={{ height: 60 }} />
 

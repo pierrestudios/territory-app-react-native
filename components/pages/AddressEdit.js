@@ -32,7 +32,6 @@ export default class AddressEdit extends React.Component {
 			),
     }
   }
-
   addressContainer = null
 	state = {
 		streetsList: [], // only local, for managing list of streets for territory
@@ -81,12 +80,18 @@ export default class AddressEdit extends React.Component {
     const {navigation} = this.props;
 		if (!!navigation.getParam('addressActive') && !!navigation.getParam('streetsList')) {
 			this.setState({
-				data: {...navigation.getParam('addressActive'), address: (navigation.getParam('addressActive').address.replace('APT ', ''))},
+				data: {
+					...navigation.getParam('addressActive'), 
+					address: (navigation.getParam('addressActive').address.replace('APT ', ''))
+				},
 				streetsList: navigation.getParam('streetsList'),
 				user: Data.user
 			});
 		} else if (!!navigation.getParam('streetsList')) {
-			const data = {...this.state.data, territoryId: (navigation.getParam('territoryId') ? navigation.getParam('territoryId')  : null)}
+			const data = {
+				...this.state.data, 
+				territoryId: (navigation.getParam('territoryId') ? navigation.getParam('territoryId')  : null)
+			}
 			this.setState({
 				data,
 				streetsList: navigation.getParam('streetsList'),
@@ -110,40 +115,72 @@ export default class AddressEdit extends React.Component {
       <View style={[style.container]}>
 
         {/* 
-        * KeyboardAwareScrollView - details: https://medium.freecodecamp.org/how-to-make-your-react-native-app-respond-gracefully-when-the-keyboard-pops-up-7442c1535580 
+        * KeyboardAwareScrollView - 
+				* details: https://medium.freecodecamp.org/how-to-make-your-react-native-app-respond-gracefully-when-the-keyboard-pops-up-7442c1535580 
         */}
         <KeyboardAwareScrollView 
           contentContainerStyle={[style["scroll-view"], {marginBottom: 40}]}
-          // keyboardShouldPersistTaps="always"
           keyboardDismissMode="interactive"
-          // alwaysBounceVertical={true}
           >
 
 					<Message error={state.errors.message} message={state.data.message} />
 					 
-					<TextInput name="name" placeholder={Language.translate('Name')} onInput={this.saveData} value={UTILS.diacritics(state.data.name)} error={state.errors.name} showLabel={true}  />
+					<TextInput 
+						name="name" 
+						placeholder={Language.translate('Name')} 
+						onInput={this.saveData} 
+						value={UTILS.diacritics(state.data.name)} 
+						error={state.errors.name} 
+						showLabel={true}
+						/>
 
-					<PhoneInput name="phone" placeholder={Language.translate('Phone')} onInput={this.saveData} value={state.data.phone} error={state.errors.phone} showLabel={true} />
+					<PhoneInput 
+						name="phone" 
+						placeholder={Language.translate('Phone')} 
+						onInput={this.saveData} 
+						value={state.data.phone} 
+						error={state.errors.phone} 
+						showLabel={true} 
+						/>
 
 					{/* 
 						"addressType" logic to have 3 options: Street, Apartment, Duplex (has a letter on door)  
 						1 - Show the 3 options with graphics
-						2 - If apt is a letter show notice to choose "Duplex", if Duplex is number do prompt "Are there more than 4 apt in this complex?", if Yes, suggest Apt"
+						2 - If apt is a letter show notice to choose "Duplex", 
+							if Duplex is number do prompt "Are there more than 4 apt in this complex?", 
+							if Yes, suggest Apt"
 						3 - Show Duplex Door  on for Duplex
 					*/}
 
 					<RadioBox name="addressType" labelView={
               <View style={{flex: 1, flexDirection: 'row'}}>
-                <Text style={[style['label-medium'], style["text-color-blue"]]}>{Language.translate('Address Type')}</Text>
+								<Text style={[style['label-medium'], style["text-color-blue"]]}>
+									{Language.translate('Address Type')}
+								</Text>
                 <ButtonIcon 
                   onPress={() => this.setModalVisible({AddressTypeModal: true})} 
                   title={<FontAwesome name="info-circle" size={20} color={colors["territory-blue"]} />} 
                 />
               </View>
             } options={[
-						{label: Language.translate('House'), value: "house", 'icon-name': 'home', active: (!state.data.isApt && !state.data.apt && !state.data.isDuplex)},
-						{label: Language.translate('Apartment'), value: "apartment", 'icon-name': 'building', active: state.data.isApt},
-						{label: Language.translate('Duplex'), value: "duplex", 'icon-name': 'columns', active: (!state.data.isApt && (state.data.apt || state.data.isDuplex))}
+						{
+							label: Language.translate('House'), 
+							value: "house", 
+							'icon-name': 'home', 
+							active: (!state.data.isApt && !state.data.apt && !state.data.isDuplex)
+						},
+						{
+							label: Language.translate('Apartment'), 
+							value: "apartment", 
+							'icon-name': 'building', 
+							active: state.data.isApt
+						},
+						{
+							label: Language.translate('Duplex'), 
+							value: "duplex", 
+							'icon-name': 'columns',
+							 active: (!state.data.isApt && (state.data.apt || state.data.isDuplex))
+						}
 						]} onChange={this.saveAddressType} />
 
           {!state.data.isNewStreet ? 
@@ -151,22 +188,43 @@ export default class AddressEdit extends React.Component {
               name="street" 
               data-name="streetId" 
               showLabel={true} 
-              label={state.data.isApt ? Language.translate('Select Building') : Language.translate('Select Street')} 
+							label={state.data.isApt 
+								? Language.translate('Select Building') 
+								: Language.translate('Select Street')} 
               options={state.streetsList.filter(d => d.isApt === (!!state.data.isApt)).map(UTILS.mapStreets)} 
               value={{value: state.data.streetId, label: state.data.streetName}} 
               error={state.errors.streetId} 
               onInput={this.saveOptionData} 
             />
-          : <TextInput name="newStreet" placeholder={state.data.isApt ? Language.translate('New Building') : Language.translate('New Street')} onInput={this.saveData} value={state.newStreetData ? state.newStreetData.street : ''} error={state.errors.newStreet} showLabel={true} />
+					: <TextInput 
+							name="newStreet" 
+							placeholder={
+								state.data.isApt 
+								? Language.translate('New Building') 
+								: Language.translate('New Street')
+							} 
+							onInput={this.saveData} 
+							value={state.newStreetData ? state.newStreetData.street : ''} 
+							error={state.errors.newStreet} 
+							showLabel={true} 
+							/>
           }  
 
           {!!state.data.addressId ? null :
-            <ButtonLink onPress={() => {
-              this.saveData({isNewStreet: !state.data.isNewStreet})
-            }} customStyle={[style['add-new-street']]} textStyle={{fontSize: 18, color: (state.data.isNewStreet ? colors.red : colors.green)}}>{
-              state.data.isNewStreet ? Language.translate('Cancel') :
-              state.data.isApt ? Language.translate('Add New Building') : Language.translate('Add New Street')
-            }</ButtonLink>
+						<ButtonLink 
+							onPress={() => {
+              	this.saveData({isNewStreet: !state.data.isNewStreet})
+							}} 
+							customStyle={[style['add-new-street']]} 
+							textStyle={{
+									fontSize: 18, color: (state.data.isNewStreet ? colors.red : colors.green)
+								}}>{
+              	state.data.isNewStreet ? Language.translate('Cancel') :
+								state.data.isApt 
+									? Language.translate('Add New Building') 
+									: Language.translate('Add New Street')
+							}
+						</ButtonLink>
           }
 
 					<NumberInput 
@@ -175,15 +233,30 @@ export default class AddressEdit extends React.Component {
 						error={state.errors.address} 
             showLabel={true} 
             onInput={this.saveData} 
-						placeholder={state.data.isApt ? Language.translate('Apt Number') : Language.translate('House Number')} 
+						placeholder={state.data.isApt 
+							? Language.translate('Apt Number') 
+							: Language.translate('House Number')} 
 						/>
 					
 					{ (state.data.apt || state.data.isDuplex) ?
-						<TextInput name="apt" placeholder={Language.translate('Duplex Door')} showLabel={true} onInput={this.saveData} value={state.data.apt} error={state.errors.apt} showLabel={true} />
+						<TextInput 
+							name="apt" 
+							placeholder={Language.translate('Duplex Door')} 
+							showLabel={true} 
+							onInput={this.saveData} 
+							value={state.data.apt} 
+							error={state.errors.apt} 
+							showLabel={true} 
+							/>
 					: null }
 
 					{state.user.isManager ?
-						<Switch label={Language.translate('Active')} name="inActive" onChange={this.saveData} value={!state.data.inActive} /> 
+						<Switch 
+							label={Language.translate('Active')} 
+							name="inActive" 
+							onChange={this.saveData} 
+							value={!state.data.inActive} 
+							/> 
           : null }
           
           <Line />
@@ -191,7 +264,15 @@ export default class AddressEdit extends React.Component {
 					{/*** Include Notes fields for new Address ***/}
 					{state.user.isEditor && !state.data.addressId ?
 						[
-						<TextInput key="note" name="note" placeholder={Language.translate('Add Notes')} onInput={this.saveData} value={state.noteData.note} error={this.state.errors.note} showLabel={true} />					
+						<TextInput 
+							key="note" 
+							name="note" 
+							placeholder={Language.translate('Add Notes')} 
+							onInput={this.saveData} 
+							value={state.noteData.note} 
+							error={this.state.errors.note} 
+							showLabel={true} 
+							/>					
 						,
             <DateInput
               key="note-date"
@@ -203,7 +284,12 @@ export default class AddressEdit extends React.Component {
 					: null}
 
 					{state.user.isManager && !state.data.addressId ?	
-						<Switch label={Language.translate('Essential Note')} name="retain" onChange={this.saveData} value={state.noteData.retain} />
+						<Switch 
+							label={Language.translate('Essential Note')} 
+							name="retain" 
+							onChange={this.saveData} 
+							value={state.noteData.retain} 
+							/>
 					: null }
 
           {/*** End Notes ***/}
@@ -219,9 +305,20 @@ export default class AddressEdit extends React.Component {
 					}}
 					>
 					<View style={{ padding: 10, }}>
-            <Heading textStyle={{marginBottom: 0, marginTop: 0, borderWidth: 0, borderColor: colors.red}}>{Language.translate('Address Type')}</Heading>
+						<Heading textStyle={{
+								marginBottom: 0, marginTop: 0, borderWidth: 0, borderColor: colors.red}
+							}>
+							{Language.translate('Address Type')}
+						</Heading>
             <View>
-              <Text style={{flexWrap: 'wrap', fontSize: 18, margin: 10, padding: 10, color: colors["territory-blue"], backgroundColor: colors.white}}>
+              <Text style={{
+									flexWrap: 'wrap', 
+									fontSize: 18, 
+									margin: 10, 
+									padding: 10, 
+									color: colors["territory-blue"], 
+									backgroundColor: colors.white
+								}}>
                 {UTILS.brToLineBreaks(Language.translate('Add_New_Address_Explanation'))}
               </Text>
             </View>
@@ -269,7 +366,9 @@ export default class AddressEdit extends React.Component {
 		// Check for change in Address Type
 		const notice = (newData.streetName && newData.street) 
 			? (newData.isApt === (!!newData.street.isAptBuilding)
-				? '' : Language.translate('Changing_Address_Type') + (newData.street.isAptBuilding ? Language.translate('Building') : Language.translate('Street')))
+				? '' : Language.translate('Changing_Address_Type') + (newData.street.isAptBuilding 
+					? Language.translate('Building') 
+					: Language.translate('Street')))
 				: '';
 
 		// if notice, show Notice prompt. On Notice OK, save new data
@@ -281,7 +380,9 @@ export default class AddressEdit extends React.Component {
 				{label: Language.translate("Continue"), action: () => {
 					this.setState({data: newData, noticeMessage: null})
 				}, style: {backgroundColor: 'red'}, textStyle: {color: '#fff'}},
-				{label: Language.translate("Cancel"), action: () => this.setState({noticeMessage: null})}
+				{label: Language.translate("Cancel"), action: () => this.setState({
+					noticeMessage: null
+				})}
 			]
 		}})
 
@@ -320,7 +421,9 @@ export default class AddressEdit extends React.Component {
 		if ('inActive' in data) // Reverse for "inActive"
 			newData = {...this.state.data, 'inActive': !data['inActive']};
 		else if (this.state.data.isNewStreet && 'newStreet' in data)
-			newData = {...this.state.newStreetData, street: data['newStreet'], isAptBuilding: !!this.state.data.isApt ? 1 : 0}
+			newData = {
+				...this.state.newStreetData, 
+				street: data['newStreet'], isAptBuilding: !!this.state.data.isApt ? 1 : 0}
 		else 
 			newData = {...this.state.data, ...data};
 
@@ -356,18 +459,28 @@ export default class AddressEdit extends React.Component {
 
 	saveAddress = (e) => {
 		// console.log('this.state.data', this.state.data)
-		// console.log('this.state.newStreetData', this.state.newStreetData)
 		// Validate
-		if (!this.state.data.address || (!this.state.data.streetId && !(this.state.newStreetData && this.state.newStreetData.street)))
+		if (!this.state.data.address 
+			|| (!this.state.data.streetId 
+				&& !(this.state.newStreetData && this.state.newStreetData.street)
+			))
 			return this.setState({errors: {
 				...this.state.errors,
 				message: Language.translate('Enter required fields'),
-				address: !this.state.data.address ? Language.translate('Enter Address') : '',
-				streetId: !this.state.data.streetId ? (this.state.data.isApt ? Language.translate('Select a Building') : Language.translate('Select a Street')) : ''
+				address: !this.state.data.address 
+					? Language.translate('Enter Address') 
+					: '',
+				streetId: !this.state.data.streetId 
+					? (this.state.data.isApt ? Language.translate('Select a Building') 
+					: Language.translate('Select a Street')) : ''
 			}});
 
 		// Data
-		const data = {...this.state.data, street: null, inActive: this.state.data.inActive ? true : (this.state.data.addressId ? "0" : false)}; // Api expects "0" or null for "inActive", but on create expects "false"
+		const data = {
+			...this.state.data, 
+			street: null, 
+			inActive: this.state.data.inActive ? true : (this.state.data.addressId ? "0" : false)
+		}; // Api expects "0" or null for "inActive", but on create expects "false"
 
 		if (this.state.noteData && this.state.noteData.note) {
 			data.notes = [{
@@ -420,7 +533,9 @@ export default class AddressEdit extends React.Component {
 						newAddress.streetId = resData.street_id;
 						newAddress.isNewStreet = false;
 						newAddress.streetName = this.state.newStreetData ? this.state.newStreetData.street : '';
-						newAddress.street = {streetId: newAddress.streetId, street: newAddress.streetName, isAptBuilding: newAddress.isApt};
+						newAddress.street = {
+							streetId: newAddress.streetId, street: newAddress.streetName, isAptBuilding: newAddress.isApt
+						};
  
 						// Note:
 						// Api glitch: When notes added, "street_id" is not returned

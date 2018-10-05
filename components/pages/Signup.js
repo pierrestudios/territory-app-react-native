@@ -21,8 +21,8 @@ export default class Signup extends React.Component {
 	static navigationOptions = {
 		...UTILS.headerNavOptionsDefault,
 		headerTitle: <Logo />,
-		headerLeft: (<View />), // To center on Andriod
-		headerRight: (<View />), // To center on Andriod
+		headerLeft: (<View />), 
+		headerRight: (<View />),  
 		headerBackImage: <View /> // Disabled
   };
 	state = {
@@ -70,18 +70,46 @@ export default class Signup extends React.Component {
 			<View style={[style.container]}>
 				<Heading>{Language.translate('Create an account')}</Heading>
         <ScrollView contentContainerStyle={style["scroll-view"]}>
-          <Message error={state.errors.message} message={state.data.message} />
-          <EmailInput name="email" placeholder={Language.translate('Email')} onInput={this.saveData} value={this.state.data.email} error={this.state.errors.email} icon={{el: 'FontAwesome', name:"envelope"}} />
-          <PasswordInput name="password" placeholder={Language.translate('Password')} onInput={this.saveData} value={this.state.data.password} error={this.state.errors.password} icon={{el: 'FontAwesome', name:"key"}} />
-          <PasswordInput name="passwordConfirm" placeholder={Language.translate('Password confirm')} onInput={this.saveData} value={this.state.data.passwordConfirm} error={this.state.errors.passwordConfirm} icon={{el: 'FontAwesome', name:"key"}} />
+					<Message 
+						error={state.errors.message} 
+						message={state.data.message} 
+						/>
+					<EmailInput 
+						name="email" 
+						placeholder={Language.translate('Email')} 
+						onInput={this.saveData} 
+						value={this.state.data.email} 
+						error={this.state.errors.email} 
+						icon={{el: 'FontAwesome', name:"envelope"}} 
+						/>
+					<PasswordInput 
+						name="password" 
+						placeholder={Language.translate('Password')} 
+						onInput={this.saveData} 
+						value={this.state.data.password} 
+						error={this.state.errors.password} 
+						icon={{el: 'FontAwesome', name:"key"}} 
+						/>
+					<PasswordInput 
+						name="passwordConfirm" 
+						placeholder={Language.translate('Password confirm')} 
+						onInput={this.saveData} 
+						value={this.state.data.passwordConfirm} 
+						error={this.state.errors.passwordConfirm} 
+						icon={{el: 'FontAwesome', name:"key"}} 
+						/>
           
           <Button onPress={this.sendSignup}>{Language.translate('Create Account')}</Button>
 
           <Line />
 
           <View style={style['inner-content']}>
-            <Link onPress={() => NavigationService.navigate('Login')} textStyle={{fontSize: 16}}>{Language.translate('Sign in')} </Link>
-            <Link onPress={() => NavigationService.navigate('UserPrefs')} textStyle={{fontSize: 16}}>{Language.translate('Server Url')} </Link>
+						<Link onPress={() => NavigationService.navigate('Login')} textStyle={{fontSize: 16}}>
+							{Language.translate('Sign in')}
+						</Link>
+						<Link onPress={() => NavigationService.navigate('UserPrefs')} textStyle={{fontSize: 16}}>
+							{Language.translate('Server Url')}
+						</Link>
           </View>
 
         </ScrollView>
@@ -115,9 +143,15 @@ export default class Signup extends React.Component {
 		if (!this.state.data.email || !this.state.data.password)
 			return this.setState({errors: {
 				...errors,
-				email: (!this.state.data.email ? Language.translate('Email is missing') : (!UTILS.validEmail(this.state.data.email) ? Language.translate('Invalid email') : '')),
-        password: !this.state.data.password ? Language.translate('Password is missing') : '',
-        passwordConfirm: !this.state.data.passwordConfirm ? Language.translate('Password does not match.') : ''        
+				email: (!this.state.data.email 
+					? Language.translate('Email is missing') 
+					: (!UTILS.validEmail(this.state.data.email) ? Language.translate('Invalid email') : '')),
+				password: !this.state.data.password 
+					? Language.translate('Password is missing') 
+					: '',
+				passwordConfirm: !this.state.data.passwordConfirm 
+					? Language.translate('Password does not match.') 
+					: ''        
 			}, waitingForResponse: false});
 
 		if (!UTILS.validEmail(this.state.data.email))
@@ -160,7 +194,9 @@ export default class Signup extends React.Component {
 			})
 			.catch(e => {
 				console.log('error', e);
-        const errorMessage = typeof e === 'string' && (e.match('email') || e.match('password')) ? e : Language.translate('Failed to sign up.');
+				const errorMessage = typeof e === 'string' && (e.match('email') || e.match('password')) 
+					? e 
+					: Language.translate('Failed to sign up.');
 				this.setState({errors: {
 						...errors,
 						message: errorMessage

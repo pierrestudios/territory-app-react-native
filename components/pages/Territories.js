@@ -22,14 +22,11 @@ export default class Territories extends React.Component {
   loadingTerritories = false;
   allTerritories = true;
 	componentWillMount() {
-    // console.log('componentWillMount:props', this.props)
 		if (!Data.user) return;
 		
 		this.loadTerritories()
 	}
-	componentWillReceiveProps(props) {
-		// console.log('componentWillReceiveProps:props', props)
-		
+	componentWillReceiveProps(props) {		
 		// Note: switch from "all" to (my) and vice versa
 		if (props.all !== this.props.all && !this.loadingTerritories) 
 			this.loadTerritories()
@@ -55,19 +52,29 @@ export default class Territories extends React.Component {
 				renderItem={({item}) => (
           <TouchableOpacity style={styles['listings-item']} onPress={() => this.viewDetails(item)}>
             <View style={styles['listings-number']}>
-              <Text style={styles['listings-number-text']}>{item.number}</Text>
+							<Text style={styles['listings-number-text']}>
+								{item.number}
+							</Text>
             </View>	
             <View style={styles['listings-name']}>
-              <Text style={styles['listings-name-text']}>{item.publisher ? (item.publisher.firstName + ' ' + item.publisher.lastName) : ''}</Text>
+							<Text style={styles['listings-name-text']}>
+								{item.publisher ? (item.publisher.firstName + ' ' + item.publisher.lastName) : ''}
+							</Text>
             </View>
-            <View style={styles['listings-date']}><Text style={styles['listings-date-text']}>{item.date}</Text></View>
+						<View style={styles['listings-date']}>
+							<Text style={styles['listings-date-text']}>
+								{item.date}
+							</Text>
+						</View>
 					</TouchableOpacity>
 				)}
 			/>
     )  
 	}
 	viewDetails(data) {
-    NavigationService.navigate('TerritoryDetails', {territoryId: data.territoryId, allTerritories: this.allTerritories})
+    NavigationService.navigate('TerritoryDetails', {
+			territoryId: data.territoryId, allTerritories: this.allTerritories
+		})
 	}
 	
 	render() {
@@ -84,7 +91,9 @@ export default class Territories extends React.Component {
 		if (!state.territories)
 			return <Loading />;
 
-		const listings = state.territories.length ? this.getListings(state.territories) : <Heading>{Language.translate('You have no territories')}</Heading>;
+		const listings = state.territories.length 
+			? this.getListings(state.territories) 
+			: <Heading>{Language.translate('You have no territories')}</Heading>;
 
 		return (
       <View style={[styles.section, styles.content]}>
