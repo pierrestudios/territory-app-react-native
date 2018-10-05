@@ -49,10 +49,9 @@ export default class Users extends React.Component {
 		return (
 			<View style={[styles.section, styles.content]}>
 				<Heading>{Language.translate('Users')}</Heading>
-				<View style={styles['users-results']}>
+				<View style={[styles.section, styles['users-results']]}>
 					{listings}
 				</View>
-          {/*<Notice data={state.noticeMessage} />*/}
 			</View>
 		);
 	}
@@ -99,19 +98,6 @@ export default class Users extends React.Component {
 				)}
 			/>
 		);
-				{/*
-					<Link onClick={(e) => this.deleteUserModal(list, caller, callerName)} class={style['delete-user']}>
-						<span>{Language.translate('Delete')}</span>
-					</Link>
-					<Link onClick={(e) => this.editUserModal(list, caller, callerName)} class={style['edit-user']}>
-						<span>{Language.translate('Edit')}</span>
-					</Link>
-					{!list.publisher ? 
-						<Link onClick={(e) => this.attachPublisherModal(list, caller, callerName)} class={style['attach-publisher']}>
-							<span>{Language.translate('Attach to publisher')}</span>
-						</Link>
-					: null}
-					*/}
 	}
 	viewDetails(data) {
     NavigationService.navigate('UserDetails', {
