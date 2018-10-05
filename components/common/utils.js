@@ -183,7 +183,7 @@ export default {
   headerNavOptionsDefault: {
     headerTitle: null,
     headerTitleStyle: {
-      fontSize: 22,
+      fontSize: 18,
       textAlign: 'center',
       // borderWidth: 1,
       // borderColor: colors.red,
@@ -200,9 +200,12 @@ export default {
   brToLineBreaks(strData) {
     return strData.replace(/<br>/g, "\n");
   },
+  userTypeLabel(userType) {
+    return (this.userTypes.find(t => t.value === userType) || {}).label;
+  },
   userTypes: [
     {value: 'Viewer', label: 'Viewer'},
-    {value: 'NoteEditor', label: 'NoteEditor'},
+    {value: 'NoteEditor', label: 'Note Editor'},
     {value: 'Editor', label: 'Editor'},
     {value: 'Manager', label: 'Manager'},
     {value: 'Admin', label: 'Admin'}
