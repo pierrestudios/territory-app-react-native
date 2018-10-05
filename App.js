@@ -11,6 +11,9 @@ import Signup from './components/pages/Signup';
 import Login from './components/pages/Login';
 import Home from './components/pages/Home';
 import Users from './components/pages/Users';
+import UserDetails from './components/pages/UserDetails';
+import UserEdit from './components/pages/UserEdit';
+import PublisherAttachUser from './components/pages/PublisherAttachUser';
 import Publishers from './components/pages/Publishers';
 import PublisherDetails from './components/pages/PublisherDetails';
 import PublisherEdit from './components/pages/PublisherEdit';
@@ -36,6 +39,9 @@ const App = createStackNavigator({
   Login: { screen: Login },
   Home: { screen: Home },
   Users: { screen: Users },
+  UserDetails: { screen: UserDetails },
+  UserEdit: { screen: UserEdit },
+  PublisherAttachUser: { screen: PublisherAttachUser },
   Publishers: { screen: Publishers },
   PublisherDetails: { screen: PublisherDetails },
   PublisherEdit: { screen: PublisherEdit },
@@ -62,3 +68,6 @@ const App = createStackNavigator({
 })
 
 export default App;
+
+// Change git user:
+// https://help.github.com/articles/changing-author-info/

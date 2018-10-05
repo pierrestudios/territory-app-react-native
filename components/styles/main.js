@@ -4,11 +4,12 @@ export const colors = {
   "territory-blue": '#337ab7',
   "grey-lite": '#ccc',
   "grey-dark": '#333',
-  "grey": '#999',
+  grey: '#999',
   orange: '#F99538',
   red: '#F44336',
   "off-white": '#F3f3f3',
   white: '#fff',
+  black: '#000',
   green: '#2f9e44'
 };
 
@@ -25,7 +26,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#fff'
   },
@@ -200,8 +201,8 @@ export default styles = StyleSheet.create({
     height: 50,
     borderTopWidth: 1,
     borderColor: colors['grey-lite'],
-    borderBottomWidth: 1,
-    borderBottomColor: colors["off-white"],
+    borderBottomWidth: 0,
+    // borderBottomColor: colors["off-white"],
     backgroundColor: colors.white,
     // position: 'relative',
     flex: 1, 
@@ -257,6 +258,19 @@ export default styles = StyleSheet.create({
     color: colors["grey"]
   },
 
+  "listings-email": {
+    position: 'absolute', 
+    left: '55%',
+    width: '45%',
+    marginTop: 15,
+    height: 40
+  },
+
+  "listings-email-text": {
+    fontSize: 12,
+    color: colors["territory-blue"]
+  },
+
   "listings-notes": {
     width: '35%',
     // height: 40,
@@ -294,6 +308,11 @@ export default styles = StyleSheet.create({
   "publisher-listings-name": {
     left: 8,
     marginTop: 10
+  },
+
+  "user-listings-name": {
+    left: 8,
+    paddingTop: 0
   },
 
   "listings-right-arrow": {position: 'absolute', width: 10, height: '100%', top: 15, right: 5},
@@ -394,10 +413,10 @@ export default styles = StyleSheet.create({
     borderRadius: 3,
     // flex: 1,
     alignItems: 'center',
-    // padding: 5,
+    padding: 5,
     paddingTop: 5,
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: 0,
+    marginRight: 0,
     marginTop: -3,
     // height: 30
   },
@@ -437,6 +456,13 @@ export default styles = StyleSheet.create({
     right: 20,
     top: 20,
     fontSize: 18,
+  },
+
+  "heading-user-email": {
+    position: 'absolute', 
+    right: 20,
+    top: 70,
+    fontSize: 14,
   },
 
   "icon-button": {
