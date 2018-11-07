@@ -32,7 +32,8 @@ export default class AddressEdit extends React.Component {
 			),
     }
   }
-  addressContainer = null
+	addressContainer = null
+	scrollView = null
 	state = {
 		streetsList: [], // only local, for managing list of streets for territory
 		data: {
@@ -102,6 +103,11 @@ export default class AddressEdit extends React.Component {
 	componentDidMount() {
 		this.scrollToTop()
 	}
+	componentDidUpdate() {
+		if (!!this.state.errors && !!this.state.errors.message && !!this.scrollView && !!this.scrollView.props) {
+			this.scrollView.props.scrollToPosition(0, 0);
+		}
+	}
 	render() {
     const state = this.state || {};
     const props = this.props || {};
@@ -120,7 +126,10 @@ export default class AddressEdit extends React.Component {
         */}
         <KeyboardAwareScrollView 
           contentContainerStyle={[style["scroll-view"], {marginBottom: 40}]}
-          keyboardDismissMode="interactive"
+					keyboardDismissMode="interactive"
+					innerRef={ref => {
+						this.scrollView = ref
+					}}
           >
 
 					<Message error={state.errors.message} message={state.data.message} />
@@ -332,7 +341,7 @@ export default class AddressEdit extends React.Component {
 	}
 	saveOptionData = (data) => {
 		let newData = {...this.state.data}; 
-		if (data['data-name'])
+		if (!!data['data-name'])
       newData[data['data-name']] = data.option.value; // streetId
       
 		if (data.option && data.option.label)
@@ -342,10 +351,7 @@ export default class AddressEdit extends React.Component {
 
 		this.setState({
 			data: newData,
-			errors: {
-				...this.state.errors,
-				[data.name]: ''
-			}
+			errors: {}
 		});
 	}
 	saveAddressType = (data) => {
