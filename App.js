@@ -68,6 +68,3 @@ const App = createStackNavigator({
 })
 
 export default App;
-
-// Change git user:
-// https://help.github.com/articles/changing-author-info/
