@@ -40,7 +40,7 @@ export default class TerritoryDetails extends React.Component {
   addressList = null;
   territoryNumber = null;
   territoryId = null;
-  allTerritories = false;
+	allTerritories = false;
 
 	componentWillReceiveProps(props) {
 		if (props.navigation) {			
@@ -105,14 +105,24 @@ export default class TerritoryDetails extends React.Component {
 				}
 				keyExtractor={(item) => item.addressId.toString()}
 				renderItem={({item}) => (
-					<Swipeout key={item.addressId} right={[
-						{
-							text: Language.translate('Notes'), type: 'primary', onPress: () => this.viewNotes(item) 
-						}, 
-						state.user.isEditor ? {
-							text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user)
-						} : { text: ''}
-					]} autoClose={true} close={true}>
+					<Swipeout 
+						onOpen={() => {
+							console.log('item.addressId', item.addressId);
+							this.setState({activeRow: item.addressId});
+						}}
+						key={item.addressId} 
+						right={[
+							{
+								text: Language.translate('Notes'), type: 'primary', onPress: () => this.viewNotes(item) 
+							}, 
+							state.user.isEditor ? {
+								text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user)
+							} : { text: ''}
+						]} 
+						rowID={item.addressId}
+						autoClose={true} 
+						close={this.state.activeRow !== item.addressId}
+					>
 					<View style={[style['listings-item'], (item.inActive ? style['listings-item-active'] : null)]}>
 						<TouchableOpacity 
 							style={style['listings-notes']} 
@@ -250,8 +260,6 @@ export default class TerritoryDetails extends React.Component {
 	}
 
 	notifyDelete = (address, user) => {
-		console.log('notifyDelete:address', address);
-
 		const messageBlock = (
 			<View>
 				<Text style={{fontSize: 16}}>
