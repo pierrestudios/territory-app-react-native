@@ -75,7 +75,7 @@ export default class PublisherAssignTerritory extends React.Component {
           showLabel={true} 
           label={Language.translate("Select Territory")} 
           options={state.availableTerritories.map(t => ({
-            label: Language.translate('Territory') + ' ' + t.number + ' (' + t.date + ')', 
+            label: '# ' + t.number + ' (' + t.date + ')', 
             value: t.territoryId
           }))} 
           value={{
