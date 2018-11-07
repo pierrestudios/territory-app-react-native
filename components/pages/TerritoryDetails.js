@@ -249,14 +249,16 @@ export default class TerritoryDetails extends React.Component {
 		});
 	}
 
-	notifyDelete = (list, user) => {
+	notifyDelete = (address, user) => {
+		console.log('notifyDelete:address', address);
+
 		const messageBlock = (
 			<View>
 				<Text style={{fontSize: 16}}>
 					{Language.translate('Delete_Address_Sure')}
 				</Text>
 				<Text style={[style["text-strong"], {fontSize: 16}]}>
-					{list.name} {UTILS.getListingAddress(list)}
+					{address.name} {UTILS.getListingAddress(address)}
 				</Text>
 			</View>
 		);
@@ -307,12 +309,12 @@ export default class TerritoryDetails extends React.Component {
 						// console.log('postData', postData); // return;
 						
 						// Delete address
-						Data.getApiData(`addresses/remove/${list.addressId}`, {
+						Data.getApiData(`addresses/remove/${address.addressId}`, {
 							delete: postData.delete, 
 							note: postData.note
 						}, 'POST')
 						.then(data => {
-							// console.log('then() data', data)
+							// console.log('then() data', data) => "true"
 							
 							if (!data) {
 								return this.setState({noticeMessage: {
@@ -321,13 +323,22 @@ export default class TerritoryDetails extends React.Component {
 								}, shouldRender: 'Modal'});
 							}
 
-							if (typeof this.updateAddress === 'function') {
-								this.updateAddress({
-									...list, 
-									inActive: !postData.delete
-								}, postData.delete, false);
-								// NOTE: "Reason" note not included in Address.notes
-							}
+							// NOTE: Add "Reason" note in Address.notes
+							const newNotes = (address.notes || []).slice();
+							newNotes.push({
+								"date": postData.date || UTILS.getToday(),
+								"note": postData.note,
+								// Note: Api needs to return "noteId"
+								// "noteId": 164,
+								"retain": !!postData.retain,
+								"userId": user.userId
+							});
+
+							this.updateAddress({
+								...address, 
+								inActive: !postData.delete,
+								// notes: newNotes
+							}, postData.delete, false);
 
 						})
 						.catch(e => {
