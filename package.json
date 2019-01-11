@@ -9,10 +9,13 @@
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
+    "start": "exp start",
+    "clear-cache": "watchman watch-del-all && exp r -c ",
+    "android": "exp start -a",
+    "ios": "exp start -i",
+    "start-old": "expo start",
+    "android-old": "expo start --android",
+    "ios-old": "expo start --ios",
     "test": "jest"
   },
   "jest": {
@@ -26,6 +29,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.6.0",
     "react-native-swipeout": "^2.3.6",
     "react-native-vector-icons": "^5.0.0",
+    "react-native-webview": "^3.0.0",
     "react-navigation": "^2.9.3"
   }
 }
