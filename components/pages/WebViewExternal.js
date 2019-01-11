@@ -1,24 +1,20 @@
-import React from 'react';
-import { WebView, View } from 'react-native';
+import React from "react";
+import { WebView, View } from "react-native";
 
-import UTILS from '../common/utils';
+import UTILS from "../common/utils";
 
 export default class WebViewExternal extends React.Component {
   static navigationOptions = ({ navigation }) => {
-    const title = navigation.getParam('title'); 
+    const title = navigation.getParam("title");
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: title || 'Web View',
-      headerRight: (<View />), // To center on Andriod
-    }
-  }
+      title: title || "Web View",
+      headerRight: <View /> // To center on Andriod
+    };
+  };
   render() {
-    const uri = this.props.navigation.getParam('url');
-    console.log('uri', uri);
-    return (
-      <WebView
-        source={{uri}}
-      />
-    );
+    const uri = this.props.navigation.getParam("url");
+    console.log("uri", uri);
+    return <WebView source={{ uri }} />;
   }
 }
