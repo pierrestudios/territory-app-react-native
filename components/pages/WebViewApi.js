@@ -23,7 +23,7 @@ export default class WebViewApi extends React.Component {
       UTILS.addSlashToUrl(API_DOMAIN) + this.props.navigation.getParam("url");
     console.log("uri", uri);
 
-    if (isAndroid && Platform.Version < 25) {
+    if (isAndroid && Platform.Version < 21) {
       return (
         <View>
           <Text>

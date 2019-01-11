@@ -36,7 +36,7 @@ export default class WebViewTerritoryMap extends React.Component {
     </script>
     `;
 
-    if (isAndroid && Platform.Version < 25) {
+    if (isAndroid && Platform.Version < 21) {
       return (
         <View>
           <Text>
