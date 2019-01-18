@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, ScrollView, Alert } from "react-native";
+import { Text, View, ScrollView, Alert, Platform } from "react-native";
 
 import Data from "../common/data";
 import Language from "../common/lang";
@@ -131,7 +131,7 @@ export default class UserPrefs extends React.Component {
             <Link
               onPress={() =>
                 NavigationService.navigate("WebViewExternal", {
-                  url: "http://www.territory-app.net/",
+                  url: "https://territory-app.net",
                   title: "More Information"
                 })
               }
@@ -196,6 +196,25 @@ export default class UserPrefs extends React.Component {
         },
         waitingForResponse: false
       });
+
+    // Validate https (SSL) for iOS
+    if (
+      !!Platform.OS === "ios" &&
+      !UTILS.urlHasHTTPSProtocol(this.state.data["api-url"])
+    ) {
+      return this.setState({
+        errors: {
+          ...errors,
+          "api-url": !this.state.data["api-url"]
+            ? Language.translate("Server Url is missing")
+            : "",
+          language: !this.state.data.language
+            ? Language.translate("Language is missing")
+            : ""
+        },
+        waitingForResponse: false
+      });
+    }
 
     // All good, validate
     fetch(UTILS.addSlashToUrl(this.state.data["api-url"]) + "validate")

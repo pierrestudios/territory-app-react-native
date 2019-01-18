@@ -206,7 +206,7 @@ export default class Home extends React.Component {
               ]}
               onPress={() =>
                 NavigationService.navigate("WebViewExternal", {
-                  url: "http://www.territory-app.net/",
+                  url: "https://territory-app.net",
                   title: Language.translate("More Information")
                 })
               }
