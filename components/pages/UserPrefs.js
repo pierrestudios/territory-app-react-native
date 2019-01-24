@@ -266,6 +266,11 @@ export default class UserPrefs extends React.Component {
                   );
                 }
               );
+
+              this.setState({
+                errors: {},
+                waitingForResponse: false
+              });
             }
           );
         } else {
