@@ -167,6 +167,9 @@ export default {
   removeLastSlashFromUrl(url) {
     return url.slice(-1) === "/" ? url.substring(0, url.length - 1) : url;
   },
+  urlHasHTTPSProtocol(url) {
+    return url && (url.split(":") || [])[0].toLowerCase() === "https";
+  },
   loadExternalScript(url, propName) {
     return new Promise((resolve, reject) => {
       // Prevent loading multiple

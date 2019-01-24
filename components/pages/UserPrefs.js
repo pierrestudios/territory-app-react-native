@@ -199,18 +199,13 @@ export default class UserPrefs extends React.Component {
 
     // Validate https (SSL) for iOS
     if (
-      !!Platform.OS === "ios" &&
+      Platform.OS === "ios" &&
       !UTILS.urlHasHTTPSProtocol(this.state.data["api-url"])
     ) {
       return this.setState({
         errors: {
           ...errors,
-          "api-url": !this.state.data["api-url"]
-            ? Language.translate("Server Url is missing")
-            : "",
-          language: !this.state.data.language
-            ? Language.translate("Language is missing")
-            : ""
+          "api-url": Language.translate("Server Url requires HTTPS protocol")
         },
         waitingForResponse: false
       });
