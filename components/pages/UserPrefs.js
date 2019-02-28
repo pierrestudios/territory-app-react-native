@@ -197,11 +197,8 @@ export default class UserPrefs extends React.Component {
         waitingForResponse: false
       });
 
-    // Validate https (SSL) for iOS
-    if (
-      Platform.OS === "ios" &&
-      !UTILS.urlHasHTTPSProtocol(this.state.data["api-url"])
-    ) {
+    // Validate https (SSL)
+    if (!UTILS.urlHasHTTPSProtocol(this.state.data["api-url"])) {
       return this.setState({
         errors: {
           ...errors,
@@ -214,12 +211,12 @@ export default class UserPrefs extends React.Component {
     // All good, validate
     fetch(UTILS.addSlashToUrl(this.state.data["api-url"]) + "validate")
       .then(res => {
-        console.log("res", res);
+        // console.log("res", res);
         if (!!res.ok) {
           const apiPath = UTILS.addSlashToUrl(this.state.data["api-url"]);
 
-          console.log("this.state.data[api-url]", this.state.data["api-url"]);
-          console.log("apiPath", apiPath);
+          // console.log("this.state.data[api-url]", this.state.data["api-url"]);
+          // console.log("apiPath", apiPath);
 
           // Get "apiUrl" from "apiPath" (Server Url) by removing the version path (for now)
           const apiPathSegs = apiPath.split("/");
