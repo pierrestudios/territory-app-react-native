@@ -1,12 +1,14 @@
 import React from "react";
 import { WebView, View, Text, Platform, ActivityIndicator } from "react-native";
-// import { WebView } from "react-native-webview";
 
 import Language from "../common/lang";
 import UTILS from "../common/utils";
 import getSiteSetting from "../common/settings";
 
+import { dependencies as Mods } from "../../package";
+
 const isAndroid = Platform.OS === "android";
+const Expo = Mods.expo;
 
 export default class WebViewTerritoryMap extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -17,24 +19,20 @@ export default class WebViewTerritoryMap extends React.Component {
     };
   };
   render() {
-    const html = isAndroid
-      ? {
-          uri: "file:///android_asset/map-view-web-page.html"
-        }
-      : require("../../assets/map-view-web-page.html");
+    const html =
+      isAndroid && !Expo
+        ? {
+            uri: "file:///android_asset/map-view-web-page.html"
+          }
+        : require("../../assets/map-view-web-page.html");
 
-    console.log("isAndroid", isAndroid);
-    console.log("Platform.Version", Platform.Version);
+    // console.log("isAndroid", isAndroid);
+    // console.log("Platform.Version", Platform.Version);
+    // console.log("Platform", Platform);
+    // console.log("html", html);
 
     // Webview not executing injectedJavaScript on Android < 4.4
     // Work-around: https://stackoverflow.com/questions/42517079/reactnative-webview-not-executing-injectedjavascript-on-android
-    // Notes: This works!
-    const html2 = `
-    <div id="myContent">This is my name</div>
-    <script>
-      document.querySelector("#myContent").style.backgroundColor = "red"\
-    </script>
-    `;
 
     if (isAndroid && Platform.Version < 21) {
       return (
@@ -54,7 +52,6 @@ export default class WebViewTerritoryMap extends React.Component {
     // console.log('addressesStr', addressesStr);
     // console.log('boundariesStr', boundariesStr);
 
-    const testScr = 'alert("hello")';
     const jsScript2 =
       'MapFn.initScript("https://maps.googleapis.com/maps/api/js?key=' +
       apiKey +
@@ -90,7 +87,7 @@ export default class WebViewTerritoryMap extends React.Component {
         onLoadEnd={() => console.log("onLoadEnd")}
         onLoadStart={() => console.log("onLoadStart")}
         onLoad={() => console.log("onLoad")}
-        onMessage={event => console.log("onMessage", event.nativeEvent.data)}
+        // onMessage={event => console.log("onMessage", event.nativeEvent.data)}
       />
     );
   }
