@@ -4,7 +4,10 @@ import {
   View,
   TextInput as TextInputRN,
   Switch as SwitchRN,
-  Picker
+  CheckBox as CheckBoxRN,
+  Picker,
+  TouchableOpacity,
+  Platform
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -199,6 +202,39 @@ export const RadioBox = props => {
           {props.error}
         </View>
       ) : null}
+    </View>
+  );
+};
+
+export const Checkbox = props => {
+  return (
+    <View>
+      {props.label ? (
+        <Text style={[style["label-medium"], style["text-color-blue"]]}>
+          {props.label}
+        </Text>
+      ) : null}
+
+      {Platform.OS === "ios" ? (
+        <TouchableOpacity
+          style={style["check-box"]}
+          onPress={value =>
+            props.onChange && props.onChange({ [props.name]: value })
+          }
+        >
+          <View
+            style={props.value === true ? style["check-box-checked"] : null}
+          />
+        </TouchableOpacity>
+      ) : (
+        <CheckBoxRN
+          style={style["check-box"]}
+          onChange={value =>
+            props.onChange && props.onChange({ [props.name]: value })
+          }
+          value={props.value}
+        />
+      )}
     </View>
   );
 };
