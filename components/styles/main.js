@@ -453,6 +453,10 @@ export default (styles = StyleSheet.create({
   },
 
   "select-button": {
+    backgroundColor: colors.orange
+  },
+
+  "send-button": {
     backgroundColor: colors.green
   },
 

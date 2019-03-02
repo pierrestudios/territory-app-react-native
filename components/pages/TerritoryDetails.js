@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FlatList,
-  TouchableOpacity,
-  Text,
-  View,
-  Switch as CheckSwitch
-} from "react-native";
+import { FlatList, TouchableOpacity, Text, View, Share } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Swipeout from "react-native-swipeout";
@@ -271,6 +265,15 @@ export default class TerritoryDetails extends React.Component {
           >
             {Language.translate("Select")}
           </ButtonLink>
+          <ButtonLink
+            disabled={state.selectedAddresses.length === 0}
+            onPress={this.sendSelectedAddresses}
+            customStyle={[style["heading-button-link"], style["send-button"]]}
+            textStyle={style["heading-button-link-text"]}
+            textColorWhite
+          >
+            {Language.translate("Send")}
+          </ButtonLink>
           {/** Note: Issues with PDF and CSV buttons - WebViews cannot handle download of files (.pdf and .csv) **/}
           {/*
           {state.user.isManager ? [
@@ -378,6 +381,44 @@ export default class TerritoryDetails extends React.Component {
       }
       // () => console.log("setState:selectedAddresses", selectedAddresses)
     );
+  };
+  sendSelectedAddresses = async () => {
+    const title = `${Language.translate("Territory")} - ${
+      this.state.data.number
+    } - ${this.state.data.publisher.firstName} ${
+      this.state.data.publisher.lastName
+    }`;
+    try {
+      const result = await Share.share({
+        title: title,
+        dialogTitle: title,
+        subject: title,
+        message:
+          title +
+          "\n \n" +
+          this.state.data.addresses
+            .filter(
+              a => this.state.selectedAddresses.indexOf(a.addressId) != -1
+            )
+            .map(a => UTILS.getListingAddress(a))
+            .join("\n")
+      });
+
+      // console.log("result", result);
+      if (result.action === Share.sharedAction) {
+        this.setState({ selectedAddresses: [], selectorOpened: false });
+
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   viewAddressSelector = () => {
     this.setState({ selectorOpened: this.state.selectorOpened === false });
