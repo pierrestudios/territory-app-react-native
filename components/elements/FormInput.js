@@ -217,7 +217,7 @@ export const Checkbox = props => {
 
       {Platform.OS === "ios" ? (
         <TouchableOpacity
-          style={style["check-box"]}
+          style={[style["check-box"], props.style]}
           onPress={value =>
             props.onChange && props.onChange({ [props.name]: value })
           }
