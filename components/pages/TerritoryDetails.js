@@ -407,13 +407,14 @@ export default class TerritoryDetails extends React.Component {
       // console.log("result", result);
       if (result.action === Share.sharedAction) {
         this.setState({ selectedAddresses: [], selectorOpened: false });
-
+        /*
         if (result.activityType) {
           // shared with activity type of result.activityType
         } else {
           // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
+				}
+				*/
+        // } else if (result.action === Share.dismissedAction) {
         // dismissed
       }
     } catch (error) {
