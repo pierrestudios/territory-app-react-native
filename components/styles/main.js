@@ -438,7 +438,7 @@ export default (styles = StyleSheet.create({
     alignItems: "center",
     padding: 5,
     paddingTop: 5,
-    marginLeft: 0,
+    marginLeft: 5,
     marginRight: 0,
     marginTop: -3
     // height: 30
@@ -450,6 +450,10 @@ export default (styles = StyleSheet.create({
 
   "view-map-button": {
     backgroundColor: colors["territory-blue"]
+  },
+
+  "select-button": {
+    backgroundColor: colors.green
   },
 
   "pdf-button": {

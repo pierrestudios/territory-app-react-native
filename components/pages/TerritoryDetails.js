@@ -54,7 +54,8 @@ export default class TerritoryDetails extends React.Component {
   territoryId = null;
   allTerritories = false;
   state = {
-    selectedAddresses: []
+    selectedAddresses: [],
+    selectorOpened: false
   };
 
   componentWillReceiveProps(props) {
@@ -131,17 +132,7 @@ export default class TerritoryDetails extends React.Component {
               left={[
                 {
                   text: "",
-                  backgroundColor: colors["off-white"],
-                  component: (
-                    <Checkbox
-                      value={selected}
-                      onChange={() => {
-                        const unselect = selected === true;
-                        // console.log("Check", { unselect, id: item.addressId });
-                        this.selectAddressRow(item.addressId, unselect);
-                      }}
-                    />
-                  )
+                  backgroundColor: colors["off-white"]
                 }
               ]}
               right={[
@@ -168,8 +159,20 @@ export default class TerritoryDetails extends React.Component {
                   item.inActive ? style["listings-item-active"] : null
                 ]}
               >
+                {this.state.selectorOpened ? (
+                  <View style={{}}>
+                    <Checkbox
+                      style={{ margin: 0 }}
+                      value={selected}
+                      onChange={() => {
+                        // console.log("Check", { selected, id: item.addressId });
+                        this.selectAddressRow(item.addressId, selected);
+                      }}
+                    />
+                  </View>
+                ) : null}
                 <TouchableOpacity
-                  style={style["listings-notes"]}
+                  style={[style["listings-notes"]]}
                   onPress={() =>
                     state.user.isNoteEditor
                       ? this.viewNotes(item)
@@ -210,7 +213,8 @@ export default class TerritoryDetails extends React.Component {
                 <TouchableOpacity
                   style={[
                     style["listings-name"],
-                    style["address-listings-name"]
+                    style["address-listings-name"],
+                    state.selectorOpened ? { left: 50 } : null
                   ]}
                   onPress={() =>
                     state.user.isEditor
@@ -231,7 +235,7 @@ export default class TerritoryDetails extends React.Component {
                     {UTILS.getListingAddress(item)}
                   </Text>
                 </TouchableOpacity>
-                <View style={style["listings-right-arrow"]}>
+                <View style={[style["listings-right-arrow"]]}>
                   <Ionicons
                     name="ios-arrow-forward"
                     size={24}
@@ -258,6 +262,14 @@ export default class TerritoryDetails extends React.Component {
             textColorWhite
           >
             {Language.translate("Map")}
+          </ButtonLink>
+          <ButtonLink
+            onPress={this.viewAddressSelector}
+            customStyle={[style["heading-button-link"], style["select-button"]]}
+            textStyle={style["heading-button-link-text"]}
+            textColorWhite
+          >
+            {Language.translate("Select")}
           </ButtonLink>
           {/** Note: Issues with PDF and CSV buttons - WebViews cannot handle download of files (.pdf and .csv) **/}
           {/*
@@ -366,6 +378,9 @@ export default class TerritoryDetails extends React.Component {
       }
       // () => console.log("setState:selectedAddresses", selectedAddresses)
     );
+  };
+  viewAddressSelector = () => {
+    this.setState({ selectorOpened: this.state.selectorOpened === false });
   };
   notifyDelete = (address, user) => {
     const messageBlock = (
