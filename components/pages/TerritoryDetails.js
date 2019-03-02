@@ -383,7 +383,7 @@ export default class TerritoryDetails extends React.Component {
     );
   };
   sendSelectedAddresses = async () => {
-    const title = `${Language.translate("Territory")} - ${
+    const title = `${Language.translate("Territory")} ${
       this.state.data.number
     } - ${this.state.data.publisher.firstName} ${
       this.state.data.publisher.lastName
