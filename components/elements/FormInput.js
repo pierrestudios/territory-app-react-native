@@ -165,7 +165,7 @@ export const RadioBox = props => {
           {props.label}
         </Text>
       )}
-      <View style={style["input-options-container"]}>
+      <View style={[style["input-options-container"], { flexWrap: "wrap" }]}>
         {props.options.map(o => (
           <ButtonLink
             key={`${o.value}-key`}
