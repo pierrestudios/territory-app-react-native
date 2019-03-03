@@ -153,6 +153,10 @@
   "Essential Note": "Essential Note",
   "Changing_Address_Type": "Changing \"Address Type\" will remove ",
   "You have no territories": "You have no territories",
+  "Previous Notes": "Previous Notes",
+  "Send": "Send",
+  "Select": "Select",
+  "Select Note Symbol": "Select Note Symbol",
   "NotesSymbols": {
     "NH": "Not Home",
     "R": "Revisit",
@@ -160,5 +164,6 @@
     "B": "Busy",
     "M": "Man",
     "W": "Woman"
-  }
+  },
+  "Additional Notes": "Additional Notes"
 }

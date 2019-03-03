@@ -17,7 +17,7 @@
   "Territory Not Assigned": "Nou pat ka asiyé teritwa a",
   "Publisher Not Added": "Nou pat ka ajouté pwoklamatè an",
   "Your device does not support the Geolocation API": "Your device does not support the Geolocation API",
-  "Add Notes": "Ajouté Nòt",
+  "Add Notes": "Meté Nòt",
   "Update Notes": "Chanjé Nòt",
   "Make Active": "Fè li actif",
   "Edit Address": "Chanjé Adrès",
@@ -153,6 +153,10 @@
   "Essential Note": "Nòt Lan Enpotan Ampil",
   "Changing_Address_Type": "Si w chanjé \"Jan Adrès\" lan wap pedi ",
   "You have no territories": "Ou pa gen teritwa",
+  "Previous Notes": "Nòt ki te la avan",
+  "Send": "Voyé",
+  "Select": "Seleksyone",
+  "Select Note Symbol": "Chwazi symbòl pou nòt lan",
   "NotesSymbols": {
     "A": "Absan",
     "R": "Revisite",
@@ -160,5 +164,6 @@
     "O": "Okipe",
     "G": "Gason",
     "F": "Fi"
-  }
+  },
+  "Additional Notes": "Ajouté nòt"
 }
