@@ -151,6 +151,14 @@
   "Duplex": "Duplex",
   "House Number": "House Number",
   "Essential Note": "Essential Note",
-  "Changing_Address_Type": "Changing \"Address Type\" will remove ", 
-  "You have no territories": "You have no territories"
+  "Changing_Address_Type": "Changing \"Address Type\" will remove ",
+  "You have no territories": "You have no territories",
+  "NotesSymbols": {
+    "NH": "Not Home",
+    "R": "Revisit",
+    "C": "Children",
+    "B": "Busy",
+    "M": "Man",
+    "W": "Woman"
+  }
 }

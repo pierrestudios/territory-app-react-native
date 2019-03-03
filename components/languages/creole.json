@@ -152,5 +152,13 @@
   "House Number": "Nimero Kay",
   "Essential Note": "Nòt Lan Enpotan Ampil",
   "Changing_Address_Type": "Si w chanjé \"Jan Adrès\" lan wap pedi ",
-  "You have no territories": "Ou pa gen teritwa"
+  "You have no territories": "Ou pa gen teritwa",
+  "NotesSymbols": {
+    "A": "Absan",
+    "R": "Revisite",
+    "T": "Timoun",
+    "O": "Okipe",
+    "G": "Gason",
+    "F": "Fi"
+  }
 }
