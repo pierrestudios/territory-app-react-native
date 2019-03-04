@@ -39,14 +39,12 @@ export default class UserPrefs extends React.Component {
     waitingForResponse: false
   };
   componentWillMount() {
-    // Hardcode for now
-    // TODO: store the language name in the JSON files
-
-    const languageLabels = {
-      en: "English",
-      creole: "Creole"
-    };
     const languages = getSiteSetting("languages");
+    const languageLabels = {};
+    Object.keys(languages).forEach(l => {
+      languageLabels[l] = languages[l]["lang-name"];
+    });
+
     const apiPath = getSiteSetting("apiPath");
     const lang = getSiteSetting("lang");
     const defaultLang = lang || getSiteSetting("defaultLang");
