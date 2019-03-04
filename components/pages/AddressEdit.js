@@ -26,6 +26,7 @@ import {
   DateInput,
   RadioBox,
   Switch,
+  InputLabel,
   SelectBox
 } from "../elements/FormInput";
 import Modal from "../elements/Modal";
@@ -195,9 +196,7 @@ export default class AddressEdit extends React.Component {
             name="addressType"
             labelView={
               <View style={{ flex: 1, flexDirection: "row" }}>
-                <Text style={[style["label-medium"], style["text-color-blue"]]}>
-                  {Language.translate("Address Type")}
-                </Text>
+                <InputLabel>{Language.translate("Address Type")}</InputLabel>
                 <ButtonIcon
                   onPress={() =>
                     this.setModalVisible({ AddressTypeModal: true })

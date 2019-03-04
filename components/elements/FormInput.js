@@ -31,9 +31,7 @@ const getStyles = props => {
 
 const getLabel = props => {
   return props.showLabel ? (
-    <Text style={[style["label-medium"], style["text-color-blue"]]}>
-      {props.label || props.placeholder}
-    </Text>
+    <InputLabel>{props.label || props.placeholder}</InputLabel>
   ) : null;
 };
 
@@ -83,8 +81,18 @@ const elemWrapper = (props, el) => {
 
 /*
  * Here we export the components
- * TextInput, DateInput, RadioBox, SelectBox, TextBox, Switch, etc...
+ * InputLabel, TextInput, DateInput, RadioBox, SelectBox, TextBox, Switch, etc...
  */
+
+export const InputLabel = props => {
+  return (
+    <Text
+      style={[style["label-medium"], style["text-color-blue"], props.style]}
+    >
+      {props.children}
+    </Text>
+  );
+};
 
 export const TextInput = props => {
   const finalProps = {
@@ -155,15 +163,7 @@ export const RadioBox = props => {
       {props.labelView ? (
         props.labelView
       ) : (
-        <Text
-          style={[
-            style["options-label"],
-            style["label-medium"],
-            style["text-color-blue"]
-          ]}
-        >
-          {props.label}
-        </Text>
+        <InputLabel style={[style["options-label"]]}>{props.label}</InputLabel>
       )}
       <View style={[style["input-options-container"], { flexWrap: "wrap" }]}>
         {props.options.map(o => (
@@ -209,11 +209,7 @@ export const RadioBox = props => {
 export const Checkbox = props => {
   return (
     <View>
-      {props.label ? (
-        <Text style={[style["label-medium"], style["text-color-blue"]]}>
-          {props.label}
-        </Text>
-      ) : null}
+      {props.label ? <InputLabel>{props.label}</InputLabel> : null}
 
       {Platform.OS === "ios" ? (
         <TouchableOpacity
@@ -242,9 +238,7 @@ export const Checkbox = props => {
 export const Switch = props => {
   return (
     <View>
-      <Text style={[style["label-medium"], style["text-color-blue"]]}>
-        {props.label}
-      </Text>
+      <InputLabel>{props.label}</InputLabel>
       <SwitchRN
         onValueChange={value =>
           props.onChange && props.onChange({ [props.name]: value })
@@ -272,9 +266,7 @@ export const SelectBox = props => {
   return (
     <View>
       {props.showLabel ? (
-        <Text style={[style["label-medium"], style["text-color-blue"]]}>
-          {props.label || props.placeholder}
-        </Text>
+        <InputLabel>{props.label || props.placeholder}</InputLabel>
       ) : null}
       <Picker
         prompt={props.label}
