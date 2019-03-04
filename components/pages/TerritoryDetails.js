@@ -123,12 +123,6 @@ export default class TerritoryDetails extends React.Component {
                 this.setState({ activeRow: item.addressId });
               }}
               key={item.addressId}
-              left={[
-                {
-                  text: "",
-                  backgroundColor: colors["off-white"]
-                }
-              ]}
               right={[
                 {
                   text: Language.translate("Notes"),
