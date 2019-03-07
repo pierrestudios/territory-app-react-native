@@ -212,7 +212,8 @@ export default class Notes extends React.Component {
               </TouchableHighlight>
             )}
 
-            {this.state.noteData.noteSymbol !== "" ? (
+            {!this.state.noteData.noteId &&
+            this.state.noteData.noteSymbol !== "" ? (
               <TextInput
                 name="notesAddl"
                 // showLabel={true}
