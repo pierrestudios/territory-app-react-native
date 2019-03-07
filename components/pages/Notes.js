@@ -144,8 +144,6 @@ export default class Notes extends React.Component {
       active: this.state.noteData.noteSymbol === k
     }));
 
-    const currentLangLabel = languages[state.notesSymbolsLang]["lang-name"];
-
     return (
       <View style={[style.container]}>
         <KeyboardAwareScrollView
@@ -216,7 +214,6 @@ export default class Notes extends React.Component {
             this.state.noteData.noteSymbol !== "" ? (
               <TextInput
                 name="notesAddl"
-                // showLabel={true}
                 placeholder={Language.translate("Additional Notes")}
                 onInput={this.saveData}
                 value={this.state.noteData.notesAddl}
@@ -264,14 +261,6 @@ export default class Notes extends React.Component {
               label: Language.translate("Close"),
               onPress: () => this.setModalVisible({ NotesOptionsModal: false })
             }
-            /*,
-            {
-              label: Language.translate("Cancel"),
-              onPress: () => {
-                this.saveData({ noteSymbol: "" });
-                this.setModalVisible({ NotesOptionsModal: false });
-              }
-            }*/
           ]}
         >
           <ScrollView
@@ -280,43 +269,6 @@ export default class Notes extends React.Component {
               margin: 0
             }}
           >
-            {/*
-            <InputLabel>{Language.translate("Selected Language")}</InputLabel>
-            <View
-              style={{
-                padding: 0,
-                margin: 0,
-                marginBottom: 10,
-                marginTop: 10,
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between"
-              }}
-            >
-              <Text style={[style["text-strong"], {}]}>{currentLangLabel}</Text>
-              <ButtonLink
-                customStyle={[
-                  styles["heading-button-link"],
-                  {
-                    width: 90,
-                    alignSelf: "flex-end",
-                    padding: 15,
-                    // marginBottom: 10,
-                    // marginTop: 20,
-                    borderColor: colors["grey-lite"],
-                    borderWidth: 1
-                  }
-                ]}
-                onPress={() => {
-                  NavigationService.navigate("UserPrefs");
-                }}
-              >
-                {Language.translate("Change")}
-              </ButtonLink>
-            </View>
-						<Line />
-						*/}
-
             <SelectBox
               name="notesSymbolsLang"
               data-name="notesSymbolsLang"
@@ -350,24 +302,6 @@ export default class Notes extends React.Component {
               options={notesSymbolsOptions}
               onChange={this.saveNotesSymbol}
             />
-            {/*
-            <View
-              style={{
-                padding: 10,
-                margin: 0
-              }}
-            >
-              {this.state.noteData.noteSymbol !== "" ? (
-                <TextInput
-                  name="notesAddl"
-                  showLabel={true}
-                  placeholder={Language.translate("Additional Notes")}
-                  onInput={this.saveData}
-                  value={this.state.noteData.notesAddl}
-                />
-              ) : null}
-						</View>
-						*/}
           </ScrollView>
         </Modal>
       </View>
@@ -412,7 +346,7 @@ export default class Notes extends React.Component {
       languages[this.state.notesSymbolsLang]["NotesSymbols"] || {};
     const noteStr = `${noteSymbol} - ${notesSymbols[noteSymbol]}`;
     this.saveData({
-      note: noteStr.trim() // noteSymbol: ""
+      note: noteStr.trim()
     });
     this.setModalVisible({ NotesOptionsModal: false });
   };
@@ -420,7 +354,6 @@ export default class Notes extends React.Component {
     this.saveData({
       noteSymbol: selected.option.value
     });
-    // this.saveNoteStr(selected.option.value);
     this.setModalVisible({ NotesOptionsModal: false });
   };
   saveNotesSymbolsLang = selectedLang => {
