@@ -1,10 +1,18 @@
 import React from "react";
-import { FlatList, Text, View, TouchableHighlight } from "react-native";
+import {
+  FlatList,
+  Text,
+  View,
+  TouchableHighlight,
+  ScrollView
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import Data from "../common/data";
 import Language from "../common/lang";
 import UTILS from "../common/utils";
+import getSiteSetting from "../common/settings";
+import NavigationService from "../common/nav-service";
 
 import Heading, { HeadingBlue } from "../elements/Heading";
 import Loading from "../elements/Loading";
@@ -17,10 +25,13 @@ import {
   DateInput,
   Switch,
   SelectBox,
-  RadioBox
+  RadioBox,
+  InputLabel
 } from "../elements/FormInput";
 
 import style, { colors } from "../styles/main";
+
+const languages = getSiteSetting("languages");
 
 export default class Notes extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -58,7 +69,8 @@ export default class Notes extends React.Component {
     if (navigation.getParam("addressActive")) {
       this.setState({
         data: navigation.getParam("addressActive"),
-        user: Data.user
+        user: Data.user,
+        notesSymbolsLang: Data.user.lang
       });
     }
   }
@@ -79,6 +91,11 @@ export default class Notes extends React.Component {
         data={state.data.notes}
         extraData={this.state}
         keyExtractor={item => item.noteId.toString()}
+        ListEmptyComponent={() => (
+          <View style={[style["listings-item"]]}>
+            <Text />
+          </View>
+        )}
         renderItem={({ item }) => (
           <View
             style={[
@@ -119,14 +136,15 @@ export default class Notes extends React.Component {
       />
     );
 
-    const notesSymbols = Language.translate("NotesSymbols") || {};
+    const notesSymbols =
+      languages[state.notesSymbolsLang]["NotesSymbols"] || {};
     const notesSymbolsOptions = Object.keys(notesSymbols).map(k => ({
       value: k,
       label: notesSymbols[k],
       active: this.state.noteData.noteSymbol === k
     }));
 
-    // console.log("notesSymbolsOptions", notesSymbolsOptions);
+    const currentLangLabel = languages[state.notesSymbolsLang]["lang-name"];
 
     return (
       <View style={[style.container]}>
@@ -159,7 +177,7 @@ export default class Notes extends React.Component {
 
             <View style={{ minWidth: "90%" }} />
 
-            {this.state.noteData.note ? (
+            {this.state.noteData.noteId ? (
               <TextInput
                 name="note"
                 placeholder={Language.translate("Edit Notes")}
@@ -179,14 +197,30 @@ export default class Notes extends React.Component {
                     {
                       fontSize: 18,
                       padding: 5,
-                      color: colors["grey-lite"]
+                      color: this.state.noteData.noteSymbol
+                        ? colors.grey
+                        : colors["grey-lite"]
                     }
                   ]}
                 >
-                  {Language.translate("Add Notes")}
+                  {this.state.noteData.noteSymbol !== ""
+                    ? `${this.state.noteData.noteSymbol} - ${
+                        notesSymbols[this.state.noteData.noteSymbol]
+                      }`
+                    : Language.translate("Add Notes")}
                 </Text>
               </TouchableHighlight>
             )}
+
+            {this.state.noteData.noteSymbol !== "" ? (
+              <TextInput
+                name="notesAddl"
+                // showLabel={true}
+                placeholder={Language.translate("Additional Notes")}
+                onInput={this.saveData}
+                value={this.state.noteData.notesAddl}
+              />
+            ) : null}
 
             <DateInput
               key="note-date"
@@ -223,71 +257,99 @@ export default class Notes extends React.Component {
           }}
           style={{
             margin: 0
-            // padding: 0
           }}
           customButtons={[
             {
-              label: Language.translate("Save"),
-              onPress: () => {
-                const noteStr = `${this.state.noteData.noteSymbol} ${
-                  this.state.noteData.notesAddl
-                    ? "- " + this.state.noteData.notesAddl
-                    : ""
-                }`;
-                this.saveData({ note: noteStr.trim(), noteSymbol: "" });
-                this.setModalVisible({ NotesOptionsModal: false });
-              }
-            },
+              label: Language.translate("Close"),
+              onPress: () => this.setModalVisible({ NotesOptionsModal: false })
+            }
+            /*,
             {
               label: Language.translate("Cancel"),
               onPress: () => {
                 this.saveData({ noteSymbol: "" });
                 this.setModalVisible({ NotesOptionsModal: false });
               }
-            }
+            }*/
           ]}
         >
-          <View
+          <ScrollView
             style={{
               padding: 10,
               margin: 0
             }}
           >
             {/*
-              <SelectBox
-                name="noteSymbol"
-                data-name="noteSymbol"
-                showLabel={true}
-                label={Language.translate("Select Note Symbol")}
-                options={notesSymbolsOptions}
-                value={
-                  this.state.noteData.noteSymbol
-                    ? {
-                        value: this.state.noteData.noteSymbol,
-                        label: notesSymbols[this.state.noteData.noteSymbol]
-                      }
-                    : { value: "", label: "" }
-                }
-                error={state.errors.streetId}
-                onInput={this.saveNotesSymbol}
-							/>
-							*/}
+            <InputLabel>{Language.translate("Selected Language")}</InputLabel>
+            <View
+              style={{
+                padding: 0,
+                margin: 0,
+                marginBottom: 10,
+                marginTop: 10,
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            >
+              <Text style={[style["text-strong"], {}]}>{currentLangLabel}</Text>
+              <ButtonLink
+                customStyle={[
+                  styles["heading-button-link"],
+                  {
+                    width: 90,
+                    alignSelf: "flex-end",
+                    padding: 15,
+                    // marginBottom: 10,
+                    // marginTop: 20,
+                    borderColor: colors["grey-lite"],
+                    borderWidth: 1
+                  }
+                ]}
+                onPress={() => {
+                  NavigationService.navigate("UserPrefs");
+                }}
+              >
+                {Language.translate("Change")}
+              </ButtonLink>
+            </View>
+						<Line />
+						*/}
+
+            <SelectBox
+              name="notesSymbolsLang"
+              data-name="notesSymbolsLang"
+              showLabel={true}
+              label={Language.translate("Selected Language")}
+              options={Object.keys(languages).map(l => ({
+                value: l,
+                label: languages[l]["lang-name"]
+              }))}
+              value={
+                !!this.state.notesSymbolsLang
+                  ? {
+                      value: this.state.notesSymbolsLang,
+                      label: languages[this.state.notesSymbolsLang]["lang-name"]
+                    }
+                  : { value: "", label: "" }
+              }
+              error={state.errors.streetId}
+              onInput={this.saveNotesSymbolsLang}
+            />
 
             <RadioBox
               name="noteSymbol"
               labelView={
                 <View style={{ flex: 1, flexDirection: "row" }}>
-                  <Text
-                    style={[style["label-medium"], style["text-color-blue"]]}
-                  >
+                  <InputLabel>
                     {Language.translate("Select Note Symbol")}
-                  </Text>
+                  </InputLabel>
                 </View>
               }
               options={notesSymbolsOptions}
               onChange={this.saveNotesSymbol}
             />
-
+            {/*
             <View
               style={{
                 padding: 10,
@@ -303,8 +365,9 @@ export default class Notes extends React.Component {
                   value={this.state.noteData.notesAddl}
                 />
               ) : null}
-            </View>
-          </View>
+						</View>
+						*/}
+          </ScrollView>
         </Modal>
       </View>
     );
@@ -316,6 +379,12 @@ export default class Notes extends React.Component {
     // console.log("data", data);
 
     const newData = { ...this.state.noteData, ...data };
+
+    if (!!newData.noteSymbol) {
+      newData.note = !!newData.notesAddl
+        ? `${newData.noteSymbol} - ${newData.notesAddl}`
+        : newData.noteSymbol;
+    }
 
     this.setState({
       noteData: newData,
@@ -337,10 +406,24 @@ export default class Notes extends React.Component {
       }
     });
   }
+  saveNoteStr = (noteSymbol = this.state.noteData.noteSymbol) => {
+    const notesSymbols =
+      languages[this.state.notesSymbolsLang]["NotesSymbols"] || {};
+    const noteStr = `${noteSymbol} - ${notesSymbols[noteSymbol]}`;
+    this.saveData({
+      note: noteStr.trim() // noteSymbol: ""
+    });
+    this.setModalVisible({ NotesOptionsModal: false });
+  };
   saveNotesSymbol = selected => {
     this.saveData({
       noteSymbol: selected.option.value
     });
+    // this.saveNoteStr(selected.option.value);
+    this.setModalVisible({ NotesOptionsModal: false });
+  };
+  saveNotesSymbolsLang = selectedLang => {
+    this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   saveNotes = () => {
     // console.log('noteData', this.state.noteData);
@@ -355,6 +438,9 @@ export default class Notes extends React.Component {
             : "",
           date: !this.state.data.date
             ? Language.translate("Date is missing")
+            : "",
+          message: !this.state.data.note
+            ? Language.translate("Notes is empty")
             : ""
         }
       });
@@ -364,6 +450,9 @@ export default class Notes extends React.Component {
       ...this.state.noteData,
       date: UTILS.getDateString(this.state.noteData.date)
     };
+
+    console.log("data", data);
+    return;
 
     // Url
     const url = this.state.noteData.noteId
