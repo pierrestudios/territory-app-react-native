@@ -18,6 +18,7 @@ import UTILS from "../common/utils";
 
 import style, { colors } from "../styles/main";
 import { ButtonLink } from "./Button";
+import SelectPickerIOS from "./SelectPickerIOS";
 import Language from "../common/lang";
 
 const getStyles = props => {
@@ -245,7 +246,8 @@ export const Switch = props => {
         }
         value={props.value}
         onTintColor={colors["territory-blue"]}
-        tintColor={colors["grey-lite"]}
+        trackColor={colors["territory-blue"]}
+        ios_backgroundColor={colors["grey"]}
       />
     </View>
   );
@@ -268,22 +270,27 @@ export const SelectBox = props => {
       {props.showLabel ? (
         <InputLabel>{props.label || props.placeholder}</InputLabel>
       ) : null}
-      <Picker
-        prompt={props.label}
-        selectedValue={props.value.value}
-        style={style["select-options-wrapper"]}
-        itemStyle={style["select-options"]}
-        onValueChange={selectedValue =>
-          !!props.onInput &&
-          props.onInput({
-            name: props.name,
-            "data-name": props["data-name"],
-            option: props.options.find(o => o.value === selectedValue)
-          })
-        }
-      >
-        {this.renderOptions(props.options)}
-      </Picker>
+
+      {Platform.OS === "android" ? (
+        <Picker
+          prompt={props.label}
+          selectedValue={props.value.value}
+          style={style["select-options-wrapper"]}
+          itemStyle={style["select-options"]}
+          onValueChange={selectedValue =>
+            !!props.onInput &&
+            props.onInput({
+              name: props.name,
+              "data-name": props["data-name"],
+              option: props.options.find(o => o.value === selectedValue)
+            })
+          }
+        >
+          {this.renderOptions(props.options)}
+        </Picker>
+      ) : (
+        <SelectPickerIOS {...props} renderOptions={renderOptions} />
+      )}
       {getError(props)}
     </View>
   );
