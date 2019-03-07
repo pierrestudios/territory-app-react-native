@@ -451,8 +451,7 @@ export default class Notes extends React.Component {
       date: UTILS.getDateString(this.state.noteData.date)
     };
 
-    console.log("data", data);
-    return;
+    // console.log("data", data);
 
     // Url
     const url = this.state.noteData.noteId
