@@ -11,6 +11,7 @@ export default class SelectPickerIOS extends React.Component {
   render() {
     const { props, state } = this;
     // console.log("state.isSelecting", state.isSelecting);
+    // console.log("props", props);
     return (
       <View>
         {state.isSelecting ? (
@@ -47,7 +48,7 @@ export default class SelectPickerIOS extends React.Component {
                 }
               ]}
             >
-              {props.value.label}
+              {(props.value && props.value.label) || props.label}
             </Text>
           </TouchableOpacity>
         )}
