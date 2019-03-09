@@ -30,6 +30,7 @@ import {
 } from "../elements/FormInput";
 
 import style, { colors } from "../styles/main";
+import NotesModal, { NotesInput } from "../smart/NotesModal";
 
 const languages = getSiteSetting("languages");
 
@@ -175,50 +176,13 @@ export default class Notes extends React.Component {
 
             <View style={{ minWidth: "90%" }} />
 
-            {this.state.noteData.noteId ? (
-              <TextInput
-                name="note"
-                placeholder={Language.translate("Edit Notes")}
-                onInput={this.saveData}
-                value={this.state.noteData.note}
-                error={this.state.errors.note}
-              />
-            ) : (
-              <TouchableHighlight
-                style={style["date-input-wrapper"]}
-                onPress={() =>
-                  this.setModalVisible({ NotesOptionsModal: true })
-                }
-              >
-                <Text
-                  style={[
-                    {
-                      fontSize: 18,
-                      padding: 5,
-                      color: this.state.noteData.noteSymbol
-                        ? colors.grey
-                        : colors["grey-lite"]
-                    }
-                  ]}
-                >
-                  {this.state.noteData.noteSymbol !== ""
-                    ? `${this.state.noteData.noteSymbol} - ${
-                        notesSymbols[this.state.noteData.noteSymbol]
-                      }`
-                    : Language.translate("Add Notes")}
-                </Text>
-              </TouchableHighlight>
-            )}
-
-            {!this.state.noteData.noteId &&
-            this.state.noteData.noteSymbol !== "" ? (
-              <TextInput
-                name="notesAddl"
-                placeholder={Language.translate("Additional Notes")}
-                onInput={this.saveData}
-                value={this.state.noteData.notesAddl}
-              />
-            ) : null}
+            <NotesInput
+              noteData={state.noteData}
+              saveData={this.saveData}
+              errors={state.errors}
+              notesSymbols={notesSymbols}
+              setModalVisible={this.setModalVisible}
+            />
 
             <DateInput
               key="note-date"
@@ -248,68 +212,22 @@ export default class Notes extends React.Component {
           <Notice data={state.noticeMessage} />
         </KeyboardAwareScrollView>
 
-        <Modal
-          visible={this.state.NotesOptionsModal}
-          onCloseModal={() => {
-            this.setModalVisible({ NotesOptionsModal: false });
-          }}
-          style={{
-            margin: 0
-          }}
-          customButtons={[
-            {
-              label: Language.translate("Close"),
-              onPress: () => this.setModalVisible({ NotesOptionsModal: false })
-            }
-          ]}
-        >
-          <ScrollView
-            style={{
-              padding: 10,
-              margin: 0
-            }}
-          >
-            <SelectBox
-              name="notesSymbolsLang"
-              data-name="notesSymbolsLang"
-              showLabel={true}
-              label={Language.translate("Selected Language")}
-              options={Object.keys(languages).map(l => ({
-                value: l,
-                label: languages[l]["lang-name"]
-              }))}
-              value={
-                !!this.state.notesSymbolsLang
-                  ? {
-                      value: this.state.notesSymbolsLang,
-                      label: languages[this.state.notesSymbolsLang]["lang-name"]
-                    }
-                  : { value: "", label: "" }
-              }
-              error={state.errors.streetId}
-              onInput={this.saveNotesSymbolsLang}
-            />
-
-            <RadioBox
-              name="noteSymbol"
-              labelView={
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                  <InputLabel>
-                    {Language.translate("Select Note Symbol")}
-                  </InputLabel>
-                </View>
-              }
-              options={notesSymbolsOptions}
-              onChange={this.saveNotesSymbol}
-            />
-          </ScrollView>
-        </Modal>
+        <NotesModal
+          saveNotesSymbol={this.saveNotesSymbol}
+          saveNotesSymbolsLang={this.saveNotesSymbolsLang}
+          symbolsLang={state.notesSymbolsLang}
+          symbolsOptions={notesSymbolsOptions}
+          errors={state.errors}
+          visible={state.NotesOptionsModal}
+          setModalVisible={this.setModalVisible}
+          languages={languages}
+        />
       </View>
     );
   }
-  setModalVisible(modal) {
+  setModalVisible = modal => {
     this.setState(modal);
-  }
+  };
   saveData = data => {
     // console.log("data", data);
 
@@ -341,6 +259,7 @@ export default class Notes extends React.Component {
       }
     });
   }
+  /*
   saveNoteStr = (noteSymbol = this.state.noteData.noteSymbol) => {
     const notesSymbols =
       languages[this.state.notesSymbolsLang]["NotesSymbols"] || {};
@@ -349,7 +268,8 @@ export default class Notes extends React.Component {
       note: noteStr.trim()
     });
     this.setModalVisible({ NotesOptionsModal: false });
-  };
+	};
+	*/
   saveNotesSymbol = selected => {
     this.saveData({
       noteSymbol: selected.option.value
