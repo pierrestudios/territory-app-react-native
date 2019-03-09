@@ -113,7 +113,7 @@
   "Door": "Pót",
   "Apartment": "Apatman",
   "Door_Explanation": "pou duplex oubien nimero pòt (A, B, C...)",
-  "Add New Street": "Ajouté yon Street",
+  "Add New Street": "Ajouté Nouvo Street",
   "Select Street": "Chwazi Street",
   "Select a Street": "Chwazi yon Street",
   "Street": "Street",
@@ -121,7 +121,7 @@
   "Building": "Bilding",
   "Select Building": "Chwazi Bilding",
   "Select a Building": "Chwazi yon Bilding",
-  "Add New Building": "Ajouté nouvo Bilding",
+  "Add New Building": "Ajouté Nouvo Bilding",
   "New Building": "Nouvo Bilding",
   "Phone": "Telefòn",
   "Notes": "Nòt",
@@ -166,5 +166,5 @@
     "G": "Gason",
     "F": "Fi"
   },
-  "Additional Notes": "Ajouté nòt"
+  "Additional Notes": "Ajouté plis nòt"
 }
