@@ -268,6 +268,27 @@ export default class TerritoryDetails extends React.Component {
           >
             {Language.translate("Send")}
           </ButtonLink>
+          <ButtonLink
+            // disabled={state.selectedAddresses.length === 0}
+            onPress={this.sendSelectedAddresses}
+            customStyle={[
+              style["heading-button-link"],
+              // style["send-button-"],
+              // style["add-notes"],
+              {
+                borderColor: colors.grey,
+                borderWidth: 1,
+                position: "absolute",
+                right: 20,
+                marginTop: 18
+              }
+            ]}
+            textStyle={style["heading-button-link-text"]}
+            // textColorWhite
+          >
+            {Language.translate("Filter")}
+          </ButtonLink>
+
           {/** Note: Issues with PDF and CSV buttons - WebViews cannot handle download of files (.pdf and .csv) **/}
           {/*
           {state.user.isManager ? [
@@ -288,13 +309,13 @@ export default class TerritoryDetails extends React.Component {
 							{Language.translate('CSV')}
 						</ButtonLink>
 					] : null }
-					*/}
+					 
           <View style={style["heading-number"]}>
             <Text style={style["listings-number-text"]}>
               {state.data.number}
             </Text>
           </View>
-          {/*
+           
           {this.allTerritories && state.data.publisher ?
             <ButtonLink style={style['heading-name-link']} onPress={(e) => this.viewPublisherDetails(state.data.publisher)}>
               <Text style={style['heading-name']}>{state.data.publisher.firstName} {state.data.publisher.lastName}</Text>
