@@ -30,8 +30,12 @@ import {
   SelectBox
 } from "../elements/FormInput";
 import Modal from "../elements/Modal";
+import NotesModal, { NotesInput } from "../smart/NotesModal";
 
 import style, { colors } from "../styles/main";
+import getSiteSetting from "../common/settings";
+
+const languages = getSiteSetting("languages");
 
 export default class AddressEdit extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -107,7 +111,8 @@ export default class AddressEdit extends React.Component {
             .address.replace("APT ", "")
         },
         streetsList: navigation.getParam("streetsList"),
-        user: Data.user
+        user: Data.user,
+        notesSymbolsLang: Data.user.lang
       });
     } else if (!!navigation.getParam("streetsList")) {
       const data = {
@@ -119,7 +124,8 @@ export default class AddressEdit extends React.Component {
       this.setState({
         data,
         streetsList: navigation.getParam("streetsList"),
-        user: Data.user
+        user: Data.user,
+        notesSymbolsLang: Data.user.lang
       });
     }
   }
@@ -143,6 +149,14 @@ export default class AddressEdit extends React.Component {
     // console.log('render:props', props);
 
     if (!state.user) return <Loading />;
+
+    const notesSymbols =
+      languages[state.notesSymbolsLang]["NotesSymbols"] || {};
+    const notesSymbolsOptions = Object.keys(notesSymbols).map(k => ({
+      value: k,
+      label: notesSymbols[k],
+      active: this.state.noteData.noteSymbol === k
+    }));
 
     return (
       <View style={[style.container]}>
@@ -337,7 +351,8 @@ export default class AddressEdit extends React.Component {
           {/*** Include Notes fields for new Address ***/}
           {state.user.isEditor && !state.data.addressId
             ? [
-                <TextInput
+                /*
+								<TextInput
                   key="note"
                   name="note"
                   placeholder={Language.translate("Add Notes")}
@@ -345,6 +360,15 @@ export default class AddressEdit extends React.Component {
                   value={state.noteData.note}
                   error={this.state.errors.note}
                   showLabel={true}
+								/>,
+								*/
+                <NotesInput
+                  key="note"
+                  noteData={state.noteData}
+                  saveData={this.saveData}
+                  errors={state.errors}
+                  notesSymbols={notesSymbols}
+                  setModalVisible={this.setModalVisible}
                 />,
                 <DateInput
                   key="note-date"
@@ -369,6 +393,17 @@ export default class AddressEdit extends React.Component {
 
           <View style={{ height: 60 }} />
         </KeyboardAwareScrollView>
+
+        <NotesModal
+          saveNotesSymbol={this.saveNotesSymbol}
+          saveNotesSymbolsLang={this.saveNotesSymbolsLang}
+          symbolsLang={state.notesSymbolsLang}
+          symbolsOptions={notesSymbolsOptions}
+          errors={state.errors}
+          visible={state.NotesOptionsModal}
+          setModalVisible={this.setModalVisible}
+          languages={languages}
+        />
 
         <Modal
           visible={this.state.AddressTypeModal}
@@ -418,9 +453,7 @@ export default class AddressEdit extends React.Component {
       newData.streetName = data.option.label; // streetName
 
     // Set flag for "isNewStreet" to true
-    if (newData.streetId === "new-street") {
-      newData.isNewStreet = true;
-    }
+    newData.isNewStreet = newData.streetId === "new-street";
 
     this.setState({
       data: newData,
