@@ -89,9 +89,9 @@ export default class AddressEdit extends React.Component {
     user: null,
     AddressTypeModal: false
   };
-  setModalVisible(modal) {
+  setModalVisible = modal => {
     this.setState(modal);
-  }
+  };
   componentWillReceiveProps(props) {
     if (props.navigation) {
       if (!!props.navigation.getParam("saveAddress")) this.saveAddress();
@@ -145,7 +145,7 @@ export default class AddressEdit extends React.Component {
   render() {
     const state = this.state || {};
     const props = this.props || {};
-    // console.log('render:state', state);
+    // console.log("render:state", state);
     // console.log('render:props', props);
 
     if (!state.user) return <Loading />;
@@ -530,8 +530,22 @@ export default class AddressEdit extends React.Component {
   };
 
   isNoteField(name) {
-    return ["note", "date", "retain"].includes(name) !== false;
+    return (
+      ["note", "date", "retain", "noteSymbol", "notesAddl"].includes(name) !==
+      false
+    );
   }
+
+  saveNotesSymbol = selected => {
+    this.saveData({
+      noteSymbol: selected.option.value
+    });
+    this.setModalVisible({ NotesOptionsModal: false });
+  };
+
+  saveNotesSymbolsLang = selectedLang => {
+    this.setState({ notesSymbolsLang: selectedLang.option.value });
+  };
 
   saveData = data => {
     // console.log("data", data);
@@ -540,6 +554,12 @@ export default class AddressEdit extends React.Component {
     // Get Note data
     if (this.isNoteField((Object.keys(data) || [])[0])) {
       newData = { ...this.state.noteData, ...data };
+
+      if (!!newData.noteSymbol) {
+        newData.note = !!newData.notesAddl
+          ? `${newData.noteSymbol} - ${newData.notesAddl}`
+          : newData.noteSymbol;
+      }
 
       // Return to stop function
       return this.setState({
