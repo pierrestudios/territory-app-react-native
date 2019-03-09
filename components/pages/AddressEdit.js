@@ -139,7 +139,7 @@ export default class AddressEdit extends React.Component {
   render() {
     const state = this.state || {};
     const props = this.props || {};
-    // console.log('render:state', state)
+    // console.log('render:state', state);
     // console.log('render:props', props);
 
     if (!state.user) return <Loading />;
@@ -236,27 +236,35 @@ export default class AddressEdit extends React.Component {
             onChange={this.saveAddressType}
           />
 
-          {!state.data.isNewStreet ? (
-            <SelectBox
-              name="street"
-              data-name="streetId"
-              showLabel={true}
-              label={
-                state.data.isApt
-                  ? Language.translate("Select Building")
-                  : Language.translate("Select Street")
-              }
-              options={state.streetsList
-                .filter(d => d.isApt === !!state.data.isApt)
-                .map(UTILS.mapStreets)}
-              value={{
-                value: state.data.streetId,
-                label: state.data.streetName
-              }}
-              error={state.errors.streetId}
-              onInput={this.saveOptionData}
-            />
-          ) : (
+          <SelectBox
+            name="street"
+            data-name="streetId"
+            showLabel={true}
+            label={
+              state.data.isApt
+                ? Language.translate("Select Building")
+                : Language.translate("Select Street")
+            }
+            options={state.streetsList
+              .filter(d => d.isApt === !!state.data.isApt)
+              .map(UTILS.mapStreets)
+
+              // Show "Add New Building" input
+              .concat({
+                value: "new-street",
+                label: state.data.isApt
+                  ? Language.translate("Add New Building")
+                  : Language.translate("Add New Street")
+              })}
+            value={{
+              value: state.data.streetId,
+              label: state.data.streetName
+            }}
+            error={state.errors.streetId}
+            onInput={this.saveOptionData}
+          />
+
+          {state.data.streetId === "new-street" || state.data.isNewStreet ? (
             <TextInput
               name="newStreet"
               placeholder={
@@ -267,11 +275,11 @@ export default class AddressEdit extends React.Component {
               onInput={this.saveData}
               value={state.newStreetData ? state.newStreetData.street : ""}
               error={state.errors.newStreet}
-              showLabel={true}
+              // showLabel={true}
             />
-          )}
+          ) : null}
 
-          {!!state.data.addressId ? null : (
+          {/*!!state.data.addressId ? null : (
             <ButtonLink
               onPress={() => {
                 this.saveData({ isNewStreet: !state.data.isNewStreet });
@@ -288,7 +296,7 @@ export default class AddressEdit extends React.Component {
                 ? Language.translate("Add New Building")
                 : Language.translate("Add New Street")}
             </ButtonLink>
-          )}
+							)*/}
 
           <NumberInput
             name="address"
@@ -409,7 +417,10 @@ export default class AddressEdit extends React.Component {
     if (data.option && data.option.label)
       newData.streetName = data.option.label; // streetName
 
-    // console.log('newData', newData);
+    // Set flag for "isNewStreet" to true
+    if (newData.streetId === "new-street") {
+      newData.isNewStreet = true;
+    }
 
     this.setState({
       data: newData,
@@ -490,7 +501,7 @@ export default class AddressEdit extends React.Component {
   }
 
   saveData = data => {
-    console.log("data", data);
+    // console.log("data", data);
     let newData;
 
     // Get Note data
@@ -511,12 +522,14 @@ export default class AddressEdit extends React.Component {
     if ("inActive" in data)
       // Reverse for "inActive"
       newData = { ...this.state.data, inActive: !data["inActive"] };
+    // Store the new Street data ({street: "", streetId: null})
     else if (this.state.data.isNewStreet && "newStreet" in data)
       newData = {
         ...this.state.newStreetData,
         street: data["newStreet"],
         isAptBuilding: !!this.state.data.isApt ? 1 : 0
       };
+    // Store Address data
     else newData = { ...this.state.data, ...data };
 
     // formatPhoneNumber
@@ -593,9 +606,36 @@ export default class AddressEdit extends React.Component {
       ];
     }
 
-    if (this.state.newStreetData && this.state.newStreetData.street) {
+    if (!!this.state.newStreetData && !!this.state.newStreetData.street) {
       data.street = [this.state.newStreetData];
+      data.streetId = null;
     }
+
+    // console.log("this.state", this.state);
+    console.log("data", data);
+    /*
+{
+	"address": "345",
+	"apt": "",
+	"inActive": false,
+	"isApt": false,
+	"isDuplex": false,
+	"isNewStreet": true,
+	"name": "",
+	"noticeMessage": null,
+	"phone": "",
+	"street": Array [
+		Object {
+			"isAptBuilding": 0,
+			"street": "NE 145 ST"
+		},
+	],
+	"streetId": "",
+	"streetName": "Chwazi Street",
+	"territoryId": 75
+}
+		*/
+    // return;
 
     // Url
     const url = data.addressId
