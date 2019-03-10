@@ -1,5 +1,6 @@
 import React from "react";
 import { FlatList, TouchableOpacity, Text, View, Share } from "react-native";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Swipeout from "react-native-swipeout";
@@ -269,25 +270,47 @@ export default class TerritoryDetails extends React.Component {
             {Language.translate("Send")}
           </ButtonLink>
           <ButtonLink
-            // disabled={state.selectedAddresses.length === 0}
             onPress={this.sendSelectedAddresses}
             customStyle={[
               style["heading-button-link"],
-              // style["send-button-"],
-              // style["add-notes"],
               {
-                borderColor: colors.grey,
+                borderColor: colors["grey-lite"],
                 borderWidth: 1,
+                backgroundColor: colors["off-white"],
                 position: "absolute",
                 right: 20,
-                marginTop: 18
+                marginTop: 18,
+                paddingTop: 6
               }
             ]}
-            textStyle={style["heading-button-link-text"]}
-            // textColorWhite
-          >
-            {Language.translate("Filter")}
-          </ButtonLink>
+            customView={
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "stretch",
+                  justifyContent: "center",
+                  paddingLeft: 5,
+                  paddingRight: 5
+                }}
+              >
+                <MaterialIcons
+                  name="filter-list"
+                  size={16}
+                  color={colors["grey"]}
+                />
+                <Text
+                  style={{
+                    padding: 0,
+                    marginTop: -2,
+                    paddingLeft: 3,
+                    fontSize: 16
+                  }}
+                >
+                  {Language.translate("Filter")}
+                </Text>
+              </View>
+            }
+          />
 
           {/** Note: Issues with PDF and CSV buttons - WebViews cannot handle download of files (.pdf and .csv) **/}
           {/*
