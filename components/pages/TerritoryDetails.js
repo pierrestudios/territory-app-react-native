@@ -9,14 +9,23 @@ import Data from "../common/data";
 import Language from "../common/lang";
 import UTILS from "../common/utils";
 import NavigationService from "../common/nav-service";
+import getSiteSetting from "../common/settings";
 
 import Heading from "../elements/Heading";
 import Loading from "../elements/Loading";
 import { Link, ButtonLink, ButtonHeader } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
-import { Checkbox } from "../elements/FormInput";
+import {
+  Checkbox,
+  InputLabel,
+  RadioBox,
+  SelectBox
+} from "../elements/FormInput";
 
 import style, { colors } from "../styles/main";
+import Modal from "../elements/Modal";
+
+const languages = getSiteSetting("languages");
 
 export default class TerritoryDetails extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -50,7 +59,9 @@ export default class TerritoryDetails extends React.Component {
   allTerritories = false;
   state = {
     selectedAddresses: [],
-    selectorOpened: false
+    selectorOpened: false,
+    addressesFilterOpened: false,
+    filterType: "all"
   };
 
   componentWillReceiveProps(props) {
@@ -79,6 +90,7 @@ export default class TerritoryDetails extends React.Component {
             this.setState({
               data: data,
               user: user,
+              notesSymbolsLang: user.lang,
               addressActive: !!addressId
                 ? data.addresses.find(a => a.addressId === addressId)
                 : null,
@@ -111,7 +123,12 @@ export default class TerritoryDetails extends React.Component {
       <FlatList
         contentContainerStyle={style.listings}
         data={state.data.addresses
-          .filter(a => !a.inActive || !!state.user.isManager)
+          .filter(
+            a =>
+              (!a.inActive || !!state.user.isManager) &&
+              (state.filterType === "all" ||
+                this.matchFilterType(a, state.filterType))
+          )
           .sort(UTILS.sortAddress)}
         keyExtractor={item => item.addressId.toString()}
         renderItem={({ item }) => {
@@ -238,6 +255,12 @@ export default class TerritoryDetails extends React.Component {
       />
     );
 
+    const filterTypes = [
+      { value: "all", label: Language.translate("All") },
+      { value: "done", label: Language.translate("Worked") },
+      { value: "not-done", label: Language.translate("Not worked") }
+    ];
+
     return (
       <View style={[style.section, style.content]}>
         <View style={style["territory-heading"]}>
@@ -270,7 +293,7 @@ export default class TerritoryDetails extends React.Component {
             {Language.translate("Send")}
           </ButtonLink>
           <ButtonLink
-            onPress={this.sendSelectedAddresses}
+            onPress={this.showAddressesFilter}
             customStyle={[
               style["heading-button-link"],
               {
@@ -355,10 +378,51 @@ export default class TerritoryDetails extends React.Component {
         >
           {listings}
         </View>
+
         <Notice
           data={state.noticeMessage}
           closeNotice={() => this.setState({ noticeMessage: null })}
         />
+
+        <Modal
+          animationType="fade"
+          visible={this.state.addressesFilterOpened}
+          onCloseModal={() => {
+            this.setState({ addressesFilterOpened: false });
+          }}
+        >
+          <View style={[styles["modal-view"], {}]}>
+            <SelectBox
+              name="notesSymbolsLang"
+              data-name="notesSymbolsLang"
+              showLabel={true}
+              label={Language.translate("Selected Language")}
+              options={Object.keys(languages).map(l => ({
+                value: l,
+                label: languages[l]["lang-name"]
+              }))}
+              value={
+                !!state.notesSymbolsLang
+                  ? {
+                      value: state.notesSymbolsLang,
+                      label: languages[state.notesSymbolsLang]["lang-name"]
+                    }
+                  : { value: "", label: "" }
+              }
+              onInput={this.saveNotesSymbolsLang}
+            />
+
+            <RadioBox
+              name="filter"
+              label={Language.translate("Filter Addresses")}
+              options={filterTypes.map(f => ({
+                ...f,
+                active: f.value === state.filterType
+              }))}
+              onChange={this.saveFilterType}
+            />
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -461,6 +525,53 @@ export default class TerritoryDetails extends React.Component {
   };
   viewAddressSelector = () => {
     this.setState({ selectorOpened: this.state.selectorOpened === false });
+  };
+  showAddressesFilter = () => {
+    this.setState({
+      addressesFilterOpened: this.state.addressesFilterOpened === false
+    });
+  };
+  saveFilterType = data => {
+    // console.log("data", data);
+    this.setState({
+      filterType: data.option.value,
+      addressesFilterOpened: false
+    });
+  };
+  saveNotesSymbolsLang = selectedLang => {
+    this.setState({ notesSymbolsLang: selectedLang.option.value });
+  };
+  matchFilterType = (address, filterType) => {
+    // console.log("params", { address, filterType });
+
+    if (!address.notes || !address.notes.length) {
+      return filterType === "not-done";
+    }
+
+    const notesSymbols =
+      languages[this.state.notesSymbolsLang]["NotesSymbols"] || {};
+    const latestNote = address.notes[0].note;
+    const latestNoteSegs = latestNote.split("-") || [];
+    const isNoteSymbol =
+      latestNoteSegs.length && latestNoteSegs[0].trim().length <= 2;
+
+    switch (filterType) {
+      case "done":
+        return (
+          !isNoteSymbol ||
+          Object.keys(notesSymbols)
+            .slice(4, 6)
+            .indexOf(latestNoteSegs[0].trim()) !== -1
+        );
+
+      case "not-done":
+        return (
+          !!isNoteSymbol &&
+          Object.keys(notesSymbols)
+            .slice(0, 4)
+            .indexOf(latestNoteSegs[0].trim()) !== -1
+        );
+    }
   };
   notifyDelete = (address, user) => {
     const messageBlock = (
