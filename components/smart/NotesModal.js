@@ -100,7 +100,7 @@ export const NotesInput = props => {
                 fontSize: 18,
                 padding: 5,
                 color: props.noteData.noteSymbol
-                  ? colors.grey
+                  ? colors["grey-dark"]
                   : colors["grey-lite"]
               }
             ]}
