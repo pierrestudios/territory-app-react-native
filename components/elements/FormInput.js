@@ -247,7 +247,8 @@ export const Switch = props => {
         value={props.value}
         onTintColor={colors["territory-blue"]}
         trackColor={colors["territory-blue"]}
-        ios_backgroundColor={colors["grey"]}
+        tintColor={colors["grey-lite"]}
+        ios_backgroundColor={colors["grey-lite"]}
       />
     </View>
   );
