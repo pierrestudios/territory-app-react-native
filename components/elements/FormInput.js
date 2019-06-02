@@ -11,8 +11,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 
-import UTILS from "../common/utils";
-
 import style, { colors } from "../styles/main";
 import { ButtonLink } from "./Button";
 import Language from "../common/lang";

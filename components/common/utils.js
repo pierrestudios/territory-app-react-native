@@ -1,6 +1,10 @@
 import { colors } from "../styles/main";
+import { dependencies as Mods } from "../../package";
 
 export default {
+  isExpo() {
+    return !!Mods.expo;
+  },
   getElementStyles(props, baseStyle) {
     const elStyle = {
       ...props,
