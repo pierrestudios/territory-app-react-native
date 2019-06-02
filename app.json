@@ -2,14 +2,20 @@
   "expo": {
     "name": "TerritoryApp",
     "icon": "./assets/app-icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "version": "1.31",
     "slug": "territory-app",
+    "sdkVersion": "32.0.0",
+    "platforms": ["ios", "android"],
     "ios": {
       "bundleIdentifier": "pierrestudios.com.TerritoryApp.1"
     },
     "android": {
       "package": "com.pierrestudios.jehu.territoryap"
-    },
-    "sdkVersion": "27.0.0"
+    }
   }
 }
