@@ -4,7 +4,10 @@ import {
   View,
   TextInput as TextInputRN,
   Switch as SwitchRN,
-  Picker
+  CheckBox as CheckBoxRN,
+  Picker,
+  TouchableOpacity,
+  Platform
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -13,6 +16,7 @@ import Feather from "react-native-vector-icons/Feather";
 
 import style, { colors } from "../styles/main";
 import { ButtonLink } from "./Button";
+import SelectPickerIOS from "./SelectPickerIOS";
 import Language from "../common/lang";
 
 const getStyles = props => {
@@ -26,9 +30,7 @@ const getStyles = props => {
 
 const getLabel = props => {
   return props.showLabel ? (
-    <Text style={[style["label-medium"], style["text-color-blue"]]}>
-      {props.label || props.placeholder}
-    </Text>
+    <InputLabel>{props.label || props.placeholder}</InputLabel>
   ) : null;
 };
 
@@ -78,8 +80,18 @@ const elemWrapper = (props, el) => {
 
 /*
  * Here we export the components
- * TextInput, DateInput, RadioBox, SelectBox, TextBox, Switch, etc...
+ * InputLabel, TextInput, DateInput, RadioBox, SelectBox, TextBox, Switch, etc...
  */
+
+export const InputLabel = props => {
+  return (
+    <Text
+      style={[style["label-medium"], style["text-color-blue"], props.style]}
+    >
+      {props.children}
+    </Text>
+  );
+};
 
 export const TextInput = props => {
   const finalProps = {
@@ -150,17 +162,9 @@ export const RadioBox = props => {
       {props.labelView ? (
         props.labelView
       ) : (
-        <Text
-          style={[
-            style["options-label"],
-            style["label-medium"],
-            style["text-color-blue"]
-          ]}
-        >
-          {props.label}
-        </Text>
+        <InputLabel style={[style["options-label"]]}>{props.label}</InputLabel>
       )}
-      <View style={style["input-options-container"]}>
+      <View style={[style["input-options-container"], { flexWrap: "wrap" }]}>
         {props.options.map(o => (
           <ButtonLink
             key={`${o.value}-key`}
@@ -201,19 +205,48 @@ export const RadioBox = props => {
   );
 };
 
+export const Checkbox = props => {
+  return (
+    <View>
+      {props.label ? <InputLabel>{props.label}</InputLabel> : null}
+
+      {Platform.OS === "ios" ? (
+        <TouchableOpacity
+          style={[style["check-box"], props.style]}
+          onPress={value =>
+            props.onChange && props.onChange({ [props.name]: value })
+          }
+        >
+          <View
+            style={props.value === true ? style["check-box-checked"] : null}
+          />
+        </TouchableOpacity>
+      ) : (
+        <CheckBoxRN
+          style={style["check-box"]}
+          onChange={value =>
+            props.onChange && props.onChange({ [props.name]: value })
+          }
+          value={props.value}
+        />
+      )}
+    </View>
+  );
+};
+
 export const Switch = props => {
   return (
     <View>
-      <Text style={[style["label-medium"], style["text-color-blue"]]}>
-        {props.label}
-      </Text>
+      <InputLabel>{props.label}</InputLabel>
       <SwitchRN
         onValueChange={value =>
           props.onChange && props.onChange({ [props.name]: value })
         }
         value={props.value}
         onTintColor={colors["territory-blue"]}
+        trackColor={colors["territory-blue"]}
         tintColor={colors["grey-lite"]}
+        ios_backgroundColor={colors["grey-lite"]}
       />
     </View>
   );
@@ -234,26 +267,29 @@ export const SelectBox = props => {
   return (
     <View>
       {props.showLabel ? (
-        <Text style={[style["label-medium"], style["text-color-blue"]]}>
-          {props.label || props.placeholder}
-        </Text>
+        <InputLabel>{props.label || props.placeholder}</InputLabel>
       ) : null}
-      <Picker
-        prompt={props.label}
-        selectedValue={props.value.value}
-        style={style["select-options-wrapper"]}
-        itemStyle={style["select-options"]}
-        onValueChange={selectedValue =>
-          !!props.onInput &&
-          props.onInput({
-            name: props.name,
-            "data-name": props["data-name"],
-            option: props.options.find(o => o.value === selectedValue)
-          })
-        }
-      >
-        {this.renderOptions(props.options)}
-      </Picker>
+
+      {Platform.OS === "android" ? (
+        <Picker
+          prompt={props.label}
+          selectedValue={props.value.value}
+          style={style["select-options-wrapper"]}
+          itemStyle={style["select-options"]}
+          onValueChange={selectedValue =>
+            !!props.onInput &&
+            props.onInput({
+              name: props.name,
+              "data-name": props["data-name"],
+              option: props.options.find(o => o.value === selectedValue)
+            })
+          }
+        >
+          {this.renderOptions(props.options)}
+        </Picker>
+      ) : (
+        <SelectPickerIOS {...props} renderOptions={renderOptions} />
+      )}
       {getError(props)}
     </View>
   );

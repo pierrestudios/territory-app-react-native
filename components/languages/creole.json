@@ -1,4 +1,5 @@
 {
+  "lang-name": "Creole",
   "Home": "Antré a",
   "Invalid Infomation.": "Enfomasyon an pa bon.",
   "Password does not match.": "Password lan pa mem",
@@ -17,7 +18,7 @@
   "Territory Not Assigned": "Nou pat ka asiyé teritwa a",
   "Publisher Not Added": "Nou pat ka ajouté pwoklamatè an",
   "Your device does not support the Geolocation API": "Your device does not support the Geolocation API",
-  "Add Notes": "Ajouté Nòt",
+  "Add Notes": "Meté Nòt",
   "Update Notes": "Chanjé Nòt",
   "Make Active": "Fè li actif",
   "Edit Address": "Chanjé Adrès",
@@ -112,7 +113,7 @@
   "Door": "Pót",
   "Apartment": "Apatman",
   "Door_Explanation": "pou duplex oubien nimero pòt (A, B, C...)",
-  "Add New Street": "Ajouté yon Street",
+  "Add New Street": "Ajouté Nouvo Street",
   "Select Street": "Chwazi Street",
   "Select a Street": "Chwazi yon Street",
   "Street": "Street",
@@ -120,7 +121,7 @@
   "Building": "Bilding",
   "Select Building": "Chwazi Bilding",
   "Select a Building": "Chwazi yon Bilding",
-  "Add New Building": "Ajouté nouvo Bilding",
+  "Add New Building": "Ajouté Nouvo Bilding",
   "New Building": "Nouvo Bilding",
   "Phone": "Telefòn",
   "Notes": "Nòt",
@@ -152,5 +153,18 @@
   "House Number": "Nimero Kay",
   "Essential Note": "Nòt Lan Enpotan Ampil",
   "Changing_Address_Type": "Si w chanjé \"Jan Adrès\" lan wap pedi ",
-  "You have no territories": "Ou pa gen teritwa"
+  "You have no territories": "Ou pa gen teritwa",
+  "Previous Notes": "Nòt ki te la avan",
+  "Send": "Voyé",
+  "Select": "Seleksyone",
+  "Select Note Symbol": "Chwazi symbòl pou nòt lan",
+  "NotesSymbols": {
+    "A": "Absan",
+    "R": "Revisite",
+    "T": "Timoun",
+    "O": "Okipe",
+    "G": "Gason",
+    "F": "Fi"
+  },
+  "Additional Notes": "Ajouté plis nòt"
 }

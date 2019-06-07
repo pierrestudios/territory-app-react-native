@@ -1,4 +1,5 @@
 {
+  "lang-name": "English",
   "Home": "Home",
   "Invalid Infomation.": "Invalid Infomation.",
   "Password does not match.": "Password does not match.",
@@ -151,6 +152,19 @@
   "Duplex": "Duplex",
   "House Number": "House Number",
   "Essential Note": "Essential Note",
-  "Changing_Address_Type": "Changing \"Address Type\" will remove ", 
-  "You have no territories": "You have no territories"
+  "Changing_Address_Type": "Changing \"Address Type\" will remove ",
+  "You have no territories": "You have no territories",
+  "Previous Notes": "Previous Notes",
+  "Send": "Send",
+  "Select": "Select",
+  "Select Note Symbol": "Select Note Symbol",
+  "NotesSymbols": {
+    "NH": "Not Home",
+    "R": "Revisit",
+    "C": "Children",
+    "B": "Busy",
+    "M": "Man",
+    "W": "Woman"
+  },
+  "Additional Notes": "Additional Notes"
 }

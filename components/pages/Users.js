@@ -19,7 +19,7 @@ export default class Users extends React.Component {
       ...UTILS.headerNavOptionsDefault,
       headerRight: <View />, // To center on Andriod
       headerTitle: null,
-      title: "Territory Users",
+      title: Language.translate("Users"),
       headerTintColor: "#fff"
     };
   };
