@@ -11,6 +11,7 @@ import Modal from "../elements/Modal";
 import NavigationService from "../common/nav-service";
 import Language from "../common/lang";
 import Data from "../common/data";
+import reLogin from "../common/reLogin";
 import UTILS from "../common/utils";
 import styles, { colors } from "../styles/main";
 
@@ -90,7 +91,7 @@ export default class Home extends React.Component {
         modalVisible: false
       },
       () => {
-        Data.reLogin();
+        reLogin();
       }
     );
   }
