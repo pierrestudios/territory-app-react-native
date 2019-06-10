@@ -166,5 +166,11 @@
     "M": "Man",
     "W": "Woman"
   },
-  "Additional Notes": "Additional Notes"
+  "Additional Notes": "Additional Notes",
+  "Filter": "Filter",
+  "Filter Addresses": "Filter Addresses",
+  "Selected Language": "Selected Language",
+  "All": "All",
+  "Worked": "Worked",
+  "Not worked": "Not worked"
 }
