@@ -1,8 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation";
 
-import UTILS from "./components/common/utils";
-
 import Logo from "./components/elements/Logo";
 import Splash from "./components/pages/Splash";
 import UserPrefs from "./components/pages/UserPrefs";
@@ -69,21 +67,4 @@ const App = createStackNavigator(
   }
 );
 
-export default (app => {
-  // Custom middleware to load fonts
-  if (UTILS.isExpo()) {
-    const Expo = require("expo");
-
-    Expo.Font.loadAsync({
-      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
-    });
-    Expo.Font.loadAsync({
-      Feather: require("@expo/vector-icons/fonts/Feather.ttf")
-    });
-    Expo.Font.loadAsync({
-      FontAwesome: require("@expo/vector-icons/fonts/FontAwesome.ttf")
-    });
-  }
-
-  return app;
-})(App);
+export default App;
