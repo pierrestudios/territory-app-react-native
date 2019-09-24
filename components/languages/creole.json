@@ -156,7 +156,7 @@
   "You have no territories": "Ou pa gen teritwa",
   "Previous Notes": "Nòt ki te la avan",
   "Send": "Voyé",
-  "Select": "Seleksyone",
+  "Select": "Chwazi",
   "Select Note Symbol": "Chwazi symbòl pou nòt lan",
   "NotesSymbols": {
     "A": "Absan",
@@ -166,5 +166,11 @@
     "G": "Gason",
     "F": "Fi"
   },
-  "Additional Notes": "Ajouté plis nòt"
+  "Additional Notes": "Ajouté plis nòt",
+  "Filter": "Filtre",
+  "Filter Addresses": "Filtre Addrès yo",
+  "Selected Language": "Chwazi Lang",
+  "All": "Tout",
+  "Worked": "Fini",
+  "Not worked": "Poko fini"
 }

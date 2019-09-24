@@ -332,12 +332,13 @@ export default (styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
+    margin: 0,
     marginTop: 5,
     marginBottom: 15
   },
 
   "input-options-button": {
-    width: "30%",
+    width: "31%",
     height: 90
   },
 
@@ -347,8 +348,8 @@ export default (styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 90,
-    padding: 5,
-    margin: 5,
+    padding: 0,
+    margin: 2,
     backgroundColor: colors.white,
     borderColor: colors["grey-lite"],
     borderWidth: 1,
