@@ -102,7 +102,7 @@ export default class Notes extends React.Component {
             style={[
               style["listings-item"],
               item.noteId === state.noteData.noteId
-                ? style["listings-item-active"]
+                ? style["listings-item-inactive"]
                 : null
             ]}
           >

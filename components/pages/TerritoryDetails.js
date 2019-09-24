@@ -134,6 +134,8 @@ export default class TerritoryDetails extends React.Component {
         renderItem={({ item }) => {
           const selected =
             state.selectedAddresses.indexOf(item.addressId) !== -1;
+          item.hasWarning = item.name.toLowerCase().indexOf("frape") !== -1 || 
+            (!!item.notes && !!item.notes.find(n => n.note.toLowerCase().indexOf("frape") !== -1));  
           return (
             <Swipeout
               onOpen={() => {
@@ -162,7 +164,8 @@ export default class TerritoryDetails extends React.Component {
               <View
                 style={[
                   style["listings-item"],
-                  item.inActive ? style["listings-item-active"] : null
+                  item.inActive ? style["listings-item-inactive"] : null,
+                  item.hasWarning ? style["listings-item-warning"] : null
                 ]}
               >
                 {this.state.selectorOpened ? (
@@ -191,7 +194,8 @@ export default class TerritoryDetails extends React.Component {
                           key="listings-date"
                           style={[
                             style["listings-date-text"],
-                            style["listings-notes-date-text"]
+                            style["listings-notes-date-text"],
+                            item.hasWarning ? style["text-white"] : null
                           ]}
                         >
                           {item.notes[0].date}
@@ -199,7 +203,9 @@ export default class TerritoryDetails extends React.Component {
                         <Text
                           key="listings-notes"
                           numberOfLines={1}
-                          style={style["listings-notes-note-text"]}
+                          style={[style["listings-notes-note-text"],
+                          item.hasWarning ? style["text-white"] : null
+                        ]}
                         >
                           {UTILS.diacritics(item.notes[0].note)}
                         </Text>
@@ -232,12 +238,15 @@ export default class TerritoryDetails extends React.Component {
                     numberOfLines={1}
                     style={[
                       style["listings-name-text"],
-                      style["listings-address-name"]
+                      style["listings-address-name"],
+                      item.hasWarning ? style["text-white"] : null
                     ]}
                   >
                     {UTILS.diacritics(item.name)}
                   </Text>
-                  <Text numberOfLines={1} style={style["listings-address"]}>
+                  <Text numberOfLines={1} style={[style["listings-address"],
+                  item.hasWarning ? style["text-white"] : null
+                ]}>
                     {UTILS.getListingAddress(item)}
                   </Text>
                 </TouchableOpacity>
