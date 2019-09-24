@@ -21,7 +21,7 @@ export default async function reLogin() {
       lang: user.lang || this._user.langc
     };
     await AsyncStorage.setItem("user", JSON.stringify(newUser));
-    // console.log('newUser', newUser);
+    // console.log("newUser", newUser);
   } catch (error) {
     UTILS.logError(error);
   }
@@ -29,5 +29,6 @@ export default async function reLogin() {
   // Need to wait for "saveUser" to complete before switching screen
   return new Promise(resolve => {
     resolve(true);
+    // console.log("NavigationService");
   }).then(() => NavigationService.navigate("Login", {}));
 }

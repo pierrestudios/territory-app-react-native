@@ -42,7 +42,8 @@ class Data {
     return this.getSavedUser().then(user => {
       if ((!user || !user.userId || !user.token) && !!user.apiPath) {
         reLogin();
-        return Promise.reject("Please log in");
+        // Creates unhandled rejection
+        // return Promise.reject("Please log in");
       }
       this._user = user;
       return user;

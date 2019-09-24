@@ -211,8 +211,12 @@ export default (styles = StyleSheet.create({
     justifyContent: "space-between" // enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly') (Vertical)
   },
 
-  "listings-item-active": {
+  "listings-item-inactive": {
     backgroundColor: colors["grey-lite"]
+  },
+
+  "listings-item-warning": {
+    backgroundColor: colors.red
   },
 
   "listings-number": {
