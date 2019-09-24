@@ -134,8 +134,12 @@ export default class TerritoryDetails extends React.Component {
         renderItem={({ item }) => {
           const selected =
             state.selectedAddresses.indexOf(item.addressId) !== -1;
-          item.hasWarning = item.name.toLowerCase().indexOf("frape") !== -1 || 
-            (!!item.notes && !!item.notes.find(n => n.note.toLowerCase().indexOf("frape") !== -1));  
+          item.hasWarning =
+            item.name.toLowerCase().indexOf("frape") !== -1 ||
+            (!!item.notes &&
+              !!item.notes.find(
+                n => n.note.toLowerCase().indexOf("frape") !== -1
+              ));
           return (
             <Swipeout
               onOpen={() => {
@@ -203,9 +207,10 @@ export default class TerritoryDetails extends React.Component {
                         <Text
                           key="listings-notes"
                           numberOfLines={1}
-                          style={[style["listings-notes-note-text"],
-                          item.hasWarning ? style["text-white"] : null
-                        ]}
+                          style={[
+                            style["listings-notes-note-text"],
+                            item.hasWarning ? style["text-white"] : null
+                          ]}
                         >
                           {UTILS.diacritics(item.notes[0].note)}
                         </Text>
@@ -244,9 +249,13 @@ export default class TerritoryDetails extends React.Component {
                   >
                     {UTILS.diacritics(item.name)}
                   </Text>
-                  <Text numberOfLines={1} style={[style["listings-address"],
-                  item.hasWarning ? style["text-white"] : null
-                ]}>
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      style["listings-address"],
+                      item.hasWarning ? style["text-white"] : null
+                    ]}
+                  >
                     {UTILS.getListingAddress(item)}
                   </Text>
                 </TouchableOpacity>
@@ -404,6 +413,7 @@ export default class TerritoryDetails extends React.Component {
           }}
         >
           <View style={[styles["modal-view"], {}]}>
+            {/*
             <SelectBox
               name="notesSymbolsLang"
               data-name="notesSymbolsLang"
@@ -423,7 +433,7 @@ export default class TerritoryDetails extends React.Component {
               }
               onInput={this.saveNotesSymbolsLang}
             />
-
+            */}
             <RadioBox
               name="filter"
               label={Language.translate("Filter Addresses")}
