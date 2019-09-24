@@ -98,7 +98,6 @@ export default {
     if (!dateStr) return new Date();
 
     const parts = dateStr.match(/(\d+)/g);
-    // console.log('parts', parts);
     return new Date(parts[0], parts[1] - 1, parts[2]);
   },
   dateFormat(date, format) {
@@ -111,7 +110,6 @@ export default {
           "-" +
           this.getDateSingleDigit(date.getDate())
         );
-      // return date.getUTCFullYear() + '-' + this.getDateSingleDigit(parseInt(date.getUTCMonth()) + 1) + '-' + this.getDateSingleDigit(date.getUTCDate());
       default:
         return date;
     }
@@ -130,7 +128,7 @@ export default {
       return new Date(date) < new Date(passDueDate);
     }
 
-    return false; // For invalid date
+    return false;
   },
   getStreetsList(addresses) {
     const streetsList = [];
@@ -163,9 +161,6 @@ export default {
   getListingAddressWithLastNote(list) {
     return `${this.getListingAddress(list)} ${this.getLastNote(list)}`;
   },
-  openFrameUrl(url) {
-    // disable
-  },
   navigateToUrl(url) {
     window.open(
       window.location.protocol + "//" + window.location.host + url,
@@ -184,7 +179,6 @@ export default {
   },
   loadExternalScript(url, propName) {
     return new Promise((resolve, reject) => {
-      // Prevent loading multiple
       if (!!propName && !!window[propName]) {
         return resolve(window[propName]);
       }
@@ -194,7 +188,6 @@ export default {
       s.src = url;
       document.body.appendChild(s);
 
-      // Check if object "propName" is loaded
       if (!propName) return resolve(true);
 
       this.waitForIt(
@@ -206,7 +199,6 @@ export default {
     });
   },
   waitForIt(conditionIsMet, doAction, time = 100) {
-    // console.log('waitForIt', {TIME: (new Date()).getMilliseconds(),conditionIsMet, doAction});
     const waitForInterval = setInterval(() => {
       if (!!conditionIsMet()) {
         clearInterval(waitForInterval);
@@ -219,8 +211,6 @@ export default {
     headerTitleStyle: {
       fontSize: 18,
       textAlign: "center",
-      // borderWidth: 1,
-      // borderColor: colors.red,
       width: "90%"
     },
     headerStyle: {

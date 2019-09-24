@@ -9,88 +9,75 @@ export default (url, data, type = "GET", headerData = undefined) => {
     return Promise.reject('"Server Url" is not set');
   }
 
-  return (
-    fetch(UTILS.addSlashToUrl(API_URL) + url, {
-      method: type,
-      headers: {
-        ...headerData,
-        "Content-Type": "application/json"
-      },
-      body: data ? JSON.stringify(data) : undefined // Fix for Edge "TypeMismatchError"
+  return fetch(UTILS.addSlashToUrl(API_URL) + url, {
+    method: type,
+    headers: {
+      ...headerData,
+      "Content-Type": "application/json"
+    },
+    body: data ? JSON.stringify(data) : undefined // Fix for Edge "TypeMismatchError"
+  })
+    .then(async res => {
+      // console.log('res', res);
+      if (
+        !res.ok &&
+        (res.status === 401 ||
+          (!!res.statusText &&
+            (res.statusText.match("Token") ||
+              res.statusText.match("Unauthorized"))))
+      ) {
+        await reLogin();
+        return Promise.reject(res.statusText);
+      }
+
+      if (!res.ok) {
+        return res
+          .json()
+          .then(json => {
+            return Promise.reject(json.error);
+          })
+          .catch(E => {
+            return Promise.reject(E || res.statusText);
+          });
+      }
+
+      return res.json();
     })
-      .then(async res => {
-        // console.log('res', res);
-        // catch HTTP "Token" Errors
+    .then(Response => {
+      if ("error" in Response) {
+        if (Response.error && typeof Response.error === "string") {
+          return Promise.reject(Response.error);
+        }
+
         if (
-          !res.ok &&
-          (res.status === 401 ||
-            (!!res.statusText &&
-              (res.statusText.match("Token") ||
-                res.statusText.match("Unauthorized"))))
+          typeof Response.error === "object" &&
+          "email" in Response.error &&
+          !!Response.error.email.length
         ) {
-          await reLogin();
-          return Promise.reject(res.statusText);
+          return Promise.reject(Response.error.email[0]);
         }
 
-        // catch HTTP Errors
-        if (!res.ok) {
-          return res
-            .json()
-            .then(json => {
-              // console.log('json', json);
-              // let error = new Error(json.error || res.statusText);
-              // error.response = res;
-              // throw error;
-              return Promise.reject(json.error);
-            })
-            .catch(E => {
-              // console.log('E', E);
-              // console.log('res.statusText', res.statusText);
-              return Promise.reject(E || res.statusText);
-            });
+        if (
+          typeof Response.error === "object" &&
+          "password" in Response.error &&
+          !!Response.error.password.length
+        ) {
+          return Promise.reject(Response.error.password[0]);
         }
+      }
 
-        return res.json();
-      })
-      .then(Response => {
-        // Catch Form Validation errors
-        // console.log('res', Response)
-        if ("error" in Response) {
-          if (Response.error && typeof Response.error === "string") {
-            return Promise.reject(Response.error);
-          }
+      return Response;
+    })
+    .then(json => {
+      if (json.token) return { data: { token: json.token } };
+      return json;
+    })
+    .then(json => json.data)
+    .catch(e => {
+      console.log("Api > catch() Error", e);
 
-          if (
-            typeof Response.error === "object" &&
-            "email" in Response.error &&
-            !!Response.error.email.length
-          ) {
-            return Promise.reject(Response.error.email[0]);
-          }
-
-          if (
-            typeof Response.error === "object" &&
-            "password" in Response.error &&
-            !!Response.error.password.length
-          ) {
-            return Promise.reject(Response.error.password[0]);
-          }
-        }
-
-        return Response;
-      })
-      // Check for Token
-      .then(json => {
-        if (json.token) return { data: { token: json.token } };
-        return json;
-      })
-      .then(json => json.data)
-      .catch(e => {
-        console.log("Api > catch() Error", e);
-
-        return Promise.reject(e);
-      })
-  );
+      return Promise.reject(e);
+    });
 };
 
 export const FileUpload = (url, formData, headerData) =>

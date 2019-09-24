@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  Picker,
-  TouchableHighlight
-} from "react-native";
+import { View, Text, ScrollView, TouchableHighlight } from "react-native";
 
 import Language from "../common/lang";
 import {
@@ -17,13 +11,10 @@ import {
 
 import style, { colors } from "../styles/main";
 
-export default (NotesModal = props => {
+export default NotesModal = props => {
   return (
     <Modal
       visible={props.visible}
-      onCloseModal={() => {
-        // props.setModalVisible({ visible: false });
-      }}
       style={{
         margin: 0
       }}
@@ -76,7 +67,7 @@ export default (NotesModal = props => {
       </ScrollView>
     </Modal>
   );
-});
+};
 
 export const NotesInput = props => {
   return (

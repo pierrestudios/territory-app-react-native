@@ -3,8 +3,6 @@ import Api from "./api";
 import UTILS from "./utils";
 import reLogin from "./reLogin";
 
-// import FakeData from './fake-data';
-
 let instance = null;
 
 class Data {
@@ -33,17 +31,10 @@ class Data {
   get unAuthUser() {
     return this._user;
   }
-  /*
-	set user(data) {
-		this._user = data;
-	}
-	*/
   loadSavedUser = async () => {
     return this.getSavedUser().then(user => {
       if ((!user || !user.userId || !user.token) && !!user.apiPath) {
         reLogin();
-        // Creates unhandled rejection
-        // return Promise.reject("Please log in");
       }
       this._user = user;
       return user;
@@ -80,24 +71,11 @@ class Data {
       UTILS.logError(error);
     }
   };
-
-  /*
-	removeUser = async () => {
-		this.user = null;
-		try {
-			AsyncStorage.removeItem('user');
-		} catch (error) {
-			UTILS.logError(error);
-		}
-	}
-	*/
-
   getApiData(url, data, type) {
     if (!this.user) return Promise.reject("User is not logged in");
 
     return Api(url, data, type, { Authorization: "Bearer " + this.user.token })
       .then(apiData => {
-        // console.log('apiData', apiData);
         if (!!apiData.refreshedToken && !!this.user && !!this.user.token) {
           console.log("refreshedToken", apiData.refreshedToken);
           this.saveUser({ ...this._user, token: apiData.refreshedToken });
@@ -125,21 +103,6 @@ class Data {
       .catch(e => {
         console.log("getApiData > catch() Error:", e);
 
-        console.log("url", url);
-        /*
-				// console.log('FakeData', {t: FakeData.territories.length, terr: FakeData.territory})
-
-				if (url === 'territories' || url === 'territories/filter') 
-					return Promise.resolve(FakeData.territories.data);
-
-				if (url.match('territories') !== false)
-					return Promise.resolve(FakeData.territory.data);
-
-				return;
-				*/
-
-        // console.log('Api', {url, data, type, header: {Authorization: 'Bearer ' + this.user.token}});
-
         // Unauthorized
         if (
           typeof e === "string" &&
@@ -148,7 +111,7 @@ class Data {
           return reLogin();
         }
 
-        // Do not display DB errors
+        // Note: Do not display DB errors
         if (typeof e === "string" && e.match("SQLSTATE")) {
           return Promise.reject("Error: Operation Failed");
         }
@@ -157,7 +120,6 @@ class Data {
           return reLogin();
         }
 
-        // Display error
         return Promise.reject(e);
       });
   }

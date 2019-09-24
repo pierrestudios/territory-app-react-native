@@ -19,7 +19,7 @@ export const colors = {
  * Layout Props: https://facebook.github.io/react-native/docs/layout-props
  */
 
-export default (styles = StyleSheet.create({
+export default styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
@@ -45,21 +45,16 @@ export default (styles = StyleSheet.create({
   },
 
   // Menu
-
   "main-menu": {
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    // justifyContent: 'space-around',
     marginBottom: 25,
     padding: 0
   },
   "main-menu-button": {
     minWidth: "90%",
     alignItems: "center",
-    // borderStyle: 'solid',
-    // borderWidth: 2,
-    // borderColor: '#ccc',
     backgroundColor: colors["territory-blue"],
     borderRadius: 3,
     padding: 10,
@@ -67,7 +62,6 @@ export default (styles = StyleSheet.create({
     marginTop: 5
   },
   "main-menu-link": {
-    // minWidth: '80%',
     alignItems: "center",
     borderRadius: 3,
     padding: 10
@@ -100,7 +94,6 @@ export default (styles = StyleSheet.create({
     borderColor: colors["grey-lite"]
   },
   disabled: {
-    // backgroundColor: '#ccc',
     opacity: 0.2
   },
   "main-menu-button-text": {
@@ -111,7 +104,6 @@ export default (styles = StyleSheet.create({
   // Form Inputs
   input: {
     minWidth: "90%",
-    // maxWidth: '90%',
     borderWidth: 1,
     borderRadius: 3,
     height: 50,
@@ -148,8 +140,6 @@ export default (styles = StyleSheet.create({
     top: 23,
     left: 10,
     zIndex: 9
-    // borderWidth: 1, // Test
-    // borderColor: colors['red'], // Test
   },
 
   "input-icon": {
@@ -180,20 +170,7 @@ export default (styles = StyleSheet.create({
   },
 
   listings: {
-    // flex: 1,
-    // flexDirection: 'column',
-    // alignItems: 'flex-start', // center, flex-start, flex-end
     backgroundColor: colors.white
-    // borderColor: colors["grey-lite"],
-    // borderTopWidth: 1,
-    // borderBottomWidth: 1,
-    // padding: 2,
-    // height: '100%'
-  },
-
-  "listings-results": {
-    // marginBottom: 120,
-    // flex: 1,
   },
 
   "listings-item": {
@@ -202,12 +179,9 @@ export default (styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: colors["grey-lite"],
     borderBottomWidth: 0,
-    // borderBottomColor: colors["off-white"],
     backgroundColor: colors.white,
-    // position: 'relative',
     flex: 1,
     flexDirection: "row",
-    // alignItems: 'flex-start', // 'flex-start', 'flex-end', 'center', 'stretch', 'baseline'
     justifyContent: "space-between" // enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly') (Vertical)
   },
 
@@ -223,7 +197,6 @@ export default (styles = StyleSheet.create({
     backgroundColor: colors["grey-dark"],
     alignItems: "center",
     padding: 5,
-    // margin: 5,
     width: 35,
     height: 30
   },
@@ -248,13 +221,9 @@ export default (styles = StyleSheet.create({
   },
 
   "listings-date": {
-    // alignSelf: 'flex-end',
     position: "absolute",
     right: 15,
     marginTop: 15,
-    // borderWidth: 1, // Test
-    // borderColor: colors['red'], // Test
-    // padding: 7,
     height: 40
   },
 
@@ -277,17 +246,13 @@ export default (styles = StyleSheet.create({
 
   "listings-notes": {
     width: "35%",
-    // height: 40,
     position: "absolute",
     right: 20,
     padding: 5,
     overflow: "hidden"
-    // borderWidth: 1, // Test
-    // borderColor: colors['red'], // Test
   },
 
   "add-notes": {
-    // padding: 5,
     marginTop: 5,
     alignItems: "center",
     justifyContent: "center",
@@ -384,16 +349,11 @@ export default (styles = StyleSheet.create({
   },
 
   "select-options": {
-    height: 160, // iOS default: 216
+    height: 160,
     width: 200,
     fontSize: 22,
-    // fontWeight: 'bold',
-    // margin: 0,
     marginTop: 0,
     marginBottom: 0
-    // padding: 0
-    // borderWidth: 1, // Test
-    // borderColor: colors['red'], // Test
   },
 
   "check-box": {
@@ -415,13 +375,9 @@ export default (styles = StyleSheet.create({
   },
 
   // Territory Details
-
   "territory-heading": {
-    // flex: 1,
     flexDirection: "row-reverse", // enum('row', 'row-reverse', 'column', 'column-reverse')
-    // alignItems: 'flex-end', // 'flex-start', 'flex-end', 'center', 'stretch', 'baseline' (Vertical)
     justifyContent: "flex-start",
-    // width: '100%',
     height: 60,
     padding: 20
   },
@@ -439,14 +395,12 @@ export default (styles = StyleSheet.create({
 
   "heading-button-link": {
     borderRadius: 3,
-    // flex: 1,
     alignItems: "center",
     padding: 5,
     paddingTop: 5,
     marginLeft: 5,
     marginRight: 0,
     marginTop: -3
-    // height: 30
   },
 
   "heading-button-link-text": {
@@ -511,15 +465,11 @@ export default (styles = StyleSheet.create({
     position: "absolute",
     top: 20,
     maxHeight: "100%",
-    // bottom: 20,
-    // flex: 1,
-    // alignItems: 'center',
     alignSelf: "center",
     width: "90%",
     padding: 5,
     borderWidth: 0,
     borderRadius: 5,
-    // borderColor: colors["grey-lite"],
     backgroundColor: colors.white,
     // iOS Shadow
     shadowColor: colors["grey-dark"],
@@ -535,12 +485,7 @@ export default (styles = StyleSheet.create({
 
   "modal-view": { padding: 20 },
 
-  "notice-box-message": {
-    // fontSize: 16
-  },
-
   // Common styles:
-
   "text-center": {
     textAlign: "center",
     width: "100%"
@@ -595,4 +540,4 @@ export default (styles = StyleSheet.create({
     marginBottom: 5,
     backgroundColor: colors.green
   }
-}));
+});
