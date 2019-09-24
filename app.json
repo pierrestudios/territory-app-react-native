@@ -9,7 +9,8 @@
     },
     "version": "1.31",
     "slug": "territory-app",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "35.0.0",
+    "orientation": "portrait",
     "platforms": ["ios", "android"],
     "ios": {
       "bundleIdentifier": "pierrestudios.com.TerritoryApp.1"
