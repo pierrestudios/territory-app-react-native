@@ -5,10 +5,7 @@ import Language from "../common/lang";
 import UTILS from "../common/utils";
 import getSiteSetting from "../common/settings";
 
-import { dependencies as Mods } from "../../package";
-
 const isAndroid = Platform.OS === "android";
-const Expo = Mods.expo;
 
 export default class WebViewTerritoryMap extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -20,7 +17,7 @@ export default class WebViewTerritoryMap extends React.Component {
   };
   render() {
     const html =
-      isAndroid && !Expo
+      isAndroid && !UTILS.isExpo()
         ? {
             uri: "file:///android_asset/map-view-web-page.html"
           }

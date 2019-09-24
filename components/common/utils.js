@@ -1,6 +1,10 @@
 import { colors } from "../styles/main";
+import { dependencies as Mods } from "../../package";
 
 export default {
+  isExpo() {
+    return !!Mods.expo;
+  },
   getElementStyles(props, baseStyle) {
     const elStyle = {
       ...props,
@@ -150,6 +154,14 @@ export default {
     if (list.isApt) return list.building + ", " + list.address;
     if (list.apt) return list.address + " " + list.streetName + " " + list.apt;
     return list.address + " " + list.streetName;
+  },
+  getLastNote(list) {
+    return list.notes && list.notes.length
+      ? " - " + list.notes.sort(this.sortNotes)[0].note
+      : "";
+  },
+  getListingAddressWithLastNote(list) {
+    return `${this.getListingAddress(list)} ${this.getLastNote(list)}`;
   },
   openFrameUrl(url) {
     // disable

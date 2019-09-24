@@ -502,6 +502,7 @@ export default class TerritoryDetails extends React.Component {
     } - ${this.state.data.publisher.firstName} ${
       this.state.data.publisher.lastName
     }`;
+
     try {
       const result = await Share.share({
         title: title,
@@ -514,6 +515,7 @@ export default class TerritoryDetails extends React.Component {
             .filter(
               a => this.state.selectedAddresses.indexOf(a.addressId) != -1
             )
+            .sort(UTILS.sortAddress)
             .map(a => UTILS.getListingAddress(a))
             .join("\n")
       });
