@@ -88,7 +88,6 @@ export default class UserPrefs extends React.Component {
             value={this.state.data["api-url"]}
             error={this.state.errors["api-url"]}
           />
-          {/* <TextInput name="api-version" placeholder={Language.translate('Version')} onInput={this.saveData} value={this.state.data['api-version']} error={this.state.errors['api-version']} icon={{el: 'FontAwesome', name:"key"}} /> */}
           <SelectBox
             name="language"
             showLabel={true}
@@ -158,8 +157,6 @@ export default class UserPrefs extends React.Component {
 
     if (data.option && data.option.label) newData[data.name] = data.option;
 
-    // console.log('newData', newData);
-
     this.setState({
       data: newData,
       errors: {
@@ -169,8 +166,6 @@ export default class UserPrefs extends React.Component {
     });
   };
   saveSettings = () => {
-    // console.log('state', this.state);
-
     // First, reset errors
     const errors = {
       "api-url": "",
@@ -212,14 +207,8 @@ export default class UserPrefs extends React.Component {
         // console.log("res", res);
         if (!!res.ok) {
           const apiPath = UTILS.addSlashToUrl(this.state.data["api-url"]);
-
-          // console.log("this.state.data[api-url]", this.state.data["api-url"]);
-          // console.log("apiPath", apiPath);
-
-          // Get "apiUrl" from "apiPath" (Server Url) by removing the version path (for now)
           const apiPathSegs = apiPath.split("/");
           const apiUrl = apiPathSegs.slice(0, -2).join("/");
-          console.log("data save", { apiUrl, apiPath });
 
           // Save the user data, first
           Data.saveUser({
@@ -242,8 +231,6 @@ export default class UserPrefs extends React.Component {
                   getSiteSetting("apiPath") === apiPath &&
                   getSiteSetting("lang") === this.state.data["language"].value,
                 () => {
-                  // console.log('Alert:start')
-                  // console.log('getSiteSetting(lang)', getSiteSetting('lang'));
                   const user = Data.user;
                   Alert.alert(
                     "Settings Saved",

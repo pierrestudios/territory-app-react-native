@@ -9,12 +9,11 @@ export default class WebViewExternal extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       title: title || "Web View",
-      headerRight: <View /> // To center on Andriod
+      headerRight: <View />
     };
   };
   render() {
     const uri = this.props.navigation.getParam("url");
-    console.log("uri", uri);
     return <WebView source={{ uri }} />;
   }
 }

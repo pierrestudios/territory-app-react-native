@@ -413,27 +413,6 @@ export default class TerritoryDetails extends React.Component {
           }}
         >
           <View style={[styles["modal-view"], {}]}>
-            {/*
-            <SelectBox
-              name="notesSymbolsLang"
-              data-name="notesSymbolsLang"
-              showLabel={true}
-              label={Language.translate("Selected Language")}
-              options={Object.keys(languages).map(l => ({
-                value: l,
-                label: languages[l]["lang-name"]
-              }))}
-              value={
-                !!state.notesSymbolsLang
-                  ? {
-                      value: state.notesSymbolsLang,
-                      label: languages[state.notesSymbolsLang]["lang-name"]
-                    }
-                  : { value: "", label: "" }
-              }
-              onInput={this.saveNotesSymbolsLang}
-            />
-            */}
             <RadioBox
               name="filter"
               label={Language.translate("Filter Addresses")}
@@ -493,18 +472,15 @@ export default class TerritoryDetails extends React.Component {
   };
   selectAddressRow = (addressId, unselect = false) => {
     let selectedAddresses = this.state.selectedAddresses.slice();
-    // console.log("selectedAddresses", selectedAddresses);
+
     if (unselect) {
       selectedAddresses = selectedAddresses.filter(a => addressId !== a);
     } else {
       selectedAddresses.push(addressId);
     }
-    this.setState(
-      {
-        selectedAddresses
-      }
-      // () => console.log("setState:selectedAddresses", selectedAddresses)
-    );
+    this.setState({
+      selectedAddresses
+    });
   };
   sendSelectedAddresses = async () => {
     const title = `${Language.translate("Territory")} ${
@@ -533,15 +509,6 @@ export default class TerritoryDetails extends React.Component {
       // console.log("result", result);
       if (result.action === Share.sharedAction) {
         this.setState({ selectedAddresses: [], selectorOpened: false });
-        /*
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-				}
-				*/
-        // } else if (result.action === Share.dismissedAction) {
-        // dismissed
       }
     } catch (error) {
       console.log(error.message);
@@ -566,8 +533,6 @@ export default class TerritoryDetails extends React.Component {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   matchFilterType = (address, filterType) => {
-    // console.log("params", { address, filterType });
-
     if (!address.notes || !address.notes.length) {
       return filterType === "not-done";
     }

@@ -13,15 +13,13 @@ export default class WebViewApi extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       title: title || "Web View",
-      headerRight: <View /> // To center on Andriod
+      headerRight: <View />
     };
   };
   render() {
     const API_DOMAIN = getSiteSetting("apiUrl");
-    console.log("API_DOMAIN", API_DOMAIN);
     const uri =
       UTILS.addSlashToUrl(API_DOMAIN) + this.props.navigation.getParam("url");
-    console.log("uri", uri);
 
     if (isAndroid && Platform.Version < 21) {
       return (

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Text,
-  View,
-  ScrollView,
-  FlatList,
-  TouchableOpacity
-} from "react-native";
+import { Text, View, FlatList, TouchableOpacity } from "react-native";
 
 import Data from "../common/data";
 import Language from "../common/lang";
@@ -14,8 +8,6 @@ import NavigationService from "../common/nav-service";
 
 import Heading from "../elements/Heading";
 import Loading from "../elements/Loading";
-import { Link } from "../elements/Button";
-// import Notice from '../elements/PopupNotice';
 
 import styles from "../styles/main";
 
@@ -94,8 +86,6 @@ export default class Territories extends React.Component {
   render() {
     const state = this.state || {};
     const props = this.props || {};
-    // console.log('Territories:render:props', props)
-    // console.log('Territories:render:state', state)
 
     // if "id", Load Territory Details
     if (!!props.id && !this.loadingTerritories) {

@@ -7,14 +7,12 @@ import Data from "../common/data";
 import Language from "../common/lang";
 import UTILS from "../common/utils";
 import NavigationService from "../common/nav-service";
-
-import Heading from "../elements/Heading";
 import Loading from "../elements/Loading";
 
 import styles, { colors } from "../styles/main";
 
 export default class Users extends React.Component {
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = () => {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerRight: <View />, // To center on Andriod
@@ -39,11 +37,11 @@ export default class Users extends React.Component {
   }
 
   render() {
-    // console.log('render:props', props)
     const state = this.state || {};
-    // console.log('state', state)
 
-    if (!state.users) return <Loading />;
+    if (!state.users) {
+      return <Loading />;
+    }
 
     const listings = state.users.length ? (
       this.getListings(state.users)
