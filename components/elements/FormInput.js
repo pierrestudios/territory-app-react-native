@@ -61,7 +61,6 @@ const getIcon = props => {
 const getError = props => {
   return !!props.error ? (
     <View style={[style.errors, style["input-errors"]]}>
-      {/*<FaAlert size={18} />*/}
       <Text style={{ color: colors.white }}>{props.error}</Text>
     </View>
   ) : null;
@@ -117,8 +116,6 @@ export const DateInput = props => {
       mode="date"
       placeholder={props.placeholder}
       format={format}
-      // minDate="2018-05-01"
-      // maxDate="2018-06-01"
       confirmBtnText={Language.translate("OK")}
       cancelBtnText={Language.translate("Cancel")}
       customStyles={{

@@ -10,8 +10,7 @@ export default class SelectPickerIOS extends React.Component {
 
   render() {
     const { props, state } = this;
-    // console.log("state.isSelecting", state.isSelecting);
-    // console.log("props", props);
+
     return (
       <View>
         {state.isSelecting ? (
