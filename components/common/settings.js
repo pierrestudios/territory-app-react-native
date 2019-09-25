@@ -1,9 +1,10 @@
 import { AsyncStorage } from "react-native";
 import * as languages from "../languages/index";
+import { REACT_APP_GOOGLE_API_KEY as apiKey } from "react-native-dotenv";
 
 // TODO:
 // store GOOGLE_API_KEY in Data.user.GAKey after login success (Api needs to provide env vars)
-const GOOGLE_API_KEY = "AIzaSyDaLCZdxygUQAZB6_QxxbQouUDq-RuFzVM";
+const GOOGLE_API_KEY = apiKey;
 const DEFAULT_LANG = "en";
 
 let instance = null;
