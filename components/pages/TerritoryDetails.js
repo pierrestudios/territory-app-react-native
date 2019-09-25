@@ -143,7 +143,6 @@ export default class TerritoryDetails extends React.Component {
           return (
             <Swipeout
               onOpen={() => {
-                // console.log("item.addressId", item.addressId);
                 this.setState({ activeRow: item.addressId });
               }}
               key={item.addressId}
@@ -178,7 +177,6 @@ export default class TerritoryDetails extends React.Component {
                       style={{ margin: 0 }}
                       value={selected}
                       onChange={() => {
-                        // console.log("Check", { selected, id: item.addressId });
                         this.selectAddressRow(item.addressId, selected);
                       }}
                     />
@@ -222,7 +220,13 @@ export default class TerritoryDetails extends React.Component {
                             customStyle={[style["add-notes"]]}
                             onPress={() => this.viewNotes(item)}
                           >
-                            {Language.translate("Add Notes")}
+                            <Text
+                              style={[
+                                item.hasWarning ? style["text-white"] : null
+                              ]}
+                            >
+                              {Language.translate("Add Notes")}
+                            </Text>
                           </ButtonLink>
                         ) : null
                       ]}
