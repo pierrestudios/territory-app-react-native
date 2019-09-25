@@ -51,7 +51,7 @@ class Data {
       UTILS.logError(error);
     }
   };
-  saveUser = async user => {
+  saveUser = async (user = {}) => {
     try {
       const newUser = {
         userType: user.userType,

@@ -41,7 +41,7 @@ class UserData {
     try {
       const user = await AsyncStorage.getItem("user");
       if (user) {
-        this._user = JSON.parse(user);
+        this._user = JSON.parse(user) || {};
 
         const prefs = {
           lang: this._user.lang || DEFAULT_LANG,
