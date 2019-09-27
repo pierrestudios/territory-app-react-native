@@ -14,6 +14,7 @@ import Data from "../common/data";
 import reLogin from "../common/reLogin";
 import UTILS from "../common/utils";
 import styles, { colors } from "../styles/main";
+import Version from "../common/version";
 
 export default class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -96,8 +97,7 @@ export default class Home extends React.Component {
     );
   }
   render() {
-    // console.log('Home:render:state', this.state);
-    if (!this.state.user)
+    if (!this.state.user) {
       return (
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
@@ -105,19 +105,26 @@ export default class Home extends React.Component {
           <Loading />
         </View>
       );
+    }
+
+    const userBtnprops = {
+      customStyle: [
+        styles["heading-button-link"],
+        {
+          width: 150,
+          height: 33,
+          alignSelf: "center",
+          marginBottom: 15,
+          borderColor: colors["grey-lite"],
+          borderWidth: 1
+        }
+      ],
+      textStyle: { fontSize: 16 }
+    };
 
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: "#ecf0f1" }]}>
         <StatusBar barStyle="light-content" />
-
-        {/** Note: WebView cannot handle PDF download **/}
-        {/* 
-					<Button 
-						disabled key="s-13"	
-						onPress={() => UTILS.openFrameUrl('s-13')} 
-						title={Language.translate('Print_S-13', 'Print S-13 Form')} 
-						/>, 
-				*/}
 
         <ScrollView
           contentContainerStyle={styles["scroll-view"]}
@@ -138,6 +145,15 @@ export default class Home extends React.Component {
                   ) : null}
                   {this.state.user.isManager
                     ? [
+                        /** Note: WebView cannot handle PDF download **/
+                        /* 
+                          <Button 
+                            disabled key="s-13"	
+                            onPress={() => UTILS.openFrameUrl('s-13')} 
+                            title={Language.translate('Print_S-13', 'Print S-13 Form')} 
+                            />, 
+                        */
+
                         <Button
                           key="publishers"
                           onPress={() => this.goToPage("Publishers")}
@@ -181,6 +197,8 @@ export default class Home extends React.Component {
               ]}
         </ScrollView>
 
+        <Version />
+
         <Modal
           animationType="fade"
           visible={this.state.modalVisible}
@@ -194,17 +212,7 @@ export default class Home extends React.Component {
             </Heading>
 
             <ButtonLink
-              customStyle={[
-                styles["heading-button-link"],
-                {
-                  width: 100,
-                  alignSelf: "center",
-                  padding: 15,
-                  marginBottom: 10,
-                  borderColor: colors["grey-lite"],
-                  borderWidth: 1
-                }
-              ]}
+              {...userBtnprops}
               onPress={() =>
                 NavigationService.navigate("WebViewExternal", {
                   url: "https://territory-app.net",
@@ -216,17 +224,7 @@ export default class Home extends React.Component {
             </ButtonLink>
 
             <ButtonLink
-              customStyle={[
-                styles["heading-button-link"],
-                {
-                  width: 100,
-                  alignSelf: "center",
-                  padding: 15,
-                  marginBottom: 10,
-                  borderColor: colors["grey-lite"],
-                  borderWidth: 1
-                }
-              ]}
+              {...userBtnprops}
               onPress={() => {
                 NavigationService.navigate("UserPrefs");
               }}
@@ -235,17 +233,7 @@ export default class Home extends React.Component {
             </ButtonLink>
 
             <ButtonLink
-              customStyle={[
-                styles["heading-button-link"],
-                {
-                  width: 100,
-                  alignSelf: "center",
-                  padding: 15,
-                  marginBottom: 10,
-                  borderColor: colors["grey-lite"],
-                  borderWidth: 1
-                }
-              ]}
+              {...userBtnprops}
               onPress={() => {
                 NavigationService.navigate("Login");
               }}
@@ -254,17 +242,7 @@ export default class Home extends React.Component {
             </ButtonLink>
 
             <ButtonLink
-              customStyle={[
-                styles["heading-button-link"],
-                {
-                  width: 100,
-                  alignSelf: "center",
-                  padding: 15,
-                  marginBottom: 10,
-                  borderColor: colors["grey-lite"],
-                  borderWidth: 1
-                }
-              ]}
+              {...userBtnprops}
               onPress={() => {
                 this.sendLogout();
               }}
