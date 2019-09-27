@@ -726,8 +726,11 @@ export default class AddressEdit extends React.Component {
                     userId: resData.user_id
                   }
                 ];
+                // Or add new address id
               } else if (resData.id) {
                 newAddress.addressId = resData.id;
+                newAddress.long = 0.0;
+                newAddress.lat = 0.0;
               }
 
               // If new Street

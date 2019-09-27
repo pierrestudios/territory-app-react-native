@@ -24,7 +24,7 @@
 
       var MapFn = {
         container: null,
-        GA: null, // Google Api
+        GA: null,
         map: null,
         infowindow: null,
         terrCoordinates: null,
@@ -71,36 +71,22 @@
           }
         },
         initializeMap: function(mapdata, boundaries) {
-          // console.log('initializeMap()', {GA: MapFn.GA});
-          // log('initializeMap: ' + MapFn.GA);
-
           var centerLatlng = new MapFn.GA.maps.LatLng(
             mapdata[0].lat,
             mapdata[0].long
           );
-          // log('centerLatlng: ' + JSON.stringify(centerLatlng));
-
           var mapOptions = {
             zoom: 18,
             center: centerLatlng,
             streetViewControl: false,
             fullscreenControl: false,
             mapTypeControlOptions: {
-              mapTypeIds: ["ROADMAP"] // SATELLITE, TERRAIN, HYBRID
+              mapTypeIds: ["ROADMAP"] // Options: SATELLITE, TERRAIN, HYBRID
             }
           };
-
           MapFn.map = new MapFn.GA.maps.Map(MapFn.container, mapOptions);
-          // console.log('initializeMap()', {centerLatlng, mapOptions, map: MapFn.map, GA: MapFn.GA});
-
-          // Add boundaries
           MapFn.boundary = [];
           MapFn.infowindow = new MapFn.GA.maps.InfoWindow();
-          let bounds = new MapFn.GA.maps.LatLngBounds();
-          let savedPoly = boundaries;
-          if (savedPoly == "[]") savedPoly = "";
-
-          // varruct the polygon
           MapFn.terrCoordinates = new MapFn.GA.maps.Polygon({
             strokeColor: MapFn.colors.orange,
             strokeWeight: 5,
@@ -110,7 +96,12 @@
             zIndex: 1
           });
 
-          // now fit the map to the newly inclusive bounds
+          let bounds = new MapFn.GA.maps.LatLngBounds();
+          let savedPoly = boundaries;
+          if (savedPoly == "[]") {
+            savedPoly = "";
+          }
+
           if (savedPoly) {
             MapFn.boundary =
               typeof savedPoly === "object" ? savedPoly : JSON.parse(savedPoly);
@@ -120,12 +111,10 @@
             });
             MapFn.map.fitBounds(bounds);
           }
-          MapFn.terrCoordinates.setMap(MapFn.map);
 
-          // Add Markers
+          MapFn.terrCoordinates.setMap(MapFn.map);
           var markers = mapdata;
-          var m = 0;
-          for (m = 0; m < markers.length; m++) {
+          for (var m = 0; m < markers.length; m++) {
             markers[m].myLatlng = new MapFn.GA.maps.LatLng(
               mapdata[m].lat,
               mapdata[m].long
@@ -143,8 +132,10 @@
               title,
               markerColor
             );
-            bounds.extend(markers[m].myLatlng);
-            // var theApp = MapFn;
+
+            // Note: Disable extending boundaries from markers
+            // This is causing new addresses to cause too wide a boundary
+            // bounds.extend(markers[m].myLatlng);
             var markerData = markers[m];
 
             markers[m].marker.addListener(
@@ -183,7 +174,6 @@
             }
           );
         },
-
         createMarker: (map, data, title, markerColor) => {
           return new MapFn.GA.maps.Marker({
             position: new MapFn.GA.maps.LatLng(data.lat, data.long),
@@ -201,7 +191,6 @@
             }
           });
         },
-
         getLatestNotes: data => {
           return (
             data.notes &&
@@ -209,7 +198,6 @@
             data.notes[0].note + " - " + data.notes[0].date
           );
         },
-
         getLatestNotesStatus: data => {
           var note = (data.notes && data.notes[0] && data.notes[0].note) || "";
           if (!note) return "new";
@@ -217,7 +205,6 @@
           var noteStr = note.trim().toUpperCase();
           return notesStatus[noteStr] || "status-all";
         },
-
         getLatestNoteStatusColor: (data, defaultColor) => {
           var status = MapFn.getLatestNotesStatus(data);
           switch (status) {
@@ -229,7 +216,6 @@
               return defaultColor || MapFn.colors.dullGrey;
           }
         },
-
         getLatestNoteStatusStyle: data => {
           return (
             "padding: 3px 5px; background: " +

@@ -113,9 +113,6 @@ export default class TerritoryDetails extends React.Component {
 
   render() {
     const state = this.state || {};
-    const props = this.props || {};
-    // console.log('render:state', state)
-    // console.log('render:props', props);
 
     if (!state.data) return <Loading />;
 
