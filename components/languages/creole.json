@@ -151,7 +151,7 @@
   "House": "Kay",
   "Duplex": "Duplex",
   "House Number": "Nimero Kay",
-  "Essential Note": "Nòt Lan Enpotan Ampil",
+  "Essential Note": "Nòt Esansyel (imbe l pou tout tan)",
   "Changing_Address_Type": "Si w chanjé \"Jan Adrès\" lan wap pedi ",
   "You have no territories": "Ou pa gen teritwa",
   "Previous Notes": "Nòt ki te la avan",
@@ -164,7 +164,8 @@
     "T": "Timoun",
     "O": "Okipe",
     "G": "Gason",
-    "F": "Fi"
+    "F": "Fi",
+    "PA FRAPE": "PA FRAPE"
   },
   "Additional Notes": "Ajouté plis nòt",
   "Filter": "Filtre",

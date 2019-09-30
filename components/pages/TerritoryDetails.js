@@ -11,16 +11,10 @@ import UTILS from "../common/utils";
 import NavigationService from "../common/nav-service";
 import getSiteSetting from "../common/settings";
 
-import Heading from "../elements/Heading";
 import Loading from "../elements/Loading";
-import { Link, ButtonLink, ButtonHeader } from "../elements/Button";
+import { ButtonLink, ButtonHeader } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
-import {
-  Checkbox,
-  InputLabel,
-  RadioBox,
-  SelectBox
-} from "../elements/FormInput";
+import { Checkbox, RadioBox } from "../elements/FormInput";
 
 import style, { colors } from "../styles/main";
 import Modal from "../elements/Modal";
@@ -75,25 +69,20 @@ export default class TerritoryDetails extends React.Component {
     this.allTerritories = !!this.props.navigation.getParam("allTerritories");
 
     if (!!this.territoryId) {
-      // get details
+      // get territory details
       Data.getApiData(
         `territories${this.allTerritories ? "-all" : ""}/${this.territoryId}`
       )
         .then(data => {
-          // Get "addressId" if reloading page
-          const addressId = null; // parseInt(this.props.addressId || 0);
           const { user } = Data;
 
-          // console.log('data', data);
           if (!!data && !!data.territoryId) {
             const streetsList = UTILS.getStreetsList(data.addresses);
             this.setState({
               data: data,
               user: user,
               notesSymbolsLang: user.lang,
-              addressActive: !!addressId
-                ? data.addresses.find(a => a.addressId === addressId)
-                : null,
+              addressActive: null,
               streetsList: streetsList,
               noticeMessage: null,
               shouldRender: "Territory"
@@ -131,12 +120,8 @@ export default class TerritoryDetails extends React.Component {
         renderItem={({ item }) => {
           const selected =
             state.selectedAddresses.indexOf(item.addressId) !== -1;
-          item.hasWarning =
-            item.name.toLowerCase().indexOf("frape") !== -1 ||
-            (!!item.notes &&
-              !!item.notes.find(
-                n => n.note.toLowerCase().indexOf("frape") !== -1
-              ));
+          item.hasWarning = this.hasWarning(item);
+
           return (
             <Swipeout
               onOpen={() => {
@@ -428,8 +413,23 @@ export default class TerritoryDetails extends React.Component {
       </View>
     );
   }
+  hasWarning = address => {
+    const warningTerms = ["not call", "frape"];
+    for (let t = 0; t < warningTerms.length; t++) {
+      if (
+        address.name.toLowerCase().indexOf(warningTerms[t]) !== -1 ||
+        (!!address.notes &&
+          !!address.notes.find(
+            n => n.note.toLowerCase().indexOf(warningTerms[t]) !== -1
+          ))
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
   viewNotes(data) {
-    // console.log('viewNotes', data)
     this.setState({ addressActive: data, shouldRender: "Notes" }, () => {
       this.props.entity && typeof this.props.entity.viewNotes === "function"
         ? this.props.entity.viewNotes(data)
@@ -524,7 +524,6 @@ export default class TerritoryDetails extends React.Component {
     });
   };
   saveFilterType = data => {
-    // console.log("data", data);
     this.setState({
       filterType: data.option.value,
       addressesFilterOpened: false

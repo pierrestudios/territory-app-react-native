@@ -151,7 +151,7 @@
   "House": "House",
   "Duplex": "Duplex",
   "House Number": "House Number",
-  "Essential Note": "Essential Note",
+  "Essential Note": "Essential Note (Retain indefinitely)",
   "Changing_Address_Type": "Changing \"Address Type\" will remove ",
   "You have no territories": "You have no territories",
   "Previous Notes": "Previous Notes",
@@ -164,7 +164,8 @@
     "C": "Children",
     "B": "Busy",
     "M": "Man",
-    "W": "Woman"
+    "W": "Woman",
+    "DO NOT CALL": "DO NOT CALL"
   },
   "Additional Notes": "Additional Notes",
   "Filter": "Filter",

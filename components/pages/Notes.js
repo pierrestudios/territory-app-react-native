@@ -81,69 +81,29 @@ export default class Notes extends React.Component {
     }
   }
   render() {
-    const state = this.state || {};
-    const props = this.props || {};
-    // console.log('state', state)
-    if (!state.data) return <Loading />;
+    const { state } = this;
+    const { data, noteData, errors } = state;
 
-    const notes = (
-      <FlatList
-        contentContainerStyle={style.listings}
-        data={state.data.notes}
-        extraData={this.state}
-        keyExtractor={item => item.noteId.toString()}
-        ListEmptyComponent={() => (
-          <View style={[style["listings-item"]]}>
-            <Text />
-          </View>
-        )}
-        renderItem={({ item }) => (
-          <View
-            style={[
-              style["listings-item"],
-              item.noteId === state.noteData.noteId
-                ? style["listings-item-inactive"]
-                : null
-            ]}
-          >
-            {state.user.isManager || state.user.userId === item.userId ? (
-              <ButtonLink
-                customStyle={[
-                  style["listings-notes"],
-                  style["listings-notes-edit"]
-                ]}
-                onPress={() => this.updateNotes(item)}
-              >
-                {Language.translate("Edit")}
-              </ButtonLink>
-            ) : null}
-            <View
-              style={[style["listings-name"], style["address-listings-name"]]}
-            >
-              <Text
-                style={[
-                  style["listings-date-text"],
-                  style["listings-notes-date-text"]
-                ]}
-              >
-                {item.date}
-              </Text>
-              <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
-                {UTILS.diacritics(item.note)}
-              </Text>
-            </View>
-          </View>
-        )}
-      />
-    );
+    if (!data) return <Loading />;
 
-    const notesSymbols =
-      languages[state.notesSymbolsLang]["NotesSymbols"] || {};
+    const { NotesSymbols: notesSymbols = {} } = languages[
+      state.notesSymbolsLang
+    ];
     const notesSymbolsOptions = Object.keys(notesSymbols).map(k => ({
       value: k,
       label: notesSymbols[k],
-      active: this.state.noteData.noteSymbol === k
+      active: noteData.noteSymbol === k
     }));
+    const notes = (
+      <FlatList
+        contentContainerStyle={style.listings}
+        data={data.notes}
+        extraData={state}
+        keyExtractor={item => item.noteId.toString()}
+        ListEmptyComponent={this.emptyListResult}
+        renderItem={this.renderListOfNotes}
+      />
+    );
 
     return (
       <View style={[style.container]}>
@@ -152,14 +112,14 @@ export default class Notes extends React.Component {
           keyboardDismissMode="interactive"
         >
           <HeadingBlue>
-            {state.noteData && state.noteData.noteId
+            {noteData && noteData.noteId
               ? Language.translate("Update Notes")
               : Language.translate("Add Notes")}
           </HeadingBlue>
 
           <Text style={[style["text-strong"], { padding: 5, minHeight: 50 }]}>
-            {state.data.name ? UTILS.diacritics(state.data.name) + " - " : ""}{" "}
-            {UTILS.getListingAddress(state.data)}
+            {data.name ? UTILS.diacritics(data.name) + " - " : ""}{" "}
+            {UTILS.getListingAddress(data)}
           </Text>
 
           <View
@@ -169,17 +129,14 @@ export default class Notes extends React.Component {
               { padding: 5, minHeight: 250 }
             ]}
           >
-            <Message
-              error={state.errors.message}
-              message={state.data.message}
-            />
+            <Message error={errors.message} message={data.message} />
 
             <View style={{ minWidth: "90%" }} />
 
             <NotesInput
-              noteData={state.noteData}
+              noteData={noteData}
               saveData={this.saveData}
-              errors={state.errors}
+              errors={errors}
               notesSymbols={notesSymbols}
               setModalVisible={this.setModalVisible}
             />
@@ -188,7 +145,7 @@ export default class Notes extends React.Component {
               key="note-date"
               placeholder={Language.translate("Date")}
               name="date"
-              value={state.noteData.date}
+              value={noteData.date}
               onChange={this.saveData}
             />
 
@@ -197,7 +154,7 @@ export default class Notes extends React.Component {
                 label={Language.translate("Essential Note")}
                 name="retain"
                 onChange={this.saveData}
-                value={this.state.noteData.retain}
+                value={noteData.retain}
               />
             ) : null}
           </View>
@@ -217,7 +174,7 @@ export default class Notes extends React.Component {
           saveNotesSymbolsLang={this.saveNotesSymbolsLang}
           symbolsLang={state.notesSymbolsLang}
           symbolsOptions={notesSymbolsOptions}
-          errors={state.errors}
+          errors={errors}
           visible={state.NotesOptionsModal}
           setModalVisible={this.setModalVisible}
           languages={languages}
@@ -225,12 +182,47 @@ export default class Notes extends React.Component {
       </View>
     );
   }
+  emptyListResult = () => (
+    <View style={[style["listings-item"]]}>
+      <Text />
+    </View>
+  );
+  renderListOfNotes = ({ item }) => (
+    <View
+      style={[
+        style["listings-item"],
+        item.noteId === this.state.noteData.noteId
+          ? style["listings-item-inactive"]
+          : null
+      ]}
+    >
+      {this.state.user.isManager || this.state.user.userId === item.userId ? (
+        <ButtonLink
+          customStyle={[style["listings-notes"], style["listings-notes-edit"]]}
+          onPress={() => this.updateNotes(item)}
+        >
+          {Language.translate("Edit")}
+        </ButtonLink>
+      ) : null}
+      <View style={[style["listings-name"], style["address-listings-name"]]}>
+        <Text
+          style={[
+            style["listings-date-text"],
+            style["listings-notes-date-text"]
+          ]}
+        >
+          {item.date}
+        </Text>
+        <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
+          {UTILS.diacritics(item.note)}
+        </Text>
+      </View>
+    </View>
+  );
   setModalVisible = modal => {
     this.setState(modal);
   };
   saveData = data => {
-    // console.log("data", data);
-
     const newData = { ...this.state.noteData, ...data };
 
     if (!!newData.noteSymbol) {
@@ -249,7 +241,6 @@ export default class Notes extends React.Component {
     });
   };
   updateNotes(data) {
-    // console.log('updateNotes', data);
     this.setState({
       noteData: {
         note: UTILS.diacritics(data.note),
@@ -259,17 +250,6 @@ export default class Notes extends React.Component {
       }
     });
   }
-  /*
-  saveNoteStr = (noteSymbol = this.state.noteData.noteSymbol) => {
-    const notesSymbols =
-      languages[this.state.notesSymbolsLang]["NotesSymbols"] || {};
-    const noteStr = `${noteSymbol} - ${notesSymbols[noteSymbol]}`;
-    this.saveData({
-      note: noteStr.trim()
-    });
-    this.setModalVisible({ NotesOptionsModal: false });
-	};
-	*/
   saveNotesSymbol = selected => {
     this.saveData({
       noteSymbol: selected.option.value
@@ -280,8 +260,6 @@ export default class Notes extends React.Component {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   saveNotes = () => {
-    // console.log('noteData', this.state.noteData);
-    // console.log('this.state.data', this.state.data)
     // Validate
     if (!this.state.noteData.note || !this.state.noteData.date)
       return this.setState({
@@ -305,18 +283,10 @@ export default class Notes extends React.Component {
       date: UTILS.getDateString(this.state.noteData.date)
     };
 
-    // console.log("data", data);
-
     // Url
     const url = this.state.noteData.noteId
-      ? `territories/${this.state.data.territoryId}/notes/edit/${
-          this.state.noteData.noteId
-        }`
-      : `territories/${this.state.data.territoryId}/addresses/${
-          this.state.data.addressId
-        }/notes/add`;
-
-    // console.log('data', data); // return;
+      ? `territories/${this.state.data.territoryId}/notes/edit/${this.state.noteData.noteId}`
+      : `territories/${this.state.data.territoryId}/addresses/${this.state.data.addressId}/notes/add`;
 
     // save note
     Data.getApiData(url, data, "POST")
@@ -332,7 +302,6 @@ export default class Notes extends React.Component {
             }
           },
           () => {
-            // console.log('this.state', this.state)
             // update current Address
             if (
               typeof this.props.navigation.getParam("updateAddress") ===
