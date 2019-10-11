@@ -1,6 +1,6 @@
 {
   "name": "territory-react-app",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "private": true,
   "devDependencies": {
     "babel-preset-expo": "^7.0.0"
