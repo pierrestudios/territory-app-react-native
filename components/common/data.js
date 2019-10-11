@@ -123,6 +123,9 @@ class Data {
         return Promise.reject(e);
       });
   }
+  postApiData(url, data) {
+    return this.getApiData(url, data, "POST");
+  }
   saveTerritoryData(id, data) {
     this._territories = this._territories || [];
     this._territories[id] = data;

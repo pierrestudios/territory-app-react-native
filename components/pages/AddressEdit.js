@@ -696,7 +696,7 @@ export default class AddressEdit extends React.Component {
       : `territories/${data.territoryId}/addresses/add`;
 
     // save address
-    Data.getApiData(url, data, "POST")
+    Data.postApiData(url, data)
       .then(resData => {
         console.log("then() resData", resData);
         // Clear Errors

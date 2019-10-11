@@ -27,7 +27,7 @@ export default class Users extends React.Component {
     Data.getApiData("users").then(users => {
       this.setState({ users }, () => {
         users &&
-          Data.getApiData("publishers/filter", { userId: null }, "POST").then(
+          Data.postApiData("publishers/filter", { userId: null }).then(
             publishers => {
               this.setState({ unattachedPublishers: publishers });
             }

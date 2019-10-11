@@ -149,9 +149,9 @@ export default class UserEdit extends React.Component {
     const url = `users/${this.state.data.userId}/save`;
 
     // Update User
-    Data.getApiData(url, postData, "POST")
+    Data.postApiData(url, postData)
       .then(res => {
-        console.log("then() res", res);
+        // console.log("then() res", res);
 
         if (!res || res.error) {
           return this.setState({

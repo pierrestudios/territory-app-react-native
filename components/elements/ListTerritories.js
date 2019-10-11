@@ -37,7 +37,7 @@ class UnassignModal extends React.Component {
     const selTerritoryId = this.state.selectedTerritory.territoryId;
     const postData = { publisherId: null, date: UTILS.getToday() };
 
-    Data.getApiData(`territories/${selTerritoryId}`, postData, "POST")
+    Data.postApiData(`territories/${selTerritoryId}`, postData)
       .then(res => {
         if (!res) {
           this.setState({

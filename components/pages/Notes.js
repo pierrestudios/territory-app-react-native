@@ -289,7 +289,7 @@ export default class Notes extends React.Component {
       : `territories/${this.state.data.territoryId}/addresses/${this.state.data.addressId}/notes/add`;
 
     // save note
-    Data.getApiData(url, data, "POST")
+    Data.postApiData(url, data)
       .then(resData => {
         // console.log('then() resData', resData)
         // Clear Errors

@@ -64,7 +64,7 @@ export default class UserFn {
 						};
 						
 						// Update User
-						Data.getApiData(`users/${data.userId}/save`, postData, 'POST')
+						Data.postApiData(`users/${data.userId}/save`, postData)
 						.then(res => {
 							if (!res || res.error) {
 								caller.setState({noticeMessage: {
@@ -137,7 +137,7 @@ export default class UserFn {
 
 						const userId = data.userId;
 
-						Data.getApiData(`users/${userId}/delete`, null, 'POST')
+						Data.postApiData(`users/${userId}/delete`)
 						.then(res => {
 							if (!res || res.error) {
 								caller.setState({noticeMessage: {
@@ -220,7 +220,7 @@ export default class UserFn {
 							"publisherId": (caller.state.noticeMessage.inputs.find(i => i.name === 'publisherId') || {})['value']['value']
 						};
 
-						Data.getApiData(`publishers/attach-user`, postData, 'POST')
+						Data.postApiData(`publishers/attach-user`, postData)
 						.then(res => {
 							if (!res || res.error) {
 								caller.setState({noticeMessage: {

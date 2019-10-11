@@ -632,17 +632,11 @@ export default class TerritoryDetails extends React.Component {
                 postData[d.name] = d.value;
               });
 
-              // console.log('postData', postData); // return;
-
               // Delete address
-              Data.getApiData(
-                `addresses/remove/${address.addressId}`,
-                {
-                  delete: postData.delete,
-                  note: postData.note
-                },
-                "POST"
-              )
+              Data.postApiData(`addresses/remove/${address.addressId}`, {
+                delete: postData.delete,
+                note: postData.note
+              })
                 .then(data => {
                   // console.log('then() data', data) => "true"
 
@@ -662,7 +656,6 @@ export default class TerritoryDetails extends React.Component {
                     date: postData.date || UTILS.getToday(),
                     note: postData.note,
                     // Note: Api needs to return "noteId"
-                    // "noteId": 164,
                     retain: !!postData.retain,
                     userId: user.userId
                   });
