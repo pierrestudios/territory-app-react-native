@@ -165,8 +165,6 @@
     "O": "Okipe",
     "G": "Gason",
     "F": "Fi",
-    "X": "Pa Aysyen",
-    "XX": "Pa Ekziste",
     "PA FRAPE": "PA FRAPE"
   },
   "Additional Notes": "Ajouté plis nòt",
@@ -175,5 +173,6 @@
   "Selected Language": "Chwazi Lang",
   "All": "Tout",
   "Worked": "Fini",
-  "Not worked": "Poko fini"
+  "Not worked": "Poko fini",
+  "Enter your reason for this note": "Mete rezon pou nòt, \"PA FRAPE\""
 }

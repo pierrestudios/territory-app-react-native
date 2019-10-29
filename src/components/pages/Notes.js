@@ -264,11 +264,37 @@ export default class Notes extends React.Component {
         }
       });
 
+    const { NotesSymbols: notesSymbols = {} } = languages[
+      this.state.notesSymbolsLang
+    ];
+
+    // Require reason for "DO NOT CALL" and "PA FRAPE"
+    if (
+      (this.state.noteData.noteSymbol === notesSymbols["PA FRAPE"] ||
+        this.state.noteData.noteSymbol === notesSymbols["DO NOT CALL"]) &&
+      (!this.state.noteData.notesAddl ||
+        this.state.noteData.note === this.state.noteData.noteSymbol)
+    ) {
+      return this.setState({
+        errors: {
+          ...this.state.errors,
+          notesAddl: Language.translate("Enter your reason for this note")
+        }
+      });
+    }
+
     // Data
     const data = {
       ...this.state.noteData,
       date: UTILS.getDateString(this.state.noteData.date)
     };
+
+    if (
+      this.state.noteData.noteSymbol === notesSymbols["PA FRAPE"] ||
+      this.state.noteData.noteSymbol === notesSymbols["DO NOT CALL"]
+    ) {
+      data.retain = true; // Retain for "DO NOT CALL", "PA FRAPE"
+    }
 
     // Url
     const url = this.state.noteData.noteId

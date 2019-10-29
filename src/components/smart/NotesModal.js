@@ -108,9 +108,12 @@ export const NotesInput = props => {
       {!props.noteData.noteId && !!props.noteData.noteSymbol ? (
         <TextInput
           name="notesAddl"
-          placeholder={Language.translate("Additional Notes")}
+          placeholder={
+            props.errors.notesAddl || Language.translate("Additional Notes")
+          }
           onInput={props.saveData}
           value={props.noteData.notesAddl}
+          error={props.errors.notesAddl}
         />
       ) : null}
     </View>
