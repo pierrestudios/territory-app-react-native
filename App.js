@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 
 import Logo from "./src/components/elements/Logo";
 import Splash from "./src/components/pages/Splash";
