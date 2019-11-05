@@ -1,11 +1,13 @@
-import { AsyncStorage } from "react-native";
-import * as languages from "../languages/index";
-import { apiKey } from "../../env-keys";
+import {AsyncStorage} from 'react-native';
+
+import * as languages from '../languages/index';
+import keys from '../../env-keys';
+import UTILS from './utils';
 
 // TODO:
 // store GOOGLE_API_KEY in Data.user.GAKey after login success (Api needs to provide env vars)
-const GOOGLE_API_KEY = apiKey;
-const DEFAULT_LANG = "en";
+const GOOGLE_API_KEY = keys.apiKey;
+const DEFAULT_LANG = 'en';
 
 let instance = null;
 
@@ -21,7 +23,7 @@ class UserData {
     this.loadSavedUser();
 
     const prefs = {
-      lang: DEFAULT_LANG
+      lang: DEFAULT_LANG,
     };
 
     this._settings = {
@@ -29,8 +31,8 @@ class UserData {
       languages,
       defaultLang: DEFAULT_LANG,
       langPacks: {
-        [prefs.lang]: languages[prefs.lang]
-      }
+        [prefs.lang]: languages[prefs.lang],
+      },
     };
 
     return instance;
@@ -40,7 +42,7 @@ class UserData {
   }
   loadSavedUser = async () => {
     try {
-      const user = await AsyncStorage.getItem("user");
+      const user = await AsyncStorage.getItem('user');
       if (user) {
         this._user = JSON.parse(user) || {};
 
@@ -48,15 +50,15 @@ class UserData {
           lang: this._user.lang || DEFAULT_LANG,
           apiUrl: this._user.apiUrl,
           apiPath: this._user.apiPath,
-          GAKey: GOOGLE_API_KEY
+          GAKey: GOOGLE_API_KEY,
         };
 
         this._settings = {
           ...this._settings,
           ...prefs,
           langPacks: {
-            [prefs.lang]: languages[prefs.lang]
-          }
+            [prefs.lang]: languages[prefs.lang],
+          },
         };
       }
     } catch (error) {
