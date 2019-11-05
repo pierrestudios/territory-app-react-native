@@ -247,62 +247,70 @@ export default class Notes extends React.Component {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   saveNotes = () => {
+    const { navigation } = this.props;
+    const {
+      notesSymbolsLang,
+      noteData,
+      errors,
+      data: addressData
+    } = this.state;
+    const {
+      noteId,
+      note,
+      date,
+      noteSymbol,
+      notesAddl,
+      territoryId,
+      addressId
+    } = noteData;
+
     // Validate
-    if (!this.state.noteData.note || !this.state.noteData.date)
+    if (!note || !date)
       return this.setState({
         errors: {
-          ...this.state.errors,
-          note: !this.state.data.note
-            ? Language.translate("Notes is empty")
-            : "",
-          date: !this.state.data.date
-            ? Language.translate("Date is missing")
-            : "",
-          message: !this.state.data.note
-            ? Language.translate("Notes is empty")
-            : ""
+          ...errors,
+          note: !note ? Language.translate("Notes is empty") : "",
+          date: !date ? Language.translate("Date is missing") : "",
+          message: !note ? Language.translate("Notes is empty") : ""
         }
       });
 
-    const { NotesSymbols: notesSymbols = {} } = languages[
-      this.state.notesSymbolsLang
-    ];
+    const { NotesSymbols: notesSymbols = {} } = languages[notesSymbolsLang];
 
     // Require reason for "DO NOT CALL" and "PA FRAPE"
     if (
-      (this.state.noteData.noteSymbol === notesSymbols["PA FRAPE"] ||
-        this.state.noteData.noteSymbol === notesSymbols["DO NOT CALL"]) &&
-      (!this.state.noteData.notesAddl ||
-        this.state.noteData.note === this.state.noteData.noteSymbol)
+      (noteSymbol === notesSymbols["PA FRAPE"] ||
+        noteSymbol === notesSymbols["DO NOT CALL"]) &&
+      (!notesAddl || note === noteSymbol)
     ) {
       return this.setState({
         errors: {
-          ...this.state.errors,
+          ...errors,
           notesAddl: Language.translate("Enter your reason for this note")
         }
       });
     }
 
     // Data
-    const data = {
-      ...this.state.noteData,
-      date: UTILS.getDateString(this.state.noteData.date)
+    const dataToSave = {
+      ...noteData,
+      date: UTILS.getDateString(date)
     };
 
     if (
-      this.state.noteData.noteSymbol === notesSymbols["PA FRAPE"] ||
-      this.state.noteData.noteSymbol === notesSymbols["DO NOT CALL"]
+      noteSymbol === notesSymbols["PA FRAPE"] ||
+      noteSymbol === notesSymbols["DO NOT CALL"]
     ) {
-      data.retain = true; // Retain for "DO NOT CALL", "PA FRAPE"
+      dataToSave.retain = true; // Retain for "DO NOT CALL", "PA FRAPE"
     }
 
     // Url
-    const url = this.state.noteData.noteId
-      ? `territories/${this.state.data.territoryId}/notes/edit/${this.state.noteData.noteId}`
-      : `territories/${this.state.data.territoryId}/addresses/${this.state.data.addressId}/notes/add`;
+    const url = noteId
+      ? `territories/${territoryId}/notes/edit/${noteId}`
+      : `territories/${territoryId}/addresses/${addressId}/notes/add`;
 
     // save note
-    Data.postApiData(url, data)
+    Data.postApiData(url, dataToSave)
       .then(resData => {
         // console.log('then() resData', resData)
         // Clear Errors
@@ -316,21 +324,18 @@ export default class Notes extends React.Component {
           },
           () => {
             // update current Address
-            if (
-              typeof this.props.navigation.getParam("updateAddress") ===
-              "function"
-            ) {
+            if (typeof navigation.getParam("updateAddress") === "function") {
               let newNotes;
               // editting notes?
-              if (this.state.noteData.noteId && resData) {
-                newNotes = this.state.data.notes
+              if (noteId && resData) {
+                newNotes = addressData.notes
                   .map(n => {
-                    if (n.noteId === this.state.noteData.noteId)
+                    if (n.noteId === noteId)
                       return {
                         ...n,
-                        date: data.date,
-                        note: data.note,
-                        retain: !!data.retain
+                        date: addressData.date,
+                        note: addressData.note,
+                        retain: !!addressData.retain
                       };
                     return n;
                   })
@@ -339,8 +344,7 @@ export default class Notes extends React.Component {
               // adding new notes?
               else {
                 newNotes =
-                  (this.state.data.notes && this.state.data.notes.slice(0)) ||
-                  [];
+                  (addressData.notes && addressData.notes.slice(0)) || [];
                 newNotes.push({
                   note: resData.content,
                   date: resData.date,
@@ -351,10 +355,10 @@ export default class Notes extends React.Component {
                 newNotes = newNotes.sort(UTILS.sortNotes);
               }
 
-              const newAddress = { ...this.state.data, notes: newNotes };
-              this.props.navigation.getParam("updateAddress")(newAddress);
+              const newAddress = { ...addressData, notes: newNotes };
+              navigation.getParam("updateAddress")(newAddress);
             }
-            this.props.navigation.goBack();
+            navigation.goBack();
           }
         );
       })
@@ -363,7 +367,7 @@ export default class Notes extends React.Component {
         const errorMessage = Language.translate("An error occured.");
         this.setState({
           errors: {
-            ...this.state.errors,
+            ...errors,
             message: errorMessage
           }
         });
