@@ -279,6 +279,7 @@ export default class Notes extends React.Component {
 
     // Require reason for "DO NOT CALL" and "PA FRAPE"
     if (
+      noteSymbol &&
       (noteSymbol === notesSymbols["PA FRAPE"] ||
         noteSymbol === notesSymbols["DO NOT CALL"]) &&
       (!notesAddl || note === noteSymbol)
@@ -330,13 +331,15 @@ export default class Notes extends React.Component {
               if (noteId && resData) {
                 newNotes = addressData.notes
                   .map(n => {
-                    if (n.noteId === noteId)
+                    if (n.noteId === noteId) {
                       return {
                         ...n,
-                        date: addressData.date,
-                        note: addressData.note,
-                        retain: !!addressData.retain
+                        date: dataToSave.date,
+                        note: dataToSave.note,
+                        retain: !!dataToSave.retain
                       };
+                    }
+
                     return n;
                   })
                   .sort(UTILS.sortNotes);
