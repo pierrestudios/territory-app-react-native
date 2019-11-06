@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, Platform } from "react-native";
+import { View, Text, Platform, Image } from "react-native";
 import { WebView } from "react-native-webview";
 
 import Language from "../../common/lang";
 import UTILS from "../../common/utils";
 import getSiteSetting from "../../common/settings";
+import mapPage from "../../assets/map-view-web-page.html";
 
 const isAndroid = Platform.OS === "android";
 
@@ -18,6 +19,23 @@ export default class WebViewTerritoryMap extends React.Component {
       headerRight: <View /> // To center on Andriod
     };
   };
+
+  constructor() {
+    super();
+    this.state = {
+      mapPageContent: ""
+    };
+  }
+
+  // react-native-webview issue with "android_asset"
+  // Workaround using Image.resolveAssetSource fn
+  componentDidMount() {
+    (async () => {
+      const src = Image.resolveAssetSource(mapPage);
+      const mapPageContent = await fetch(src.uri).then(r => r.text());
+      this.setState({ mapPageContent });
+    })();
+  }
   render() {
     // Webview not executing injectedJavaScript on Android < 4.4
     // More info: https://stackoverflow.com/questions/42517079/reactnative-webview-not-executing-injectedjavascript-on-android
@@ -31,12 +49,11 @@ export default class WebViewTerritoryMap extends React.Component {
       );
     }
 
-    const html =
-      isAndroid && !UTILS.isExpo()
-        ? {
-            uri: "file:///android_asset/map-view-web-page.html"
-          }
-        : require("../../assets/map-view-web-page.html");
+    const { mapPageContent } = this.state;
+    const html = isAndroid // && !UTILS.isExpo()
+      ? { html: mapPageContent }
+      : require("../../assets/map-view-web-page.html");
+
     const apiKey = getSiteSetting("GAKey");
     const { addresses, boundaries } = this.props.navigation.getParam("data");
     const addressesStr = `${JSON.stringify(addresses)}`;
