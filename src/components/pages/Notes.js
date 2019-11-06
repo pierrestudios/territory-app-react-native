@@ -299,8 +299,9 @@ export default class Notes extends React.Component {
     };
 
     if (
-      noteSymbol === notesSymbols["PA FRAPE"] ||
-      noteSymbol === notesSymbols["DO NOT CALL"]
+      noteSymbol &&
+      (noteSymbol === notesSymbols["PA FRAPE"] ||
+        noteSymbol === notesSymbols["DO NOT CALL"])
     ) {
       dataToSave.retain = true; // Retain for "DO NOT CALL", "PA FRAPE"
     }
