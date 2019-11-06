@@ -8,7 +8,7 @@ export default () => {
   return (
     <View style={{ marginBottom: 10, marginTop: 10 }}>
       <Text>
-        VER: {expo.version}-{packageVersion}
+        VER: {expo ? expo.version : ""}-{packageVersion}
       </Text>
     </View>
   );
