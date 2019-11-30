@@ -254,15 +254,8 @@ export default class Notes extends React.Component {
       errors,
       data: addressData
     } = this.state;
-    const {
-      noteId,
-      note,
-      date,
-      noteSymbol,
-      notesAddl,
-      territoryId,
-      addressId
-    } = noteData;
+    const { noteId, note, date, noteSymbol, notesAddl } = noteData;
+    const { territoryId, addressId } = addressData;
 
     // Validate
     if (!note || !date)
