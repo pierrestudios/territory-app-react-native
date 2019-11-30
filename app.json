@@ -7,11 +7,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "version": "1.41",
     "slug": "territory-app",
     "sdkVersion": "35.0.0",
     "orientation": "portrait",
     "platforms": ["ios", "android"],
+    "ios-version": "1.42",
+    "android-version": "1.4.9",
     "ios": {
       "bundleIdentifier": "pierrestudios.com.TerritoryApp.1"
     },
