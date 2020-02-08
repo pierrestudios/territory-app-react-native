@@ -261,7 +261,7 @@ export default class AddressEdit extends React.Component {
             }
             options={state.streetsList
               .filter(d => d.isApt === !!state.data.isApt)
-              .map(UTILS.mapStreets)
+              .map(UTILS.mapStreetsToLabelAndValue)
 
               // Show "Add New Building" input
               .concat({

@@ -32,7 +32,7 @@ export default {
       : "";
 
     if (entity) {
-      const replacement = this.entities.find(
+      const replacement = this.diacriticEntities.find(
         e => e.html === entityClean.trim()
       );
 
@@ -98,7 +98,7 @@ export default {
     return typeof date === "string"
       ? date
       : typeof date === "object"
-      ? this.dateFormat(date, "YYYY-MM-DD")
+      ? this.formatDate(date, "YYYY-MM-DD")
       : "";
   },
   getDateObject(dateStr) {
@@ -107,7 +107,7 @@ export default {
     const parts = dateStr.match(/(\d+)/g);
     return new Date(parts[0], parts[1] - 1, parts[2]);
   },
-  dateFormat(date, format) {
+  formatDate(date, format) {
     switch (format) {
       case "YYYY-MM-DD":
         return (
@@ -149,7 +149,7 @@ export default {
     });
     return streetsList;
   },
-  mapStreets(data) {
+  mapStreetsToLabelAndValue(data) {
     return {
       value: data.id,
       label: data.name
@@ -241,7 +241,7 @@ export default {
     { value: "Manager", label: "Manager" },
     { value: "Admin", label: "Admin" }
   ],
-  entities: [
+  diacriticEntities: [
     // acute
     { html: "&aacute;", diacritic: "á" },
     { html: "&Aacute;", diacritic: "Á" },
