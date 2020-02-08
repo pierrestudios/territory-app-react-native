@@ -71,7 +71,7 @@ export default class PublisherEdit extends React.Component {
             name="firstName"
             placeholder={Language.translate("First Name")}
             onInput={this.saveData}
-            value={UTILS.diacritics(state.data.firstName)}
+            value={UTILS.formatDiacritics(state.data.firstName)}
             error={state.errors.firstName}
             showLabel={true}
           />
@@ -79,7 +79,7 @@ export default class PublisherEdit extends React.Component {
             name="lastName"
             placeholder={Language.translate("Last Name")}
             onInput={this.saveData}
-            value={UTILS.diacritics(state.data.lastName)}
+            value={UTILS.formatDiacritics(state.data.lastName)}
             error={state.errors.lastName}
             showLabel={true}
           />

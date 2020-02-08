@@ -18,8 +18,11 @@ export default {
   logError(Error) {
     console.log("error", Error);
   },
-  diacritics(string, reverse = false) {
-    if (!string) return "";
+  formatDiacritics(string) {
+    if (!string) {
+      return "";
+    }
+
     const start = string.match("&");
     const end = string.match(";");
     const entity =
@@ -27,11 +30,15 @@ export default {
     const entityClean = entity
       ? "&" + entity.replace(/[^0-9a-z]/gi, "") + ";"
       : "";
+
     if (entity) {
       const replacement = this.entities.find(
         e => e.html === entityClean.trim()
       );
-      if (replacement) return string.replace(entity, replacement.diacritic);
+
+      if (replacement) {
+        return string.replace(entity, replacement.diacritic);
+      }
     }
 
     return string;

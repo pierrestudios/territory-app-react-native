@@ -105,7 +105,7 @@ export default class Notes extends React.Component {
           </HeadingBlue>
 
           <Text style={[style["text-strong"], { padding: 5, minHeight: 50 }]}>
-            {data.name ? UTILS.diacritics(data.name) + " - " : ""}{" "}
+            {data.name ? UTILS.formatDiacritics(data.name) + " - " : ""}{" "}
             {UTILS.getListingAddress(data)}
           </Text>
 
@@ -201,7 +201,7 @@ export default class Notes extends React.Component {
           {item.date}
         </Text>
         <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
-          {UTILS.diacritics(item.note)}
+          {UTILS.formatDiacritics(item.note)}
         </Text>
       </View>
     </View>
@@ -230,7 +230,7 @@ export default class Notes extends React.Component {
   updateNotes(data) {
     this.setState({
       noteData: {
-        note: UTILS.diacritics(data.note),
+        note: UTILS.formatDiacritics(data.note),
         date: UTILS.getDateObject(data.date),
         retain: !!data.retain,
         noteId: data.noteId

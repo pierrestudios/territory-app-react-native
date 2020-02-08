@@ -67,7 +67,7 @@ export default class UserEdit extends React.Component {
             name="email"
             placeholder={Language.translate("User Email")}
             onInput={this.saveData}
-            value={UTILS.diacritics(state.data.email)}
+            value={UTILS.formatDiacritics(state.data.email)}
             error={state.errors.email}
             showLabel={true}
           />

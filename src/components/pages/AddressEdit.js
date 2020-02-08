@@ -179,7 +179,7 @@ export default class AddressEdit extends React.Component {
                   name="name"
                   placeholder={Language.translate("Name")}
                   onInput={this.saveData}
-                  value={UTILS.diacritics(state.data.name)}
+                  value={UTILS.formatDiacritics(state.data.name)}
                   error={state.errors.name}
                   showLabel={true}
                   key="name"

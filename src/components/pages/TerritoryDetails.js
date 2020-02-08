@@ -192,7 +192,7 @@ export default class TerritoryDetails extends React.Component {
                             item.hasWarning ? style["text-white"] : null
                           ]}
                         >
-                          {UTILS.diacritics(item.notes[0].note)}
+                          {UTILS.formatDiacritics(item.notes[0].note)}
                         </Text>
                       ]
                     : [
@@ -233,7 +233,7 @@ export default class TerritoryDetails extends React.Component {
                       item.hasWarning ? style["text-white"] : null
                     ]}
                   >
-                    {UTILS.diacritics(item.name)}
+                    {UTILS.formatDiacritics(item.name)}
                   </Text>
                   <Text
                     numberOfLines={1}
