@@ -152,7 +152,7 @@ export default class Signup extends React.Component {
           ...errors,
           email: !this.state.data.email
             ? Language.translate("Email is missing")
-            : !UTILS.validEmail(this.state.data.email)
+            : !UTILS.isValidEmail(this.state.data.email)
             ? Language.translate("Invalid email")
             : "",
           password: !this.state.data.password
@@ -165,7 +165,7 @@ export default class Signup extends React.Component {
         waitingForResponse: false
       });
 
-    if (!UTILS.validEmail(this.state.data.email))
+    if (!UTILS.isValidEmail(this.state.data.email))
       return this.setState({
         errors: {
           ...errors,
