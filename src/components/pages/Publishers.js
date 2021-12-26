@@ -116,8 +116,8 @@ export default class Publishers extends React.Component {
                 onPress={() => this.viewDetails(item)}
               >
                 <Text numberOfLines={1} style={[styles["listings-name-text"]]}>
-                  {UTILS.diacritics(item.firstName)}{" "}
-                  {UTILS.diacritics(item.lastName)}
+                  {UTILS.formatDiacritics(item.firstName)}{" "}
+                  {UTILS.formatDiacritics(item.lastName)}
                 </Text>
               </TouchableOpacity>
               <View style={styles["listings-right-arrow"]}>

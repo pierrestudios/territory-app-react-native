@@ -67,7 +67,7 @@ export default class UserEdit extends React.Component {
             name="email"
             placeholder={Language.translate("User Email")}
             onInput={this.saveData}
-            value={UTILS.diacritics(state.data.email)}
+            value={UTILS.formatDiacritics(state.data.email)}
             error={state.errors.email}
             showLabel={true}
           />
@@ -124,14 +124,14 @@ export default class UserEdit extends React.Component {
     if (
       !this.state.data.userType ||
       !this.state.data.email ||
-      !UTILS.validEmail(this.state.data.email)
+      !UTILS.isValidEmail(this.state.data.email)
     )
       return this.setState({
         errors: {
           ...this.state.errors,
           email: !this.state.data.email
             ? Language.translate("Email is missing")
-            : !UTILS.validEmail(this.state.data.email)
+            : !UTILS.isValidEmail(this.state.data.email)
             ? Language.translate("Invalid email")
             : "",
           userType: !this.state.data.userType ? "Choose account type" : "",

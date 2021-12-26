@@ -18,8 +18,11 @@ export default {
   logError(Error) {
     console.log("error", Error);
   },
-  diacritics(string, reverse = false) {
-    if (!string) return "";
+  formatDiacritics(string) {
+    if (!string) {
+      return "";
+    }
+
     const start = string.match("&");
     const end = string.match(";");
     const entity =
@@ -27,16 +30,20 @@ export default {
     const entityClean = entity
       ? "&" + entity.replace(/[^0-9a-z]/gi, "") + ";"
       : "";
+
     if (entity) {
-      const replacement = this.entities.find(
+      const replacement = this.diacriticEntities.find(
         e => e.html === entityClean.trim()
       );
-      if (replacement) return string.replace(entity, replacement.diacritic);
+
+      if (replacement) {
+        return string.replace(entity, replacement.diacritic);
+      }
     }
 
     return string;
   },
-  validEmail(email) {
+  isValidEmail(email) {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
       email
     );
@@ -91,7 +98,7 @@ export default {
     return typeof date === "string"
       ? date
       : typeof date === "object"
-      ? this.dateFormat(date, "YYYY-MM-DD")
+      ? this.formatDate(date, "YYYY-MM-DD")
       : "";
   },
   getDateObject(dateStr) {
@@ -100,7 +107,7 @@ export default {
     const parts = dateStr.match(/(\d+)/g);
     return new Date(parts[0], parts[1] - 1, parts[2]);
   },
-  dateFormat(date, format) {
+  formatDate(date, format) {
     switch (format) {
       case "YYYY-MM-DD":
         return (
@@ -142,7 +149,7 @@ export default {
     });
     return streetsList;
   },
-  mapStreets(data) {
+  mapStreetsToLabelAndValue(data) {
     return {
       value: data.id,
       label: data.name
@@ -234,7 +241,7 @@ export default {
     { value: "Manager", label: "Manager" },
     { value: "Admin", label: "Admin" }
   ],
-  entities: [
+  diacriticEntities: [
     // acute
     { html: "&aacute;", diacritic: "á" },
     { html: "&Aacute;", diacritic: "Á" },
