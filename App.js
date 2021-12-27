@@ -1,4 +1,5 @@
 import React from "react";
+import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
 import Logo from "./src/components/elements/Logo";
@@ -54,17 +55,17 @@ const App = createStackNavigator(
     Notes: { screen: Notes },
     WebViewApi: { screen: WebViewApi },
     WebViewExternal: { screen: WebViewExternal },
-    WebViewTerritoryMap: { screen: WebViewTerritoryMap }
+    WebViewTerritoryMap: { screen: WebViewTerritoryMap },
   },
   {
     initialRouteName: "Splash",
     navigationOptions: {
       headerStyle: {
-        backgroundColor: colors["territory-blue"]
+        backgroundColor: colors["territory-blue"],
       },
-      headerTitle: <Logo />
-    }
+      headerTitle: <Logo />,
+    },
   }
 );
 
-export default App;
+export default createAppContainer(App);
