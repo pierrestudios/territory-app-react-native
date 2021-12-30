@@ -1,21 +1,31 @@
 {
   "expo": {
     "name": "TerritoryApp",
+    "slug": "territory-app",
     "icon": "./src/assets/app-icon.png",
+    "version": "1.43",
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "slug": "territory-app",
-    "sdkVersion": "35.0.0",
     "orientation": "portrait",
     "platforms": ["ios", "android"],
     "ios": {
-      "bundleIdentifier": "pierrestudios.com.TerritoryApp.1"
+      "supportsTablet": true,
+      "bundleIdentifier": "pierrestudios.com.TerritoryApp.1",
+      "buildNumber": "43"
     },
     "android": {
-      "package": "com.pierrestudios.jehu.territoryap"
+      "package": "com.pierrestudios.jehu.territoryap",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/app-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     },
     "description": "Mobile client for iOS and Android built with React Native for Territory Services API is a RESTful api. It was developed to provide easy management for congregation territories.",
     "githubUrl": "https://github.com/pierrestudios/territory-app-react-native.git"
