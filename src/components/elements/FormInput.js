@@ -280,7 +280,7 @@ export const SelectBox = props => {
             })
           }
         >
-          {this.renderOptions(props.options)}
+          {renderOptions(props.options)}
         </Picker>
       ) : (
         <SelectPickerIOS {...props} renderOptions={renderOptions} />
