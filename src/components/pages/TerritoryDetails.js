@@ -430,6 +430,8 @@ export default class TerritoryDetails extends React.Component {
     return false;
   };
   viewNotes(data) {
+    // TODO: Find the source of this.props.entity
+
     this.setState({ addressActive: data, shouldRender: "Notes" }, () => {
       this.props.entity && typeof this.props.entity.viewNotes === "function"
         ? this.props.entity.viewNotes(data)

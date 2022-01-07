@@ -58,7 +58,20 @@ export default class WebViewTerritoryMap extends React.Component {
     const { addresses, boundaries } = this.props.navigation.getParam("data");
     const addressesStr = `${JSON.stringify(addresses)}`;
     const boundariesStr = boundaries.toString();
-    const jsScript = `MapFn.initScript("https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=drawing,geometry&callback=MapFn.initGA", 
+    const debugging = `
+     // Debug
+     console = new Object();
+     console.log = function(log) {
+       window.webViewBridge.send("console", log);
+     };
+     console.debug = console.log;
+     console.info = console.log;
+     console.warn = console.log;
+     console.error = console.log;
+     `;
+    const jsScript = `
+        ${debugging} 
+        MapFn.initScript("https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=drawing,geometry&callback=MapFn.initGA", 
         function(){ 
           MapFn.initializeMap(
             ${addressesStr},
@@ -74,10 +87,10 @@ export default class WebViewTerritoryMap extends React.Component {
         domStorageEnabled={true}
         javaScriptEnabled={true}
         injectedJavaScript={jsScript}
-        onError={e => console.log("onError")}
+        onError={e => console.log("onError", { apiKey })}
         // onLoadEnd={e => console.log('onLoadEnd', e)}
         // onLoadStart={e => console.log('onLoadStart', e)}
-        onLoad={e => console.log("onLoad")}
+        onLoad={e => console.log("onLoad", { apiKey })}
         onMessage={event =>
           console.log("onMessage", { data: event.nativeEvent.data })
         }
