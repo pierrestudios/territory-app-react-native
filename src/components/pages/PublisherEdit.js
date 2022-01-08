@@ -45,7 +45,7 @@ export default class PublisherEdit extends React.Component {
       if (!!props.navigation.getParam("savePublisher")) this.savePublisher();
     }
   }
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
     if (!!data) {

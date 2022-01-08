@@ -52,7 +52,7 @@ export default class Notes extends React.Component {
     },
     user: null
   };
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     if (navigation.getParam("addressActive")) {
       this.setState({

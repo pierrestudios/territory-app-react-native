@@ -64,7 +64,7 @@ export default class TerritoryDetails extends React.Component {
         this.addAddress(props.navigation.getParam("newAddress"));
     }
   }
-  componentWillMount() {
+  componentDidMount() {
     this.territoryId = this.props.navigation.getParam("territoryId");
     this.allTerritories = !!this.props.navigation.getParam("allTerritories");
 

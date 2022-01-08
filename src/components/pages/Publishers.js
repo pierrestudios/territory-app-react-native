@@ -31,7 +31,7 @@ export default class Publishers extends React.Component {
       title: Language.translate("All Publishers")
     };
   };
-  componentWillMount() {
+  componentDidMount() {
     if (!Data.user) return;
 
     Data.getApiData("publishers")

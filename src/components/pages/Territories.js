@@ -21,7 +21,7 @@ export default class Territories extends React.Component {
   };
   loadingTerritories = false;
   allTerritories = true;
-  componentWillMount() {
+  componentDidMount() {
     if (!Data.user) return;
 
     this.loadTerritories();

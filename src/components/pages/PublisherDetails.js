@@ -18,7 +18,12 @@ export default class PublisherDetails extends React.Component {
     headerRight: <View />, // To center on Andriod
     title: Language.translate("Publisher Details")
   };
-  componentWillMount() {
+  state = {
+    data: {
+      territories: null
+    }
+  }
+  componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
     const availableTerritories = navigation.getParam("availableTerritories");

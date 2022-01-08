@@ -44,7 +44,7 @@ export default class UserEdit extends React.Component {
       if (!!props.navigation.getParam("saveUser")) this.saveUser();
     }
   }
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
     if (!!data) {

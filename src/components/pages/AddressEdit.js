@@ -97,7 +97,7 @@ export default class AddressEdit extends React.Component {
       if (!!props.navigation.getParam("saveAddress")) this.saveAddress();
     }
   }
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     if (
       !!navigation.getParam("addressActive") &&

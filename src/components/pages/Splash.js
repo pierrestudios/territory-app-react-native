@@ -13,7 +13,7 @@ export default class Splash extends React.Component {
       headerTitle: null
     };
   };
-  componentWillMount() {
+  componentDidMount() {
     NavigationService.setNavigator(this.props.navigation);
   }
   componentDidMount() {

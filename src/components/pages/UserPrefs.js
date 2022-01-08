@@ -38,7 +38,7 @@ export default class UserPrefs extends React.Component {
     },
     waitingForResponse: false
   };
-  componentWillMount() {
+  componentDidMount() {
     const languages = getSiteSetting("languages");
     const languageLabels = {};
     Object.keys(languages).forEach(l => {

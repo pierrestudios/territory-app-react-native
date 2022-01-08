@@ -15,7 +15,12 @@ export default class UserDetails extends React.Component {
     headerRight: <View />, // To center on Andriod
     title: Language.translate("User Details")
   };
-  componentWillMount() {
+  state = {
+    data: {
+      publisher: null
+    }
+  }
+  componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
     const unattachedPublishers = navigation.getParam("unattachedPublishers");

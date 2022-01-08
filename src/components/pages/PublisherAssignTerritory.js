@@ -36,7 +36,7 @@ export default class PublisherAssignTerritory extends React.Component {
       if (!!props.navigation.getParam("savePublisher")) this.savePublisher();
     }
   }
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
     const availableTerritories = navigation.getParam("availableTerritories");

@@ -22,7 +22,7 @@ class UnassignModal extends React.Component {
     showModal: false,
     selectedTerritory: null
   };
-  componentWillMount() {
+  componentDidMount() {
     const data = this.props.data;
     this.setState({ data });
   }

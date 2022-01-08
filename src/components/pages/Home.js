@@ -41,7 +41,7 @@ export default class Home extends React.Component {
     drawerOpened: false,
     modalVisible: false
   };
-  componentWillMount() {
+  componentDidMount() {
     NavigationService.setNavigator(this.props.navigation);
 
     const user = Data.user;

@@ -34,7 +34,7 @@ export default class PublisherAttachUser extends React.Component {
       if (!!props.navigation.getParam("saveUser")) this.saveUser();
     }
   }
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
     const unattachedPublishers = navigation.getParam("unattachedPublishers");
