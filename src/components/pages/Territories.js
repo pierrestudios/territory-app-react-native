@@ -26,15 +26,9 @@ export default class Territories extends React.Component {
 
     this.loadTerritories();
   }
-  componentWillReceiveProps(props) {
-    // Note: switch from "all" to (my) and vice versa
-    if (props.all !== this.props.all && !this.loadingTerritories)
-      this.loadTerritories();
-  }
   loadTerritories() {
     this.loadingTerritories = true;
     const filter = !!this.allTerritories ? null : { userId: Data.user.userId };
-    // console.log('filter', filter);
 
     Data.getApiData(
       `territories${filter ? "/filter" : ""}`,
@@ -82,7 +76,6 @@ export default class Territories extends React.Component {
       allTerritories: this.allTerritories
     });
   }
-
   render() {
     const state = this.state || {};
     const props = this.props || {};

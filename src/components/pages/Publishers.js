@@ -47,12 +47,14 @@ export default class Publishers extends React.Component {
       })
       .catch(UTILS.logError);
   }
-  componentWillReceiveProps(props) {
-    if (props.navigation) {
-      if (!!props.navigation.getParam("openPublisherAdd"))
-        NavigationService.navigate("PublisherAdd", {
-          addPublisher: this.addPublisher
-        });
+  componentDidUpdate(prevProps, prevState) {
+    const { navigation } = this.props;
+
+    if (!!navigation.getParam("openPublisherAdd")) {
+      navigation.navigate("PublisherAdd", {
+        addPublisher: this.addPublisher
+      });
+      navigation.setParams({openPublisherAdd: false});
     }
   }
   render() {

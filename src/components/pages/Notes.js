@@ -62,9 +62,11 @@ export default class Notes extends React.Component {
       });
     }
   }
-  componentWillReceiveProps(props) {
-    if (props.navigation) {
-      if (!!props.navigation.getParam("saveNotes")) this.saveNotes();
+  componentDidUpdate(prevProps, prevState) {
+    const { navigation } = this.props;
+    if (!!navigation.getParam("saveNotes")) {
+      this.saveNotes();
+      navigation.setParams({saveNotes: false});
     }
   }
   render() {

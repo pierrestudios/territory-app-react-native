@@ -92,11 +92,6 @@ export default class AddressEdit extends React.Component {
   setModalVisible = modal => {
     this.setState(modal);
   };
-  componentWillReceiveProps(props) {
-    if (props.navigation) {
-      if (!!props.navigation.getParam("saveAddress")) this.saveAddress();
-    }
-  }
   componentDidMount() {
     const { navigation } = this.props;
     if (
@@ -128,11 +123,16 @@ export default class AddressEdit extends React.Component {
         notesSymbolsLang: Data.user.lang
       });
     }
-  }
-  componentDidMount() {
+
     this.scrollToTop();
   }
   componentDidUpdate() {
+    const { navigation } = this.props;
+    if (!!navigation.getParam("saveAddress")) {
+      this.saveAddress();
+      navigation.setParams({saveAddress: false});
+    }
+
     if (
       !!this.state.errors &&
       !!this.state.errors.message &&
@@ -666,27 +666,29 @@ export default class AddressEdit extends React.Component {
 
     // console.log("this.state", this.state);
     console.log("data", data);
+
+    // "data" Shape
     /*
-{
-	"address": "345",
-	"apt": "",
-	"inActive": false,
-	"isApt": false,
-	"isDuplex": false,
-	"isNewStreet": true,
-	"name": "",
-	"noticeMessage": null,
-	"phone": "",
-	"street": Array [
-		Object {
-			"isAptBuilding": 0,
-			"street": "NE 145 ST"
-		},
-	],
-	"streetId": "",
-	"streetName": "Chwazi Street",
-	"territoryId": 75
-}
+    {
+      "address": "345",
+      "apt": "",
+      "inActive": false,
+      "isApt": false,
+      "isDuplex": false,
+      "isNewStreet": true,
+      "name": "",
+      "noticeMessage": null,
+      "phone": "",
+      "street": Array [
+        Object {
+          "isAptBuilding": 0,
+          "street": "NE 145 ST"
+        },
+      ],
+      "streetId": "",
+      "streetName": "Chwazi Street",
+      "territoryId": 75
+    }
 		*/
     // return;
 

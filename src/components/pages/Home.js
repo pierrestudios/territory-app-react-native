@@ -54,9 +54,7 @@ export default class Home extends React.Component {
         .catch(UTILS.logError);
     } else {
       this.setState({ user });
-    }
-  }
-  componentDidMount() {
+    } 
     this.props.navigation.addListener("willFocus", () => {
       // console.log('willFocus:state.user', this.state.user)
       // console.log('willFocus:Data.user', Data.user)
@@ -64,10 +62,11 @@ export default class Home extends React.Component {
         this.setState({ user: Data.user });
     });
   }
-  componentWillReceiveProps(props) {
-    // console.log('props', props);
-    if (props.navigation && !!props.navigation.getParam("headerTriggered")) {
-      this.setModalVisible(props.navigation.getParam("openUserInfo"));
+  componentDidUpdate(prevProps, prevState) {
+    const { navigation } = this.props;
+    if (!!navigation.getParam("headerTriggered")) {
+      this.setModalVisible(navigation.getParam("openUserInfo"));
+      navigation.setParams({headerTriggered: false});
     }
   }
   setModalVisible(visible) {
