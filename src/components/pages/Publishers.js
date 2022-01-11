@@ -240,7 +240,7 @@ export default class Publishers extends React.Component {
       )
     });
   };
-  updatePublisher = (updatedPublisher, availableTerritories = null) => {
+  updatePublisher = (updatedPublisher, availableTerritories = []) => {
     this.setState({
       availableTerritories: availableTerritories.sort(UTILS.sortTerritory),
       publishers: this.state.publishers.map(p => {
