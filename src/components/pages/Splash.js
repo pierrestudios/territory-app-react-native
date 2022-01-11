@@ -15,8 +15,6 @@ export default class Splash extends React.Component {
   };
   componentDidMount() {
     NavigationService.setNavigator(this.props.navigation);
-  }
-  componentDidMount() {
     this.props.navigation.addListener("willFocus", () => {
       this.doRedirect();
     });
@@ -24,7 +22,6 @@ export default class Splash extends React.Component {
     this.doRedirect();
   }
   doRedirect() {
-    const state = this.state;
     UTILS.waitForIt(
       () => !!getSiteSetting("defaultLang"),
       () => {
