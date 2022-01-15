@@ -21,7 +21,7 @@ export default class Users extends React.Component {
       headerTintColor: "#fff"
     };
   };
-  componentWillMount() {
+  componentDidMount() {
     if (!Data.user) return;
 
     Data.getApiData("users").then(users => {

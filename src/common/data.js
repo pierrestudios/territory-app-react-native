@@ -1,4 +1,5 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Api from "./api";
 import UTILS from "./utils";
 import reLogin from "./reLogin";

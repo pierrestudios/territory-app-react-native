@@ -40,16 +40,18 @@ export default class PublisherEdit extends React.Component {
       lastName: ""
     }
   };
-  componentWillReceiveProps(props) {
-    if (props.navigation) {
-      if (!!props.navigation.getParam("savePublisher")) this.savePublisher();
-    }
-  }
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
     if (!!data) {
       this.setState({ data });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const { navigation } = this.props;
+    if (!!navigation.getParam("savePublisher")) {
+      this.savePublisher();
+      navigation.setParams({savePublisher: false});
     }
   }
   render() {
@@ -102,7 +104,6 @@ export default class PublisherEdit extends React.Component {
       }
     });
   };
-
   savePublisher = () => {
     if (!this.state.data.firstName || !this.state.data.firstName)
       return this.setState({

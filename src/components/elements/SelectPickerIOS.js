@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Picker } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import {Picker} from '@react-native-picker/picker';
 
 import styles, { colors } from "../../styles/main";
 

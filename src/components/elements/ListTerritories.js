@@ -12,6 +12,7 @@ import { ButtonHeader, ButtonLink, Button } from "../elements/Button";
 import Heading from "../elements/Heading";
 import Message from "../elements/Message";
 import Modal from "../elements/Modal";
+import Loading from "./Loading";
 
 class UnassignModal extends React.Component {
   state = {
@@ -22,12 +23,18 @@ class UnassignModal extends React.Component {
     showModal: false,
     selectedTerritory: null
   };
-  componentWillMount() {
-    const data = this.props.data;
-    this.setState({ data });
+  static getDerivedStateFromProps(props, state) {
+    if (JSON.stringify(props.data) !== JSON.stringify(state.data)) {
+      return {
+        ...state,
+        data: props.data
+      };
+    }
+
+    return null;
   }
-  componentWillReceiveProps(props) {
-    const data = props.data;
+  componentDidMount() {
+    const data = this.props.data;
     this.setState({ data });
   }
   unassignTerritory = data => {
@@ -163,6 +170,10 @@ class UnassignModal extends React.Component {
       );
     }
 
+    if (!data) {
+      return <Loading />
+    }
+
     return (
       <View>
         <Heading
@@ -175,7 +186,7 @@ class UnassignModal extends React.Component {
         >
           {Language.translate("Assigned Territories")}
         </Heading>
-        <FlatList
+        {data.territories ? <FlatList
           contentContainerStyle={styles.listings}
           data={data.territories.sort(UTILS.sortTerritory)}
           extraData={this.state}
@@ -221,7 +232,7 @@ class UnassignModal extends React.Component {
               </View>
             </TouchableOpacity>
           )}
-        />
+        /> : null}
       </View>
     );
   }

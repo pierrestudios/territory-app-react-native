@@ -39,16 +39,18 @@ export default class UserEdit extends React.Component {
       userType: ""
     }
   };
-  componentWillReceiveProps(props) {
-    if (props.navigation) {
-      if (!!props.navigation.getParam("saveUser")) this.saveUser();
-    }
-  }
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
     if (!!data) {
       this.setState({ data });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const { navigation } = this.props;
+    if (!!navigation.getParam("saveUser")) {
+      this.saveUser();
+      navigation.setParams({ saveUser: false });
     }
   }
   render() {
@@ -91,7 +93,6 @@ export default class UserEdit extends React.Component {
     );
   }
   saveData = data => {
-    console.log("data", data);
     const newData = { ...this.state.data, ...data };
 
     return this.setState({
@@ -119,7 +120,6 @@ export default class UserEdit extends React.Component {
       }
     });
   };
-
   saveUser = () => {
     if (
       !this.state.data.userType ||
@@ -157,7 +157,7 @@ export default class UserEdit extends React.Component {
           return this.setState({
             errors: {
               ...this.state.data.errors,
-              mesage: "An error occured "
+              message: "An error occured "
             }
           });
         }
@@ -177,7 +177,7 @@ export default class UserEdit extends React.Component {
         this.setState({
           errors: {
             ...this.state.errors,
-            mesage: "An error occured: " + e
+            message: "An error occured: " + e
           }
         });
       });

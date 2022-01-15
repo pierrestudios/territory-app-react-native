@@ -1,4 +1,4 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import UTILS from "./utils";
 import NavigationService from "./nav-service";

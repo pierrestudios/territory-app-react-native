@@ -1,6 +1,6 @@
 import React from "react";
-import { FlatList, Text, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Text, View } from "react-native";
+import { KeyboardAwareScrollView, KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
 
 import Data from "../../common/data";
 import Language from "../../common/lang";
@@ -52,7 +52,7 @@ export default class Notes extends React.Component {
     },
     user: null
   };
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     if (navigation.getParam("addressActive")) {
       this.setState({
@@ -62,9 +62,11 @@ export default class Notes extends React.Component {
       });
     }
   }
-  componentWillReceiveProps(props) {
-    if (props.navigation) {
-      if (!!props.navigation.getParam("saveNotes")) this.saveNotes();
+  componentDidUpdate(prevProps, prevState) {
+    const { navigation } = this.props;
+    if (!!navigation.getParam("saveNotes")) {
+      this.saveNotes();
+      navigation.setParams({saveNotes: false});
     }
   }
   render() {
@@ -82,8 +84,8 @@ export default class Notes extends React.Component {
       active: noteData.noteSymbol === k
     }));
     const notes = (
-      <FlatList
-        contentContainerStyle={style.listings}
+      <KeyboardAwareFlatList
+        contentContainerStyle={[style.listings, { minWidth: "80%", marginBottom: 40 }]}
         data={data.notes}
         extraData={state}
         keyExtractor={item => item.noteId.toString()}
@@ -95,8 +97,8 @@ export default class Notes extends React.Component {
     return (
       <View style={[style.container]}>
         <KeyboardAwareScrollView
-          contentContainerStyle={[style["scroll-view"], { marginBottom: 40 }]}
-          keyboardDismissMode="interactive"
+          style={[style["scroll-view"], { marginBottom: 40 }]}
+          enableAutomaticScroll={true}
         >
           <HeadingBlue>
             {noteData && noteData.noteId
@@ -145,16 +147,14 @@ export default class Notes extends React.Component {
               />
             ) : null}
           </View>
-
-          <View class={style["notes-results"]}>
-            <Heading level={3}>{Language.translate("Previous Notes")}</Heading>
-            {notes}
-          </View>
-
+ 
           <Line />
 
           <Notice data={state.noticeMessage} />
         </KeyboardAwareScrollView>
+
+        <Heading level={3}>{Language.translate("Previous Notes")}</Heading>
+        { notes }
 
         <NotesModal
           saveNotesSymbol={this.saveNotesSymbol}

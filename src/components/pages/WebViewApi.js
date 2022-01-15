@@ -1,5 +1,6 @@
 import React from "react";
-import { WebView, View, Text, Platform } from "react-native";
+import { View, Text, Platform } from "react-native";
+import { WebView } from 'react-native-webview';
 
 import UTILS from "../../common/utils";
 import getSiteSetting from "../../common/settings";

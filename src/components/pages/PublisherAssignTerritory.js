@@ -31,17 +31,19 @@ export default class PublisherAssignTerritory extends React.Component {
       message: ""
     }
   };
-  componentWillReceiveProps(props) {
-    if (props.navigation) {
-      if (!!props.navigation.getParam("savePublisher")) this.savePublisher();
-    }
-  }
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
     const availableTerritories = navigation.getParam("availableTerritories");
     if (!!data && !!availableTerritories) {
       this.setState({ data, availableTerritories });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const { navigation } = this.props;
+    if (!!navigation.getParam("savePublisher")) {
+      this.savePublisher();
+      navigation.setParams({savePublisher: false});
     }
   }
   render() {

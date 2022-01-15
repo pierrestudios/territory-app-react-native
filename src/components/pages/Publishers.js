@@ -31,7 +31,7 @@ export default class Publishers extends React.Component {
       title: Language.translate("All Publishers")
     };
   };
-  componentWillMount() {
+  componentDidMount() {
     if (!Data.user) return;
 
     Data.getApiData("publishers")
@@ -47,12 +47,14 @@ export default class Publishers extends React.Component {
       })
       .catch(UTILS.logError);
   }
-  componentWillReceiveProps(props) {
-    if (props.navigation) {
-      if (!!props.navigation.getParam("openPublisherAdd"))
-        NavigationService.navigate("PublisherAdd", {
-          addPublisher: this.addPublisher
-        });
+  componentDidUpdate(prevProps, prevState) {
+    const { navigation } = this.props;
+
+    if (!!navigation.getParam("openPublisherAdd")) {
+      navigation.navigate("PublisherAdd", {
+        addPublisher: this.addPublisher
+      });
+      navigation.setParams({openPublisherAdd: false});
     }
   }
   render() {
@@ -238,7 +240,7 @@ export default class Publishers extends React.Component {
       )
     });
   };
-  updatePublisher = (updatedPublisher, availableTerritories = null) => {
+  updatePublisher = (updatedPublisher, availableTerritories = []) => {
     this.setState({
       availableTerritories: availableTerritories.sort(UTILS.sortTerritory),
       publishers: this.state.publishers.map(p => {

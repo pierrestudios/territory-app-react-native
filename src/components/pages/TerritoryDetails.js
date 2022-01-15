@@ -57,14 +57,7 @@ export default class TerritoryDetails extends React.Component {
     addressesFilterOpened: false,
     filterType: "all"
   };
-
-  componentWillReceiveProps(props) {
-    if (props.navigation) {
-      if (!!props.navigation.getParam("newAddress"))
-        this.addAddress(props.navigation.getParam("newAddress"));
-    }
-  }
-  componentWillMount() {
+  componentDidMount() {
     this.territoryId = this.props.navigation.getParam("territoryId");
     this.allTerritories = !!this.props.navigation.getParam("allTerritories");
 
@@ -99,7 +92,14 @@ export default class TerritoryDetails extends React.Component {
         .catch(UTILS.logError);
     }
   }
+  componentDidUpdate(prevProps, prevState) {
+    const { navigation } = this.props;
 
+    if (navigation && !!navigation.getParam("newAddress")) {
+      this.addAddress(navigation.getParam("newAddress"));
+      navigation.setParams({newAddress: null});
+    }
+  }
   render() {
     const state = this.state || {};
 
@@ -430,6 +430,8 @@ export default class TerritoryDetails extends React.Component {
     return false;
   };
   viewNotes(data) {
+    // TODO: Find the source of this.props.entity
+
     this.setState({ addressActive: data, shouldRender: "Notes" }, () => {
       this.props.entity && typeof this.props.entity.viewNotes === "function"
         ? this.props.entity.viewNotes(data)
