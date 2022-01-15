@@ -191,7 +191,7 @@ export default class UserPrefs extends React.Component {
       });
 
     // Validate https (SSL)
-    if (!UTILS.urlHasHTTPSProtocol(this.state.data["api-url"])) {
+    if (!UTILS.urlHasValidProtocol(this.state.data["api-url"])) {
       return this.setState({
         errors: {
           ...errors,

@@ -181,8 +181,10 @@ export default {
   removeLastSlashFromUrl(url) {
     return url.slice(-1) === "/" ? url.substring(0, url.length - 1) : url;
   },
-  urlHasHTTPSProtocol(url) {
-    return url && (url.split(":") || [])[0].toLowerCase() === "https";
+  urlHasValidProtocol(url) {
+    const protocol = url && (url.split(":") || [])[0].toLowerCase();
+     
+    return process.env.NODE_ENV === 'development' || protocol === "https";
   },
   loadExternalScript(url, propName) {
     return new Promise((resolve, reject) => {
