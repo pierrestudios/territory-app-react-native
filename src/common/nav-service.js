@@ -20,5 +20,5 @@ export default {
   navigate,
   setParams,
   getParam,
-  setNavigator
+  setNavigator,
 };

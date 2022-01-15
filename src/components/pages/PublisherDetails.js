@@ -16,13 +16,13 @@ export default class PublisherDetails extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
     headerRight: <View />, // To center on Andriod
-    title: Language.translate("Publisher Details")
+    title: Language.translate("Publisher Details"),
   };
   state = {
     data: {
-      territories: null
-    }
-  }
+      territories: null,
+    },
+  };
   componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
@@ -31,7 +31,7 @@ export default class PublisherDetails extends React.Component {
       this.setState({ data, availableTerritories });
     }
   }
-  editPublisher = data => {
+  editPublisher = (data) => {
     NavigationService.navigate("PublisherEdit", {
       data,
       updatePublisher: (newPublisher, availableTerritories) => {
@@ -45,7 +45,7 @@ export default class PublisherDetails extends React.Component {
           );
         }
         this.setState({ data: newPublisher });
-      }
+      },
     });
   };
   assignTerritory(data) {
@@ -54,7 +54,7 @@ export default class PublisherDetails extends React.Component {
       availableTerritories: this.state.availableTerritories,
       updatePublisher: (newPublisher, availableTerritories) => {
         this.updatePublisher(newPublisher, availableTerritories);
-      }
+      },
     });
   }
   updatePublisher = (data, availableTerritories = null) => {
@@ -62,7 +62,7 @@ export default class PublisherDetails extends React.Component {
       {
         data,
         availableTerritories:
-          availableTerritories || this.state.availableTerritories
+          availableTerritories || this.state.availableTerritories,
       },
       () => {
         if (
@@ -80,7 +80,7 @@ export default class PublisherDetails extends React.Component {
   updatePublisherAfterRemoveTerritory = (data, territoryId = null) => {
     const availableTerritories = this.state.availableTerritories.slice();
     const territory = this.state.data.territories.find(
-      t => t.territoryId === territoryId
+      (t) => t.territoryId === territoryId
     );
     // console.log('territory', territory);
 
@@ -134,15 +134,15 @@ export default class PublisherDetails extends React.Component {
               height: 40,
               paddingTop: 5,
               borderColor: colors.red,
-              borderWidth: 0
-            }
+              borderWidth: 0,
+            },
           ]}
         >
           <ButtonLink
             onPress={() => this.editPublisher(state.data)}
             customStyle={[
               styles["heading-button-link"],
-              { marginRight: 10, backgroundColor: colors["territory-blue"] }
+              { marginRight: 10, backgroundColor: colors["territory-blue"] },
             ]}
             textStyle={styles["heading-button-link-text"]}
             textColorWhite
@@ -153,7 +153,7 @@ export default class PublisherDetails extends React.Component {
             onPress={() => this.assignTerritory(state.data)}
             customStyle={[
               styles["heading-button-link"],
-              { backgroundColor: colors.green }
+              { backgroundColor: colors.green },
             ]}
             textStyle={styles["heading-button-link-text"]}
             textColorWhite
@@ -168,7 +168,7 @@ export default class PublisherDetails extends React.Component {
           style={[
             styles.section,
             styles["listings-results"],
-            styles["listings-results-address"]
+            styles["listings-results-address"],
           ]}
         >
           {listings}

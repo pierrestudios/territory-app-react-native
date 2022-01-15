@@ -23,25 +23,25 @@ export default class PasswordRetrieve extends React.Component {
     headerTitle: <Logo />,
     headerLeft: <View />, // To center on Andriod
     headerRight: <View />, // To center on Andriod
-    headerBackImage: <View /> // Disabled
+    headerBackImage: <View />, // Disabled
   };
   state = {
     data: {
       email: "",
-      message: ""
+      message: "",
     },
     errors: {
       email: "",
-      message: ""
+      message: "",
     },
-    waitingForResponse: false
+    waitingForResponse: false,
   };
   loadUserData() {
     const { user } = Data;
 
     if (!!user && !!user.email)
       this.setState({
-        data: { ...this.state.data, email: user.email, lang: user.lang }
+        data: { ...this.state.data, email: user.email, lang: user.lang },
       });
   }
   componentDidMount() {
@@ -101,15 +101,15 @@ export default class PasswordRetrieve extends React.Component {
       </View>
     );
   }
-  saveData = newValue => {
+  saveData = (newValue) => {
     // console.log('newValue', newValue);
     const newData = { ...this.state.data, ...newValue };
     this.setState({
       data: newData,
       errors: {
         email: "",
-        message: ""
-      }
+        message: "",
+      },
     });
   };
   sendRetrieve = () => {
@@ -118,7 +118,7 @@ export default class PasswordRetrieve extends React.Component {
     // First, reset errors
     const errors = {
       email: "",
-      message: ""
+      message: "",
     };
 
     this.setState({ errors, waitingForResponse: true });
@@ -132,40 +132,40 @@ export default class PasswordRetrieve extends React.Component {
             ? Language.translate("Email is missing")
             : !UTILS.isValidEmail(this.state.data.email)
             ? Language.translate("Invalid email")
-            : ""
+            : "",
         },
-        waitingForResponse: false
+        waitingForResponse: false,
       });
 
     // All good, send to api
     Api(
       "password-retrieve/" + this.state.data.lang || "en",
       {
-        email: this.state.data.email
+        email: this.state.data.email,
       },
       "POST"
     )
-      .then(data => {
+      .then((data) => {
         console.log("data", data);
         if (data && data.message) {
           this.setState({
             data: {
               ...this.state.data,
-              message: data.message
+              message: data.message,
             },
-            waitingForResponse: false
+            waitingForResponse: false,
           });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("error", e);
         const errorMessage = e;
         this.setState({
           errors: {
             ...errors,
-            message: errorMessage
+            message: errorMessage,
           },
-          waitingForResponse: false
+          waitingForResponse: false,
         });
       });
   };

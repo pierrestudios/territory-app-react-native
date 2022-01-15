@@ -27,19 +27,19 @@ export default class Home extends React.Component {
           onPress={() => {
             navigation.setParams({
               openUserInfo: !navigation.getParam("openUserInfo"),
-              headerTriggered: true
+              headerTriggered: true,
             });
           }}
           title={<FontAwesome name="user-circle" size={20} color="#fff" />}
           color="#fff"
         />
-      )
+      ),
     };
   };
   state = {
     user: null,
     drawerOpened: false,
-    modalVisible: false
+    modalVisible: false,
   };
   componentDidMount() {
     NavigationService.setNavigator(this.props.navigation);
@@ -48,13 +48,13 @@ export default class Home extends React.Component {
 
     if (!user || !user.token) {
       Data.loadSavedUser()
-        .then(user => {
+        .then((user) => {
           this.setState({ user });
         })
         .catch(UTILS.logError);
     } else {
       this.setState({ user });
-    } 
+    }
     this.props.navigation.addListener("willFocus", () => {
       // console.log('willFocus:state.user', this.state.user)
       // console.log('willFocus:Data.user', Data.user)
@@ -66,18 +66,18 @@ export default class Home extends React.Component {
     const { navigation } = this.props;
     if (!!navigation.getParam("headerTriggered")) {
       this.setModalVisible(navigation.getParam("openUserInfo"));
-      navigation.setParams({headerTriggered: false});
+      navigation.setParams({ headerTriggered: false });
     }
   }
   setModalVisible(visible) {
     this.setState(
       {
-        modalVisible: visible
+        modalVisible: visible,
       },
       () =>
         this.props.navigation.setParams({
           openUserInfo: visible,
-          headerTriggered: false
+          headerTriggered: false,
         })
     ); // Bug: causes crash
   }
@@ -88,7 +88,7 @@ export default class Home extends React.Component {
     this.setState(
       {
         user: null,
-        modalVisible: false
+        modalVisible: false,
       },
       () => {
         reLogin();
@@ -118,10 +118,10 @@ export default class Home extends React.Component {
           alignSelf: "center",
           marginBottom: 15,
           borderColor: colors["grey-lite"],
-          borderWidth: 1
-        }
+          borderWidth: 1,
+        },
       ],
-      textStyle: { fontSize: 16 }
+      textStyle: { fontSize: 16 },
     };
 
     return (
@@ -166,7 +166,7 @@ export default class Home extends React.Component {
                           onPress={() =>
                             NavigationService.navigate("WebViewApi", {
                               url: "boundaries",
-                              title: Language.translate("Territory Map")
+                              title: Language.translate("Territory Map"),
                             })
                           }
                           title={Language.translate("Territory Map")}
@@ -175,7 +175,7 @@ export default class Home extends React.Component {
                           key="territories-all"
                           onPress={() => this.goToPage("TerritoriesAll")}
                           title={Language.translate("All Territories")}
-                        />
+                        />,
                       ]
                     : null}
                   <Button
@@ -183,7 +183,7 @@ export default class Home extends React.Component {
                     onPress={() => this.goToPage("Territories")}
                     title={Language.translate("My Territories")}
                   />
-                </View>
+                </View>,
               ]
             : [
                 <Heading key="no-territories">
@@ -195,7 +195,7 @@ export default class Home extends React.Component {
                       "You don't have privilege to manage territories"
                     )}
                   </Text>
-                </View>
+                </View>,
               ]}
         </ScrollView>
 
@@ -218,7 +218,7 @@ export default class Home extends React.Component {
               onPress={() =>
                 NavigationService.navigate("WebViewExternal", {
                   url: "https://territory-app.net",
-                  title: Language.translate("More Information")
+                  title: Language.translate("More Information"),
                 })
               }
             >

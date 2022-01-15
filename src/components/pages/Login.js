@@ -24,19 +24,19 @@ export default class Login extends React.Component {
     headerTitle: <Logo />,
     headerLeft: <View />, // To center on Andriod
     headerRight: <View />, // To center on Andriod
-    headerBackImage: <View /> // Disabled
+    headerBackImage: <View />, // Disabled
   };
   state = {
     data: {
       email: "",
-      password: ""
+      password: "",
     },
     errors: {
       email: "",
       password: "",
-      message: ""
+      message: "",
     },
-    waitingForResponse: false
+    waitingForResponse: false,
   };
   loadUserData() {
     (async () => {
@@ -46,7 +46,7 @@ export default class Login extends React.Component {
       if (!!user && !!user.email)
         this.setState({
           data: { ...this.state.data, email: user.email },
-          user
+          user,
         });
     })();
   }
@@ -104,7 +104,7 @@ export default class Login extends React.Component {
                 />,
                 <Button key="send-login" onPress={this.sendLogin}>
                   {Language.translate("Sign in")}
-                </Button>
+                </Button>,
               ]}
 
           <Line />
@@ -125,7 +125,7 @@ export default class Login extends React.Component {
                   textStyle={{ fontSize: 16 }}
                 >
                   {Language.translate("Create an account")}
-                </Link>
+                </Link>,
               ]
             ) : isLoggedIn ? (
               <Link
@@ -146,7 +146,7 @@ export default class Login extends React.Component {
       </View>
     );
   }
-  saveData = newValue => {
+  saveData = (newValue) => {
     // console.log('newValue', newValue);
     const newData = { ...this.state.data, ...newValue };
     this.setState({ data: newData });
@@ -158,7 +158,7 @@ export default class Login extends React.Component {
     const errors = {
       email: "",
       password: "",
-      message: ""
+      message: "",
     };
 
     this.setState({ errors, waitingForResponse: true });
@@ -175,29 +175,29 @@ export default class Login extends React.Component {
             : "",
           password: !this.state.data.password
             ? Language.translate("Password is missing")
-            : ""
+            : "",
         },
-        waitingForResponse: false
+        waitingForResponse: false,
       });
 
     if (!UTILS.isValidEmail(this.state.data.email))
       return this.setState({
         errors: {
           ...errors,
-          email: Language.translate("Invalid email")
+          email: Language.translate("Invalid email"),
         },
-        waitingForResponse: false
+        waitingForResponse: false,
       });
 
     // All good, send to api
     Api("signin", this.state.data, "POST")
-      .then(data => {
+      .then((data) => {
         // console.log('data', data)
         if (data && data.token) {
           // Get User data
           Api("auth-user", null, "GET", {
-            Authorization: "Bearer " + data.token
-          }).then(user => {
+            Authorization: "Bearer " + data.token,
+          }).then((user) => {
             user.token = data.token;
             const newData = { ...this.state.data, ...user };
             Data.saveUser(user);
@@ -209,7 +209,7 @@ export default class Login extends React.Component {
                 this.setState(
                   {
                     data: newData,
-                    waitingForResponse: false
+                    waitingForResponse: false,
                   },
                   () => NavigationService.navigate("Home")
                 );
@@ -218,7 +218,7 @@ export default class Login extends React.Component {
           });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("error", e);
         const errorMessage =
           typeof e === "string" && (e.match("email") || e.match("password"))
@@ -227,9 +227,9 @@ export default class Login extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            message: errorMessage
+            message: errorMessage,
           },
-          waitingForResponse: false
+          waitingForResponse: false,
         });
       });
   };

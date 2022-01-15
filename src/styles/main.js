@@ -10,7 +10,7 @@ export const colors = {
   "off-white": "#F3f3f3",
   white: "#fff",
   black: "#000",
-  green: "#2f9e44"
+  green: "#2f9e44",
 };
 
 /*
@@ -23,25 +23,25 @@ export default styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#fff"
+    color: "#fff",
   },
   heading: {
     fontSize: 18,
     marginBottom: 40,
-    marginTop: 40
+    marginTop: 40,
   },
   "scroll-view": {
     paddingVertical: 20,
-    maxWidth: "90%"
+    maxWidth: "90%",
   },
   section: {
     flex: 1,
-    height: "100%"
+    height: "100%",
   },
 
   // Menu
@@ -50,7 +50,7 @@ export default styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     marginBottom: 25,
-    padding: 0
+    padding: 0,
   },
   "main-menu-button": {
     minWidth: "90%",
@@ -59,12 +59,12 @@ export default styles = StyleSheet.create({
     borderRadius: 3,
     padding: 10,
     marginBottom: 5,
-    marginTop: 5
+    marginTop: 5,
   },
   "main-menu-link": {
     alignItems: "center",
     borderRadius: 3,
-    padding: 10
+    padding: 10,
   },
   "button-link": {
     borderRadius: 3,
@@ -73,32 +73,32 @@ export default styles = StyleSheet.create({
     marginLeft: 3,
     marginRight: 3,
     marginTop: 0,
-    height: 30
+    height: 30,
   },
   "button-link-text": {
     fontSize: 14,
-    color: colors["territory-blue"]
+    color: colors["territory-blue"],
   },
   "header-button": {
     alignItems: "center",
     borderRadius: 3,
-    padding: 10
+    padding: 10,
   },
   "header-button-text": {
     fontSize: 14,
-    color: colors.white
+    color: colors.white,
   },
   "list-button": {
     minWidth: "90%",
     borderTopWidth: 1,
-    borderColor: colors["grey-lite"]
+    borderColor: colors["grey-lite"],
   },
   disabled: {
-    opacity: 0.2
+    opacity: 0.2,
   },
   "main-menu-button-text": {
     fontSize: 18,
-    color: colors.white
+    color: colors.white,
   },
 
   // Form Inputs
@@ -112,7 +112,7 @@ export default styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     borderColor: colors["grey-lite"],
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
 
   "date-input-wrapper": {
@@ -124,14 +124,14 @@ export default styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     borderColor: colors["grey-lite"],
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
 
   "date-input": {
     width: "100%",
     borderWidth: 0,
     justifyContent: "center",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
   },
 
   "input-icon-wrapper": {
@@ -139,20 +139,20 @@ export default styles = StyleSheet.create({
     position: "absolute",
     top: 23,
     left: 10,
-    zIndex: 9
+    zIndex: 9,
   },
 
   "input-icon": {
-    color: colors["grey-lite"]
+    color: colors["grey-lite"],
   },
 
   "with-icon": {
-    paddingLeft: 30
+    paddingLeft: 30,
   },
 
   "input-label": {
     marginTop: 10,
-    marginBottom: 5
+    marginBottom: 5,
   },
 
   "input-errors": {
@@ -160,17 +160,17 @@ export default styles = StyleSheet.create({
     borderBottomRightRadius: 3,
     borderBottomLeftRadius: 3,
     borderTopRightRadius: 0,
-    borderTopLeftRadius: 0
+    borderTopLeftRadius: 0,
   },
 
   // Listings
 
   list: {
-    alignItems: "center"
+    alignItems: "center",
   },
 
   listings: {
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
 
   "listings-item": {
@@ -182,15 +182,15 @@ export default styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between" // enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly') (Vertical)
+    justifyContent: "space-between", // enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly') (Vertical)
   },
 
   "listings-item-inactive": {
-    backgroundColor: colors["grey-lite"]
+    backgroundColor: colors["grey-lite"],
   },
 
   "listings-item-warning": {
-    backgroundColor: colors.red
+    backgroundColor: colors.red,
   },
 
   "listings-number": {
@@ -198,12 +198,12 @@ export default styles = StyleSheet.create({
     alignItems: "center",
     padding: 5,
     width: 35,
-    height: 30
+    height: 30,
   },
 
   "listings-number-text": {
     color: colors.white,
-    fontSize: 16
+    fontSize: 16,
   },
 
   "listings-name": {
@@ -213,22 +213,22 @@ export default styles = StyleSheet.create({
     position: "absolute",
     left: 50,
     width: "55%",
-    height: 40
+    height: 40,
   },
 
   "listings-name-text": {
-    color: colors["territory-blue"]
+    color: colors["territory-blue"],
   },
 
   "listings-date": {
     position: "absolute",
     right: 15,
     marginTop: 15,
-    height: 40
+    height: 40,
   },
 
   "listings-date-text": {
-    color: colors["grey"]
+    color: colors["grey"],
   },
 
   "listings-email": {
@@ -236,12 +236,12 @@ export default styles = StyleSheet.create({
     left: "55%",
     width: "45%",
     marginTop: 15,
-    height: 40
+    height: 40,
   },
 
   "listings-email-text": {
     fontSize: 12,
-    color: colors["territory-blue"]
+    color: colors["territory-blue"],
   },
 
   "listings-notes": {
@@ -249,7 +249,7 @@ export default styles = StyleSheet.create({
     position: "absolute",
     right: 20,
     padding: 5,
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   "add-notes": {
@@ -257,7 +257,7 @@ export default styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: colors["grey-lite"]
+    borderColor: colors["grey-lite"],
   },
 
   "listings-notes-edit": {
@@ -266,22 +266,22 @@ export default styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: colors["grey-lite"]
+    borderColor: colors["grey-lite"],
   },
 
   "address-listings-name": {
     left: 8,
-    marginTop: 0
+    marginTop: 0,
   },
 
   "publisher-listings-name": {
     left: 8,
-    marginTop: 10
+    marginTop: 10,
   },
 
   "user-listings-name": {
     left: 8,
-    paddingTop: 0
+    paddingTop: 0,
   },
 
   "listings-right-arrow": {
@@ -289,7 +289,7 @@ export default styles = StyleSheet.create({
     width: 10,
     height: "100%",
     top: 15,
-    right: 5
+    right: 5,
   },
 
   "input-options-container": {
@@ -299,12 +299,12 @@ export default styles = StyleSheet.create({
     justifyContent: "space-around",
     margin: 0,
     marginTop: 5,
-    marginBottom: 15
+    marginBottom: 15,
   },
 
   "input-options-button": {
     width: "31%",
-    height: 90
+    height: 90,
   },
 
   "input-options": {
@@ -318,34 +318,34 @@ export default styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderColor: colors["grey-lite"],
     borderWidth: 1,
-    borderRadius: 5
+    borderRadius: 5,
   },
 
   "input-options-label": {
-    padding: 5
+    padding: 5,
   },
 
   "input-options-active": {
-    backgroundColor: colors["territory-blue"]
+    backgroundColor: colors["territory-blue"],
   },
 
   "input-options-icon": {
-    color: colors["grey-lite"]
+    color: colors["grey-lite"],
   },
 
   "input-options-icon-active": {
-    color: colors.white
+    color: colors.white,
   },
 
   "input-options-label-active": {
-    color: colors.white
+    color: colors.white,
   },
 
   "select-options-wrapper": {
     backgroundColor: colors.white,
     borderColor: colors["grey-lite"],
     borderWidth: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
 
   "select-options": {
@@ -353,7 +353,7 @@ export default styles = StyleSheet.create({
     width: 200,
     fontSize: 22,
     marginTop: 0,
-    marginBottom: 0
+    marginBottom: 0,
   },
 
   "check-box": {
@@ -363,7 +363,7 @@ export default styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    alignSelf: "center"
+    alignSelf: "center",
   },
 
   "check-box-checked": {
@@ -371,7 +371,7 @@ export default styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    alignSelf: "center"
+    alignSelf: "center",
   },
 
   // Territory Details
@@ -379,7 +379,7 @@ export default styles = StyleSheet.create({
     flexDirection: "row-reverse", // enum('row', 'row-reverse', 'column', 'column-reverse')
     justifyContent: "flex-start",
     height: 60,
-    padding: 20
+    padding: 20,
   },
 
   "heading-number": {
@@ -390,7 +390,7 @@ export default styles = StyleSheet.create({
     width: 35,
     height: 30,
     position: "absolute",
-    right: 20
+    right: 20,
   },
 
   "heading-button-link": {
@@ -400,31 +400,31 @@ export default styles = StyleSheet.create({
     paddingTop: 5,
     marginLeft: 5,
     marginRight: 0,
-    marginTop: -3
+    marginTop: -3,
   },
 
   "heading-button-link-text": {
-    fontSize: 16
+    fontSize: 16,
   },
 
   "view-map-button": {
-    backgroundColor: colors["territory-blue"]
+    backgroundColor: colors["territory-blue"],
   },
 
   "select-button": {
-    backgroundColor: colors.orange
+    backgroundColor: colors.orange,
   },
 
   "send-button": {
-    backgroundColor: colors.green
+    backgroundColor: colors.green,
   },
 
   "pdf-button": {
-    backgroundColor: colors["orange"]
+    backgroundColor: colors["orange"],
   },
 
   "csv-button": {
-    backgroundColor: colors["orange"]
+    backgroundColor: colors["orange"],
   },
 
   "add-new-street": {
@@ -436,7 +436,7 @@ export default styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     borderColor: colors["grey-lite"],
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
 
   // Publisher Details
@@ -445,19 +445,19 @@ export default styles = StyleSheet.create({
     color: colors["territory-blue"],
     right: 20,
     top: 20,
-    fontSize: 18
+    fontSize: 18,
   },
 
   "heading-user-email": {
     position: "absolute",
     right: 20,
     top: 70,
-    fontSize: 14
+    fontSize: 14,
   },
 
   "icon-button": {
     alignItems: "center",
-    padding: 10
+    padding: 10,
   },
 
   // Modal
@@ -480,7 +480,7 @@ export default styles = StyleSheet.create({
     elevation: 5,
     marginLeft: 25,
     marginRight: 25,
-    marginTop: 0
+    marginTop: 0,
   },
 
   "modal-view": { padding: 20 },
@@ -488,41 +488,41 @@ export default styles = StyleSheet.create({
   // Common styles:
   "text-center": {
     textAlign: "center",
-    width: "100%"
+    width: "100%",
   },
   "text-strong": {
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   "text-white": {
-    color: colors.white
+    color: colors.white,
   },
   "text-color-blue": {
-    color: colors["territory-blue"]
+    color: colors["territory-blue"],
   },
 
   label: {
     marginBottom: 5,
-    marginTop: 10
+    marginTop: 10,
   },
 
   "label-medium": {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
-    marginTop: 15
+    marginTop: 15,
   },
 
   line: {
     height: 2,
     borderColor: "#ccc",
     borderTopWidth: 1,
-    margin: 20
+    margin: 20,
   },
 
   "line-blank": {
     height: 2,
     borderTopWidth: 0,
-    margin: 10
+    margin: 10,
   },
 
   errors: {
@@ -530,7 +530,7 @@ export default styles = StyleSheet.create({
     marginTop: 5,
     borderRadius: 3,
     marginBottom: 5,
-    backgroundColor: colors.red
+    backgroundColor: colors.red,
   },
 
   success: {
@@ -538,6 +538,6 @@ export default styles = StyleSheet.create({
     marginTop: 5,
     borderRadius: 3,
     marginBottom: 5,
-    backgroundColor: colors.green
-  }
+    backgroundColor: colors.green,
+  },
 });

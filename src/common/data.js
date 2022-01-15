@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Api from "./api";
 import UTILS from "./utils";
@@ -33,7 +33,7 @@ class Data {
     return this._user;
   }
   loadSavedUser = async () => {
-    return this.getSavedUser().then(user => {
+    return this.getSavedUser().then((user) => {
       if ((!user || !user.userId || !user.token) && !!user.apiPath) {
         reLogin();
       }
@@ -63,7 +63,7 @@ class Data {
         // Preferences may be null in new data, use old data
         apiUrl: user.apiUrl || this._user.apiUrl,
         apiPath: user.apiPath || this._user.apiPath,
-        lang: user.lang || this._user.lang
+        lang: user.lang || this._user.lang,
       };
       await AsyncStorage.setItem("user", JSON.stringify(newUser));
       // console.log('newUser', newUser);
@@ -76,13 +76,13 @@ class Data {
     if (!this.user) return Promise.reject("User is not logged in");
 
     return Api(url, data, type, { Authorization: "Bearer " + this.user.token })
-      .then(apiData => {
+      .then((apiData) => {
         if (!!apiData.refreshedToken && !!this.user && !!this.user.token) {
           console.log("refreshedToken", apiData.refreshedToken);
           this.saveUser({ ...this._user, token: apiData.refreshedToken });
 
           // Need to wait for "saveUser" to complete before switching screen
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             UTILS.waitForIt(
               () =>
                 !!this.user &&
@@ -91,17 +91,17 @@ class Data {
               () => {
                 resolve(
                   Api(url, data, type, {
-                    Authorization: "Bearer " + this.user.token
+                    Authorization: "Bearer " + this.user.token,
                   })
                 );
               }
             );
-          }).then(newPromise => newPromise);
+          }).then((newPromise) => newPromise);
         }
 
         return apiData;
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("getApiData > catch() Error:", e);
 
         // Unauthorized

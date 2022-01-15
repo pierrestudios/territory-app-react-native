@@ -26,19 +26,19 @@ export default class PublisherEdit extends React.Component {
           title="Save"
           color="#fff"
         />
-      )
+      ),
     };
   };
   state = {
     errors: {
       firstName: "",
       lastName: "",
-      message: ""
+      message: "",
     },
     data: {
       firstName: "",
-      lastName: ""
-    }
+      lastName: "",
+    },
   };
   componentDidMount() {
     const { navigation } = this.props;
@@ -51,7 +51,7 @@ export default class PublisherEdit extends React.Component {
     const { navigation } = this.props;
     if (!!navigation.getParam("savePublisher")) {
       this.savePublisher();
-      navigation.setParams({savePublisher: false});
+      navigation.setParams({ savePublisher: false });
     }
   }
   render() {
@@ -91,7 +91,7 @@ export default class PublisherEdit extends React.Component {
       </View>
     );
   }
-  saveData = data => {
+  saveData = (data) => {
     console.log("data", data);
     const newData = { ...this.state.data, ...data };
 
@@ -100,8 +100,8 @@ export default class PublisherEdit extends React.Component {
       errors: {
         firstName: "",
         lastName: "",
-        message: ""
-      }
+        message: "",
+      },
     });
   };
   savePublisher = () => {
@@ -115,15 +115,15 @@ export default class PublisherEdit extends React.Component {
           lastName: !this.state.data.lastName
             ? Language.translate("Enter Last Name")
             : "",
-          message: Language.translate("Enter required fields")
-        }
+          message: Language.translate("Enter required fields"),
+        },
       });
 
     // Data
 
     const postData = {
       firstName: this.state.data.firstName,
-      lastName: this.state.data.lastName
+      lastName: this.state.data.lastName,
     };
 
     // console.log('postData', postData);
@@ -133,15 +133,15 @@ export default class PublisherEdit extends React.Component {
 
     // Update Publisher
     Data.postApiData(url, postData)
-      .then(res => {
+      .then((res) => {
         console.log("then() res", res);
 
         if (!res || res.error) {
           return this.setState({
             errors: {
               ...this.state.data.errors,
-              mesage: "An error occured: "
-            }
+              mesage: "An error occured: ",
+            },
           });
         }
 
@@ -169,12 +169,12 @@ export default class PublisherEdit extends React.Component {
 
         this.props.navigation.goBack();
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({
           errors: {
             ...this.state.errors,
-            mesage: "An error occured: " + e
-          }
+            mesage: "An error occured: " + e,
+          },
         });
       });
   };

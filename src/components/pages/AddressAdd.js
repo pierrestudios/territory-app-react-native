@@ -21,7 +21,7 @@ export default class AddressAdd extends AddressEdit {
           title="Save"
           color="#fff"
         />
-      )
+      ),
     };
   };
   allTerritories = false;

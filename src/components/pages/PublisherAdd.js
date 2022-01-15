@@ -21,7 +21,7 @@ export default class PublisherAdd extends PublisherEdit {
           title="Save"
           color="#fff"
         />
-      )
+      ),
     };
   };
   allTerritories = false;

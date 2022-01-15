@@ -16,7 +16,7 @@ export default class Territories extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerRight: <View />, // To center on Andriod
-      title: Language.translate("All Territories")
+      title: Language.translate("All Territories"),
     };
   };
   loadingTerritories = false;
@@ -35,7 +35,7 @@ export default class Territories extends React.Component {
       filter,
       filter ? "POST" : ""
     )
-      .then(data => {
+      .then((data) => {
         this.loadingTerritories = false;
         this.setState({ territories: data });
       })
@@ -46,7 +46,7 @@ export default class Territories extends React.Component {
       <FlatList
         contentContainerStyle={styles.listings}
         data={data.sort(UTILS.sortTerritory)}
-        keyExtractor={item => item.territoryId.toString()}
+        keyExtractor={(item) => item.territoryId.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles["listings-item"]}
@@ -73,7 +73,7 @@ export default class Territories extends React.Component {
   viewDetails(data) {
     NavigationService.navigate("TerritoryDetails", {
       territoryId: data.territoryId,
-      allTerritories: this.allTerritories
+      allTerritories: this.allTerritories,
     });
   }
   render() {

@@ -3,7 +3,7 @@ import { Text, TouchableOpacity } from "react-native";
 
 import UTILS from "../../common/utils";
 
-export const Link = props => {
+export const Link = (props) => {
   return (
     <Button
       {...props}
@@ -11,13 +11,13 @@ export const Link = props => {
       textStyle={[
         styles["button-link-text"],
         styles["text-color-blue"],
-        props.textStyle
+        props.textStyle,
       ]}
     />
   );
 };
 
-export const ButtonLink = props => {
+export const ButtonLink = (props) => {
   return (
     <Button
       {...props}
@@ -27,7 +27,7 @@ export const ButtonLink = props => {
   );
 };
 
-export const ButtonHeader = props => {
+export const ButtonHeader = (props) => {
   return (
     <Button
       {...props}
@@ -37,7 +37,7 @@ export const ButtonHeader = props => {
   );
 };
 
-export const ButtonIcon = props => {
+export const ButtonIcon = (props) => {
   return (
     <Button
       {...props}
@@ -47,7 +47,7 @@ export const ButtonIcon = props => {
   );
 };
 
-export const Button = props => {
+export const Button = (props) => {
   const buttonStyle = UTILS.getElementStyles(
     props,
     props.baseStyle || styles["main-menu-button"]
@@ -67,7 +67,7 @@ export const Button = props => {
           style={[
             styles["main-menu-button-text"],
             props.textStyle || null,
-            props.textColorWhite ? styles["text-white"] : null
+            props.textColorWhite ? styles["text-white"] : null,
           ]}
         >
           {" "}

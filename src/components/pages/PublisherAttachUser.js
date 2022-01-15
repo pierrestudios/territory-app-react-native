@@ -17,7 +17,7 @@ export default class PublisherAttachUser extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       title: Language.translate("Attach to Publisher"),
-      headerRight: <View /> // To center on Andriod
+      headerRight: <View />, // To center on Andriod
     };
   };
   state = {
@@ -26,8 +26,8 @@ export default class PublisherAttachUser extends React.Component {
     newPublisher: null,
     errors: {
       newPublisher: "",
-      message: ""
-    }
+      message: "",
+    },
   };
   componentDidMount() {
     const { navigation } = this.props;
@@ -41,7 +41,7 @@ export default class PublisherAttachUser extends React.Component {
     const { navigation } = this.props;
     if (!!navigation.getParam("saveUser")) {
       this.saveUser();
-      navigation.setParams({saveUser: false});
+      navigation.setParams({ saveUser: false });
     }
   }
   render() {
@@ -62,8 +62,8 @@ export default class PublisherAttachUser extends React.Component {
             borderWidth: 0,
             paddingRight: 20,
             paddingLeft: 20,
-            minWidth: "90%"
-          }
+            minWidth: "90%",
+          },
         ]}
       >
         <Message error={state.errors.message} message={state.data.message} />
@@ -73,13 +73,13 @@ export default class PublisherAttachUser extends React.Component {
           data-name="publisherId"
           showLabel={true}
           label={Language.translate("Select Publisher")}
-          options={state.unattachedPublishers.map(p => ({
+          options={state.unattachedPublishers.map((p) => ({
             label: p.firstName + " " + p.lastName,
-            value: p.publisherId
+            value: p.publisherId,
           }))}
           value={{
             value: state.newPublisher && state.newPublisher.value,
-            label: state.newPublisher && state.newPublisher.label
+            label: state.newPublisher && state.newPublisher.label,
           }}
           error={state.errors.publisherId}
           onInput={this.saveData}
@@ -97,7 +97,7 @@ export default class PublisherAttachUser extends React.Component {
       </View>
     );
   }
-  saveData = data => {
+  saveData = (data) => {
     console.log("data", data);
     const newData = { ...this.state.newPublisher, ...data.option };
 
@@ -105,8 +105,8 @@ export default class PublisherAttachUser extends React.Component {
       newPublisher: newData,
       errors: {
         newPublisher: "",
-        message: ""
-      }
+        message: "",
+      },
     });
   };
   attachPublisher = () => {
@@ -114,29 +114,29 @@ export default class PublisherAttachUser extends React.Component {
       return this.setState({
         errors: {
           ...this.state.errors,
-          message: Language.translate("Publisher is required")
-        }
+          message: Language.translate("Publisher is required"),
+        },
       });
     }
 
     const postData = {
       userId: this.state.data.userId,
-      publisherId: this.state.newPublisher.value
+      publisherId: this.state.newPublisher.value,
     };
 
     console.log("postData", postData);
 
     // Update User
     Data.postApiData(`publishers/attach-user`, postData)
-      .then(res => {
+      .then((res) => {
         // console.log('then() data', data)
 
         if (!res || res.error) {
           return this.setState({
             errors: {
               ...this.state.data.errors,
-              mesage: "An error occured "
-            }
+              mesage: "An error occured ",
+            },
           });
         }
 
@@ -147,11 +147,12 @@ export default class PublisherAttachUser extends React.Component {
         ) {
           const newUser = { ...this.state.data };
           newUser.publisher = this.state.unattachedPublishers.find(
-            p => p.publisherId === postData.publisherId
+            (p) => p.publisherId === postData.publisherId
           );
-          const newUnattachedPublishers = this.state.unattachedPublishers.filter(
-            p => p.publisherId !== postData.publisherId
-          );
+          const newUnattachedPublishers =
+            this.state.unattachedPublishers.filter(
+              (p) => p.publisherId !== postData.publisherId
+            );
           this.props.navigation.getParam("updateUser")(
             newUser,
             newUnattachedPublishers
@@ -160,12 +161,12 @@ export default class PublisherAttachUser extends React.Component {
 
         return this.props.navigation.goBack();
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({
           errors: {
             ...this.state.errors,
-            mesage: "An error occured: " + e
-          }
+            mesage: "An error occured: " + e,
+          },
         });
       });
   };

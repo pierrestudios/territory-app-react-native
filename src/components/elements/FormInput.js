@@ -5,10 +5,10 @@ import {
   TextInput as TextInputRN,
   Switch as SwitchRN,
   TouchableOpacity,
-  Platform
+  Platform,
 } from "react-native";
-import {Picker} from '@react-native-picker/picker';
-import { CheckBox as CheckBoxRN } from '@react-native-community/checkbox';
+import { Picker } from "@react-native-picker/picker";
+import { CheckBox as CheckBoxRN } from "@react-native-community/checkbox";
 import DatePicker from "react-native-datepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -19,7 +19,7 @@ import { ButtonLink } from "./Button";
 import SelectPickerIOS from "./SelectPickerIOS";
 import Language from "../../common/lang";
 
-const getStyles = props => {
+const getStyles = (props) => {
   const styles = props.baseStyle ? [props.baseStyle] : [style.input];
   if (!!props.icon) styles.push(style["with-icon"]);
 
@@ -28,7 +28,7 @@ const getStyles = props => {
   return styles;
 };
 
-const getLabel = props => {
+const getLabel = (props) => {
   return props.showLabel ? (
     <InputLabel>{props.label || props.placeholder}</InputLabel>
   ) : null;
@@ -46,19 +46,19 @@ const getIconEl = (name, props) => {
   }
 };
 
-const getIcon = props => {
+const getIcon = (props) => {
   return !!props.icon ? (
     <View style={style["input-icon-wrapper"]}>
       {getIconEl(props.icon.el, {
         size: 14,
         name: props.icon.name,
-        style: style["input-icon"]
+        style: style["input-icon"],
       })}
     </View>
   ) : null;
 };
 
-const getError = props => {
+const getError = (props) => {
   return !!props.error ? (
     <View style={[style.errors, style["input-errors"]]}>
       <Text style={{ color: colors.white }}>{props.error}</Text>
@@ -82,7 +82,7 @@ const elemWrapper = (props, el) => {
  * InputLabel, TextInput, DateInput, RadioBox, SelectBox, TextBox, Switch, etc...
  */
 
-export const InputLabel = props => {
+export const InputLabel = (props) => {
   return (
     <Text
       style={[style["label-medium"], style["text-color-blue"], props.style]}
@@ -92,22 +92,22 @@ export const InputLabel = props => {
   );
 };
 
-export const TextInput = props => {
+export const TextInput = (props) => {
   const finalProps = {
     ...props,
     underlineColorAndroid: "transparent", // Hide underline on Android
     editable: !props.disabled,
     inlineImageLeft: null, // The image resource must be inside /android/app/src/main/res/drawable and referenced like (inlineImageLeft='search_icon')
-    onChangeText: value => props.onInput({ [props.name]: value }),
+    onChangeText: (value) => props.onInput({ [props.name]: value }),
     placeholder: props.removePlaceholder
       ? ""
       : props.placeholder || props.label,
-    style: getStyles(props)
+    style: getStyles(props),
   };
   return elemWrapper(finalProps, <TextInputRN {...finalProps} />);
 };
 
-export const DateInput = props => {
+export const DateInput = (props) => {
   const format = "YYYY-MM-DD";
   return (
     <DatePicker
@@ -120,36 +120,36 @@ export const DateInput = props => {
       cancelBtnText={Language.translate("Cancel")}
       customStyles={{
         dateText: {
-          fontSize: 16
+          fontSize: 16,
         },
-        dateInput: style["date-input"]
+        dateInput: style["date-input"],
       }}
       showIcon={false}
-      onDateChange={date => {
+      onDateChange={(date) => {
         props.onChange({ date });
       }}
     />
   );
 };
 
-export const RadioBox = props => {
+export const RadioBox = (props) => {
   const activeOptStyle = [
     style["input-options"],
-    style["input-options-active"]
+    style["input-options-active"],
   ];
   const activeIconStyle = [
     style["input-options-icon"],
-    style["input-options-icon-active"]
+    style["input-options-icon-active"],
   ];
   const activeLabelStyle = [
     style["input-options-label"],
-    style["input-options-label-active"]
+    style["input-options-label-active"],
   ];
-  const chooseOption = option => {
+  const chooseOption = (option) => {
     if (typeof props.onChange === "function") {
       props.onChange({
         name: props.name,
-        option: { label: option.label, value: option.value }
+        option: { label: option.label, value: option.value },
       });
     }
   };
@@ -162,7 +162,7 @@ export const RadioBox = props => {
         <InputLabel style={[style["options-label"]]}>{props.label}</InputLabel>
       )}
       <View style={[style["input-options-container"], { flexWrap: "wrap" }]}>
-        {props.options.map(o => (
+        {props.options.map((o) => (
           <ButtonLink
             key={`${o.value}-key`}
             customStyle={style["input-options-button"]}
@@ -202,7 +202,7 @@ export const RadioBox = props => {
   );
 };
 
-export const Checkbox = props => {
+export const Checkbox = (props) => {
   return (
     <View>
       {props.label ? <InputLabel>{props.label}</InputLabel> : null}
@@ -210,7 +210,7 @@ export const Checkbox = props => {
       {Platform.OS === "ios" ? (
         <TouchableOpacity
           style={[style["check-box"], props.style]}
-          onPress={value =>
+          onPress={(value) =>
             props.onChange && props.onChange({ [props.name]: value })
           }
         >
@@ -221,7 +221,7 @@ export const Checkbox = props => {
       ) : (
         <CheckBoxRN
           style={style["check-box"]}
-          onChange={value =>
+          onChange={(value) =>
             props.onChange && props.onChange({ [props.name]: value })
           }
           value={props.value}
@@ -231,12 +231,12 @@ export const Checkbox = props => {
   );
 };
 
-export const Switch = props => {
+export const Switch = (props) => {
   return (
     <View>
       <InputLabel>{props.label}</InputLabel>
       <SwitchRN
-        onValueChange={value =>
+        onValueChange={(value) =>
           props.onChange && props.onChange({ [props.name]: value })
         }
         value={props.value}
@@ -247,14 +247,14 @@ export const Switch = props => {
   );
 };
 
-export const SelectBox = props => {
+export const SelectBox = (props) => {
   renderOptions = (options = []) => {
     // If no Label option, add it
-    if (!options.find(o => o.value === "" && o.label === props.label)) {
+    if (!options.find((o) => o.value === "" && o.label === props.label)) {
       options.unshift({ value: "", label: props.label });
     }
 
-    return options.map(o => (
+    return options.map((o) => (
       <Picker.Item key={`${o.value}-key`} label={o.label} value={o.value} />
     ));
   };
@@ -271,12 +271,12 @@ export const SelectBox = props => {
           selectedValue={props.value.value}
           style={style["select-options-wrapper"]}
           itemStyle={style["select-options"]}
-          onValueChange={selectedValue =>
+          onValueChange={(selectedValue) =>
             !!props.onInput &&
             props.onInput({
               name: props.name,
               "data-name": props["data-name"],
-              option: props.options.find(o => o.value === selectedValue)
+              option: props.options.find((o) => o.value === selectedValue),
             })
           }
         >
@@ -290,44 +290,44 @@ export const SelectBox = props => {
   );
 };
 
-export const TextBox = props => {
+export const TextBox = (props) => {
   const finalProps = {
     ...props,
     multiline: true,
-    numberOfLines: 4
+    numberOfLines: 4,
   };
   return <TextInput {...finalProps} />;
 };
 
-export const PhoneInput = props => {
+export const PhoneInput = (props) => {
   const finalProps = {
     ...props,
-    keyboardType: "phone-pad"
+    keyboardType: "phone-pad",
   };
   return <TextInput {...finalProps} />;
 };
 
-export const EmailInput = props => {
+export const EmailInput = (props) => {
   const finalProps = {
     ...props,
     keyboardType: "email-address",
-    autoCapitalize: "none"
+    autoCapitalize: "none",
   };
   return <TextInput {...finalProps} />;
 };
 
-export const PasswordInput = props => {
+export const PasswordInput = (props) => {
   const finalProps = {
     ...props,
-    secureTextEntry: true
+    secureTextEntry: true,
   };
   return <TextInput {...finalProps} />;
 };
 
-export const NumberInput = props => {
+export const NumberInput = (props) => {
   const finalProps = {
     ...props,
-    keyboardType: "number-pad"
+    keyboardType: "number-pad",
   };
   return <TextInput {...finalProps} />;
 };

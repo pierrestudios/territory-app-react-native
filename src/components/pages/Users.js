@@ -18,17 +18,17 @@ export default class Users extends React.Component {
       headerRight: <View />, // To center on Andriod
       headerTitle: null,
       title: Language.translate("Users"),
-      headerTintColor: "#fff"
+      headerTintColor: "#fff",
     };
   };
   componentDidMount() {
     if (!Data.user) return;
 
-    Data.getApiData("users").then(users => {
+    Data.getApiData("users").then((users) => {
       this.setState({ users }, () => {
         users &&
           Data.postApiData("publishers/filter", { userId: null }).then(
-            publishers => {
+            (publishers) => {
               this.setState({ unattachedPublishers: publishers });
             }
           );
@@ -62,7 +62,7 @@ export default class Users extends React.Component {
       <FlatList
         contentContainerStyle={styles.listings}
         data={data.sort(UTILS.sortUser)}
-        keyExtractor={item => item.userId.toString()}
+        keyExtractor={(item) => item.userId.toString()}
         renderItem={({ item }) => (
           <Swipeout
             key={item.userId}
@@ -70,18 +70,18 @@ export default class Users extends React.Component {
               {
                 text: Language.translate("Details"),
                 type: "primary",
-                onPress: () => this.viewDetails(item)
+                onPress: () => this.viewDetails(item),
               },
               {
                 text: Language.translate("Edit"),
                 backgroundColor: colors.green,
-                onPress: () => this.editUser(item)
+                onPress: () => this.editUser(item),
               },
               {
                 text: Language.translate("Delete"),
                 type: "delete",
-                onPress: () => this.notifyDelete(item, state.user)
-              } // backgroundColor: colors.red
+                onPress: () => this.notifyDelete(item, state.user),
+              }, // backgroundColor: colors.red
             ]}
             autoClose={true}
             close={true}
@@ -91,14 +91,14 @@ export default class Users extends React.Component {
                 style={[
                   styles["listings-name"],
                   styles["user-listings-name"],
-                  { width: "95%" }
+                  { width: "95%" },
                 ]}
                 onPress={() => this.viewDetails(item)}
               >
                 <View
                   style={[
                     styles["listings-name"],
-                    { marginTop: 5, left: 5, width: "50%" }
+                    { marginTop: 5, left: 5, width: "50%" },
                   ]}
                 >
                   {item.publisher ? (
@@ -106,7 +106,7 @@ export default class Users extends React.Component {
                       numberOfLines={1}
                       style={[
                         styles["listings-name-text"],
-                        { fontWeight: "bold", color: colors.black }
+                        { fontWeight: "bold", color: colors.black },
                       ]}
                     >
                       {item.publisher.firstName + " " + item.publisher.lastName}
@@ -116,7 +116,7 @@ export default class Users extends React.Component {
                       numberOfLines={1}
                       style={[
                         styles["listings-name-text"],
-                        { color: colors["grey-lite"] }
+                        { color: colors["grey-lite"] },
                       ]}
                     >
                       {Language.translate("No Publisher")}
@@ -149,12 +149,12 @@ export default class Users extends React.Component {
     NavigationService.navigate("UserDetails", {
       data,
       unattachedPublishers: this.state.unattachedPublishers,
-      updateUsers: this.updateUsers
+      updateUsers: this.updateUsers,
     });
   }
-  removeUser = userId => {
+  removeUser = (userId) => {
     this.setState({
-      publishers: this.state.publishers.filter(p => p.userId !== userId)
+      publishers: this.state.publishers.filter((p) => p.userId !== userId),
     });
   };
   updateUsers = (updatedUser, unattachedPublishers = null) => {
@@ -162,12 +162,12 @@ export default class Users extends React.Component {
       unattachedPublishers: unattachedPublishers
         ? unattachedPublishers.sort(UTILS.sortPublisher)
         : this.state.unattachedPublishers,
-      users: this.state.users.map(p => {
+      users: this.state.users.map((p) => {
         if (p.userId === updatedUser.userId) {
           return updatedUser;
         }
         return p;
-      })
+      }),
     });
   };
 }

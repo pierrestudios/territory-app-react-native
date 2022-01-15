@@ -1,6 +1,9 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { KeyboardAwareScrollView, KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
+import {
+  KeyboardAwareScrollView,
+  KeyboardAwareFlatList,
+} from "react-native-keyboard-aware-scroll-view";
 
 import Data from "../../common/data";
 import Language from "../../common/lang";
@@ -34,7 +37,7 @@ export default class Notes extends React.Component {
           title="Save"
           color="#fff"
         />
-      )
+      ),
     };
   };
 
@@ -43,14 +46,14 @@ export default class Notes extends React.Component {
     noteData: {
       note: "",
       noteSymbol: "",
-      date: UTILS.getToday()
+      date: UTILS.getToday(),
     },
     errors: {
       note: "",
       date: "",
-      message: ""
+      message: "",
     },
-    user: null
+    user: null,
   };
   componentDidMount() {
     const { navigation } = this.props;
@@ -58,7 +61,7 @@ export default class Notes extends React.Component {
       this.setState({
         data: navigation.getParam("addressActive"),
         user: Data.user,
-        notesSymbolsLang: Data.user.lang
+        notesSymbolsLang: Data.user.lang,
       });
     }
   }
@@ -66,7 +69,7 @@ export default class Notes extends React.Component {
     const { navigation } = this.props;
     if (!!navigation.getParam("saveNotes")) {
       this.saveNotes();
-      navigation.setParams({saveNotes: false});
+      navigation.setParams({ saveNotes: false });
     }
   }
   render() {
@@ -75,20 +78,22 @@ export default class Notes extends React.Component {
 
     if (!data) return <Loading />;
 
-    const { NotesSymbols: notesSymbols = {} } = languages[
-      state.notesSymbolsLang
-    ];
-    const notesSymbolsOptions = Object.keys(notesSymbols).map(k => ({
+    const { NotesSymbols: notesSymbols = {} } =
+      languages[state.notesSymbolsLang];
+    const notesSymbolsOptions = Object.keys(notesSymbols).map((k) => ({
       value: k,
       label: notesSymbols[k],
-      active: noteData.noteSymbol === k
+      active: noteData.noteSymbol === k,
     }));
     const notes = (
       <KeyboardAwareFlatList
-        contentContainerStyle={[style.listings, { minWidth: "80%", marginBottom: 40 }]}
+        contentContainerStyle={[
+          style.listings,
+          { minWidth: "80%", marginBottom: 40 },
+        ]}
         data={data.notes}
         extraData={state}
-        keyExtractor={item => item.noteId.toString()}
+        keyExtractor={(item) => item.noteId.toString()}
         ListEmptyComponent={this.emptyListResult}
         renderItem={this.renderListOfNotes}
       />
@@ -115,7 +120,7 @@ export default class Notes extends React.Component {
             style={[
               style.content,
               style["notes-content"],
-              { padding: 5, minHeight: 250 }
+              { padding: 5, minHeight: 250 },
             ]}
           >
             <Message error={errors.message} message={data.message} />
@@ -147,14 +152,14 @@ export default class Notes extends React.Component {
               />
             ) : null}
           </View>
- 
+
           <Line />
 
           <Notice data={state.noticeMessage} />
         </KeyboardAwareScrollView>
 
         <Heading level={3}>{Language.translate("Previous Notes")}</Heading>
-        { notes }
+        {notes}
 
         <NotesModal
           saveNotesSymbol={this.saveNotesSymbol}
@@ -180,7 +185,7 @@ export default class Notes extends React.Component {
         style["listings-item"],
         item.noteId === this.state.noteData.noteId
           ? style["listings-item-inactive"]
-          : null
+          : null,
       ]}
     >
       {this.state.user.isManager || this.state.user.userId === item.userId ? (
@@ -195,7 +200,7 @@ export default class Notes extends React.Component {
         <Text
           style={[
             style["listings-date-text"],
-            style["listings-notes-date-text"]
+            style["listings-notes-date-text"],
           ]}
         >
           {item.date}
@@ -206,10 +211,10 @@ export default class Notes extends React.Component {
       </View>
     </View>
   );
-  setModalVisible = modal => {
+  setModalVisible = (modal) => {
     this.setState(modal);
   };
-  saveData = data => {
+  saveData = (data) => {
     const newData = { ...this.state.noteData, ...data };
 
     if (!!newData.noteSymbol) {
@@ -223,8 +228,8 @@ export default class Notes extends React.Component {
       errors: {
         note: "",
         date: "",
-        message: ""
-      }
+        message: "",
+      },
     });
   };
   updateNotes(data) {
@@ -233,17 +238,17 @@ export default class Notes extends React.Component {
         note: UTILS.formatDiacritics(data.note),
         date: UTILS.getDateObject(data.date),
         retain: !!data.retain,
-        noteId: data.noteId
-      }
+        noteId: data.noteId,
+      },
     });
   }
-  saveNotesSymbol = selected => {
+  saveNotesSymbol = (selected) => {
     this.saveData({
-      noteSymbol: selected.option.value
+      noteSymbol: selected.option.value,
     });
     this.setModalVisible({ NotesOptionsModal: false });
   };
-  saveNotesSymbolsLang = selectedLang => {
+  saveNotesSymbolsLang = (selectedLang) => {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   saveNotes = () => {
@@ -252,7 +257,7 @@ export default class Notes extends React.Component {
       notesSymbolsLang,
       noteData,
       errors,
-      data: addressData
+      data: addressData,
     } = this.state;
     const { noteId, note, date, noteSymbol, notesAddl } = noteData;
     const { territoryId, addressId } = addressData;
@@ -264,8 +269,8 @@ export default class Notes extends React.Component {
           ...errors,
           note: !note ? Language.translate("Notes is empty") : "",
           date: !date ? Language.translate("Date is missing") : "",
-          message: !note ? Language.translate("Notes is empty") : ""
-        }
+          message: !note ? Language.translate("Notes is empty") : "",
+        },
       });
 
     const { NotesSymbols: notesSymbols = {} } = languages[notesSymbolsLang];
@@ -280,15 +285,15 @@ export default class Notes extends React.Component {
       return this.setState({
         errors: {
           ...errors,
-          notesAddl: Language.translate("Enter your reason for this note")
-        }
+          notesAddl: Language.translate("Enter your reason for this note"),
+        },
       });
     }
 
     // Data
     const dataToSave = {
       ...noteData,
-      date: UTILS.getDateString(date)
+      date: UTILS.getDateString(date),
     };
 
     if (
@@ -306,7 +311,7 @@ export default class Notes extends React.Component {
 
     // save note
     Data.postApiData(url, dataToSave)
-      .then(resData => {
+      .then((resData) => {
         // console.log('then() resData', resData)
         // Clear Errors
         this.setState(
@@ -314,8 +319,8 @@ export default class Notes extends React.Component {
             errors: {
               note: "",
               date: "",
-              message: ""
-            }
+              message: "",
+            },
           },
           () => {
             // update current Address
@@ -324,13 +329,13 @@ export default class Notes extends React.Component {
               // editting notes?
               if (noteId && resData) {
                 newNotes = addressData.notes
-                  .map(n => {
+                  .map((n) => {
                     if (n.noteId === noteId) {
                       return {
                         ...n,
                         date: dataToSave.date,
                         note: dataToSave.note,
-                        retain: !!dataToSave.retain
+                        retain: !!dataToSave.retain,
                       };
                     }
 
@@ -347,7 +352,7 @@ export default class Notes extends React.Component {
                   date: resData.date,
                   noteId: resData.id,
                   retain: resData.archived === 1,
-                  userId: resData.user_id
+                  userId: resData.user_id,
                 });
                 newNotes = newNotes.sort(UTILS.sortNotes);
               }
@@ -359,14 +364,14 @@ export default class Notes extends React.Component {
           }
         );
       })
-      .catch(e => {
+      .catch((e) => {
         // console.log('error', e)
         const errorMessage = Language.translate("An error occured.");
         this.setState({
           errors: {
             ...errors,
-            message: errorMessage
-          }
+            message: errorMessage,
+          },
         });
       });
   };
