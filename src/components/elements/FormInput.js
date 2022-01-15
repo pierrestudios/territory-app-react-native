@@ -4,10 +4,10 @@ import {
   View,
   TextInput as TextInputRN,
   Switch as SwitchRN,
-  Picker,
   TouchableOpacity,
   Platform
 } from "react-native";
+import {Picker} from '@react-native-picker/picker';
 import { CheckBox as CheckBoxRN } from '@react-native-community/checkbox';
 import DatePicker from "react-native-datepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
