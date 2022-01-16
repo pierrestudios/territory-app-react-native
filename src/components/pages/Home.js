@@ -110,15 +110,11 @@ export default class Home extends React.Component {
       customStyle: [
         styles["heading-button-link"],
         {
-          width: 150,
-          height: 33,
-
-          // Note: Warning from Expo: "alignSelf was given a value of center, this has no effect on headerStyle."
-          // Removing cause elements to align left (not desired)
-          alignSelf: "center",
-          marginBottom: 15,
           borderColor: colors["grey-lite"],
           borderWidth: 1,
+          height: 40,
+          marginBottom: 10,
+          paddingTop: 10,
         },
       ],
       textStyle: { fontSize: 16 },

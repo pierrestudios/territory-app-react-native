@@ -223,8 +223,6 @@ export default {
       width: "90%",
     },
     headerStyle: {
-      alignSelf: "center",
-      width: "100%",
       backgroundColor: colors["territory-blue"],
     },
     headerTintColor: "#fff",
