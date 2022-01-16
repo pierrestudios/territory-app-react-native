@@ -17,8 +17,8 @@ export default class UserEdit extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate("Edit User"),
-      headerRight: (
+      headerTitle: Language.translate("Edit User"),
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({ saveUser: true });
@@ -26,18 +26,18 @@ export default class UserEdit extends React.Component {
           title="Save"
           color="#fff"
         />
-      )
+      ),
     };
   };
   state = {
     errors: {
       email: "",
-      userType: ""
+      userType: "",
     },
     data: {
       email: "",
-      userType: ""
-    }
+      userType: "",
+    },
   };
   componentDidMount() {
     const { navigation } = this.props;
@@ -81,7 +81,7 @@ export default class UserEdit extends React.Component {
             label={Language.translate("Choose account type")}
             options={UTILS.userTypes}
             value={
-              UTILS.userTypes.find(t => t.value === state.data.userType) || {}
+              UTILS.userTypes.find((t) => t.value === state.data.userType) || {}
             }
             error={state.errors.streetId}
             onInput={this.saveOptionData}
@@ -92,7 +92,7 @@ export default class UserEdit extends React.Component {
       </View>
     );
   }
-  saveData = data => {
+  saveData = (data) => {
     const newData = { ...this.state.data, ...data };
 
     return this.setState({
@@ -100,11 +100,11 @@ export default class UserEdit extends React.Component {
       errors: {
         email: "",
         userType: "",
-        message: ""
-      }
+        message: "",
+      },
     });
   };
-  saveOptionData = data => {
+  saveOptionData = (data) => {
     console.log("data", data);
     let newData = { ...this.state.data };
     if (data["data-name"]) newData[data["data-name"]] = data.option.value;
@@ -116,8 +116,8 @@ export default class UserEdit extends React.Component {
       data: newData,
       errors: {
         ...this.state.errors,
-        [data.name]: ""
-      }
+        [data.name]: "",
+      },
     });
   };
   saveUser = () => {
@@ -135,30 +135,30 @@ export default class UserEdit extends React.Component {
             ? Language.translate("Invalid email")
             : "",
           userType: !this.state.data.userType ? "Choose account type" : "",
-          message: Language.translate("Enter required fields")
-        }
+          message: Language.translate("Enter required fields"),
+        },
       });
 
     // Data
 
     const postData = {
       email: this.state.data.email,
-      userType: this.state.data.userType
+      userType: this.state.data.userType,
     };
 
     const url = `users/${this.state.data.userId}/save`;
 
     // Update User
     Data.postApiData(url, postData)
-      .then(res => {
+      .then((res) => {
         // console.log("then() res", res);
 
         if (!res || res.error) {
           return this.setState({
             errors: {
               ...this.state.data.errors,
-              message: "An error occured "
-            }
+              message: "An error occured ",
+            },
           });
         }
 
@@ -173,12 +173,12 @@ export default class UserEdit extends React.Component {
 
         this.props.navigation.goBack();
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({
           errors: {
             ...this.state.errors,
-            message: "An error occured: " + e
-          }
+            message: "An error occured: " + e,
+          },
         });
       });
   };

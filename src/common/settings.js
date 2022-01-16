@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as languages from "../languages/index";
 import keys from "../../env-keys";
@@ -23,7 +23,7 @@ class UserData {
     this.loadSavedUser();
 
     const prefs = {
-      lang: DEFAULT_LANG
+      lang: DEFAULT_LANG,
     };
 
     this._settings = {
@@ -31,8 +31,8 @@ class UserData {
       languages,
       defaultLang: DEFAULT_LANG,
       langPacks: {
-        [prefs.lang]: languages[prefs.lang]
-      }
+        [prefs.lang]: languages[prefs.lang],
+      },
     };
 
     return instance;
@@ -50,15 +50,15 @@ class UserData {
           lang: this._user.lang || DEFAULT_LANG,
           apiUrl: this._user.apiUrl,
           apiPath: this._user.apiPath,
-          GAKey: GOOGLE_API_KEY
+          GAKey: GOOGLE_API_KEY,
         };
 
         this._settings = {
           ...this._settings,
           ...prefs,
           langPacks: {
-            [prefs.lang]: languages[prefs.lang]
-          }
+            [prefs.lang]: languages[prefs.lang],
+          },
         };
       }
     } catch (error) {
@@ -74,6 +74,6 @@ class UserData {
 
 export const userData = new UserData();
 
-export default key => {
+export default (key) => {
   return userData.getSetting(key);
 };

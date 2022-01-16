@@ -12,14 +12,14 @@ import styles, { colors } from "../../styles/main";
 export default class UserDetails extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
-    headerRight: <View />, // To center on Andriod
-    title: Language.translate("User Details")
+    headerRight: () => <View />, // To center on Andriod
+    headerTitle: Language.translate("User Details"),
   };
   state = {
     data: {
-      publisher: null
-    }
-  }
+      publisher: null,
+    },
+  };
   componentDidMount() {
     const { navigation } = this.props;
     const data = navigation.getParam("data");
@@ -28,10 +28,10 @@ export default class UserDetails extends React.Component {
       this.setState({ data, unattachedPublishers });
     }
   }
-  editUser = data => {
+  editUser = (data) => {
     NavigationService.navigate("UserEdit", {
       data,
-      updateUser: this.updateUser
+      updateUser: this.updateUser,
     });
   };
   attachPublisher(data) {
@@ -40,7 +40,7 @@ export default class UserDetails extends React.Component {
       unattachedPublishers: this.state.unattachedPublishers,
       updateUser: (newUser, unattachedPublishers) => {
         this.updateUser(newUser, unattachedPublishers);
-      }
+      },
     });
   }
   updateUser = (data, unattachedPublishers = null) => {
@@ -48,7 +48,7 @@ export default class UserDetails extends React.Component {
       {
         data,
         unattachedPublishers:
-          unattachedPublishers || this.state.unattachedPublishers
+          unattachedPublishers || this.state.unattachedPublishers,
       },
       () => {
         if (
@@ -65,7 +65,7 @@ export default class UserDetails extends React.Component {
   updatePublisherAfterAttachPublisher = (data, territoryId = null) => {
     const unattachedPublishers = this.state.unattachedPublishers.slice();
     const territory = this.state.data.territories.find(
-      t => t.territoryId === territoryId
+      (t) => t.territoryId === territoryId
     );
 
     if (!!territory) {
@@ -100,7 +100,7 @@ export default class UserDetails extends React.Component {
             style={[
               styles["heading-name"],
               styles["heading-user-email"],
-              { top: 55, fontWeight: "bold" }
+              { top: 55, fontWeight: "bold" },
             ]}
           >
             {UTILS.userTypeLabel(state.data.userType)}
@@ -109,7 +109,7 @@ export default class UserDetails extends React.Component {
             style={[
               styles["heading-name"],
               styles["heading-user-email"],
-              { top: 75 }
+              { top: 75 },
             ]}
           >
             {state.data.email}
@@ -123,15 +123,15 @@ export default class UserDetails extends React.Component {
               height: 40,
               paddingTop: 5,
               borderColor: colors.red,
-              borderWidth: 0
-            }
+              borderWidth: 0,
+            },
           ]}
         >
           <ButtonLink
             onPress={() => this.editUser(state.data)}
             customStyle={[
               styles["heading-button-link"],
-              { marginRight: 10, backgroundColor: colors["territory-blue"] }
+              { marginRight: 10, backgroundColor: colors["territory-blue"] },
             ]}
             textStyle={styles["heading-button-link-text"]}
             textColorWhite
@@ -143,7 +143,7 @@ export default class UserDetails extends React.Component {
               onPress={() => this.attachPublisher(state.data)}
               customStyle={[
                 styles["heading-button-link"],
-                { backgroundColor: colors.green }
+                { backgroundColor: colors.green },
               ]}
               textStyle={styles["heading-button-link-text"]}
               textColorWhite

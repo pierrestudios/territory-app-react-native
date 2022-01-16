@@ -20,24 +20,24 @@ import NavigationService from "../../common/nav-service";
 export default class Signup extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
-    headerTitle: <Logo />,
-    headerLeft: <View />,
-    headerRight: <View />,
-    headerBackImage: <View /> // Disabled
+    headerTitle: () => <Logo />,
+    headerLeft: () => <View />,
+    headerRight: () => <View />,
+    headerBackImage: () => <View />, // Disabled
   };
   state = {
     data: {
       email: "",
       password: "",
-      passwordConfirm: ""
+      passwordConfirm: "",
     },
     errors: {
       email: "",
       password: "",
       passwordConfirm: "",
-      message: ""
+      message: "",
     },
-    waitingForResponse: false
+    waitingForResponse: false,
   };
   loadUserData() {
     const { user } = Data;
@@ -119,7 +119,7 @@ export default class Signup extends React.Component {
       </View>
     );
   }
-  saveData = newValue => {
+  saveData = (newValue) => {
     // console.log('newValue', newValue);
     const newData = { ...this.state.data, ...newValue };
     this.setState({
@@ -128,8 +128,8 @@ export default class Signup extends React.Component {
         email: "",
         password: "",
         passwordConfirm: "",
-        message: ""
-      }
+        message: "",
+      },
     });
   };
   sendSignup = () => {
@@ -140,7 +140,7 @@ export default class Signup extends React.Component {
       email: "",
       password: "",
       passwordConfirm: "",
-      message: ""
+      message: "",
     };
 
     this.setState({ errors, waitingForResponse: true });
@@ -160,27 +160,27 @@ export default class Signup extends React.Component {
             : "",
           passwordConfirm: !this.state.data.passwordConfirm
             ? Language.translate("Password does not match.")
-            : ""
+            : "",
         },
-        waitingForResponse: false
+        waitingForResponse: false,
       });
 
     if (!UTILS.isValidEmail(this.state.data.email))
       return this.setState({
         errors: {
           ...errors,
-          email: Language.translate("Invalid email")
+          email: Language.translate("Invalid email"),
         },
-        waitingForResponse: false
+        waitingForResponse: false,
       });
 
     if (this.state.data.password !== this.state.data.passwordConfirm)
       return this.setState({
         errors: {
           ...this.state.errors,
-          passwordConfirm: Language.translate("Password does not match.")
+          passwordConfirm: Language.translate("Password does not match."),
         },
-        waitingForResponse: false
+        waitingForResponse: false,
       });
 
     // All good, send to api
@@ -188,11 +188,11 @@ export default class Signup extends React.Component {
       "signup",
       {
         email: this.state.data.email,
-        password: this.state.data.password
+        password: this.state.data.password,
       },
       "POST"
     )
-      .then(data => {
+      .then((data) => {
         console.log("data", data);
 
         if (data && data.token) {
@@ -201,8 +201,8 @@ export default class Signup extends React.Component {
 
           // Get User data
           Api("auth-user", null, "GET", {
-            Authorization: "Bearer " + data.token
-          }).then(user => {
+            Authorization: "Bearer " + data.token,
+          }).then((user) => {
             user.token = data.token;
             const newData = { ...this.state.data, ...user };
             Data.saveUser(user);
@@ -217,7 +217,7 @@ export default class Signup extends React.Component {
           });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("error", e);
         const errorMessage =
           typeof e === "string" && (e.match("email") || e.match("password"))
@@ -226,9 +226,9 @@ export default class Signup extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            message: errorMessage
+            message: errorMessage,
           },
-          waitingForResponse: false
+          waitingForResponse: false,
         });
       });
   };

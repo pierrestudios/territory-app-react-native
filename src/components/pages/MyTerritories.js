@@ -8,8 +8,8 @@ export default class MyTerritories extends Territories {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      headerRight: <View />, // To center on Andriod
-      title: Language.translate("My Territories")
+      headerRight: () => <View />, // To center on Andriod
+      headerTitle: Language.translate("My Territories"),
     };
   };
   allTerritories = false;

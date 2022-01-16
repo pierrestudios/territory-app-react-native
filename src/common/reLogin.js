@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import UTILS from "./utils";
 import NavigationService from "./nav-service";
@@ -18,7 +18,7 @@ export default async function reLogin() {
       // Preferences may be null in new data, use old data
       apiUrl: user.apiUrl || this._user.apiUrl,
       apiPath: user.apiPath || this._user.apiPath,
-      lang: user.lang || this._user.langc
+      lang: user.lang || this._user.langc,
     };
     await AsyncStorage.setItem("user", JSON.stringify(newUser));
   } catch (error) {
@@ -26,7 +26,7 @@ export default async function reLogin() {
   }
 
   // Need to wait for "saveUser" to complete before switching screen
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     resolve(true);
   }).then(() => NavigationService.navigate("Login", {}));
 }

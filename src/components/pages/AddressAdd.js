@@ -11,8 +11,8 @@ export default class AddressAdd extends AddressEdit {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      headerRight: <View />, // To center on Andriod
-      title: Language.translate("Add Address"),
+      headerRight: () => <View />, // To center on Andriod
+      headerTitle: Language.translate("Add Address"),
       headerRight: (
         <ButtonHeader
           onPress={() => {
@@ -21,7 +21,7 @@ export default class AddressAdd extends AddressEdit {
           title="Save"
           color="#fff"
         />
-      )
+      ),
     };
   };
   allTerritories = false;

@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from "@react-native-picker/picker";
 
 import styles, { colors } from "../../styles/main";
 
 export default class SelectPickerIOS extends React.Component {
   state = {
-    isSelecting: false
+    isSelecting: false,
   };
 
   render() {
@@ -19,12 +19,12 @@ export default class SelectPickerIOS extends React.Component {
             selectedValue={props.value.value}
             style={styles["select-options-wrapper"]}
             itemStyle={styles["select-options"]}
-            onValueChange={selectedValue => {
+            onValueChange={(selectedValue) => {
               typeof props.onInput === "function" &&
                 props.onInput({
                   name: props.name,
                   "data-name": props["data-name"],
-                  option: props.options.find(o => o.value === selectedValue)
+                  option: props.options.find((o) => o.value === selectedValue),
                 });
 
               // Delay for 1/2 sec
@@ -44,8 +44,8 @@ export default class SelectPickerIOS extends React.Component {
                   fontSize: 18,
                   fontWeight: "bold",
                   padding: 5,
-                  color: colors.grey
-                }
+                  color: colors.grey,
+                },
               ]}
             >
               {(props.value && props.value.label) || props.label}

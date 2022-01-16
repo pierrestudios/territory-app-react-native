@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Platform } from "react-native";
-import { WebView } from 'react-native-webview';
+import { WebView } from "react-native-webview";
 
 import UTILS from "../../common/utils";
 import getSiteSetting from "../../common/settings";
@@ -13,8 +13,8 @@ export default class WebViewApi extends React.Component {
     const title = navigation.getParam("title");
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: title || "Web View",
-      headerRight: <View />
+      headerTitle: title || "Web View",
+      headerRight: () => <View />,
     };
   };
   render() {

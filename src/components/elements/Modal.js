@@ -10,13 +10,14 @@ import { Link } from "./Button";
 
 class AnimatedModal extends React.Component {
   state = {
-    fadeAnim: new Animated.Value(0)
+    fadeAnim: new Animated.Value(0),
   };
 
   componentDidMount() {
     Animated.timing(this.state.fadeAnim, {
       toValue: 1,
-      duration: 300
+      duration: 300,
+      useNativeDriver: true,
     }).start();
   }
 
@@ -29,8 +30,8 @@ class AnimatedModal extends React.Component {
           styles["modal-container"],
           {
             ...this.props.style,
-            opacity: fadeAnim
-          }
+            opacity: fadeAnim,
+          },
         ]}
       >
         <KeyboardAwareScrollView
@@ -46,20 +47,20 @@ class AnimatedModal extends React.Component {
               paddingRight: 20,
               paddingLeft: 20,
               borderColor: colors.green,
-              borderWidth: 0
+              borderWidth: 0,
             }}
           >
             {this.props.customButtons ? (
-              this.props.customButtons.map(buttonProps => (
+              this.props.customButtons.map((buttonProps) => (
                 <Link
                   key={`${buttonProps.label}-key`}
                   customStyle={[
                     {
                       borderColor: colors["grey-lite"],
                       borderWidth: 1,
-                      borderRadius: 5
+                      borderRadius: 5,
                     },
-                    buttonProps.buttonStyle
+                    buttonProps.buttonStyle,
                   ]}
                   onPress={buttonProps.onPress}
                 >
@@ -71,7 +72,7 @@ class AnimatedModal extends React.Component {
                 customStyle={{
                   borderColor: colors["grey-lite"],
                   borderWidth: 1,
-                  borderRadius: 5
+                  borderRadius: 5,
                 }}
                 onPress={this.props.onCloseModal}
               >
@@ -87,7 +88,7 @@ class AnimatedModal extends React.Component {
   }
 }
 
-export default Modal = props => {
+export default Modal = (props) => {
   return !props.visible ? null : (
     <AnimatedModal {...props}>{props.children}</AnimatedModal>
   );

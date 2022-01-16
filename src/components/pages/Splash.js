@@ -9,8 +9,8 @@ import getSiteSetting from "../../common/settings";
 export default class Splash extends React.Component {
   static navigationOptions = () => {
     return {
-      header: null,
-      headerTitle: null
+      headerShown: false,
+      headerTitle: () => null,
     };
   };
   componentDidMount() {

@@ -30,9 +30,9 @@ export default class PopupNotice extends React.Component {
     const onBlur = () => {
       this.setState({ SoftKeyBoard: false });
     };
-    const getInputs = data => {
+    const getInputs = (data) => {
       if (data.inputs) {
-        return data.inputs.map(a => {
+        return data.inputs.map((a) => {
           a.removePlaceholder = true;
           switch (a.type) {
             case "TextInput":
@@ -81,16 +81,16 @@ export default class PopupNotice extends React.Component {
         });
       }
     };
-    const saveData = e => {
+    const saveData = (e) => {
       if (typeof data.saveData === "function") data.saveData(e);
     };
-    const getCustomButtons = data => {
+    const getCustomButtons = (data) => {
       if (data.actions) {
-        return data.actions.map(a => ({
+        return data.actions.map((a) => ({
           label: a.label,
           onPress: a.action,
           buttonStyle: a.style,
-          textStyle: a.textStyle
+          textStyle: a.textStyle,
         }));
       }
     };

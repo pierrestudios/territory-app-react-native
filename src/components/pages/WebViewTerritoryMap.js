@@ -15,15 +15,15 @@ export default class WebViewTerritoryMap extends React.Component {
 
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate(`Territory ${number} Map`),
-      headerRight: <View /> // To center on Andriod
+      headerTitle: Language.translate(`Territory ${number} Map`),
+      headerRight: () => <View />, // To center on Andriod
     };
   };
 
   constructor() {
     super();
     this.state = {
-      mapPageContent: ""
+      mapPageContent: "",
     };
   }
 
@@ -32,7 +32,7 @@ export default class WebViewTerritoryMap extends React.Component {
   componentDidMount() {
     (async () => {
       const src = Image.resolveAssetSource(mapPage);
-      const mapPageContent = await fetch(src.uri).then(r => r.text());
+      const mapPageContent = await fetch(src.uri).then((r) => r.text());
       this.setState({ mapPageContent });
     })();
   }
@@ -87,11 +87,11 @@ export default class WebViewTerritoryMap extends React.Component {
         domStorageEnabled={true}
         javaScriptEnabled={true}
         injectedJavaScript={jsScript}
-        onError={e => console.log("onError", { apiKey })}
+        onError={(e) => console.log("onError", { apiKey })}
         // onLoadEnd={e => console.log('onLoadEnd', e)}
         // onLoadStart={e => console.log('onLoadStart', e)}
-        onLoad={e => console.log("onLoad", { apiKey })}
-        onMessage={event =>
+        onLoad={(e) => console.log("onLoad", { apiKey })}
+        onMessage={(event) =>
           console.log("onMessage", { data: event.nativeEvent.data })
         }
       />

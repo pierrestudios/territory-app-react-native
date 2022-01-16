@@ -13,11 +13,11 @@ export default (url, data, type = "GET", headerData = undefined) => {
     method: type,
     headers: {
       ...headerData,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: data ? JSON.stringify(data) : undefined // Fix for Edge "TypeMismatchError"
+    body: data ? JSON.stringify(data) : undefined, // Fix for Edge "TypeMismatchError"
   })
-    .then(async res => {
+    .then(async (res) => {
       // console.log('res', res);
       if (
         !res.ok &&
@@ -33,17 +33,17 @@ export default (url, data, type = "GET", headerData = undefined) => {
       if (!res.ok) {
         return res
           .json()
-          .then(json => {
+          .then((json) => {
             return Promise.reject(json.error);
           })
-          .catch(E => {
+          .catch((E) => {
             return Promise.reject(E || res.statusText);
           });
       }
 
       return res.json();
     })
-    .then(Response => {
+    .then((Response) => {
       if ("error" in Response) {
         if (Response.error && typeof Response.error === "string") {
           return Promise.reject(Response.error);
@@ -68,12 +68,12 @@ export default (url, data, type = "GET", headerData = undefined) => {
 
       return Response;
     })
-    .then(json => {
+    .then((json) => {
       if (json.token) return { data: { token: json.token } };
       return json;
     })
-    .then(json => json.data)
-    .catch(e => {
+    .then((json) => json.data)
+    .catch((e) => {
       console.log("Api > catch() Error", e);
 
       return Promise.reject(e);
@@ -84,7 +84,7 @@ export const FileUpload = (url, formData, headerData) =>
   fetch("/api/" + url, {
     method: "POST",
     headers: {
-      ...headerData
+      ...headerData,
     },
-    body: formData
-  }).then(Response => Response.json());
+    body: formData,
+  }).then((Response) => Response.json());

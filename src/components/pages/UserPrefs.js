@@ -21,27 +21,27 @@ import style from "../../styles/main";
 export default class UserPrefs extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
-    headerTitle: <Logo />,
-    headerLeft: <View />, // To center on Andriod
-    headerRight: <View />, // To center on Andriod
-    headerBackImage: <View /> // Disabled
+    headerTitle: () => <Logo />,
+    headerLeft: () => <View />, // To center on Andriod
+    headerRight: () => <View />, // To center on Andriod
+    headerBackImage: () => <View />, // Disabled
   };
   state = {
     data: {
       "api-url": "",
-      language: ""
+      language: "",
     },
     errors: {
       "api-url": "",
       language: "",
-      message: ""
+      message: "",
     },
-    waitingForResponse: false
+    waitingForResponse: false,
   };
   componentDidMount() {
     const languages = getSiteSetting("languages");
     const languageLabels = {};
-    Object.keys(languages).forEach(l => {
+    Object.keys(languages).forEach((l) => {
       languageLabels[l] = languages[l]["lang-name"];
     });
 
@@ -50,9 +50,9 @@ export default class UserPrefs extends React.Component {
     const defaultLang = lang || getSiteSetting("defaultLang");
     this.setState({
       languages: languages
-        ? Object.keys(languages).map(l => ({
+        ? Object.keys(languages).map((l) => ({
             value: l,
-            label: languageLabels[l]
+            label: languageLabels[l],
           }))
         : [],
       // Set Default Lang "language" and get "api-url"
@@ -60,10 +60,10 @@ export default class UserPrefs extends React.Component {
         ...this.state.data,
         language: this.state.data.language || {
           value: defaultLang,
-          label: languageLabels[defaultLang]
+          label: languageLabels[defaultLang],
         },
-        "api-url": apiPath
-      }
+        "api-url": apiPath,
+      },
     });
   }
   render() {
@@ -95,7 +95,7 @@ export default class UserPrefs extends React.Component {
             options={state.languages}
             value={{
               value: state.data.language.value,
-              label: state.data.language.label
+              label: state.data.language.label,
             }}
             error={state.errors.language}
             onInput={this.saveOptionData}
@@ -129,7 +129,7 @@ export default class UserPrefs extends React.Component {
               onPress={() =>
                 NavigationService.navigate("WebViewExternal", {
                   url: "https://territory-app.net",
-                  title: "More Information"
+                  title: "More Information",
                 })
               }
               textStyle={{ fontSize: 16 }}
@@ -141,17 +141,17 @@ export default class UserPrefs extends React.Component {
       </View>
     );
   }
-  saveData = newValue => {
+  saveData = (newValue) => {
     const newData = { ...this.state.data, ...newValue };
     this.setState({
       data: newData,
       errors: {
         ...this.state.errors,
-        [(Object.keys(newValue) || [])[0]]: ""
-      }
+        [(Object.keys(newValue) || [])[0]]: "",
+      },
     });
   };
-  saveOptionData = data => {
+  saveOptionData = (data) => {
     let newData = { ...this.state.data };
     if (data["data-name"]) newData[data["data-name"]] = data.option.value;
 
@@ -161,8 +161,8 @@ export default class UserPrefs extends React.Component {
       data: newData,
       errors: {
         ...this.state.errors,
-        [data.name]: ""
-      }
+        [data.name]: "",
+      },
     });
   };
   saveSettings = () => {
@@ -170,7 +170,7 @@ export default class UserPrefs extends React.Component {
     const errors = {
       "api-url": "",
       language: "",
-      message: ""
+      message: "",
     };
 
     this.setState({ errors, waitingForResponse: true });
@@ -185,25 +185,25 @@ export default class UserPrefs extends React.Component {
             : "",
           language: !this.state.data.language
             ? Language.translate("Language is missing")
-            : ""
+            : "",
         },
-        waitingForResponse: false
+        waitingForResponse: false,
       });
 
     // Validate https (SSL)
-    if (!UTILS.urlHasHTTPSProtocol(this.state.data["api-url"])) {
+    if (!UTILS.urlHasValidProtocol(this.state.data["api-url"])) {
       return this.setState({
         errors: {
           ...errors,
-          "api-url": Language.translate("Server Url requires HTTPS protocol")
+          "api-url": Language.translate("Server Url requires HTTPS protocol"),
         },
-        waitingForResponse: false
+        waitingForResponse: false,
       });
     }
 
     // All good, validate
     fetch(UTILS.addSlashToUrl(this.state.data["api-url"]) + "validate")
-      .then(res => {
+      .then((res) => {
         // console.log("res", res);
         if (!!res.ok) {
           const apiPath = UTILS.addSlashToUrl(this.state.data["api-url"]);
@@ -215,7 +215,7 @@ export default class UserPrefs extends React.Component {
             ...Data.unAuthUser,
             apiUrl,
             apiPath,
-            lang: this.state.data["language"].value
+            lang: this.state.data["language"].value,
           });
 
           // Wait for the user data to save
@@ -241,8 +241,8 @@ export default class UserPrefs extends React.Component {
                         onPress: () =>
                           !!user && !!user.token
                             ? NavigationService.navigate("Home")
-                            : NavigationService.navigate("Login")
-                      }
+                            : NavigationService.navigate("Login"),
+                      },
                     ]
                     // { cancelable: false }
                   );
@@ -251,7 +251,7 @@ export default class UserPrefs extends React.Component {
 
               this.setState({
                 errors: {},
-                waitingForResponse: false
+                waitingForResponse: false,
               });
             }
           );
@@ -261,13 +261,13 @@ export default class UserPrefs extends React.Component {
           this.setState({
             errors: {
               ...errors,
-              message: errorMessage
+              message: errorMessage,
             },
-            waitingForResponse: false
+            waitingForResponse: false,
           });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("error", e);
         const errorMessage =
           typeof e === "string"
@@ -276,9 +276,9 @@ export default class UserPrefs extends React.Component {
         this.setState({
           errors: {
             ...errors,
-            message: errorMessage
+            message: errorMessage,
           },
-          waitingForResponse: false
+          waitingForResponse: false,
         });
       });
   };

@@ -19,7 +19,7 @@ export default class Publishers extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      headerRight: (
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({ openPublisherAdd: true });
@@ -28,19 +28,19 @@ export default class Publishers extends React.Component {
           color="#fff"
         />
       ),
-      title: Language.translate("All Publishers")
+      headerTitle: Language.translate("All Publishers"),
     };
   };
   componentDidMount() {
     if (!Data.user) return;
 
     Data.getApiData("publishers")
-      .then(publishers => {
+      .then((publishers) => {
         this.setState({ publishers }, () => {
           publishers &&
-            Data.getApiData("available-territories").then(territories => {
+            Data.getApiData("available-territories").then((territories) => {
               this.setState({
-                availableTerritories: territories.sort(UTILS.sortTerritory)
+                availableTerritories: territories.sort(UTILS.sortTerritory),
               });
             });
         });
@@ -52,9 +52,9 @@ export default class Publishers extends React.Component {
 
     if (!!navigation.getParam("openPublisherAdd")) {
       navigation.navigate("PublisherAdd", {
-        addPublisher: this.addPublisher
+        addPublisher: this.addPublisher,
       });
-      navigation.setParams({openPublisherAdd: false});
+      navigation.setParams({ openPublisherAdd: false });
     }
   }
   render() {
@@ -89,7 +89,7 @@ export default class Publishers extends React.Component {
         contentContainerStyle={styles.listings}
         extraData={this.state}
         data={data.sort(UTILS.sortPublisher)}
-        keyExtractor={item => item.publisherId.toString()}
+        keyExtractor={(item) => item.publisherId.toString()}
         renderItem={({ item }) => (
           <Swipeout
             key={item.publisherId}
@@ -97,13 +97,13 @@ export default class Publishers extends React.Component {
               {
                 text: Language.translate("Details"),
                 type: "primary",
-                onPress: () => this.viewDetails(item)
+                onPress: () => this.viewDetails(item),
               },
               {
                 text: Language.translate("Edit"),
                 backgroundColor: colors.green,
-                onPress: () => this.editPublisher(item)
-              }
+                onPress: () => this.editPublisher(item),
+              },
               // { text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) }
             ]}
             autoClose={true}
@@ -113,7 +113,7 @@ export default class Publishers extends React.Component {
               <TouchableOpacity
                 style={[
                   styles["listings-name"],
-                  styles["publisher-listings-name"]
+                  styles["publisher-listings-name"],
                 ]}
                 onPress={() => this.viewDetails(item)}
               >
@@ -138,7 +138,7 @@ export default class Publishers extends React.Component {
   editPublisher(data) {
     NavigationService.navigate("PublisherEdit", {
       data,
-      updatePublisher: this.updatePublisher
+      updatePublisher: this.updatePublisher,
     });
   }
   deletePublisherModal(data = [], caller, callerName) {
@@ -160,7 +160,7 @@ export default class Publishers extends React.Component {
         actions: [
           {
             label: Language.translate("Cancel"),
-            action: () => caller.setState({ noticeMessage: null })
+            action: () => caller.setState({ noticeMessage: null }),
           },
           {
             label: Language.translate("Continue"),
@@ -170,28 +170,28 @@ export default class Publishers extends React.Component {
 
               // Delete Publisher
               Data.postApiData(`publishers/${publisherId}/delete`)
-                .then(res => {
+                .then((res) => {
                   // console.log('then() res', res)
 
                   if (!res || res.error) {
                     caller.setState({
                       noticeMessage: {
                         ...caller.state.noticeMessage,
-                        errorMesage: "An error occured "
-                      }
+                        errorMesage: "An error occured ",
+                      },
                     });
                   } else if (callerName === "Publishers") {
                     const newData = (caller.state.publishers || []).filter(
-                      p => p.publisherId !== data.publisherId
+                      (p) => p.publisherId !== data.publisherId
                     );
                     caller.setState({
                       noticeMessage: null,
-                      publishers: newData
+                      publishers: newData,
                     });
                   } else if (callerName === "Publisher") {
                     caller.setState(
                       {
-                        noticeMessage: null
+                        noticeMessage: null,
                       },
                       () => {
                         if (
@@ -204,51 +204,51 @@ export default class Publishers extends React.Component {
                     );
                   }
                 })
-                .catch(e => {
+                .catch((e) => {
                   caller.setState({
                     noticeMessage: {
                       ...caller.state.noticeMessage,
-                      errorMesage: "An error occured: " + e
-                    }
+                      errorMesage: "An error occured: " + e,
+                    },
                   });
                 });
             },
-            style: { float: "right", backgroundColor: "red", color: "#fff" }
-          }
-        ]
-      }
+            style: { float: "right", backgroundColor: "red", color: "#fff" },
+          },
+        ],
+      },
     });
   }
   viewDetails(data) {
     NavigationService.navigate("PublisherDetails", {
       data,
       availableTerritories: this.state.availableTerritories,
-      updatePublisher: this.updatePublisher
+      updatePublisher: this.updatePublisher,
     });
   }
-  addPublisher = addedPublisher => {
+  addPublisher = (addedPublisher) => {
     const publishers = this.state.publishers || [];
     publishers.push(addedPublisher);
     this.setState({
-      publishers
+      publishers,
     });
   };
-  removePublisher = publisherId => {
+  removePublisher = (publisherId) => {
     this.setState({
       publishers: this.state.publishers.filter(
-        p => p.publisherId !== publisherId
-      )
+        (p) => p.publisherId !== publisherId
+      ),
     });
   };
   updatePublisher = (updatedPublisher, availableTerritories = []) => {
     this.setState({
       availableTerritories: availableTerritories.sort(UTILS.sortTerritory),
-      publishers: this.state.publishers.map(p => {
+      publishers: this.state.publishers.map((p) => {
         if (p.publisherId === updatedPublisher.publisherId) {
           return updatedPublisher;
         }
         return p;
-      })
+      }),
     });
   };
 }

@@ -6,29 +6,29 @@ import {
   SelectBox,
   RadioBox,
   TextInput,
-  InputLabel
+  InputLabel,
 } from "../elements/FormInput";
 
 import style, { colors } from "../../styles/main";
 
-export default NotesModal = props => {
+export default NotesModal = (props) => {
   return (
     <Modal
       visible={props.visible}
       style={{
-        margin: 0
+        margin: 0,
       }}
       customButtons={[
         {
           label: Language.translate("Close"),
-          onPress: () => props.setModalVisible({ NotesOptionsModal: false })
-        }
+          onPress: () => props.setModalVisible({ NotesOptionsModal: false }),
+        },
       ]}
     >
       <ScrollView
         style={{
           padding: 10,
-          margin: 0
+          margin: 0,
         }}
       >
         <SelectBox
@@ -36,15 +36,15 @@ export default NotesModal = props => {
           data-name="symbolsLang"
           showLabel={true}
           label={Language.translate("Selected Language")}
-          options={Object.keys(props.languages).map(l => ({
+          options={Object.keys(props.languages).map((l) => ({
             value: l,
-            label: props.languages[l]["lang-name"]
+            label: props.languages[l]["lang-name"],
           }))}
           value={
             !!props.symbolsLang
               ? {
                   value: props.symbolsLang,
-                  label: props.languages[props.symbolsLang]["lang-name"]
+                  label: props.languages[props.symbolsLang]["lang-name"],
                 }
               : { value: "", label: "" }
           }
@@ -69,7 +69,7 @@ export default NotesModal = props => {
   );
 };
 
-export const NotesInput = props => {
+export const NotesInput = (props) => {
   return (
     <View>
       {props.noteData.noteId ? (
@@ -92,8 +92,8 @@ export const NotesInput = props => {
                 padding: 5,
                 color: props.noteData.noteSymbol
                   ? colors["grey-dark"]
-                  : colors["grey-lite"]
-              }
+                  : colors["grey-lite"],
+              },
             ]}
           >
             {!!props.noteData.noteSymbol

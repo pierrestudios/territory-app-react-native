@@ -8,7 +8,7 @@ export default {
   getElementStyles(props, baseStyle) {
     const elStyle = {
       ...props,
-      style: [baseStyle]
+      style: [baseStyle],
     };
     if (!!props.customStyle) {
       elStyle.style.push([props.customStyle]);
@@ -33,7 +33,7 @@ export default {
 
     if (entity) {
       const replacement = this.diacriticEntities.find(
-        e => e.html === entityClean.trim()
+        (e) => e.html === entityClean.trim()
       );
 
       if (replacement) {
@@ -139,12 +139,12 @@ export default {
   },
   getStreetsList(addresses) {
     const streetsList = [];
-    addresses.forEach(s => {
-      if (!streetsList.find(i => i.id === s.streetId))
+    addresses.forEach((s) => {
+      if (!streetsList.find((i) => i.id === s.streetId))
         streetsList.push({
           id: s.streetId,
           name: s.streetName,
-          isApt: s.isApt || false
+          isApt: s.isApt || false,
         });
     });
     return streetsList;
@@ -152,7 +152,7 @@ export default {
   mapStreetsToLabelAndValue(data) {
     return {
       value: data.id,
-      label: data.name
+      label: data.name,
     };
   },
   getListingAddress(list) {
@@ -181,8 +181,10 @@ export default {
   removeLastSlashFromUrl(url) {
     return url.slice(-1) === "/" ? url.substring(0, url.length - 1) : url;
   },
-  urlHasHTTPSProtocol(url) {
-    return url && (url.split(":") || [])[0].toLowerCase() === "https";
+  urlHasValidProtocol(url) {
+    const protocol = url && (url.split(":") || [])[0].toLowerCase();
+
+    return process.env.NODE_ENV === "development" || protocol === "https";
   },
   loadExternalScript(url, propName) {
     return new Promise((resolve, reject) => {
@@ -214,32 +216,33 @@ export default {
     }, time);
   },
   headerNavOptionsDefault: {
-    headerTitle: null,
+    headerTitle: () => null,
     headerTitleStyle: {
       fontSize: 18,
       textAlign: "center",
-      width: "90%"
     },
+    headerTitleContainerStyle: {
+      width: "50%",
+    },
+    headerTitleAlign: "center",
     headerStyle: {
-      alignSelf: "center",
-      width: "100%",
-      backgroundColor: colors["territory-blue"]
+      backgroundColor: colors["territory-blue"],
     },
     headerTintColor: "#fff",
-    headerBackTitle: null
+    headerBackTitle: null,
   },
   brToLineBreaks(strData) {
     return strData.replace(/<br>/g, "\n");
   },
   userTypeLabel(userType) {
-    return (this.userTypes.find(t => t.value === userType) || {}).label;
+    return (this.userTypes.find((t) => t.value === userType) || {}).label;
   },
   userTypes: [
     { value: "Viewer", label: "Viewer" },
     { value: "NoteEditor", label: "Note Editor" },
     { value: "Editor", label: "Editor" },
     { value: "Manager", label: "Manager" },
-    { value: "Admin", label: "Admin" }
+    { value: "Admin", label: "Admin" },
   ],
   diacriticEntities: [
     // acute
@@ -282,6 +285,6 @@ export default {
     { html: "&Uuml;", diacritic: "Ü" },
     { html: "&uuml;", diacritic: "ü" },
     { html: "&Iuml;", diacritic: "Ï" },
-    { html: "&iuml;", diacritic: "ï" }
-  ]
+    { html: "&iuml;", diacritic: "ï" },
+  ],
 };

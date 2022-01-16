@@ -25,11 +25,11 @@ export default class TerritoryDetails extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: `${Language.translate("Territory")} ${navigation.getParam(
+      headerTitle: `${Language.translate("Territory")} ${navigation.getParam(
         "territoryNumber",
         "..."
       )}`,
-      headerRight:
+      headerRight: () =>
         !!navigation.getParam("isEditor") &&
         !!navigation.getParam("streetsList") ? (
           <ButtonHeader
@@ -37,13 +37,14 @@ export default class TerritoryDetails extends React.Component {
               navigation.navigate("AddressAdd", {
                 streetsList: navigation.getParam("streetsList"),
                 territoryId: navigation.getParam("territoryId"),
-                addAddress: newAddress => navigation.setParams({ newAddress })
+                addAddress: (newAddress) =>
+                  navigation.setParams({ newAddress }),
               });
             }}
             title={<Feather name="plus" size={24} color="#fff" />}
             color="#fff"
           />
-        ) : null
+        ) : null,
     };
   };
 
@@ -55,7 +56,7 @@ export default class TerritoryDetails extends React.Component {
     selectedAddresses: [],
     selectorOpened: false,
     addressesFilterOpened: false,
-    filterType: "all"
+    filterType: "all",
   };
   componentDidMount() {
     this.territoryId = this.props.navigation.getParam("territoryId");
@@ -66,7 +67,7 @@ export default class TerritoryDetails extends React.Component {
       Data.getApiData(
         `territories${this.allTerritories ? "-all" : ""}/${this.territoryId}`
       )
-        .then(data => {
+        .then((data) => {
           const { user } = Data;
 
           if (!!data && !!data.territoryId) {
@@ -78,14 +79,14 @@ export default class TerritoryDetails extends React.Component {
               addressActive: null,
               streetsList: streetsList,
               noticeMessage: null,
-              shouldRender: "Territory"
+              shouldRender: "Territory",
             });
 
             // Set params for Navigation Header
             this.props.navigation.setParams({
               territoryNumber: data.number,
               isEditor: user.isEditor,
-              streetsList: streetsList
+              streetsList: streetsList,
             });
           }
         })
@@ -97,7 +98,7 @@ export default class TerritoryDetails extends React.Component {
 
     if (navigation && !!navigation.getParam("newAddress")) {
       this.addAddress(navigation.getParam("newAddress"));
-      navigation.setParams({newAddress: null});
+      navigation.setParams({ newAddress: null });
     }
   }
   render() {
@@ -110,13 +111,13 @@ export default class TerritoryDetails extends React.Component {
         contentContainerStyle={style.listings}
         data={state.data.addresses
           .filter(
-            a =>
+            (a) =>
               (!a.inActive || !!state.user.isManager) &&
               (state.filterType === "all" ||
                 this.matchFilterType(a, state.filterType))
           )
           .sort(UTILS.sortAddress)}
-        keyExtractor={item => item.addressId.toString()}
+        keyExtractor={(item) => item.addressId.toString()}
         renderItem={({ item }) => {
           const selected =
             state.selectedAddresses.indexOf(item.addressId) !== -1;
@@ -132,15 +133,15 @@ export default class TerritoryDetails extends React.Component {
                 {
                   text: Language.translate("Notes"),
                   type: "primary",
-                  onPress: () => this.viewNotes(item)
+                  onPress: () => this.viewNotes(item),
                 },
                 state.user.isEditor
                   ? {
                       text: Language.translate("Delete"),
                       type: "delete",
-                      onPress: () => this.notifyDelete(item, state.user)
+                      onPress: () => this.notifyDelete(item, state.user),
                     }
-                  : { text: "" }
+                  : { text: "" },
               ]}
               rowID={item.addressId}
               autoClose={true}
@@ -150,7 +151,7 @@ export default class TerritoryDetails extends React.Component {
                 style={[
                   style["listings-item"],
                   item.inActive ? style["listings-item-inactive"] : null,
-                  item.hasWarning ? style["listings-item-warning"] : null
+                  item.hasWarning ? style["listings-item-warning"] : null,
                 ]}
               >
                 {this.state.selectorOpened ? (
@@ -179,7 +180,7 @@ export default class TerritoryDetails extends React.Component {
                           style={[
                             style["listings-date-text"],
                             style["listings-notes-date-text"],
-                            item.hasWarning ? style["text-white"] : null
+                            item.hasWarning ? style["text-white"] : null,
                           ]}
                         >
                           {item.notes[0].date}
@@ -189,11 +190,11 @@ export default class TerritoryDetails extends React.Component {
                           numberOfLines={1}
                           style={[
                             style["listings-notes-note-text"],
-                            item.hasWarning ? style["text-white"] : null
+                            item.hasWarning ? style["text-white"] : null,
                           ]}
                         >
                           {UTILS.formatDiacritics(item.notes[0].note)}
-                        </Text>
+                        </Text>,
                       ]
                     : [
                         state.user.isNoteEditor ? (
@@ -204,20 +205,20 @@ export default class TerritoryDetails extends React.Component {
                           >
                             <Text
                               style={[
-                                item.hasWarning ? style["text-white"] : null
+                                item.hasWarning ? style["text-white"] : null,
                               ]}
                             >
                               {Language.translate("Add Notes")}
                             </Text>
                           </ButtonLink>
-                        ) : null
+                        ) : null,
                       ]}
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[
                     style["listings-name"],
                     style["address-listings-name"],
-                    state.selectorOpened ? { left: 50 } : null
+                    state.selectorOpened ? { left: 50 } : null,
                   ]}
                   onPress={() =>
                     state.user.isEditor
@@ -230,7 +231,7 @@ export default class TerritoryDetails extends React.Component {
                     style={[
                       style["listings-name-text"],
                       style["listings-address-name"],
-                      item.hasWarning ? style["text-white"] : null
+                      item.hasWarning ? style["text-white"] : null,
                     ]}
                   >
                     {UTILS.formatDiacritics(item.name)}
@@ -239,7 +240,7 @@ export default class TerritoryDetails extends React.Component {
                     numberOfLines={1}
                     style={[
                       style["listings-address"],
-                      item.hasWarning ? style["text-white"] : null
+                      item.hasWarning ? style["text-white"] : null,
                     ]}
                   >
                     {UTILS.getListingAddress(item)}
@@ -262,7 +263,7 @@ export default class TerritoryDetails extends React.Component {
     const filterTypes = [
       { value: "all", label: Language.translate("All") },
       { value: "done", label: Language.translate("Worked") },
-      { value: "not-done", label: Language.translate("Not worked") }
+      { value: "not-done", label: Language.translate("Not worked") },
     ];
 
     return (
@@ -272,7 +273,7 @@ export default class TerritoryDetails extends React.Component {
             onPress={this.viewMap}
             customStyle={[
               style["heading-button-link"],
-              style["view-map-button"]
+              style["view-map-button"],
             ]}
             textStyle={style["heading-button-link-text"]}
             textColorWhite
@@ -308,8 +309,8 @@ export default class TerritoryDetails extends React.Component {
                 position: "absolute",
                 right: 20,
                 marginTop: 18,
-                paddingTop: 6
-              }
+                paddingTop: 6,
+              },
             ]}
             customView={
               <View
@@ -318,7 +319,7 @@ export default class TerritoryDetails extends React.Component {
                   alignItems: "stretch",
                   justifyContent: "center",
                   paddingLeft: 5,
-                  paddingRight: 5
+                  paddingRight: 5,
                 }}
               >
                 <MaterialIcons
@@ -331,7 +332,7 @@ export default class TerritoryDetails extends React.Component {
                     padding: 0,
                     marginTop: -2,
                     paddingLeft: 3,
-                    fontSize: 16
+                    fontSize: 16,
                   }}
                 >
                   {Language.translate("Filter")}
@@ -380,7 +381,7 @@ export default class TerritoryDetails extends React.Component {
           style={[
             style.section,
             style["listings-results"],
-            style["listings-results-address"]
+            style["listings-results-address"],
           ]}
         >
           {listings}
@@ -402,9 +403,9 @@ export default class TerritoryDetails extends React.Component {
             <RadioBox
               name="filter"
               label={Language.translate("Filter Addresses")}
-              options={filterTypes.map(f => ({
+              options={filterTypes.map((f) => ({
                 ...f,
-                active: f.value === state.filterType
+                active: f.value === state.filterType,
               }))}
               onChange={this.saveFilterType}
             />
@@ -413,14 +414,14 @@ export default class TerritoryDetails extends React.Component {
       </View>
     );
   }
-  hasWarning = address => {
+  hasWarning = (address) => {
     const warningTerms = ["not call", "frape"];
     for (let t = 0; t < warningTerms.length; t++) {
       if (
         address.name.toLowerCase().indexOf(warningTerms[t]) !== -1 ||
         (!!address.notes &&
           !!address.notes.find(
-            n => n.note.toLowerCase().indexOf(warningTerms[t]) !== -1
+            (n) => n.note.toLowerCase().indexOf(warningTerms[t]) !== -1
           ))
       ) {
         return true;
@@ -438,7 +439,7 @@ export default class TerritoryDetails extends React.Component {
         : NavigationService.navigate("Notes", {
             addressActive: data,
             updateAddress: this.updateAddress,
-            territoryId: data.territoryId
+            territoryId: data.territoryId,
           });
     });
   }
@@ -450,7 +451,7 @@ export default class TerritoryDetails extends React.Component {
             addressActive: data,
             streetsList: this.state.streetsList,
             territoryId: data.territoryId,
-            updateAddress: this.updateAddress
+            updateAddress: this.updateAddress,
           });
     });
   }
@@ -464,25 +465,25 @@ export default class TerritoryDetails extends React.Component {
     this.props.entity && typeof this.props.entity.viewMap === "function"
       ? this.props.entity.viewMap()
       : NavigationService.navigate("WebViewTerritoryMap", {
-          data: this.state.data
+          data: this.state.data,
         });
   };
-  openWebViewApi = url => {
+  openWebViewApi = (url) => {
     NavigationService.navigate("WebViewApi", {
       url: url,
-      data: { ...this.state.data, title: Language.translate("Territory") }
+      data: { ...this.state.data, title: Language.translate("Territory") },
     });
   };
   selectAddressRow = (addressId, unselect = false) => {
     let selectedAddresses = this.state.selectedAddresses.slice();
 
     if (unselect) {
-      selectedAddresses = selectedAddresses.filter(a => addressId !== a);
+      selectedAddresses = selectedAddresses.filter((a) => addressId !== a);
     } else {
       selectedAddresses.push(addressId);
     }
     this.setState({
-      selectedAddresses
+      selectedAddresses,
     });
   };
   sendSelectedAddresses = async () => {
@@ -502,11 +503,11 @@ export default class TerritoryDetails extends React.Component {
           "\n \n" +
           this.state.data.addresses
             .filter(
-              a => this.state.selectedAddresses.indexOf(a.addressId) != -1
+              (a) => this.state.selectedAddresses.indexOf(a.addressId) != -1
             )
             .sort(UTILS.sortAddress)
-            .map(a => UTILS.getListingAddress(a))
-            .join("\n")
+            .map((a) => UTILS.getListingAddress(a))
+            .join("\n"),
       });
 
       // console.log("result", result);
@@ -522,16 +523,16 @@ export default class TerritoryDetails extends React.Component {
   };
   showAddressesFilter = () => {
     this.setState({
-      addressesFilterOpened: this.state.addressesFilterOpened === false
+      addressesFilterOpened: this.state.addressesFilterOpened === false,
     });
   };
-  saveFilterType = data => {
+  saveFilterType = (data) => {
     this.setState({
       filterType: data.option.value,
-      addressesFilterOpened: false
+      addressesFilterOpened: false,
     });
   };
-  saveNotesSymbolsLang = selectedLang => {
+  saveNotesSymbolsLang = (selectedLang) => {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   matchFilterType = (address, filterType) => {
@@ -585,26 +586,26 @@ export default class TerritoryDetails extends React.Component {
             label: Language.translate("Reason"),
             type: "TextInput",
             name: "note",
-            required: true
+            required: true,
           },
           {
             label: Language.translate("Remove Completely"),
             name: "delete",
-            type: user.isManager ? "Switch" : ""
-          }
+            type: user.isManager ? "Switch" : "",
+          },
         ],
         actions: [
           {
             label: Language.translate("Continue"),
             action: () => {
               const errors = this.state.noticeMessage.inputs.filter(
-                d => d.required && !d.value
+                (d) => d.required && !d.value
               );
 
               console.log("errors", errors);
 
               if (errors.length) {
-                const newData = this.state.noticeMessage.inputs.map(d =>
+                const newData = this.state.noticeMessage.inputs.map((d) =>
                   d.required && !d.value
                     ? {
                         ...d,
@@ -613,7 +614,7 @@ export default class TerritoryDetails extends React.Component {
                             ? Language.translate(
                                 "Enter your reason for removing address"
                               )
-                            : d.name + " is required"
+                            : d.name + " is required",
                       }
                     : d
                 );
@@ -621,34 +622,34 @@ export default class TerritoryDetails extends React.Component {
                 this.setState({
                   noticeMessage: {
                     ...this.state.noticeMessage,
-                    inputs: newData
+                    inputs: newData,
                   },
-                  shouldRender: "Modal"
+                  shouldRender: "Modal",
                 });
 
                 return;
               }
 
               let postData = {};
-              this.state.noticeMessage.inputs.forEach(d => {
+              this.state.noticeMessage.inputs.forEach((d) => {
                 postData[d.name] = d.value;
               });
 
               // Delete address
               Data.postApiData(`addresses/remove/${address.addressId}`, {
                 delete: postData.delete,
-                note: postData.note
+                note: postData.note,
               })
-                .then(data => {
+                .then((data) => {
                   // console.log('then() data', data) => "true"
 
                   if (!data) {
                     return this.setState({
                       noticeMessage: {
                         ...this.state.noticeMessage,
-                        errorMesage: "An error occured: " + e
+                        errorMesage: "An error occured: " + e,
                       },
-                      shouldRender: "Modal"
+                      shouldRender: "Modal",
                     });
                   }
 
@@ -659,47 +660,47 @@ export default class TerritoryDetails extends React.Component {
                     note: postData.note,
                     // Note: Api needs to return "noteId"
                     retain: !!postData.retain,
-                    userId: user.userId
+                    userId: user.userId,
                   });
 
                   this.updateAddress(
                     {
                       ...address,
-                      inActive: !postData.delete
+                      inActive: !postData.delete,
                       // notes: newNotes
                     },
                     postData.delete,
                     false
                   );
                 })
-                .catch(e => {
+                .catch((e) => {
                   this.setState({
                     noticeMessage: {
                       ...this.state.noticeMessage,
-                      errorMesage: "An error occured: " + e
+                      errorMesage: "An error occured: " + e,
                     },
-                    shouldRender: "Modal"
+                    shouldRender: "Modal",
                   });
                 });
             },
             style: { backgroundColor: colors.red },
-            textStyle: { color: colors.white }
+            textStyle: { color: colors.white },
           },
           {
             label: Language.translate("Cancel"),
             action: () =>
-              this.setState({ noticeMessage: null, shouldRender: "Territory" })
-          }
+              this.setState({ noticeMessage: null, shouldRender: "Territory" }),
+          },
         ],
-        saveData: data => {
+        saveData: (data) => {
           // console.log('data', data);
 
-          const newData = this.state.noticeMessage.inputs.map(d => {
+          const newData = this.state.noticeMessage.inputs.map((d) => {
             if (d.name === (Object.keys(data) || {})[0])
               return {
                 ...d,
                 value: data[d.name],
-                error: ""
+                error: "",
               };
             return d;
           });
@@ -708,21 +709,21 @@ export default class TerritoryDetails extends React.Component {
             noticeMessage: {
               ...this.state.noticeMessage,
               inputs: newData,
-              errorMesage: ""
+              errorMesage: "",
             },
-            shouldRender: "Modal"
+            shouldRender: "Modal",
           });
-        }
+        },
       },
-      shouldRender: "Territory"
+      shouldRender: "Territory",
     });
   };
   updateAddress = (updatedAddress, isDelete = false, allowGoBack = true) => {
     const updatedAddresses = isDelete
       ? this.state.data.addresses.filter(
-          a => a.addressId !== updatedAddress.addressId
+          (a) => a.addressId !== updatedAddress.addressId
         )
-      : this.state.data.addresses.map(a => {
+      : this.state.data.addresses.map((a) => {
           if (a.addressId === updatedAddress.addressId) return updatedAddress;
           return a;
         });
@@ -731,10 +732,10 @@ export default class TerritoryDetails extends React.Component {
     this.setState({
       data: updatedData,
       noticeMessage: null,
-      shouldRender: "Territory"
+      shouldRender: "Territory",
     });
   };
-  addAddress = newAddress => {
+  addAddress = (newAddress) => {
     if (!newAddress) return;
 
     let addresses = this.state.data.addresses.slice();
@@ -745,7 +746,7 @@ export default class TerritoryDetails extends React.Component {
     );
     if (!addressExist) addresses.push(newAddress);
     else {
-      addresses = addresses.map(a => {
+      addresses = addresses.map((a) => {
         if (a.addressId === newAddress.addressId) return newAddress;
         return a;
       });
@@ -766,11 +767,11 @@ export default class TerritoryDetails extends React.Component {
     this.setState({
       data: {
         ...this.state.data,
-        addresses: addresses
+        addresses: addresses,
       },
       streetsList: streetsList,
       shouldRender: "Territory",
-      addressActive: newAddress
+      addressActive: newAddress,
     });
   };
   viewPublisherDetails() {

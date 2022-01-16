@@ -16,7 +16,7 @@ import {
   ButtonLink,
   Button,
   ButtonIcon,
-  ButtonHeader
+  ButtonHeader,
 } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
 import {
@@ -27,7 +27,7 @@ import {
   RadioBox,
   Switch,
   InputLabel,
-  SelectBox
+  SelectBox,
 } from "../elements/FormInput";
 import Modal from "../elements/Modal";
 import NotesModal, { NotesInput } from "../smart/NotesModal";
@@ -41,8 +41,8 @@ export default class AddressEdit extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate("Edit Address"),
-      headerRight: (
+      headerTitle: Language.translate("Edit Address"),
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({ saveAddress: true });
@@ -50,7 +50,7 @@ export default class AddressEdit extends React.Component {
           title="Save"
           color="#fff"
         />
-      )
+      ),
     };
   };
   addressContainer = null;
@@ -69,11 +69,11 @@ export default class AddressEdit extends React.Component {
       streetName: "",
       street: null,
       isDuplex: false, // only local, for handling RadioBox options
-      noticeMessage: null
+      noticeMessage: null,
     },
     noteData: {
       note: "",
-      date: UTILS.getToday()
+      date: UTILS.getToday(),
     },
     errors: {
       inActive: false,
@@ -83,13 +83,13 @@ export default class AddressEdit extends React.Component {
       apt: "",
       phone: "",
       street: "",
-      message: ""
+      message: "",
     },
     newStreetData: null,
     user: null,
-    AddressTypeModal: false
+    AddressTypeModal: false,
   };
-  setModalVisible = modal => {
+  setModalVisible = (modal) => {
     this.setState(modal);
   };
   componentDidMount() {
@@ -103,24 +103,24 @@ export default class AddressEdit extends React.Component {
           ...navigation.getParam("addressActive"),
           address: navigation
             .getParam("addressActive")
-            .address.replace("APT ", "")
+            .address.replace("APT ", ""),
         },
         streetsList: navigation.getParam("streetsList"),
         user: Data.user,
-        notesSymbolsLang: Data.user.lang
+        notesSymbolsLang: Data.user.lang,
       });
     } else if (!!navigation.getParam("streetsList")) {
       const data = {
         ...this.state.data,
         territoryId: navigation.getParam("territoryId")
           ? navigation.getParam("territoryId")
-          : null
+          : null,
       };
       this.setState({
         data,
         streetsList: navigation.getParam("streetsList"),
         user: Data.user,
-        notesSymbolsLang: Data.user.lang
+        notesSymbolsLang: Data.user.lang,
       });
     }
 
@@ -130,7 +130,7 @@ export default class AddressEdit extends React.Component {
     const { navigation } = this.props;
     if (!!navigation.getParam("saveAddress")) {
       this.saveAddress();
-      navigation.setParams({saveAddress: false});
+      navigation.setParams({ saveAddress: false });
     }
 
     if (
@@ -152,10 +152,10 @@ export default class AddressEdit extends React.Component {
 
     const notesSymbols =
       languages[state.notesSymbolsLang]["NotesSymbols"] || {};
-    const notesSymbolsOptions = Object.keys(notesSymbols).map(k => ({
+    const notesSymbolsOptions = Object.keys(notesSymbols).map((k) => ({
       value: k,
       label: notesSymbols[k],
-      active: this.state.noteData.noteSymbol === k
+      active: this.state.noteData.noteSymbol === k,
     }));
 
     return (
@@ -167,7 +167,7 @@ export default class AddressEdit extends React.Component {
         <KeyboardAwareScrollView
           contentContainerStyle={[style["scroll-view"], { marginBottom: 40 }]}
           keyboardDismissMode="interactive"
-          innerRef={ref => {
+          innerRef={(ref) => {
             this.scrollView = ref;
           }}
         >
@@ -193,7 +193,7 @@ export default class AddressEdit extends React.Component {
                   error={state.errors.phone}
                   showLabel={true}
                   key="phone"
-                />
+                />,
               ]
             : null}
 
@@ -231,21 +231,21 @@ export default class AddressEdit extends React.Component {
                 value: "house",
                 "icon-name": "home",
                 active:
-                  !state.data.isApt && !state.data.apt && !state.data.isDuplex
+                  !state.data.isApt && !state.data.apt && !state.data.isDuplex,
               },
               {
                 label: Language.translate("Apartment"),
                 value: "apartment",
                 "icon-name": "building",
-                active: state.data.isApt
+                active: state.data.isApt,
               },
               {
                 label: Language.translate("Duplex"),
                 value: "duplex",
                 "icon-name": "columns",
                 active:
-                  !state.data.isApt && (state.data.apt || state.data.isDuplex)
-              }
+                  !state.data.isApt && (state.data.apt || state.data.isDuplex),
+              },
             ]}
             onChange={this.saveAddressType}
           />
@@ -260,7 +260,7 @@ export default class AddressEdit extends React.Component {
                 : Language.translate("Select Street")
             }
             options={state.streetsList
-              .filter(d => d.isApt === !!state.data.isApt)
+              .filter((d) => d.isApt === !!state.data.isApt)
               .map(UTILS.mapStreetsToLabelAndValue)
 
               // Show "Add New Building" input
@@ -268,11 +268,11 @@ export default class AddressEdit extends React.Component {
                 value: "new-street",
                 label: state.data.isApt
                   ? Language.translate("Add New Building")
-                  : Language.translate("Add New Street")
+                  : Language.translate("Add New Street"),
               })}
             value={{
               value: state.data.streetId,
-              label: state.data.streetName
+              label: state.data.streetName,
             }}
             error={state.errors.streetId}
             onInput={this.saveOptionData}
@@ -376,7 +376,7 @@ export default class AddressEdit extends React.Component {
                   name="date"
                   value={state.noteData.date}
                   onChange={this.saveData}
-                />
+                />,
               ]
             : null}
 
@@ -417,7 +417,7 @@ export default class AddressEdit extends React.Component {
                 marginBottom: 0,
                 marginTop: 0,
                 borderWidth: 0,
-                borderColor: colors.red
+                borderColor: colors.red,
               }}
             >
               {Language.translate("Address Type")}
@@ -430,7 +430,7 @@ export default class AddressEdit extends React.Component {
                   margin: 10,
                   padding: 10,
                   color: colors["territory-blue"],
-                  backgroundColor: colors.white
+                  backgroundColor: colors.white,
                 }}
               >
                 {UTILS.brToLineBreaks(
@@ -445,7 +445,7 @@ export default class AddressEdit extends React.Component {
       </View>
     );
   }
-  saveOptionData = data => {
+  saveOptionData = (data) => {
     let newData = { ...this.state.data };
     if (!!data["data-name"]) newData[data["data-name"]] = data.option.value; // streetId
 
@@ -457,10 +457,10 @@ export default class AddressEdit extends React.Component {
 
     this.setState({
       data: newData,
-      errors: {}
+      errors: {},
     });
   };
-  saveAddressType = data => {
+  saveAddressType = (data) => {
     if (!data) return;
 
     let newData;
@@ -470,7 +470,7 @@ export default class AddressEdit extends React.Component {
           ...this.state.data,
           isApt: false,
           apt: "",
-          isDuplex: false
+          isDuplex: false,
         };
         break;
       case "apartment":
@@ -504,17 +504,17 @@ export default class AddressEdit extends React.Component {
                 this.setState({ data: newData, noticeMessage: null });
               },
               style: { backgroundColor: "red" },
-              textStyle: { color: "#fff" }
+              textStyle: { color: "#fff" },
             },
             {
               label: Language.translate("Cancel"),
               action: () =>
                 this.setState({
-                  noticeMessage: null
-                })
-            }
-          ]
-        }
+                  noticeMessage: null,
+                }),
+            },
+          ],
+        },
       });
 
     // Note: Update "newStreetData"
@@ -522,7 +522,7 @@ export default class AddressEdit extends React.Component {
       this.state.newStreetData && this.state.newStreetData.street
         ? {
             ...this.state.newStreetData,
-            isAptBuilding: !!newData.isApt ? 1 : 0
+            isAptBuilding: !!newData.isApt ? 1 : 0,
           }
         : null;
 
@@ -536,18 +536,18 @@ export default class AddressEdit extends React.Component {
     );
   }
 
-  saveNotesSymbol = selected => {
+  saveNotesSymbol = (selected) => {
     this.saveData({
-      noteSymbol: selected.option.value
+      noteSymbol: selected.option.value,
     });
     this.setModalVisible({ NotesOptionsModal: false });
   };
 
-  saveNotesSymbolsLang = selectedLang => {
+  saveNotesSymbolsLang = (selectedLang) => {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
 
-  saveData = data => {
+  saveData = (data) => {
     // console.log("data", data);
     let newData;
 
@@ -567,8 +567,8 @@ export default class AddressEdit extends React.Component {
         errors: {
           note: "",
           date: "",
-          message: ""
-        }
+          message: "",
+        },
       });
     }
 
@@ -580,7 +580,7 @@ export default class AddressEdit extends React.Component {
       newData = {
         ...this.state.newStreetData,
         street: data["newStreet"],
-        isAptBuilding: !!this.state.data.isApt ? 1 : 0
+        isAptBuilding: !!this.state.data.isApt ? 1 : 0,
       };
     // Store Address data
     else newData = { ...this.state.data, ...data };
@@ -615,7 +615,7 @@ export default class AddressEdit extends React.Component {
     else this.setState({ data: newData, errors: {} });
   };
 
-  saveAddress = e => {
+  saveAddress = (e) => {
     // console.log('this.state.data', this.state.data)
     // Validate
     if (
@@ -634,8 +634,8 @@ export default class AddressEdit extends React.Component {
             ? this.state.data.isApt
               ? Language.translate("Select a Building")
               : Language.translate("Select a Street")
-            : ""
-        }
+            : "",
+        },
       });
 
     // Data
@@ -646,7 +646,7 @@ export default class AddressEdit extends React.Component {
         ? true
         : this.state.data.addressId
         ? "0"
-        : false
+        : false,
     }; // Api expects "0" or null for "inActive", but on create expects "false"
 
     if (this.state.noteData && this.state.noteData.note) {
@@ -654,8 +654,8 @@ export default class AddressEdit extends React.Component {
         {
           retain: !!this.state.noteData.retain,
           note: this.state.noteData.note,
-          date: UTILS.getDateString(this.state.noteData.date)
-        }
+          date: UTILS.getDateString(this.state.noteData.date),
+        },
       ];
     }
 
@@ -699,16 +699,16 @@ export default class AddressEdit extends React.Component {
 
     // save address
     Data.postApiData(url, data)
-      .then(resData => {
-        console.log("then() resData", resData);
+      .then((resData) => {
+        // console.log("then() resData", resData);
         // Clear Errors
         this.setState(
           {
             errors: {
               address: "",
               streetId: "",
-              message: ""
-            }
+              message: "",
+            },
           },
           () => {
             // add new Address to list
@@ -725,8 +725,8 @@ export default class AddressEdit extends React.Component {
                     note: resData.content,
                     date: resData.date,
                     noteId: resData.id,
-                    userId: resData.user_id
-                  }
+                    userId: resData.user_id,
+                  },
                 ];
                 // Or add new address id
               } else if (resData.id) {
@@ -745,7 +745,7 @@ export default class AddressEdit extends React.Component {
                 newAddress.street = {
                   streetId: newAddress.streetId,
                   street: newAddress.streetName,
-                  isAptBuilding: newAddress.isApt
+                  isAptBuilding: newAddress.isApt,
                 };
 
                 // Note:
@@ -779,14 +779,14 @@ export default class AddressEdit extends React.Component {
           }
         );
       })
-      .catch(e => {
+      .catch((e) => {
         // console.log('error', e)
         const errorMessage = Language.translate(e || "An error occured.");
         this.setState({
           errors: {
             ...this.state.errors,
-            message: errorMessage
-          }
+            message: errorMessage,
+          },
         });
       });
   };

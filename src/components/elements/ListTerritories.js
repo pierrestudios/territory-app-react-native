@@ -18,16 +18,16 @@ class UnassignModal extends React.Component {
   state = {
     data: null,
     errors: {
-      message: ""
+      message: "",
     },
     showModal: false,
-    selectedTerritory: null
+    selectedTerritory: null,
   };
   static getDerivedStateFromProps(props, state) {
     if (JSON.stringify(props.data) !== JSON.stringify(state.data)) {
       return {
         ...state,
-        data: props.data
+        data: props.data,
       };
     }
 
@@ -37,7 +37,7 @@ class UnassignModal extends React.Component {
     const data = this.props.data;
     this.setState({ data });
   }
-  unassignTerritory = data => {
+  unassignTerritory = (data) => {
     this.setState({ selectedTerritory: data, showModal: true });
   };
   unassignTerritoryConfirmed = () => {
@@ -45,27 +45,27 @@ class UnassignModal extends React.Component {
     const postData = { publisherId: null, date: UTILS.getToday() };
 
     Data.postApiData(`territories/${selTerritoryId}`, postData)
-      .then(res => {
+      .then((res) => {
         if (!res) {
           this.setState({
             errors: {
               ...this.state.errors,
-              message: "An error occured: " + e
-            }
+              message: "An error occured: " + e,
+            },
           });
         } else {
           const newData = {
             ...this.state.data,
             territories: this.state.data.territories.filter(
-              t => t.territoryId !== selTerritoryId
-            )
+              (t) => t.territoryId !== selTerritoryId
+            ),
           };
           this.setState(
             {
               errors: {
-                message: ""
+                message: "",
               },
-              data: newData
+              data: newData,
             },
             () => {
               if (
@@ -81,20 +81,20 @@ class UnassignModal extends React.Component {
           );
         }
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({
           errors: {
             ...this.state.errors,
-            message: "An error occured: " + e
-          }
+            message: "An error occured: " + e,
+          },
         });
       });
     this.setState({ selectedTerritory: null, showModal: false });
   };
-  viewDetails = data => {
+  viewDetails = (data) => {
     NavigationService.navigate("TerritoryDetails", {
       territoryId: data.territoryId,
-      allTerritories: false
+      allTerritories: false,
     });
   };
   render() {
@@ -112,12 +112,12 @@ class UnassignModal extends React.Component {
               label: Language.translate("Continue"),
               onPress: () => this.unassignTerritoryConfirmed(),
               buttonStyle: { backgroundColor: colors.red },
-              textStyle: { color: colors.white }
+              textStyle: { color: colors.white },
             },
             {
               label: Language.translate("Cancel"),
-              onPress: () => this.setState({ showModal: false })
-            }
+              onPress: () => this.setState({ showModal: false }),
+            },
           ]}
         >
           <View style={{ padding: 10 }}>
@@ -126,7 +126,7 @@ class UnassignModal extends React.Component {
                 marginBottom: 0,
                 marginTop: 0,
                 borderWidth: 0,
-                borderColor: colors.red
+                borderColor: colors.red,
               }}
             >
               {Language.translate("Unassign Territory")}
@@ -144,7 +144,7 @@ class UnassignModal extends React.Component {
                   margin: 10,
                   padding: 10,
                   color: colors["territory-blue"],
-                  backgroundColor: colors.white
+                  backgroundColor: colors.white,
                 }}
               >
                 {Language.translate("Unassign_Territory_Sure")}
@@ -158,7 +158,7 @@ class UnassignModal extends React.Component {
                   margin: 10,
                   padding: 10,
                   color: colors["territory-blue"],
-                  backgroundColor: colors.white
+                  backgroundColor: colors.white,
                 }}
               >
                 # {this.state.selectedTerritory.number} -{" "}
@@ -171,7 +171,7 @@ class UnassignModal extends React.Component {
     }
 
     if (!data) {
-      return <Loading />
+      return <Loading />;
     }
 
     return (
@@ -181,63 +181,65 @@ class UnassignModal extends React.Component {
             marginTop: 0,
             paddingTop: 0,
             borderColor: "red",
-            borderWidth: 0
+            borderWidth: 0,
           }}
         >
           {Language.translate("Assigned Territories")}
         </Heading>
-        {data.territories ? <FlatList
-          contentContainerStyle={styles.listings}
-          data={data.territories.sort(UTILS.sortTerritory)}
-          extraData={this.state}
-          keyExtractor={item => item.territoryId.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles["listings-item"]}
-              onPress={() => this.viewDetails(item)}
-            >
-              <View style={styles["listings-number"]}>
-                <Text style={styles["listings-number-text"]}>
-                  {item.number}
-                </Text>
-              </View>
-              <View style={[styles["listings-date"], { left: 60 }]}>
-                <Text
-                  style={[
-                    styles["listings-date-text"],
-                    UTILS.getDateStatusColor(item.date)
-                  ]}
-                >
-                  {item.date}
-                </Text>
-              </View>
-              <View style={styles["listings-delete"]}>
-                <ButtonLink
-                  onPress={() => this.unassignTerritory(item)}
-                  customStyle={[
-                    styles["heading-button-link"],
-                    {
-                      borderColor: colors["grey-lite"],
-                      borderWidth: 1,
-                      backgroundColor: colors.white
-                    }
-                  ]}
-                  textStyle={[
-                    styles["heading-button-link-text"],
-                    { color: colors.red }
-                  ]}
-                >
-                  {Language.translate("Unassign Territory")}
-                </ButtonLink>
-              </View>
-            </TouchableOpacity>
-          )}
-        /> : null}
+        {data.territories ? (
+          <FlatList
+            contentContainerStyle={styles.listings}
+            data={data.territories.sort(UTILS.sortTerritory)}
+            extraData={this.state}
+            keyExtractor={(item) => item.territoryId.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles["listings-item"]}
+                onPress={() => this.viewDetails(item)}
+              >
+                <View style={styles["listings-number"]}>
+                  <Text style={styles["listings-number-text"]}>
+                    {item.number}
+                  </Text>
+                </View>
+                <View style={[styles["listings-date"], { left: 60 }]}>
+                  <Text
+                    style={[
+                      styles["listings-date-text"],
+                      UTILS.getDateStatusColor(item.date),
+                    ]}
+                  >
+                    {item.date}
+                  </Text>
+                </View>
+                <View style={styles["listings-delete"]}>
+                  <ButtonLink
+                    onPress={() => this.unassignTerritory(item)}
+                    customStyle={[
+                      styles["heading-button-link"],
+                      {
+                        borderColor: colors["grey-lite"],
+                        borderWidth: 1,
+                        backgroundColor: colors.white,
+                      },
+                    ]}
+                    textStyle={[
+                      styles["heading-button-link-text"],
+                      { color: colors.red },
+                    ]}
+                  >
+                    {Language.translate("Unassign Territory")}
+                  </ButtonLink>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        ) : null}
       </View>
     );
   }
 }
 
-export default ListTerritories = props => {
+export default ListTerritories = (props) => {
   return <UnassignModal {...props}>{props.children}</UnassignModal>;
 };

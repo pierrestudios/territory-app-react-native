@@ -5,14 +5,14 @@ import UTILS from "../../common/utils";
 
 import styles from "../../styles/main";
 
-export default Heading = props => {
+export default Heading = (props) => {
   return (
     <View {...UTILS.getElementStyles(props)}>
       <Text
         style={[
           styles.heading,
           styles["text-center"],
-          props.textStyle ? props.textStyle : null
+          props.textStyle ? props.textStyle : null,
         ]}
       >
         {props.children}
@@ -21,7 +21,7 @@ export default Heading = props => {
   );
 };
 
-export const HeadingBlue = props => {
+export const HeadingBlue = (props) => {
   return (
     <View {...UTILS.getElementStyles(props)}>
       <Text
@@ -33,9 +33,9 @@ export const HeadingBlue = props => {
           {
             marginBottom: 20,
             marginTop: 0,
-            fontSize: 22
+            fontSize: 22,
           },
-          props.textStyle ? props.textStyle : null
+          props.textStyle ? props.textStyle : null,
         ]}
       >
         {props.children}

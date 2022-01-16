@@ -18,8 +18,8 @@ export default class PublisherAssignTerritory extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate("Assign Territory"),
-      headerRight: <View /> // To center on Andriod
+      headerTitle: Language.translate("Assign Territory"),
+      headerRight: () => <View />, // To center on Andriod
     };
   };
   state = {
@@ -28,8 +28,8 @@ export default class PublisherAssignTerritory extends React.Component {
     newTerritory: null,
     errors: {
       newTerritory: "",
-      message: ""
-    }
+      message: "",
+    },
   };
   componentDidMount() {
     const { navigation } = this.props;
@@ -43,7 +43,7 @@ export default class PublisherAssignTerritory extends React.Component {
     const { navigation } = this.props;
     if (!!navigation.getParam("savePublisher")) {
       this.savePublisher();
-      navigation.setParams({savePublisher: false});
+      navigation.setParams({ savePublisher: false });
     }
   }
   render() {
@@ -76,8 +76,8 @@ export default class PublisherAssignTerritory extends React.Component {
             borderWidth: 0,
             paddingRight: 20,
             paddingLeft: 20,
-            minWidth: "90%"
-          }
+            minWidth: "90%",
+          },
         ]}
       >
         <Message error={state.errors.message} message={state.data.message} />
@@ -87,13 +87,13 @@ export default class PublisherAssignTerritory extends React.Component {
           data-name="territoryId"
           showLabel={true}
           label={Language.translate("Select Territory")}
-          options={state.availableTerritories.map(t => ({
+          options={state.availableTerritories.map((t) => ({
             label: "# " + t.number + " (" + t.date + ")",
-            value: t.territoryId
+            value: t.territoryId,
           }))}
           value={{
             value: state.newTerritory && state.newTerritory.value,
-            label: state.newTerritory && state.newTerritory.label
+            label: state.newTerritory && state.newTerritory.label,
           }}
           error={state.errors.territoryId}
           onInput={this.saveData}
@@ -113,7 +113,7 @@ export default class PublisherAssignTerritory extends React.Component {
           style={[
             style.section,
             style["listings-results"],
-            style["listings-results-address"]
+            style["listings-results-address"],
           ]}
         >
           {listings}
@@ -126,7 +126,7 @@ export default class PublisherAssignTerritory extends React.Component {
   updatePublisherAfterRemoveTerritory = (data, territoryId = null) => {
     const availableTerritories = this.state.availableTerritories.slice();
     const territory = this.state.data.territories.find(
-      t => t.territoryId === territoryId
+      (t) => t.territoryId === territoryId
     );
     // console.log('territory', territory);
 
@@ -145,16 +145,16 @@ export default class PublisherAssignTerritory extends React.Component {
       }
     });
   };
-  saveData = data => {
-    console.log("data", data);
+  saveData = (data) => {
+    // console.log("data", data);
     const newData = { ...this.state.newTerritory, ...data.option };
 
     return this.setState({
       newTerritory: newData,
       errors: {
         newTerritory: "",
-        message: ""
-      }
+        message: "",
+      },
     });
   };
   assignTerritory = () => {
@@ -162,22 +162,23 @@ export default class PublisherAssignTerritory extends React.Component {
       return this.setState({
         errors: {
           ...this.state.errors,
-          message: Language.translate("Territory is required")
-        }
+          message: Language.translate("Territory is required"),
+        },
       });
     }
 
     const postData = {
       publisherId: this.state.data.publisherId,
-      date: UTILS.getToday()
+      date: UTILS.getToday(),
     };
     // console.log('postData', postData);
 
     const territoryId = this.state.newTerritory.value;
+    const { navigation } = this.props;
 
     // Delete address
     Data.postApiData(`territories/${territoryId}`, postData)
-      .then(res => {
+      .then((res) => {
         console.log("then() res", res);
 
         if (!res || res.error) {
@@ -185,21 +186,21 @@ export default class PublisherAssignTerritory extends React.Component {
             errors: {
               ...this.state.errors,
               message:
-                (res && res.error) || Language.translate("An error occured")
-            }
+                (res && res.error) || Language.translate("An error occured"),
+            },
           });
         } else {
           const newTerritories = this.state.data.territories.slice() || [];
           const selectedTerritory = this.state.availableTerritories.find(
-            t => t.territoryId === territoryId
+            (t) => t.territoryId === territoryId
           );
           const availableTerritories = this.state.availableTerritories.filter(
-            t => t.territoryId !== territoryId
+            (t) => t.territoryId !== territoryId
           );
           newTerritories.push({
             ...selectedTerritory,
             date: postData.date,
-            publisherId: postData.publisherId
+            publisherId: postData.publisherId,
           });
           const newData = { ...this.state.data, territories: newTerritories };
           // console.log('newData', newData);
@@ -207,10 +208,10 @@ export default class PublisherAssignTerritory extends React.Component {
             {
               errors: {
                 newTerritory: "",
-                message: ""
+                message: "",
               },
               data: newData,
-              availableTerritories
+              availableTerritories,
             },
             () => {
               if (
@@ -221,18 +222,20 @@ export default class PublisherAssignTerritory extends React.Component {
                   newData,
                   availableTerritories
                 );
+
+                navigation.goBack();
                 // TODO: update availableTerritories
               }
             }
           );
         }
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({
           errors: {
             ...this.state.errors,
-            message: "An error occured: " + e
-          }
+            message: "An error occured: " + e,
+          },
         });
       });
   };
