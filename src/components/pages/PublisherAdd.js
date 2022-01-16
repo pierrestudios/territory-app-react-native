@@ -12,7 +12,7 @@ export default class PublisherAdd extends PublisherEdit {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerRight: <View />, // To center on Andriod
-      title: Language.translate("Add Publisher"),
+      headerTitle: Language.translate("Add Publisher"),
       headerRight: (
         <ButtonHeader
           onPress={() => {

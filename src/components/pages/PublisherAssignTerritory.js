@@ -18,7 +18,7 @@ export default class PublisherAssignTerritory extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate("Assign Territory"),
+      headerTitle: Language.translate("Assign Territory"),
       headerRight: <View />, // To center on Andriod
     };
   };

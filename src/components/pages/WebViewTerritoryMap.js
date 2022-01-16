@@ -15,7 +15,7 @@ export default class WebViewTerritoryMap extends React.Component {
 
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate(`Territory ${number} Map`),
+      headerTitle: Language.translate(`Territory ${number} Map`),
       headerRight: <View />, // To center on Andriod
     };
   };

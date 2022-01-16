@@ -13,7 +13,7 @@ export default class UserDetails extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
     headerRight: <View />, // To center on Andriod
-    title: Language.translate("User Details"),
+    headerTitle: Language.translate("User Details"),
   };
   state = {
     data: {

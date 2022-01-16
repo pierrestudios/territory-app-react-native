@@ -28,7 +28,7 @@ export default class Publishers extends React.Component {
           color="#fff"
         />
       ),
-      title: Language.translate("All Publishers"),
+      headerTitle: Language.translate("All Publishers"),
     };
   };
   componentDidMount() {

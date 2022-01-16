@@ -12,7 +12,7 @@ export default class AddressAdd extends AddressEdit {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerRight: <View />, // To center on Andriod
-      title: Language.translate("Add Address"),
+      headerTitle: Language.translate("Add Address"),
       headerRight: (
         <ButtonHeader
           onPress={() => {

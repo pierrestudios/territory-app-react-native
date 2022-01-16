@@ -9,7 +9,7 @@ export default class MyTerritories extends Territories {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerRight: <View />, // To center on Andriod
-      title: Language.translate("My Territories"),
+      headerTitle: Language.translate("My Territories"),
     };
   };
   allTerritories = false;

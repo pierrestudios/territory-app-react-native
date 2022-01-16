@@ -13,7 +13,7 @@ export default class WebViewApi extends React.Component {
     const title = navigation.getParam("title");
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: title || "Web View",
+      headerTitle: title || "Web View",
       headerRight: <View />,
     };
   };

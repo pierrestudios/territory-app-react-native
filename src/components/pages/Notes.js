@@ -28,7 +28,7 @@ export default class Notes extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate("Notes"),
+      headerTitle: Language.translate("Notes"),
       headerRight: (
         <ButtonHeader
           onPress={() => {

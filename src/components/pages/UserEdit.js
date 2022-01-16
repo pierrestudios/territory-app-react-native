@@ -17,7 +17,7 @@ export default class UserEdit extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate("Edit User"),
+      headerTitle: Language.translate("Edit User"),
       headerRight: (
         <ButtonHeader
           onPress={() => {

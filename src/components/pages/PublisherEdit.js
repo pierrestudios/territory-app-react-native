@@ -17,7 +17,7 @@ export default class PublisherEdit extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate("Edit Publisher"),
+      headerTitle: Language.translate("Edit Publisher"),
       headerRight: (
         <ButtonHeader
           onPress={() => {

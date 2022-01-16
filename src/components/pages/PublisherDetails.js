@@ -16,7 +16,7 @@ export default class PublisherDetails extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
     headerRight: <View />, // To center on Andriod
-    title: Language.translate("Publisher Details"),
+    headerTitle: Language.translate("Publisher Details"),
   };
   state = {
     data: {

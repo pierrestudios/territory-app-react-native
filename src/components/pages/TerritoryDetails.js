@@ -25,7 +25,7 @@ export default class TerritoryDetails extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: `${Language.translate("Territory")} ${navigation.getParam(
+      headerTitle: `${Language.translate("Territory")} ${navigation.getParam(
         "territoryNumber",
         "..."
       )}`,

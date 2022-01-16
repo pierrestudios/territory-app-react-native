@@ -220,8 +220,11 @@ export default {
     headerTitleStyle: {
       fontSize: 18,
       textAlign: "center",
-      width: "90%",
     },
+    headerTitleContainerStyle: {
+      width: "50%",
+    },
+    headerTitleAlign: "center",
     headerStyle: {
       backgroundColor: colors["territory-blue"],
     },

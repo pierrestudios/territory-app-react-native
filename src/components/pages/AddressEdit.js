@@ -41,7 +41,7 @@ export default class AddressEdit extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      title: Language.translate("Edit Address"),
+      headerTitle: Language.translate("Edit Address"),
       headerRight: (
         <ButtonHeader
           onPress={() => {
@@ -700,7 +700,7 @@ export default class AddressEdit extends React.Component {
     // save address
     Data.postApiData(url, data)
       .then((resData) => {
-        console.log("then() resData", resData);
+        // console.log("then() resData", resData);
         // Clear Errors
         this.setState(
           {
