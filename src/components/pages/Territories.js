@@ -15,7 +15,7 @@ export default class Territories extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      headerRight: <View />, // To center on Andriod
+      headerRight: () => <View />, // To center on Andriod
       headerTitle: Language.translate("All Territories"),
     };
   };

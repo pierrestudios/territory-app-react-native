@@ -17,7 +17,7 @@ export default class PublisherAttachUser extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerTitle: Language.translate("Attach to Publisher"),
-      headerRight: <View />, // To center on Andriod
+      headerRight: () => <View />, // To center on Andriod
     };
   };
   state = {

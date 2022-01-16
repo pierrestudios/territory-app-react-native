@@ -20,10 +20,10 @@ import NavigationService from "../../common/nav-service";
 export default class PasswordRetrieve extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
-    headerTitle: <Logo />,
-    headerLeft: <View />, // To center on Andriod
-    headerRight: <View />, // To center on Andriod
-    headerBackImage: <View />, // Disabled
+    headerTitle: () => <Logo />,
+    headerLeft: () => <View />, // To center on Andriod
+    headerRight: () => <View />, // To center on Andriod
+    headerBackImage: () => <View />, // Disabled
   };
   state = {
     data: {

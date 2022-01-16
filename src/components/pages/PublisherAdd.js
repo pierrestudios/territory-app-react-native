@@ -11,9 +11,9 @@ export default class PublisherAdd extends PublisherEdit {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      headerRight: <View />, // To center on Andriod
+      headerRight: () => <View />, // To center on Andriod
       headerTitle: Language.translate("Add Publisher"),
-      headerRight: (
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({ savePublisher: true });

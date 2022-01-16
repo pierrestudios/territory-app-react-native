@@ -15,7 +15,7 @@ import styles, { colors } from "../../styles/main";
 export default class PublisherDetails extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
-    headerRight: <View />, // To center on Andriod
+    headerRight: () => <View />, // To center on Andriod
     headerTitle: Language.translate("Publisher Details"),
   };
   state = {

@@ -20,10 +20,10 @@ import NavigationService from "../../common/nav-service";
 export default class Signup extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
-    headerTitle: <Logo />,
-    headerLeft: <View />,
-    headerRight: <View />,
-    headerBackImage: <View />, // Disabled
+    headerTitle: () => <Logo />,
+    headerLeft: () => <View />,
+    headerRight: () => <View />,
+    headerBackImage: () => <View />, // Disabled
   };
   state = {
     data: {

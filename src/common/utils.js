@@ -216,7 +216,7 @@ export default {
     }, time);
   },
   headerNavOptionsDefault: {
-    headerTitle: null,
+    headerTitle: () => null,
     headerTitleStyle: {
       fontSize: 18,
       textAlign: "center",

@@ -29,7 +29,7 @@ export default class Notes extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerTitle: Language.translate("Notes"),
-      headerRight: (
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({ saveNotes: true });

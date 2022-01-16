@@ -15,8 +15,7 @@ export default class Users extends React.Component {
   static navigationOptions = () => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      headerRight: <View />, // To center on Andriod
-      headerTitle: null,
+      headerRight: () => <View />, // To center on Andriod
       headerTitle: Language.translate("Users"),
       headerTintColor: "#fff",
     };

@@ -42,7 +42,7 @@ export default class AddressEdit extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerTitle: Language.translate("Edit Address"),
-      headerRight: (
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({ saveAddress: true });

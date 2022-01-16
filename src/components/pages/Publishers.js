@@ -19,7 +19,7 @@ export default class Publishers extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      headerRight: (
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({ openPublisherAdd: true });

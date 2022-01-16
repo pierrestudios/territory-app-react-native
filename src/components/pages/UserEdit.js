@@ -18,7 +18,7 @@ export default class UserEdit extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerTitle: Language.translate("Edit User"),
-      headerRight: (
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({ saveUser: true });

@@ -63,7 +63,7 @@ const App = createStackNavigator(
       headerStyle: {
         backgroundColor: colors["territory-blue"],
       },
-      headerTitle: <Logo />,
+      headerTitle: () => <Logo />,
     },
   }
 );

@@ -14,7 +14,7 @@ export default class WebViewApi extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerTitle: title || "Web View",
-      headerRight: <View />,
+      headerRight: () => <View />,
     };
   };
   render() {

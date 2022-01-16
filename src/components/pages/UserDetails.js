@@ -12,7 +12,7 @@ import styles, { colors } from "../../styles/main";
 export default class UserDetails extends React.Component {
   static navigationOptions = {
     ...UTILS.headerNavOptionsDefault,
-    headerRight: <View />, // To center on Andriod
+    headerRight: () => <View />, // To center on Andriod
     headerTitle: Language.translate("User Details"),
   };
   state = {

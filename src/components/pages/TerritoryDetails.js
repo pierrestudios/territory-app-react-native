@@ -29,7 +29,7 @@ export default class TerritoryDetails extends React.Component {
         "territoryNumber",
         "..."
       )}`,
-      headerRight:
+      headerRight: () =>
         !!navigation.getParam("isEditor") &&
         !!navigation.getParam("streetsList") ? (
           <ButtonHeader

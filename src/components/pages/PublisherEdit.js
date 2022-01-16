@@ -18,7 +18,7 @@ export default class PublisherEdit extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerTitle: Language.translate("Edit Publisher"),
-      headerRight: (
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({ savePublisher: true });

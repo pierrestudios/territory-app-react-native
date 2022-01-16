@@ -19,7 +19,7 @@ export default class PublisherAssignTerritory extends React.Component {
     return {
       ...UTILS.headerNavOptionsDefault,
       headerTitle: Language.translate("Assign Territory"),
-      headerRight: <View />, // To center on Andriod
+      headerRight: () => <View />, // To center on Andriod
     };
   };
   state = {

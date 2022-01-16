@@ -20,9 +20,9 @@ export default class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...UTILS.headerNavOptionsDefault,
-      headerTitle: <Logo />,
-      headerLeft: <View />, // To center on Andriod
-      headerRight: (
+      headerTitle: () => <Logo />,
+      headerLeft: () => <View />, // To center on Andriod
+      headerRight: () => (
         <ButtonHeader
           onPress={() => {
             navigation.setParams({
