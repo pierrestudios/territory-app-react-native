@@ -17,6 +17,7 @@ class AnimatedModal extends React.Component {
     Animated.timing(this.state.fadeAnim, {
       toValue: 1,
       duration: 300,
+      useNativeDriver: true,
     }).start();
   }
 

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { CheckBox as CheckBoxRN } from "@react-native-community/checkbox";
-import DatePicker from "react-native-datepicker";
+import DatePicker from "@react-native-community/datetimepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
@@ -17,7 +17,7 @@ import Feather from "react-native-vector-icons/Feather";
 import style, { colors } from "../../styles/main";
 import { ButtonLink } from "./Button";
 import SelectPickerIOS from "./SelectPickerIOS";
-import Language from "../../common/lang";
+import utils from "../../common/utils";
 
 const getStyles = (props) => {
   const styles = props.baseStyle ? [props.baseStyle] : [style.input];
@@ -108,24 +108,27 @@ export const TextInput = (props) => {
 };
 
 export const DateInput = (props) => {
-  const format = "YYYY-MM-DD";
+  const dateValue =
+    typeof props.value.getMonth === "function"
+      ? props.value
+      : utils.getDateObject(props.value);
+
   return (
     <DatePicker
-      style={getStyles({ ...props, baseStyle: style["date-input-wrapper"] })}
-      date={props.value}
-      mode="date"
-      placeholder={props.placeholder}
-      format={format}
-      confirmBtnText={Language.translate("OK")}
-      cancelBtnText={Language.translate("Cancel")}
-      customStyles={{
-        dateText: {
-          fontSize: 16,
+      style_dis={{
+        ...getStyles({
+          ...props,
+          baseStyle: style["date-input-wrapper"],
+        }),
+        ...{
+          dateText: {
+            fontSize: 16,
+          },
+          dateInput: style["date-input"],
         },
-        dateInput: style["date-input"],
       }}
-      showIcon={false}
-      onDateChange={(date) => {
+      value={dateValue}
+      onChange={(e, date) => {
         props.onChange({ date });
       }}
     />

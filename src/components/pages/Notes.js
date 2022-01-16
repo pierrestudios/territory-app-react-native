@@ -46,7 +46,7 @@ export default class Notes extends React.Component {
     noteData: {
       note: "",
       noteSymbol: "",
-      date: UTILS.getToday(),
+      date: UTILS.getDateObject(),
     },
     errors: {
       note: "",
