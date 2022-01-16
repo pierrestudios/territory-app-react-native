@@ -146,7 +146,7 @@ export default class PublisherAssignTerritory extends React.Component {
     });
   };
   saveData = (data) => {
-    console.log("data", data);
+    // console.log("data", data);
     const newData = { ...this.state.newTerritory, ...data.option };
 
     return this.setState({
@@ -174,6 +174,7 @@ export default class PublisherAssignTerritory extends React.Component {
     // console.log('postData', postData);
 
     const territoryId = this.state.newTerritory.value;
+    const { navigation } = this.props;
 
     // Delete address
     Data.postApiData(`territories/${territoryId}`, postData)
@@ -221,6 +222,8 @@ export default class PublisherAssignTerritory extends React.Component {
                   newData,
                   availableTerritories
                 );
+
+                navigation.goBack();
                 // TODO: update availableTerritories
               }
             }
