@@ -174,5 +174,8 @@
   "All": "All",
   "Worked": "Worked",
   "Not worked": "Not worked",
-  "Enter your reason for this note": "Enter your reason for this note, \"DO NOT CALL\""
+  "Enter your reason for this note": "Enter your reason for this note, \"DO NOT CALL\"",
+  "Mode": "Travay",
+  "Territory Mode": "Territory Mode",
+  "Addresses": "Addresses"
 }

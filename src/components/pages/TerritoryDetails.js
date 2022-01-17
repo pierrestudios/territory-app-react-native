@@ -56,6 +56,7 @@ export default class TerritoryDetails extends React.Component {
     selectedAddresses: [],
     selectorOpened: false,
     addressesFilterOpened: false,
+    modeOptionsOpened: false,
     filterType: "all",
   };
   componentDidMount() {
@@ -266,6 +267,19 @@ export default class TerritoryDetails extends React.Component {
       { value: "not-done", label: Language.translate("Not worked") },
     ];
 
+    const modeOptions = [
+      {
+        value: "home",
+        label: Language.translate("Addresses"),
+        "icon-name": "home",
+      },
+      {
+        value: "phone",
+        label: Language.translate("Phone"),
+        "icon-name": "phone",
+      },
+    ];
+
     return (
       <View style={[style.section, style.content]}>
         <View style={style["territory-heading"]}>
@@ -299,6 +313,20 @@ export default class TerritoryDetails extends React.Component {
           </ButtonLink>
 
           <ButtonLink
+            onPress={this.showModeOptions}
+            customStyle={[
+              style["heading-button-link"],
+              {
+                borderColor: colors["grey-lite"],
+                borderWidth: 1,
+                backgroundColor: colors["off-white"],
+              },
+            ]}
+          >
+            {Language.translate("Mode")}
+          </ButtonLink>
+
+          <ButtonLink
             onPress={this.showAddressesFilter}
             customStyle={[
               style["heading-button-link"],
@@ -327,7 +355,7 @@ export default class TerritoryDetails extends React.Component {
                   size={16}
                   color={colors["grey"]}
                 />
-                <Text
+                {/*<Text
                   style={{
                     padding: 0,
                     marginTop: -2,
@@ -336,7 +364,7 @@ export default class TerritoryDetails extends React.Component {
                   }}
                 >
                   {Language.translate("Filter")}
-                </Text>
+                </Text>*/}
               </View>
             }
           />
@@ -408,6 +436,26 @@ export default class TerritoryDetails extends React.Component {
                 active: f.value === state.filterType,
               }))}
               onChange={this.saveFilterType}
+            />
+          </View>
+        </Modal>
+
+        <Modal
+          animationType="fade"
+          visible={this.state.modeOptionsOpened}
+          onCloseModal={() => {
+            this.setState({ modeOptionsOpened: false });
+          }}
+        >
+          <View style={[styles["modal-view"], {}]}>
+            <RadioBox
+              name="mode"
+              label={Language.translate("Territory Mode")}
+              options={modeOptions.map((m) => ({
+                ...m,
+                active: m.value === state.modeOption,
+              }))}
+              onChange={this.saveModeOption}
             />
           </View>
         </Modal>
@@ -530,6 +578,17 @@ export default class TerritoryDetails extends React.Component {
     this.setState({
       filterType: data.option.value,
       addressesFilterOpened: false,
+    });
+  };
+  showModeOptions = () => {
+    this.setState({
+      modeOptionsOpened: this.state.modeOptionsOpened === false,
+    });
+  };
+  saveModeOption = (data) => {
+    this.setState({
+      modeOption: data.option.value,
+      modeOptionsOpened: false,
     });
   };
   saveNotesSymbolsLang = (selectedLang) => {
