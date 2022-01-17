@@ -166,55 +166,73 @@ export default class TerritoryDetails extends React.Component {
                     />
                   </View>
                 ) : null}
-                <TouchableOpacity
-                  style={[style["listings-notes"]]}
-                  onPress={() =>
-                    state.user.isNoteEditor
-                      ? this.viewNotes(item)
-                      : console.log("Not Note Editor")
-                  }
-                >
-                  {item.notes && item.notes.length
-                    ? [
-                        <Text
-                          key="listings-date"
-                          style={[
-                            style["listings-date-text"],
-                            style["listings-notes-date-text"],
-                            item.hasWarning ? style["text-white"] : null,
-                          ]}
-                        >
-                          {item.notes[0].date}
-                        </Text>,
-                        <Text
-                          key="listings-notes"
-                          numberOfLines={1}
-                          style={[
-                            style["listings-notes-note-text"],
-                            item.hasWarning ? style["text-white"] : null,
-                          ]}
-                        >
-                          {UTILS.formatDiacritics(item.notes[0].note)}
-                        </Text>,
-                      ]
-                    : [
-                        state.user.isNoteEditor ? (
-                          <ButtonLink
-                            key="listings-add-notes"
-                            customStyle={[style["add-notes"]]}
-                            onPress={() => this.viewNotes(item)}
+                {state.modeOption === "phone" ? (
+                  <View style={[style["listings-notes"]]}>
+                    <ButtonLink
+                      key="listings-add-notes"
+                      customStyle={[style["add-notes"]]}
+                      onPress={() => {
+                        // this.viewNotes(item);
+                      }}
+                    >
+                      <Text
+                        style={[item.hasWarning ? style["text-white"] : null]}
+                      >
+                        {Language.translate("Phone")}
+                      </Text>
+                    </ButtonLink>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    style={[style["listings-notes"]]}
+                    onPress={() =>
+                      state.user.isNoteEditor
+                        ? this.viewNotes(item)
+                        : console.log("Not Note Editor")
+                    }
+                  >
+                    {item.notes && item.notes.length
+                      ? [
+                          <Text
+                            key="listings-date"
+                            style={[
+                              style["listings-date-text"],
+                              style["listings-notes-date-text"],
+                              item.hasWarning ? style["text-white"] : null,
+                            ]}
                           >
-                            <Text
-                              style={[
-                                item.hasWarning ? style["text-white"] : null,
-                              ]}
+                            {item.notes[0].date}
+                          </Text>,
+                          <Text
+                            key="listings-notes"
+                            numberOfLines={1}
+                            style={[
+                              style["listings-notes-note-text"],
+                              item.hasWarning ? style["text-white"] : null,
+                            ]}
+                          >
+                            {UTILS.formatDiacritics(item.notes[0].note)}
+                          </Text>,
+                        ]
+                      : [
+                          state.user.isNoteEditor ? (
+                            <ButtonLink
+                              key="listings-add-notes"
+                              customStyle={[style["add-notes"]]}
+                              onPress={() => this.viewNotes(item)}
                             >
-                              {Language.translate("Add Notes")}
-                            </Text>
-                          </ButtonLink>
-                        ) : null,
-                      ]}
-                </TouchableOpacity>
+                              <Text
+                                style={[
+                                  item.hasWarning ? style["text-white"] : null,
+                                ]}
+                              >
+                                {Language.translate("Add Notes")}
+                              </Text>
+                            </ButtonLink>
+                          ) : null,
+                        ]}
+                  </TouchableOpacity>
+                )}
                 <TouchableOpacity
                   style={[
                     style["listings-name"],
