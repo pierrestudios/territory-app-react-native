@@ -177,5 +177,14 @@
   "Enter your reason for this note": "Mete rezon pou nòt, \"PA FRAPE\"",
   "Mode": "Travay",
   "Territory Mode": "Travay Teritwa",
-  "Addresses": "Addrès"
+  "Addresses": "Addrès",
+  "Phone Numbers": "Nimero Telefòn Yo",
+  "Work Phone Numbers": "Travay Teritwa Telefòn",
+  "StatusSymbols": {
+    "Unverified": "Poko rele",
+    "Valid": "Valid",
+    "Not English Speaking": "Pa pale Kreyol",
+    "Not In Service": "Dekonekte",
+    "Do Not Call": "Do Not Call"
+  }
 }

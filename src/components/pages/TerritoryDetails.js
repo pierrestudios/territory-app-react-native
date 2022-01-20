@@ -172,7 +172,7 @@ export default class TerritoryDetails extends React.Component {
                       key="listings-add-notes"
                       customStyle={[style["add-notes"]]}
                       onPress={() => {
-                        // this.viewNotes(item);
+                        this.viewPhoneNumbers(item);
                       }}
                     >
                       <Text
@@ -496,6 +496,15 @@ export default class TerritoryDetails extends React.Component {
 
     return false;
   };
+  viewPhoneNumbers(data) {
+    this.setState({ addressActive: data }, () => {
+      NavigationService.navigate("PhoneNumbers", {
+        addressActive: data,
+        territoryId: data.territoryId,
+        // updateAddress: this.updateAddress,
+      });
+    });
+  }
   viewNotes(data) {
     // TODO: Find the source of this.props.entity
 

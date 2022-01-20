@@ -287,4 +287,15 @@ export default {
     { html: "&Iuml;", diacritic: "Ï" },
     { html: "&iuml;", diacritic: "ï" },
   ],
+  phoneStatusLabel(status = 0) {
+    const statusInx = parseInt(status);
+
+    return [
+      "Unverified",
+      "Valid",
+      "Not English Speaking",
+      "Not In Service",
+      "Do Not Call",
+    ][statusInx];
+  },
 };

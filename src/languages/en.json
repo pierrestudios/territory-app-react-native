@@ -177,5 +177,14 @@
   "Enter your reason for this note": "Enter your reason for this note, \"DO NOT CALL\"",
   "Mode": "Travay",
   "Territory Mode": "Territory Mode",
-  "Addresses": "Addresses"
+  "Addresses": "Addresses",
+  "Phone Numbers": "Phone Numbers",
+  "Work Phone Numbers": "Work Phone Numbers",
+  "StatusSymbols": {
+    "Unverified": "Unverified",
+    "Valid": "Valid",
+    "Not English Speaking": "Not English Speaking",
+    "Not In Service": "Not In Service",
+    "Do Not Call": "Do Not Call"
+  }
 }
