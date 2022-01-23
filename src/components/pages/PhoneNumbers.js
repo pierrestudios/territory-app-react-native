@@ -14,7 +14,7 @@ import { ButtonLink, ButtonHeader } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
 import { DateInput, Switch } from "../elements/FormInput";
 
-import style from "../../styles/main";
+import style, { colors } from "../../styles/main";
 
 import NotesModal, { NotesInput } from "../smart/NotesModal";
 
@@ -80,6 +80,11 @@ export default class PhoneNumbers extends React.Component {
           {UTILS.getListingAddress(data)}
         </Text>
         {phoneNumbers}
+
+        <Notice
+          data={state.noticeMessage}
+          closeNotice={() => this.setState({ noticeMessage: null })}
+        />
       </View>
     );
   }
@@ -93,18 +98,13 @@ export default class PhoneNumbers extends React.Component {
       {this.state.user.isManager || this.state.user.userId === item.userId ? (
         <ButtonLink
           customStyle={[style["listings-notes"], style["listings-notes-edit"]]}
-          onPress={() => this.updateNotes(item)}
+          onPress={() => this.callPhoneNumber(item)}
         >
           {Language.translate("Call Now!")}
         </ButtonLink>
       ) : null}
       <View style={[style["listings-name"], style["address-listings-name"]]}>
-        <Text
-          style={[
-            style["listings-date-text"],
-            // style["listings-notes-date-text"],
-          ]}
-        >
+        <Text style={[style["listings-date-text"]]}>
           {this.state.statusSymbols[UTILS.phoneStatusLabel(item.status)]}
         </Text>
         <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
@@ -134,16 +134,6 @@ export default class PhoneNumbers extends React.Component {
       },
     });
   };
-  updateNotes(data) {
-    this.setState({
-      noteData: {
-        note: UTILS.formatDiacritics(data.note),
-        date: UTILS.getDateObject(data.date),
-        retain: !!data.retain,
-        noteId: data.noteId,
-      },
-    });
-  }
   saveNotesSymbol = (selected) => {
     this.saveData({
       noteSymbol: selected.option.value,
@@ -276,5 +266,35 @@ export default class PhoneNumbers extends React.Component {
           },
         });
       });
+  };
+  callPhoneNumber = ({ name, number }, user) => {
+    const messageBlock = (
+      <View>
+        <Text style={[style["text-strong"], { fontSize: 16 }]}>
+          {name} - {number}
+        </Text>
+      </View>
+    );
+    this.setState({
+      noticeMessage: {
+        title: Language.translate("Call Now!"),
+        description: messageBlock,
+        inputs: [],
+        actions: [
+          {
+            label: Language.translate("Continue"),
+            action: () => {},
+            style: { backgroundColor: colors.red },
+            textStyle: { color: colors.white },
+          },
+          {
+            label: Language.translate("Done"),
+            action: () =>
+              this.setState({ noticeMessage: null, shouldRender: "Territory" }),
+          },
+        ],
+      },
+      shouldRender: "Territory",
+    });
   };
 }
