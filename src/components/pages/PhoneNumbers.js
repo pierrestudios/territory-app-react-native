@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, Linking } from "react-native";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
 
 import Data from "../../common/data";
@@ -279,18 +279,20 @@ export default class PhoneNumbers extends React.Component {
       noticeMessage: {
         title: Language.translate("Call Now!"),
         description: messageBlock,
-        inputs: [],
         actions: [
           {
-            label: Language.translate("Continue"),
-            action: () => {},
+            label: Language.translate("Continue"), // TODO: Add Phone icon
+            action: () => {
+              Linking.openURL(`tel:${number}`);
+            },
             style: { backgroundColor: colors.red },
             textStyle: { color: colors.white },
           },
           {
             label: Language.translate("Done"),
-            action: () =>
-              this.setState({ noticeMessage: null, shouldRender: "Territory" }),
+            action: () => {
+              this.setState({ noticeMessage: null, shouldRender: "Territory" });
+            },
           },
         ],
       },
