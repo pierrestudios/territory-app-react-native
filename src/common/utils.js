@@ -298,4 +298,10 @@ export default {
       "DO NOT CALL",
     ][statusInx];
   },
+  canMakeCall({ number, status }) {
+    // Check if condition met for making a call
+    // Example: Not DO NOT CALL, Not In Service, or Not English Speaking
+    // Allow only "Unverified", "Valid", or empty
+    return status === 1 || !status;
+  },
 };

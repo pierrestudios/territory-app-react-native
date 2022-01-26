@@ -46,7 +46,7 @@ export default class PhoneNumbers extends React.Component {
   }
   render() {
     const { state } = this;
-    const { data, noteData, errors } = state;
+    const { data } = state;
 
     if (!data) return <Loading />;
 
@@ -86,14 +86,27 @@ export default class PhoneNumbers extends React.Component {
   );
   renderListOfPhones = ({ item }) => (
     <View style={[style["listings-item"]]}>
-      {this.state.user.isManager || this.state.user.userId === item.userId ? (
+      {this.state.user.isManager ||
+      (this.state.user.isEditor && UTILS.canMakeCall(item)) ? (
         <ButtonLink
           customStyle={[style["listings-notes"], style["listings-notes-edit"]]}
           onPress={() => this.callPhoneNumber(item)}
         >
           {Language.translate("Call Now!")}
         </ButtonLink>
-      ) : null}
+      ) : (
+        <Text
+          style={[
+            style["listings-notes"],
+            {
+              marginTop: 10,
+              color: item.status === 1 ? colors.red : colors.grey,
+            },
+          ]}
+        >
+          {this.state.statusSymbols[UTILS.phoneStatusLabel(item.status)]}
+        </Text>
+      )}
       <View style={[style["listings-name"], style["address-listings-name"]]}>
         <Text style={[style["listings-date-text"]]}>
           {this.state.statusSymbols[UTILS.phoneStatusLabel(item.status)]}
