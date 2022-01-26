@@ -295,7 +295,7 @@ export default {
       "Valid",
       "Not English Speaking",
       "Not In Service",
-      "Do Not Call",
+      "DO NOT CALL",
     ][statusInx];
   },
 };

@@ -175,16 +175,16 @@
   "Worked": "Worked",
   "Not worked": "Not worked",
   "Enter your reason for this note": "Enter your reason for this note, \"DO NOT CALL\"",
-  "Mode": "Travay",
+  "Mode": "Mode",
   "Territory Mode": "Territory Mode",
   "Addresses": "Addresses",
   "Phone Numbers": "Phone Numbers",
   "Work Phone Numbers": "Work Phone Numbers",
   "StatusSymbols": {
-    "Unverified": "Unverified",
-    "Valid": "Valid",
+    "Unverified": "No Answer",
+    "Valid": "Man or Woman",
     "Not English Speaking": "Not English Speaking",
     "Not In Service": "Not In Service",
-    "Do Not Call": "Do Not Call"
+    "DO NOT CALL": "DO NOT CALL"
   }
 }
