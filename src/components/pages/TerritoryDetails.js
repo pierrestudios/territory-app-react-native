@@ -168,19 +168,30 @@ export default class TerritoryDetails extends React.Component {
                 ) : null}
                 {state.modeOption === "phone" ? (
                   <View style={[style["listings-notes"]]}>
-                    <ButtonLink
-                      key="listings-add-notes"
-                      customStyle={[style["add-notes"]]}
-                      onPress={() => {
-                        this.viewPhoneNumbers(item);
-                      }}
-                    >
-                      <Text
-                        style={[item.hasWarning ? style["text-white"] : null]}
+                    {item.phones && item.phones.length ? (
+                      <ButtonLink
+                        key="listings-add-notes"
+                        customStyle={[style["add-notes"]]}
+                        onPress={() => {
+                          this.viewPhoneNumbers(item);
+                        }}
                       >
-                        {Language.translate("Phone")}
+                        <Text
+                          style={[item.hasWarning ? style["text-white"] : null]}
+                        >
+                          {Language.translate("Phone")}
+                        </Text>
+                      </ButtonLink>
+                    ) : (
+                      <Text
+                        style={{
+                          marginTop: 10,
+                          color: colors.grey,
+                        }}
+                      >
+                        {Language.translate("No Phone")}
                       </Text>
-                    </ButtonLink>
+                    )}
                   </View>
                 ) : (
                   <TouchableOpacity
