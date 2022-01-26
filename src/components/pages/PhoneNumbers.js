@@ -233,7 +233,16 @@ export default class PhoneNumbers extends React.Component {
         inputs: phoneNotesInputs,
         actions: [
           {
-            label: Language.translate("Continue"), // TODO: Add Phone icon
+            label: Language.translate("Continue") + " ", // Note: Leave space for icon
+            iconAfter: (
+              <FontAwesome
+                {...{
+                  name: "phone",
+                  size: 16,
+                  color: colors.white,
+                }}
+              />
+            ),
             action: () => Linking.openURL(`tel://${number}`),
             style: { backgroundColor: colors["green-bright"], borderWidth: 0 },
             textStyle: {
