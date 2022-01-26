@@ -13,6 +13,7 @@ import DatePicker from "@react-native-community/datetimepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import style, { colors } from "../../styles/main";
 import { ButtonLink } from "./Button";
@@ -36,6 +37,8 @@ const getLabel = (props) => {
 
 const getIconEl = (name, props) => {
   switch (name) {
+    case "MaterialIcons":
+      return <MaterialIcons {...props} />;
     case "Feather":
       return <Feather {...props} />;
     case "Ionicons":
@@ -75,6 +78,14 @@ const elemWrapper = (props, el) => {
       {getError(props)}
     </View>
   );
+};
+
+/*
+ * getIconElement
+ * utils function for icon element
+ */
+export const getIconElement = (props) => {
+  return getIconEl(props);
 };
 
 /*
