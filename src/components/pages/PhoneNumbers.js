@@ -139,6 +139,7 @@ export default class PhoneNumbers extends React.Component {
               date: "",
               message: "",
             },
+            noticeMessage: null,
           },
           () => {
             // update current Address
@@ -178,7 +179,6 @@ export default class PhoneNumbers extends React.Component {
               const newAddress = { ...addressData, notes: newNotes };
               navigation.getParam("updateAddress")(newAddress);
             }
-            navigation.goBack();
           }
         );
       })
