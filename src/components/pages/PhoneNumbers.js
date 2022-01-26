@@ -1,22 +1,16 @@
 import React from "react";
 import { Text, View, Linking } from "react-native";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import Data from "../../common/data";
 import Language from "../../common/lang";
 import UTILS from "../../common/utils";
 import getSiteSetting from "../../common/settings";
-
-import { HeadingBlue } from "../elements/Heading";
 import Loading from "../elements/Loading";
-import Message from "../elements/Message";
-import { ButtonLink, ButtonHeader } from "../elements/Button";
+import { ButtonLink } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
-import { DateInput, Switch } from "../elements/FormInput";
-
 import style, { colors } from "../../styles/main";
-
-import NotesModal, { NotesInput } from "../smart/NotesModal";
 
 const languages = getSiteSetting("languages");
 
@@ -28,8 +22,6 @@ export default class PhoneNumbers extends React.Component {
       headerRight: () => null,
     };
   };
-
-  notesContainer = null;
   state = {};
   componentDidMount() {
     const { navigation } = this.props;
@@ -74,7 +66,6 @@ export default class PhoneNumbers extends React.Component {
 
     return (
       <View style={[style.container, { paddingTop: 10 }]}>
-        <HeadingBlue>{Language.translate("Work Phone Numbers")}</HeadingBlue>
         <Text style={[style["text-strong"], { padding: 5, minHeight: 50 }]}>
           {data.name ? UTILS.formatDiacritics(data.name) + " - " : ""}{" "}
           {UTILS.getListingAddress(data)}
@@ -113,98 +104,33 @@ export default class PhoneNumbers extends React.Component {
       </View>
     </View>
   );
-  setModalVisible = (modal) => {
-    this.setState(modal);
-  };
-  saveData = (data) => {
-    const newData = { ...this.state.noteData, ...data };
-
-    if (!!newData.noteSymbol) {
-      newData.note = !!newData.notesAddl
-        ? `${newData.noteSymbol} - ${newData.notesAddl}`
-        : newData.noteSymbol;
-    }
-
-    this.setState({
-      noteData: newData,
-      errors: {
-        note: "",
-        date: "",
-        message: "",
-      },
-    });
-  };
-  saveNotesSymbol = (selected) => {
-    this.saveData({
-      noteSymbol: selected.option.value,
-    });
-    this.setModalVisible({ NotesOptionsModal: false });
-  };
-  saveNotesSymbolsLang = (selectedLang) => {
-    this.setState({ notesSymbolsLang: selectedLang.option.value });
-  };
-  saveNotes = () => {
+  savePhoneNotes = (noteData) => {
     const { navigation } = this.props;
-    const {
-      notesSymbolsLang,
-      noteData,
-      errors,
-      data: addressData,
-    } = this.state;
-    const { noteId, note, date, noteSymbol, notesAddl } = noteData;
-    const { territoryId, addressId } = addressData;
-
-    // Validate
-    if (!note || !date)
-      return this.setState({
-        errors: {
-          ...errors,
-          note: !note ? Language.translate("Notes is empty") : "",
-          date: !date ? Language.translate("Date is missing") : "",
-          message: !note ? Language.translate("Notes is empty") : "",
-        },
-      });
-
-    const { NotesSymbols: notesSymbols = {} } = languages[notesSymbolsLang];
-
-    // Require reason for "DO NOT CALL" and "PA FRAPE"
-    if (
-      noteSymbol &&
-      (noteSymbol === notesSymbols["PA FRAPE"] ||
-        noteSymbol === notesSymbols["DO NOT CALL"]) &&
-      (!notesAddl || note === noteSymbol)
-    ) {
-      return this.setState({
-        errors: {
-          ...errors,
-          notesAddl: Language.translate("Enter your reason for this note"),
-        },
-      });
-    }
+    const { data: addressData } = this.state;
+    const { territoryId } = addressData;
 
     // Data
     const dataToSave = {
-      ...noteData,
-      date: UTILS.getDateString(date),
+      symbol: noteData.noteSymbol,
+      content: noteData.comments || "",
+      date: UTILS.getToday(),
     };
 
-    if (
-      noteSymbol &&
-      (noteSymbol === notesSymbols["PA FRAPE"] ||
-        noteSymbol === notesSymbols["DO NOT CALL"])
-    ) {
-      dataToSave.retain = true; // Retain for "DO NOT CALL", "PA FRAPE"
-    }
-
     // Url
-    const url = noteId
-      ? `territories/${territoryId}/notes/edit/${noteId}`
-      : `territories/${territoryId}/addresses/${addressId}/notes/add`;
+    const url = `territories/${territoryId}/phones/${noteData.phoneId}/notes/add`;
+
+    console.log("savePhoneNotes()", { url, dataToSave });
+    // return Promise.resolve();
 
     // save note
     Data.postApiData(url, dataToSave)
       .then((resData) => {
-        // console.log('then() resData', resData)
+        console.log("then() resData", resData);
+        console.log(
+          "navigation > updateAddress",
+          navigation.getParam("updateAddress")
+        );
+
         // Clear Errors
         this.setState(
           {
@@ -267,7 +193,7 @@ export default class PhoneNumbers extends React.Component {
         });
       });
   };
-  callPhoneNumber = ({ name, number }, user) => {
+  callPhoneNumber = ({ name, number, phoneId, territoryId }) => {
     const messageBlock = (
       <View>
         <Text style={[style["text-strong"], { fontSize: 16 }]}>
@@ -275,26 +201,123 @@ export default class PhoneNumbers extends React.Component {
         </Text>
       </View>
     );
+    const phoneNotesOptions = Object.values(this.state.statusSymbols).map(
+      (s, inx) => {
+        return {
+          label: s,
+          value: inx,
+        };
+      }
+    );
+    const phoneNotesInputs = [
+      {
+        label: `${Language.translate("Result from call")}:`,
+        type: "SelectBox",
+        name: "noteSymbol",
+        options: phoneNotesOptions,
+        value: { value: "", label: Language.translate("Add Notes") },
+        required: true,
+      },
+      {
+        label: Language.translate("Additional Notes"),
+        type: "TextInput",
+        name: "comments",
+      },
+    ];
+    // console.log({ phoneNotesOptions, statusSymbols: this.state.statusSymbols });
+
     this.setState({
       noticeMessage: {
         title: Language.translate("Call Now!"),
         description: messageBlock,
+        inputs: phoneNotesInputs,
         actions: [
           {
             label: Language.translate("Continue"), // TODO: Add Phone icon
-            action: () => {
-              Linking.openURL(`tel:${number}`);
+            action: () => Linking.openURL(`tel://${number}`),
+            style: { backgroundColor: colors["green-bright"], borderWidth: 0 },
+            textStyle: {
+              color: colors.white,
+              fontSize: 16,
+              fontWeight: "bold",
             },
-            style: { backgroundColor: colors.red },
-            textStyle: { color: colors.white },
           },
           {
             label: Language.translate("Done"),
             action: () => {
-              this.setState({ noticeMessage: null, shouldRender: "Territory" });
+              const newNoteData = {};
+              this.state.noticeMessage.inputs.forEach((p) => {
+                newNoteData[p.name] = p.value || "";
+                if (p.name === "noteSymbol") {
+                  newNoteData[p.name] = p.value.value;
+                }
+              });
+
+              // console.log({ newNoteData });
+              if (!newNoteData.noteSymbol && !(newNoteData.noteSymbol === 0)) {
+                const newData = this.state.noticeMessage.inputs.map((d) => ({
+                  ...d,
+                  error:
+                    d.name === "noteSymbol"
+                      ? Language.translate("Please add notes")
+                      : "",
+                }));
+
+                this.setState({
+                  noticeMessage: {
+                    ...this.state.noticeMessage,
+                    inputs: newData,
+                  },
+                  shouldRender: "Modal",
+                });
+
+                return;
+              }
+
+              this.savePhoneNotes({
+                ...newNoteData,
+                phoneId,
+                territoryId,
+              });
+            },
+            style: { backgroundColor: colors.red, borderWidth: 0 },
+            textStyle: {
+              color: colors.white,
+              fontSize: 16,
+              fontWeight: "bold",
             },
           },
         ],
+        saveData: (data) => {
+          // console.log("saveData()", { data });
+
+          const newNoticeMessageData = this.state.noticeMessage.inputs.map(
+            (d) => {
+              if (data.name === d.name) {
+                return {
+                  ...d,
+                  value: data.option,
+                  error: "",
+                };
+              } else if (d.name === (Object.keys(data) || {})[0])
+                return {
+                  ...d,
+                  value: data[d.name],
+                  error: "",
+                };
+              return d;
+            }
+          );
+
+          this.setState({
+            noticeMessage: {
+              ...this.state.noticeMessage,
+              inputs: newNoticeMessageData,
+              errorMesage: "",
+            },
+            shouldRender: "Modal",
+          });
+        },
       },
       shouldRender: "Territory",
     });
