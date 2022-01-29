@@ -117,6 +117,47 @@ export default class PhoneNumbers extends React.Component {
       </View>
     </View>
   );
+  renderListOfNotes = ({ noteId, date, note, symbol }) => {
+    // console.log("renderListOfNotes", { noteId, symbol });
+    // return null;
+
+    return (
+      <View
+        key={`notes-${noteId}`}
+        style={[
+          {
+            paddingBottom: 8,
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 5,
+            // borderBottomWidth: 1,
+            borderColor: colors["grey-lite"],
+          },
+        ]}
+      >
+        <Text
+          numberOfLines={1}
+          style={[
+            // style["listings-date-text"],
+            // style["listings-notes-date-text"],
+            { color: colors.grey },
+          ]}
+        >
+          {date} - {Language.translate(UTILS.phoneStatusLabel(symbol))}
+        </Text>
+        {note ? (
+          <Text
+            style={[
+              // style["listings-notes-note-text--"],
+              { color: colors["grey-dark"] },
+            ]}
+          >
+            {UTILS.formatDiacritics(note)}
+          </Text>
+        ) : null}
+      </View>
+    );
+  };
   savePhoneNotes = (noteData) => {
     const { navigation } = this.props;
     const { data: addressData } = this.state;
@@ -132,7 +173,7 @@ export default class PhoneNumbers extends React.Component {
     // Url
     const url = `territories/${territoryId}/phones/${noteData.phoneId}/notes/add`;
 
-    console.log("savePhoneNotes()", { url, dataToSave });
+    // console.log("savePhoneNotes()", { url, dataToSave });
     // return Promise.resolve();
 
     // save note
@@ -196,22 +237,25 @@ export default class PhoneNumbers extends React.Component {
         );
       })
       .catch((e) => {
-        // console.log('error', e)
+        // console.log("error", e);
         const errorMessage = Language.translate("An error occured.");
         this.setState({
           errors: {
-            ...errors,
+            ...this.state.errors,
             message: errorMessage,
           },
         });
       });
   };
-  callPhoneNumber = ({ name, number, phoneId, territoryId }) => {
+  callPhoneNumber = ({ name, number, phoneId, territoryId, notes = [] }) => {
     const messageBlock = (
       <View>
-        <Text style={[style["text-strong"], { fontSize: 16 }]}>
+        <Text
+          style={[style["text-strong"], { fontSize: 16, marginBottom: 10 }]}
+        >
           {name} - {number}
         </Text>
+        {notes.map(this.renderListOfNotes)}
       </View>
     );
     const phoneNotesOptions = Object.values(this.state.statusSymbols).map(
