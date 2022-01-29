@@ -143,7 +143,7 @@ export default class PhoneNumbers extends React.Component {
             { color: colors.grey },
           ]}
         >
-          {date} - {Language.translate(UTILS.phoneStatusLabel(symbol))}
+          {date} - {this.state.statusSymbols[UTILS.phoneStatusLabel(symbol)]}
         </Text>
         {note ? (
           <Text
