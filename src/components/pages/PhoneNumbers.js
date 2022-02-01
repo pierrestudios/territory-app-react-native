@@ -179,6 +179,11 @@ export default class PhoneNumbers extends React.Component {
       .then((resData) => {
         // console.log("then() resData", resData);
 
+        if ("error" in resData && resData.error) {
+          // Note: Note save error will not appear to user
+          // API will send log to Admin
+        }
+
         // Clear Errors
         this.setState(
           {
@@ -225,11 +230,10 @@ export default class PhoneNumbers extends React.Component {
       })
       .catch((e) => {
         // console.log("error", e);
-        const errorMessage = Language.translate("An error occured.");
         this.setState({
           errors: {
             ...this.state.errors,
-            message: errorMessage,
+            message: Language.translate("An error occured."),
           },
         });
       });
