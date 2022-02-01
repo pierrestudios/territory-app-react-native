@@ -112,14 +112,13 @@ export default class PhoneNumbers extends React.Component {
           {this.state.statusSymbols[UTILS.phoneStatusLabel(item.status)]}
         </Text>
         <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
-          {UTILS.formatDiacritics(item.name)}
+          {item.name ? UTILS.formatDiacritics(item.name) : ""}
         </Text>
       </View>
     </View>
   );
   renderListOfNotes = ({ noteId, date, note, symbol }) => {
     // console.log("renderListOfNotes", { noteId, symbol });
-    // return null;
 
     return (
       <View
@@ -130,28 +129,15 @@ export default class PhoneNumbers extends React.Component {
             marginLeft: 10,
             marginRight: 10,
             marginTop: 5,
-            // borderBottomWidth: 1,
             borderColor: colors["grey-lite"],
           },
         ]}
       >
-        <Text
-          numberOfLines={1}
-          style={[
-            // style["listings-date-text"],
-            // style["listings-notes-date-text"],
-            { color: colors.grey },
-          ]}
-        >
+        <Text numberOfLines={1} style={[{ color: colors.grey }]}>
           {date} - {this.state.statusSymbols[UTILS.phoneStatusLabel(symbol)]}
         </Text>
         {note ? (
-          <Text
-            style={[
-              // style["listings-notes-note-text--"],
-              { color: colors["grey-dark"] },
-            ]}
-          >
+          <Text style={[{ color: colors["grey-dark"] }]}>
             {UTILS.formatDiacritics(note)}
           </Text>
         ) : null}
@@ -179,11 +165,7 @@ export default class PhoneNumbers extends React.Component {
     // save note
     Data.postApiData(url, dataToSave)
       .then((resData) => {
-        console.log("then() resData", resData);
-        console.log(
-          "navigation > updateAddress",
-          navigation.getParam("updateAddress")
-        );
+        // console.log("then() resData", resData);
 
         // Clear Errors
         this.setState(
@@ -198,40 +180,33 @@ export default class PhoneNumbers extends React.Component {
           () => {
             // update current Address
             if (typeof navigation.getParam("updateAddress") === "function") {
-              let newNotes;
-              // editting notes?
-              if (noteId && resData) {
-                newNotes = addressData.notes
-                  .map((n) => {
-                    if (n.noteId === noteId) {
-                      return {
-                        ...n,
-                        date: dataToSave.date,
-                        note: dataToSave.note,
-                        retain: !!dataToSave.retain,
-                      };
-                    }
-
-                    return n;
-                  })
-                  .sort(UTILS.sortNotes);
-              }
-              // adding new notes?
-              else {
-                newNotes =
-                  (addressData.notes && addressData.notes.slice(0)) || [];
-                newNotes.push({
-                  note: resData.content,
-                  date: resData.date,
-                  noteId: resData.id,
-                  retain: resData.archived === 1,
-                  userId: resData.user_id,
-                });
-                newNotes = newNotes.sort(UTILS.sortNotes);
-              }
-
-              const newAddress = { ...addressData, notes: newNotes };
-              navigation.getParam("updateAddress")(newAddress);
+              const targetPhone = (
+                (addressData.phones && addressData.phones.slice(0)) ||
+                []
+              ).find((p) => p.phoneId === noteData.phoneId);
+              const newNotes =
+                (targetPhone &&
+                  targetPhone.notes &&
+                  targetPhone.notes.slice(0)) ||
+                [];
+              newNotes.push({
+                note: resData.content,
+                date: resData.date,
+                noteId: resData.id,
+                retain: resData.archived === 1,
+                userId: resData.user_id,
+              });
+              addressData.phones = addressData.phones.map((p) => {
+                if (p.phoneId === noteData.phoneId) {
+                  return {
+                    ...p,
+                    notes: newNotes.sort(UTILS.sortNotes),
+                  };
+                }
+                return p;
+              });
+              navigation.getParam("updateAddress")(addressData);
+              this.setState({ data: addressData });
             }
           }
         );
@@ -250,12 +225,14 @@ export default class PhoneNumbers extends React.Component {
   callPhoneNumber = ({ name, number, phoneId, territoryId, notes = [] }) => {
     const messageBlock = (
       <View>
+        {/* 
         <Text
           style={[style["text-strong"], { fontSize: 16, marginBottom: 10 }]}
         >
           {name} - {number}
         </Text>
-        {notes.map(this.renderListOfNotes)}
+        */}
+        {(notes && notes.slice(0, 1).map(this.renderListOfNotes)) || null}
       </View>
     );
     const phoneNotesOptions = Object.values(this.state.statusSymbols).map(
@@ -285,7 +262,7 @@ export default class PhoneNumbers extends React.Component {
 
     this.setState({
       noticeMessage: {
-        title: Language.translate("Call Now!"),
+        title: number, // Language.translate("Call Now!"),
         description: messageBlock,
         inputs: phoneNotesInputs,
         actions: [
@@ -374,6 +351,7 @@ export default class PhoneNumbers extends React.Component {
               return d;
             }
           );
+          // console.log("saveData()", { newNoticeMessageData });
 
           this.setState({
             noticeMessage: {

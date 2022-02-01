@@ -512,7 +512,7 @@ export default class TerritoryDetails extends React.Component {
       NavigationService.navigate("PhoneNumbers", {
         addressActive: data,
         territoryId: data.territoryId,
-        // updateAddress: this.updateAddress,
+        updateAddress: this.updateAddress,
       });
     });
   }
