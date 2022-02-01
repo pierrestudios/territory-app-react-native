@@ -104,15 +104,27 @@ export default class PhoneNumbers extends React.Component {
             },
           ]}
         >
-          {this.state.statusSymbols[UTILS.phoneStatusLabel(item.status)]}
+          {
+            this.state.statusSymbols[
+              UTILS.phoneStatusLabel(
+                item.status || (item.notes && item.notes[0].symbol) || ""
+              )
+            ]
+          }
         </Text>
       )}
       <View style={[style["listings-name"], style["address-listings-name"]]}>
         <Text style={[style["listings-date-text"]]}>
-          {this.state.statusSymbols[UTILS.phoneStatusLabel(item.status)]}
+          {
+            this.state.statusSymbols[
+              UTILS.phoneStatusLabel(
+                item.status || (item.notes && item.notes[0].symbol) || ""
+              )
+            ]
+          }
         </Text>
         <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
-          {item.name ? UTILS.formatDiacritics(item.name) : ""}
+          {UTILS.formatDiacritics(item.name)}
         </Text>
       </View>
     </View>
@@ -152,6 +164,7 @@ export default class PhoneNumbers extends React.Component {
     // Data
     const dataToSave = {
       symbol: noteData.noteSymbol,
+      nameChange: noteData.nameForPhone,
       content: noteData.comments || "",
       date: UTILS.getToday(),
     };
@@ -251,6 +264,14 @@ export default class PhoneNumbers extends React.Component {
         options: phoneNotesOptions,
         value: { value: "", label: Language.translate("Add Notes") },
         required: true,
+      },
+      {
+        label: name
+          ? Language.translate("Update Name")
+          : Language.translate("Enter Name"),
+        type: "TextInput",
+        name: "nameForPhone",
+        value: name,
       },
       {
         label: Language.translate("Additional Notes"),
