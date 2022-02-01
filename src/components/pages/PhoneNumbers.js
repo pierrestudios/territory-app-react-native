@@ -171,7 +171,6 @@ export default class PhoneNumbers extends React.Component {
 
     // Url
     const url = `territories/${territoryId}/phones/${noteData.phoneId}/notes/add`;
-
     // console.log("savePhoneNotes()", { url, dataToSave });
     // return Promise.resolve();
 
@@ -188,7 +187,6 @@ export default class PhoneNumbers extends React.Component {
               date: "",
               message: "",
             },
-            noticeMessage: null,
           },
           () => {
             // update current Address
@@ -205,6 +203,7 @@ export default class PhoneNumbers extends React.Component {
               newNotes.push({
                 note: resData.content,
                 date: resData.date,
+                symbol: resData.symbol,
                 noteId: resData.id,
                 retain: resData.archived === 1,
                 userId: resData.user_id,
@@ -219,8 +218,8 @@ export default class PhoneNumbers extends React.Component {
                 return p;
               });
               navigation.getParam("updateAddress")(addressData);
-              this.setState({ data: addressData });
-            }
+              this.setState({ data: addressData, noticeMessage: null });
+            } else this.setState({ noticeMessage: null });
           }
         );
       })
