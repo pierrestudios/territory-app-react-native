@@ -253,7 +253,7 @@ export const Switch = (props) => {
 };
 
 export const SelectBox = (props) => {
-  renderOptions = (options = []) => {
+  const renderOptions = (options = []) => {
     // If no Label option, add it
     if (!options.find((o) => o.value === "" && o.label === props.label)) {
       options.unshift({ value: "", label: props.label });
