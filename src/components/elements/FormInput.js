@@ -17,6 +17,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import style, { colors } from "../../styles/main";
 import { ButtonLink } from "./Button";
+import DatePickerAndroid from "./DatePickerAndroid";
 import SelectPickerIOS from "./SelectPickerIOS";
 import utils from "../../common/utils";
 
@@ -120,11 +121,11 @@ export const TextInput = (props) => {
 
 export const DateInput = (props) => {
   const dateValue =
-    typeof props.value.getMonth === "function"
+    props.value && typeof props.value.getMonth === "function"
       ? props.value
       : utils.getDateObject(props.value);
 
-  return (
+  return Platform.OS === "ios" ? (
     <DatePicker
       style_dis={{
         ...getStyles({
@@ -143,6 +144,8 @@ export const DateInput = (props) => {
         props.onChange({ date });
       }}
     />
+  ) : (
+    <DatePickerAndroid {...props} value={dateValue} />
   );
 };
 
