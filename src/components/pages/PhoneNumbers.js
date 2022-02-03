@@ -50,8 +50,6 @@ export default class PhoneNumbers extends React.Component {
 
     if (!data) return <Loading />;
 
-    console.log("render()", { phones: data.phones });
-
     const phoneNumbers = (
       <KeyboardAwareFlatList
         contentContainerStyle={[
