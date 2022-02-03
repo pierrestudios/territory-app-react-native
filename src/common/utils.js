@@ -104,6 +104,11 @@ export default {
   getDateObject(dateStr) {
     if (!dateStr) return new Date();
 
+    // If already Date object
+    if (typeof dateStr.getMonth === "function") {
+      return dateStr;
+    }
+
     const parts = dateStr.match(/(\d+)/g);
     return new Date(parts[0], parts[1] - 1, parts[2]);
   },
