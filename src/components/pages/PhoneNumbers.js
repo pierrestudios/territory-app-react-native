@@ -241,13 +241,6 @@ export default class PhoneNumbers extends React.Component {
   callPhoneNumber = ({ name, number, phoneId, territoryId, notes = [] }) => {
     const messageBlock = (
       <View>
-        {/* 
-        <Text
-          style={[style["text-strong"], { fontSize: 16, marginBottom: 10 }]}
-        >
-          {name} - {number}
-        </Text>
-        */}
         {(notes && notes.slice(0, 1).map(this.renderListOfNotes)) || null}
       </View>
     );
@@ -286,7 +279,7 @@ export default class PhoneNumbers extends React.Component {
 
     this.setState({
       noticeMessage: {
-        title: number, // Language.translate("Call Now!"),
+        title: number,
         description: messageBlock,
         inputs: phoneNotesInputs,
         actions: [
