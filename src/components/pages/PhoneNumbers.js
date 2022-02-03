@@ -50,6 +50,8 @@ export default class PhoneNumbers extends React.Component {
 
     if (!data) return <Loading />;
 
+    console.log("render()", { phones: data.phones });
+
     const phoneNumbers = (
       <KeyboardAwareFlatList
         contentContainerStyle={[
@@ -206,7 +208,7 @@ export default class PhoneNumbers extends React.Component {
                   targetPhone.notes.slice(0)) ||
                 [];
               newNotes.push({
-                note: resData.content,
+                note: resData.content || "",
                 date: resData.date,
                 symbol: resData.symbol,
                 noteId: resData.id,
