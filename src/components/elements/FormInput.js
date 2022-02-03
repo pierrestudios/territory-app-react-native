@@ -127,18 +127,6 @@ export const DateInput = (props) => {
 
   return Platform.OS === "ios" ? (
     <DatePicker
-      style_dis={{
-        ...getStyles({
-          ...props,
-          baseStyle: style["date-input-wrapper"],
-        }),
-        ...{
-          dateText: {
-            fontSize: 16,
-          },
-          dateInput: style["date-input"],
-        },
-      }}
       value={dateValue}
       onChange={(e, date) => {
         props.onChange({ date });
