@@ -200,11 +200,13 @@ export default class PhoneNumbers extends React.Component {
                 (addressData.phones && addressData.phones.slice(0)) ||
                 []
               ).find((p) => p.phoneId === noteData.phoneId);
+
               const newNotes =
                 (targetPhone &&
                   targetPhone.notes &&
                   targetPhone.notes.slice(0)) ||
                 [];
+
               newNotes.push({
                 note: resData.content || "",
                 date: resData.date,
@@ -213,10 +215,13 @@ export default class PhoneNumbers extends React.Component {
                 retain: resData.archived === 1,
                 userId: resData.user_id,
               });
+
               addressData.phones = addressData.phones.map((p) => {
                 if (p.phoneId === noteData.phoneId) {
                   return {
                     ...p,
+                    // Note: Update Phone name for UI
+                    name: noteData.nameForPhone || p.name,
                     notes: newNotes.sort(UTILS.sortNotes),
                   };
                 }
