@@ -84,52 +84,86 @@ export default class PhoneNumbers extends React.Component {
       <Text />
     </View>
   );
-  renderListOfPhones = ({ item }) => (
-    <View style={[style["listings-item"]]}>
-      {this.state.user.isManager ||
-      (this.state.user.isEditor && UTILS.canMakeCall(item)) ? (
-        <ButtonLink
-          customStyle={[style["listings-notes"], style["listings-notes-edit"]]}
-          onPress={() => this.callPhoneNumber(item)}
-        >
-          {Language.translate("Call Now!")}
-        </ButtonLink>
-      ) : (
-        <Text
-          style={[
-            style["listings-notes"],
+  renderListOfPhones = ({ item }) => {
+    item.hasWarning = this.hasWarning(item);
+
+    return (
+      <View
+        style={[
+          style["listings-item"],
+          item.hasWarning ? style["listings-item-warning"] : null,
+        ]}
+      >
+        {this.state.user.isManager ||
+        (this.state.user.isEditor && UTILS.canMakeCall(item)) ? (
+          <ButtonLink
+            customStyle={[
+              style["listings-notes"],
+              style["listings-notes-edit"],
+            ]}
+            onPress={() => this.callPhoneNumber(item)}
+          >
+            {Language.translate("Call Now!")}
+          </ButtonLink>
+        ) : (
+          <Text
+            style={[
+              style["listings-notes"],
+              {
+                marginTop: 10,
+                color: item.hasWarning ? colors.white : colors.grey,
+              },
+            ]}
+          >
             {
-              marginTop: 10,
-              color: item.status === 1 ? colors.red : colors.grey,
-            },
-          ]}
-        >
-          {
-            this.state.statusSymbols[
-              UTILS.phoneStatusLabel(
-                item.status || (item.notes && item.notes[0].symbol) || ""
-              )
-            ]
-          }
-        </Text>
-      )}
-      <View style={[style["listings-name"], style["address-listings-name"]]}>
-        <Text style={[style["listings-date-text"]]}>
-          {(!item.status && item.notes && `${item.notes[0].date} - `) || ""}
-          {
-            this.state.statusSymbols[
-              UTILS.phoneStatusLabel(
-                item.status || (item.notes && item.notes[0].symbol) || ""
-              )
-            ]
-          }
-        </Text>
-        <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
-          {UTILS.formatDiacritics(item.name)}
-        </Text>
+              this.state.statusSymbols[
+                UTILS.phoneStatusLabel(
+                  item.status || (item.notes && item.notes[0].symbol) || ""
+                )
+              ]
+            }
+          </Text>
+        )}
+        <View style={[style["listings-name"], style["address-listings-name"]]}>
+          <Text
+            style={[
+              style["listings-date-text"],
+              { ...(item.hasWarning ? style["text-white"] : null) },
+            ]}
+          >
+            {(!item.status && item.notes && `${item.notes[0].date} - `) || ""}
+            {
+              this.state.statusSymbols[
+                UTILS.phoneStatusLabel(
+                  item.status || (item.notes && item.notes[0].symbol) || ""
+                )
+              ]
+            }
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={[
+              style["listings-notes-note-text"],
+              { ...(item.hasWarning ? style["text-white"] : null) },
+            ]}
+          >
+            {UTILS.formatDiacritics(item.name)}
+          </Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
+  hasWarning = ({ notes, status }) => {
+    if (status === UTILS.phoneStatuses.STATUS_DO_NOT_CALL) {
+      return true;
+    }
+
+    if (!notes) {
+      return false;
+    }
+
+    return notes[0].symbol === UTILS.phoneStatuses.STATUS_DO_NOT_CALL;
+  };
   renderListOfNotes = ({ noteId, date, note, symbol }) => {
     // console.log("renderListOfNotes", { noteId, symbol });
 
