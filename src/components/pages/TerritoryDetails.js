@@ -487,15 +487,21 @@ export default class TerritoryDetails extends React.Component {
     );
   }
   filterAddresses = (a) => {
+    // Note: for modeOption: "phone", if no phones, show ONLY for Managers
+    if (
+      this.state.modeOption === "phone" &&
+      (!a.phones || !a.phones.length) &&
+      !this.state.user.isManager
+    ) {
+      return false;
+    }
+
+    // Note: Unless filterType: "all", must match filter
     if (
       !(this.state.filterType === "all") &&
       !this.matchFilterType(a, this.state.filterType)
     ) {
       return false;
-    }
-
-    if (this.state.modeOption === "phone") {
-      return (a.phones && a.phones.length) || !!this.state.user.isManager;
     }
 
     return !a.inActive || !!this.state.user.isManager;
@@ -642,7 +648,15 @@ export default class TerritoryDetails extends React.Component {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   matchFilterType = (address, filterType) => {
-    // TODO: modifiy for Phone notes
+    // Note: For now, No Filter for Phone notes
+    if (
+      this.state.modeOption === "phone" &&
+      !!address.phones &&
+      !!address.phones.length
+    ) {
+      // address.phones.forEach((p) => {});
+    }
+
     if (!address.notes || !address.notes.length) {
       return filterType === "not-done";
     }
