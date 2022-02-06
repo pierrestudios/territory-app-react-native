@@ -352,14 +352,51 @@ export default class PhoneNumbers extends React.Component {
                   newNoteData[p.name] = p.value.value;
                 }
               });
-
               // console.log({ newNoteData });
-              if (!newNoteData.noteSymbol && !(newNoteData.noteSymbol === 0)) {
+
+              // Check for errors
+              if (
+                !newNoteData.noteSymbol &&
+                !(
+                  newNoteData.noteSymbol ===
+                  UTILS.phoneStatuses.STATUS_UNVERIFIED
+                )
+              ) {
                 const newData = this.state.noticeMessage.inputs.map((d) => ({
                   ...d,
                   error:
                     d.name === "noteSymbol"
                       ? Language.translate("Please add notes")
+                      : "",
+                }));
+
+                this.setState({
+                  noticeMessage: {
+                    ...this.state.noticeMessage,
+                    inputs: newData,
+                  },
+                  shouldRender: "Modal",
+                });
+
+                return;
+              }
+
+              // Check for DO NOT CALL (require addl notes)
+              if (
+                !newNoteData.comments &&
+                newNoteData.noteSymbol ===
+                  UTILS.phoneStatuses.STATUS_DO_NOT_CALL
+              ) {
+                const newData = this.state.noticeMessage.inputs.map((d) => ({
+                  ...d,
+                  error:
+                    d.name === "comments"
+                      ? Language.translate("Add additional notes for ") +
+                        this.state.statusSymbols[
+                          UTILS.phoneStatusLabel(
+                            UTILS.phoneStatuses.STATUS_DO_NOT_CALL
+                          )
+                        ]
                       : "",
                 }));
 
