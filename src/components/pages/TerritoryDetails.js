@@ -110,6 +110,15 @@ export default class TerritoryDetails extends React.Component {
     const listings = (
       <FlatList
         contentContainerStyle={style.listings}
+        ListEmptyComponent={() => (
+          <View style={[style["listings-item"]]}>
+            <Text>
+              {state.modeOption === "phone"
+                ? Language.translate("No Phone")
+                : Language.translate("No Address")}
+            </Text>
+          </View>
+        )}
         data={state.data.addresses
           .filter(this.filterAddresses)
           .sort(UTILS.sortAddress)}
