@@ -115,6 +115,7 @@ export default class PhoneNumbers extends React.Component {
       )}
       <View style={[style["listings-name"], style["address-listings-name"]]}>
         <Text style={[style["listings-date-text"]]}>
+          {(!item.status && item.notes && `${item.notes[0].date} - `) || ""}
           {
             this.state.statusSymbols[
               UTILS.phoneStatusLabel(
