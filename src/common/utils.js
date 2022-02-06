@@ -292,6 +292,13 @@ export default {
     { html: "&Iuml;", diacritic: "Ï" },
     { html: "&iuml;", diacritic: "ï" },
   ],
+  phoneStatuses: {
+    STATUS_UNVERIFIED: 0,
+    STATUS_VALID: 1,
+    STATUS_NOT_CURRENT_LANGUAGE: 2,
+    STATUS_NOT_IN_SERVICE: 3,
+    STATUS_DO_NOT_CALL: 4,
+  },
   phoneStatusLabel(status = 0) {
     const statusInx = parseInt(status);
 
