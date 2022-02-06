@@ -111,12 +111,7 @@ export default class TerritoryDetails extends React.Component {
       <FlatList
         contentContainerStyle={style.listings}
         data={state.data.addresses
-          .filter(
-            (a) =>
-              (!a.inActive || !!state.user.isManager) &&
-              (state.filterType === "all" ||
-                this.matchFilterType(a, state.filterType))
-          )
+          .filter(this.filterAddresses)
           .sort(UTILS.sortAddress)}
         keyExtractor={(item) => item.addressId.toString()}
         renderItem={({ item }) => {
@@ -491,6 +486,20 @@ export default class TerritoryDetails extends React.Component {
       </View>
     );
   }
+  filterAddresses = (a) => {
+    if (
+      !(this.state.filterType === "all") &&
+      !this.matchFilterType(a, this.state.filterType)
+    ) {
+      return false;
+    }
+
+    if (this.state.modeOption === "phone") {
+      return (a.phones && a.phones.length) || !!this.state.user.isManager;
+    }
+
+    return !a.inActive || !!this.state.user.isManager;
+  };
   hasWarning = (address) => {
     const warningTerms = ["not call", "frape"];
     for (let t = 0; t < warningTerms.length; t++) {
@@ -633,6 +642,7 @@ export default class TerritoryDetails extends React.Component {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   matchFilterType = (address, filterType) => {
+    // TODO: modifiy for Phone notes
     if (!address.notes || !address.notes.length) {
       return filterType === "not-done";
     }
