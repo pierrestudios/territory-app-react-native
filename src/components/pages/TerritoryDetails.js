@@ -74,8 +74,8 @@ export default class TerritoryDetails extends React.Component {
           if (!!data && !!data.territoryId) {
             const streetsList = UTILS.getStreetsList(data.addresses);
             this.setState({
-              data: data,
-              user: user,
+              data,
+              user,
               notesSymbolsLang: user.lang,
               addressActive: null,
               streetsList: streetsList,
@@ -657,17 +657,37 @@ export default class TerritoryDetails extends React.Component {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   matchFilterType = (address, filterType) => {
-    // Note: For now, No Filter for Phone notes
     if (
       this.state.modeOption === "phone" &&
       !!address.phones &&
       !!address.phones.length
     ) {
-      // address.phones.forEach((p) => {});
+      if (filterType === "not-done") {
+        return address.phones.filter(
+          (p) =>
+            !p.notes ||
+            p.notes[0].symbol === UTILS.phoneStatuses.STATUS_UNVERIFIED
+        ).length;
+      }
+
+      return (
+        address.phones.filter(
+          (p) =>
+            p.notes.length &&
+            parseInt(p.notes[0].symbol) ===
+              UTILS.phoneStatuses.STATUS_UNVERIFIED
+        ).length === 0
+      );
+    } else if (this.state.modeOption === "phone") {
+      return false;
     }
 
     if (!address.notes || !address.notes.length) {
       return filterType === "not-done";
+    }
+
+    if (this.hasWarning(address)) {
+      return false;
     }
 
     const notesSymbols =
