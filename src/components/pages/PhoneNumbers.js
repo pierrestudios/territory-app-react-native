@@ -89,12 +89,14 @@ export default class PhoneNumbers extends React.Component {
   );
   renderListOfPhones = ({ item }) => {
     item.hasWarning = this.hasWarning(item);
+    item.isCallable = this.isCallable(item);
 
     return (
       <View
         style={[
           style["listings-item"],
           item.hasWarning ? style["listings-item-warning"] : null,
+          item.isCallable ? null : style["listings-item-inactive"],
         ]}
       >
         {this.state.user.isManager ||
@@ -103,7 +105,13 @@ export default class PhoneNumbers extends React.Component {
             customStyle={[
               style["listings-notes"],
               style["listings-notes-edit"],
+              item.isCallable
+                ? {
+                    backgroundColor: colors["territory-blue"],
+                  }
+                : null,
             ]}
+            textColorWhite={item.isCallable}
             onPress={() => this.callPhoneNumber(item)}
           >
             {Language.translate("Call Now!")}
@@ -166,6 +174,23 @@ export default class PhoneNumbers extends React.Component {
     }
 
     return notes[0].symbol === UTILS.phoneStatuses.STATUS_DO_NOT_CALL;
+  };
+  isCallable = ({ notes, status }) => {
+    if (
+      status === UTILS.phoneStatuses.STATUS_UNVERIFIED ||
+      status === UTILS.phoneStatuses.STATUS_VALID
+    ) {
+      return true;
+    }
+
+    if (!notes) {
+      return false;
+    }
+
+    return (
+      notes[0].symbol === UTILS.phoneStatuses.STATUS_UNVERIFIED ||
+      notes[0].symbol === UTILS.phoneStatuses.STATUS_VALID
+    );
   };
   renderListOfNotes = ({ noteId, date, note, symbol }) => {
     // console.log("renderListOfNotes", { noteId, symbol });
