@@ -34,7 +34,10 @@ export default class PhoneNumbers extends React.Component {
         statusSymbols,
       });
 
-      // console.log({ statusSymbols, address: navigation.getParam("addressActive") });
+      console.log({
+        statusSymbols,
+        // address: navigation.getParam("addressActive"),
+      });
     }
   }
   componentDidUpdate(prevProps, prevState) {
@@ -118,7 +121,7 @@ export default class PhoneNumbers extends React.Component {
             {
               this.state.statusSymbols[
                 UTILS.phoneStatusLabel(
-                  item.status || (item.notes && item.notes[0].symbol) || ""
+                  item.status || (item.notes && item.notes[0].symbol) || 0
                 )
               ]
             }
@@ -135,7 +138,7 @@ export default class PhoneNumbers extends React.Component {
             {
               this.state.statusSymbols[
                 UTILS.phoneStatusLabel(
-                  item.status || (item.notes && item.notes[0].symbol) || ""
+                  item.status || (item.notes && item.notes[0].symbol) || 0
                 )
               ]
             }
