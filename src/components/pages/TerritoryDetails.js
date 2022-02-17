@@ -1,6 +1,7 @@
 import React from "react";
 import { FlatList, TouchableOpacity, Text, View, Share } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Swipeout from "react-native-swipeout";
@@ -12,7 +13,7 @@ import NavigationService from "../../common/nav-service";
 import getSiteSetting from "../../common/settings";
 
 import Loading from "../elements/Loading";
-import { ButtonLink, ButtonHeader } from "../elements/Button";
+import { ButtonLink, Link, ButtonHeader } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
 import { Checkbox, RadioBox } from "../elements/FormInput";
 
@@ -470,6 +471,60 @@ export default class TerritoryDetails extends React.Component {
               }))}
               onChange={this.saveFilterType}
             />
+            <Link
+              onPress={() => {
+                this.saveFilterType({
+                  option: {
+                    value: "not-done-at-all",
+                  },
+                });
+              }}
+              customStyle={[
+                style["heading-button-link"],
+                {
+                  height: 60,
+
+                  borderColor: colors["grey-lite"],
+                  borderWidth: 1,
+                },
+                state.filterType === "not-done-at-all"
+                  ? { backgroundColor: colors["territory-blue"] }
+                  : null,
+              ]}
+              customView={
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "stretch",
+                    justifyContent: "center",
+                    paddingBottom: 10,
+                    paddingTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color:
+                        state.filterType === "not-done-at-all"
+                          ? colors.white
+                          : colors["grey-dark"],
+                      paddingTop: 5,
+                    }}
+                  >
+                    {Language.translate("Address & phone not worked") + "  "}
+                  </Text>
+                  <FontAwesome
+                    {...{
+                      name: "check-circle",
+                      size: 24,
+                      color:
+                        state.filterType === "not-done-at-all"
+                          ? colors.white
+                          : colors["grey-lite"],
+                    }}
+                  />
+                </View>
+              }
+            ></Link>
           </View>
         </Modal>
 
@@ -496,6 +551,13 @@ export default class TerritoryDetails extends React.Component {
     );
   }
   filterAddresses = (a) => {
+    // Filter "not-done-at-all", search for not worked
+    if (this.state.filterType === "not-done-at-all") {
+      const hasPhon = this.matchFilterType(a, "not-done", "phone");
+      const hasAddr = this.matchFilterType(a, "not-done", "home");
+      return hasPhon && hasAddr;
+    }
+
     // Note: for modeOption: "phone", if no phones, show ONLY for Managers
     if (
       this.state.modeOption === "phone" &&
@@ -656,12 +718,8 @@ export default class TerritoryDetails extends React.Component {
   saveNotesSymbolsLang = (selectedLang) => {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
-  matchFilterType = (address, filterType) => {
-    if (
-      this.state.modeOption === "phone" &&
-      !!address.phones &&
-      !!address.phones.length
-    ) {
+  matchFilterType = (address, filterType, mode = this.state.modeOption) => {
+    if (mode === "phone" && !!address.phones && !!address.phones.length) {
       if (filterType === "not-done") {
         return address.phones.filter(
           (p) =>
@@ -678,7 +736,7 @@ export default class TerritoryDetails extends React.Component {
               UTILS.phoneStatuses.STATUS_UNVERIFIED
         ).length === 0
       );
-    } else if (this.state.modeOption === "phone") {
+    } else if (mode === "phone") {
       return false;
     }
 

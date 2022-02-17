@@ -34,10 +34,7 @@ export default class PhoneNumbers extends React.Component {
         statusSymbols,
       });
 
-      console.log({
-        statusSymbols,
-        // address: navigation.getParam("addressActive"),
-      });
+      // console.log({ statusSymbols, address: navigation.getParam("addressActive"), });
     }
   }
   componentDidUpdate(prevProps, prevState) {
