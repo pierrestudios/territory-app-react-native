@@ -172,21 +172,18 @@ export default class PhoneNumbers extends React.Component {
 
     return notes[0].symbol === UTILS.phoneStatuses.STATUS_DO_NOT_CALL;
   };
-  isCallable = ({ notes, status }) => {
-    if (
-      status === UTILS.phoneStatuses.STATUS_UNVERIFIED ||
-      status === UTILS.phoneStatuses.STATUS_VALID
-    ) {
-      return true;
-    }
-
-    if (!notes) {
-      return false;
+  isCallable = ({ notes = [], status = 0 }) => {
+    if (notes.length) {
+      return (
+        notes[0].symbol === UTILS.phoneStatuses.STATUS_UNVERIFIED ||
+        notes[0].symbol === UTILS.phoneStatuses.STATUS_VALID
+      );
     }
 
     return (
-      notes[0].symbol === UTILS.phoneStatuses.STATUS_UNVERIFIED ||
-      notes[0].symbol === UTILS.phoneStatuses.STATUS_VALID
+      status === "" ||
+      status === UTILS.phoneStatuses.STATUS_UNVERIFIED ||
+      status === UTILS.phoneStatuses.STATUS_VALID
     );
   };
   renderListOfNotes = ({ noteId, date, note, symbol }) => {
