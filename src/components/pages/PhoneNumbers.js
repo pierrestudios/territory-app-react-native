@@ -174,17 +174,18 @@ export default class PhoneNumbers extends React.Component {
   };
   isCallable = ({ notes = [], status = 0 }) => {
     if (notes.length) {
+      const fourMonthsAgo = new Date(
+        new Date().setDate(UTILS.getDateObject().getDate() - 120)
+      );
       return (
+        notes[0].symbol === "" ||
         notes[0].symbol === UTILS.phoneStatuses.STATUS_UNVERIFIED ||
-        notes[0].symbol === UTILS.phoneStatuses.STATUS_VALID
+        (notes[0].symbol === UTILS.phoneStatuses.STATUS_VALID &&
+          UTILS.getDateObject(notes[0].date) < fourMonthsAgo)
       );
     }
 
-    return (
-      status === "" ||
-      status === UTILS.phoneStatuses.STATUS_UNVERIFIED ||
-      status === UTILS.phoneStatuses.STATUS_VALID
-    );
+    return status === "" || status === UTILS.phoneStatuses.STATUS_UNVERIFIED;
   };
   renderListOfNotes = ({ noteId, date, note, symbol }) => {
     // console.log("renderListOfNotes", { noteId, symbol });
