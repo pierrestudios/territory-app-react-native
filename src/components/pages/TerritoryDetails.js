@@ -1,6 +1,7 @@
 import React from "react";
 import { FlatList, TouchableOpacity, Text, View, Share } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Swipeout from "react-native-swipeout";
@@ -12,7 +13,7 @@ import NavigationService from "../../common/nav-service";
 import getSiteSetting from "../../common/settings";
 
 import Loading from "../elements/Loading";
-import { ButtonLink, ButtonHeader } from "../elements/Button";
+import { ButtonLink, Link, ButtonHeader } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
 import { Checkbox, RadioBox } from "../elements/FormInput";
 
@@ -56,6 +57,7 @@ export default class TerritoryDetails extends React.Component {
     selectedAddresses: [],
     selectorOpened: false,
     addressesFilterOpened: false,
+    modeOptionsOpened: false,
     filterType: "all",
   };
   componentDidMount() {
@@ -73,8 +75,8 @@ export default class TerritoryDetails extends React.Component {
           if (!!data && !!data.territoryId) {
             const streetsList = UTILS.getStreetsList(data.addresses);
             this.setState({
-              data: data,
-              user: user,
+              data,
+              user,
               notesSymbolsLang: user.lang,
               addressActive: null,
               streetsList: streetsList,
@@ -109,13 +111,17 @@ export default class TerritoryDetails extends React.Component {
     const listings = (
       <FlatList
         contentContainerStyle={style.listings}
+        ListEmptyComponent={() => (
+          <View style={[style["listings-item"]]}>
+            <Text>
+              {state.modeOption === "phone"
+                ? Language.translate("No Phone")
+                : Language.translate("No Address")}
+            </Text>
+          </View>
+        )}
         data={state.data.addresses
-          .filter(
-            (a) =>
-              (!a.inActive || !!state.user.isManager) &&
-              (state.filterType === "all" ||
-                this.matchFilterType(a, state.filterType))
-          )
+          .filter(this.filterAddresses)
           .sort(UTILS.sortAddress)}
         keyExtractor={(item) => item.addressId.toString()}
         renderItem={({ item }) => {
@@ -165,55 +171,84 @@ export default class TerritoryDetails extends React.Component {
                     />
                   </View>
                 ) : null}
-                <TouchableOpacity
-                  style={[style["listings-notes"]]}
-                  onPress={() =>
-                    state.user.isNoteEditor
-                      ? this.viewNotes(item)
-                      : console.log("Not Note Editor")
-                  }
-                >
-                  {item.notes && item.notes.length
-                    ? [
+                {state.modeOption === "phone" ? (
+                  <View style={[style["listings-notes"]]}>
+                    {item.phones && item.phones.length ? (
+                      <ButtonLink
+                        key="listings-add-notes"
+                        customStyle={[style["add-notes"]]}
+                        onPress={() => {
+                          this.viewPhoneNumbers(item);
+                        }}
+                      >
                         <Text
-                          key="listings-date"
-                          style={[
-                            style["listings-date-text"],
-                            style["listings-notes-date-text"],
-                            item.hasWarning ? style["text-white"] : null,
-                          ]}
+                          style={[item.hasWarning ? style["text-white"] : null]}
                         >
-                          {item.notes[0].date}
-                        </Text>,
-                        <Text
-                          key="listings-notes"
-                          numberOfLines={1}
-                          style={[
-                            style["listings-notes-note-text"],
-                            item.hasWarning ? style["text-white"] : null,
-                          ]}
-                        >
-                          {UTILS.formatDiacritics(item.notes[0].note)}
-                        </Text>,
-                      ]
-                    : [
-                        state.user.isNoteEditor ? (
-                          <ButtonLink
-                            key="listings-add-notes"
-                            customStyle={[style["add-notes"]]}
-                            onPress={() => this.viewNotes(item)}
+                          {Language.translate("Phone")}
+                        </Text>
+                      </ButtonLink>
+                    ) : (
+                      <Text
+                        style={{
+                          marginTop: 10,
+                          color: colors.grey,
+                        }}
+                      >
+                        {Language.translate("No Phone")}
+                      </Text>
+                    )}
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    style={[style["listings-notes"]]}
+                    onPress={() =>
+                      state.user.isNoteEditor
+                        ? this.viewNotes(item)
+                        : console.log("Not Note Editor")
+                    }
+                  >
+                    {item.notes && item.notes.length
+                      ? [
+                          <Text
+                            key="listings-date"
+                            style={[
+                              style["listings-date-text"],
+                              style["listings-notes-date-text"],
+                              item.hasWarning ? style["text-white"] : null,
+                            ]}
                           >
-                            <Text
-                              style={[
-                                item.hasWarning ? style["text-white"] : null,
-                              ]}
+                            {item.notes[0].date}
+                          </Text>,
+                          <Text
+                            key="listings-notes"
+                            numberOfLines={1}
+                            style={[
+                              style["listings-notes-note-text"],
+                              item.hasWarning ? style["text-white"] : null,
+                            ]}
+                          >
+                            {UTILS.formatDiacritics(item.notes[0].note)}
+                          </Text>,
+                        ]
+                      : [
+                          state.user.isNoteEditor ? (
+                            <ButtonLink
+                              key="listings-add-notes"
+                              customStyle={[style["add-notes"]]}
+                              onPress={() => this.viewNotes(item)}
                             >
-                              {Language.translate("Add Notes")}
-                            </Text>
-                          </ButtonLink>
-                        ) : null,
-                      ]}
-                </TouchableOpacity>
+                              <Text
+                                style={[
+                                  item.hasWarning ? style["text-white"] : null,
+                                ]}
+                              >
+                                {Language.translate("Add Notes")}
+                              </Text>
+                            </ButtonLink>
+                          ) : null,
+                        ]}
+                  </TouchableOpacity>
+                )}
                 <TouchableOpacity
                   style={[
                     style["listings-name"],
@@ -266,6 +301,19 @@ export default class TerritoryDetails extends React.Component {
       { value: "not-done", label: Language.translate("Not worked") },
     ];
 
+    const modeOptions = [
+      {
+        value: "home",
+        label: Language.translate("Addresses"),
+        "icon-name": "home",
+      },
+      {
+        value: "phone",
+        label: Language.translate("Phone"),
+        "icon-name": "phone",
+      },
+    ];
+
     return (
       <View style={[style.section, style.content]}>
         <View style={style["territory-heading"]}>
@@ -299,6 +347,20 @@ export default class TerritoryDetails extends React.Component {
           </ButtonLink>
 
           <ButtonLink
+            onPress={this.showModeOptions}
+            customStyle={[
+              style["heading-button-link"],
+              {
+                borderColor: colors["grey-lite"],
+                borderWidth: 1,
+                backgroundColor: colors["off-white"],
+              },
+            ]}
+          >
+            {Language.translate("Mode")}
+          </ButtonLink>
+
+          <ButtonLink
             onPress={this.showAddressesFilter}
             customStyle={[
               style["heading-button-link"],
@@ -327,7 +389,7 @@ export default class TerritoryDetails extends React.Component {
                   size={16}
                   color={colors["grey"]}
                 />
-                <Text
+                {/*<Text
                   style={{
                     padding: 0,
                     marginTop: -2,
@@ -336,7 +398,7 @@ export default class TerritoryDetails extends React.Component {
                   }}
                 >
                   {Language.translate("Filter")}
-                </Text>
+                </Text>*/}
               </View>
             }
           />
@@ -409,11 +471,112 @@ export default class TerritoryDetails extends React.Component {
               }))}
               onChange={this.saveFilterType}
             />
+            <Link
+              onPress={() => {
+                this.saveFilterType({
+                  option: {
+                    value: "not-done-at-all",
+                  },
+                });
+              }}
+              customStyle={[
+                style["heading-button-link"],
+                {
+                  height: 60,
+
+                  borderColor: colors["grey-lite"],
+                  borderWidth: 1,
+                },
+                state.filterType === "not-done-at-all"
+                  ? { backgroundColor: colors["territory-blue"] }
+                  : null,
+              ]}
+              customView={
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "stretch",
+                    justifyContent: "center",
+                    paddingBottom: 10,
+                    paddingTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color:
+                        state.filterType === "not-done-at-all"
+                          ? colors.white
+                          : colors["grey-dark"],
+                      paddingTop: 5,
+                    }}
+                  >
+                    {Language.translate("Address & phone not worked") + "  "}
+                  </Text>
+                  <FontAwesome
+                    {...{
+                      name: "check-circle",
+                      size: 24,
+                      color:
+                        state.filterType === "not-done-at-all"
+                          ? colors.white
+                          : colors["grey-lite"],
+                    }}
+                  />
+                </View>
+              }
+            ></Link>
+          </View>
+        </Modal>
+
+        <Modal
+          animationType="fade"
+          visible={this.state.modeOptionsOpened}
+          onCloseModal={() => {
+            this.setState({ modeOptionsOpened: false });
+          }}
+        >
+          <View style={[styles["modal-view"], {}]}>
+            <RadioBox
+              name="mode"
+              label={Language.translate("Territory Mode")}
+              options={modeOptions.map((m) => ({
+                ...m,
+                active: m.value === state.modeOption,
+              }))}
+              onChange={this.saveModeOption}
+            />
           </View>
         </Modal>
       </View>
     );
   }
+  filterAddresses = (a) => {
+    // Filter "not-done-at-all", search for not worked
+    if (this.state.filterType === "not-done-at-all") {
+      const hasPhon = this.matchFilterType(a, "not-done", "phone");
+      const hasAddr = this.matchFilterType(a, "not-done", "home");
+      return hasPhon && hasAddr;
+    }
+
+    // Note: for modeOption: "phone", if no phones, show ONLY for Managers
+    if (
+      this.state.modeOption === "phone" &&
+      (!a.phones || !a.phones.length) &&
+      !this.state.user.isManager
+    ) {
+      return false;
+    }
+
+    // Note: Unless filterType: "all", must match filter
+    if (
+      !(this.state.filterType === "all") &&
+      !this.matchFilterType(a, this.state.filterType)
+    ) {
+      return false;
+    }
+
+    return !a.inActive || !!this.state.user.isManager;
+  };
   hasWarning = (address) => {
     const warningTerms = ["not call", "frape"];
     for (let t = 0; t < warningTerms.length; t++) {
@@ -430,6 +593,15 @@ export default class TerritoryDetails extends React.Component {
 
     return false;
   };
+  viewPhoneNumbers(data) {
+    this.setState({ addressActive: data }, () => {
+      NavigationService.navigate("PhoneNumbers", {
+        addressActive: data,
+        territoryId: data.territoryId,
+        updateAddress: this.updateAddress,
+      });
+    });
+  }
   viewNotes(data) {
     // TODO: Find the source of this.props.entity
 
@@ -532,12 +704,48 @@ export default class TerritoryDetails extends React.Component {
       addressesFilterOpened: false,
     });
   };
+  showModeOptions = () => {
+    this.setState({
+      modeOptionsOpened: this.state.modeOptionsOpened === false,
+    });
+  };
+  saveModeOption = (data) => {
+    this.setState({
+      modeOption: data.option.value,
+      modeOptionsOpened: false,
+    });
+  };
   saveNotesSymbolsLang = (selectedLang) => {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
-  matchFilterType = (address, filterType) => {
+  matchFilterType = (address, filterType, mode = this.state.modeOption) => {
+    if (mode === "phone" && !!address.phones && !!address.phones.length) {
+      if (filterType === "not-done") {
+        return address.phones.filter(
+          (p) =>
+            !p.notes ||
+            p.notes[0].symbol === UTILS.phoneStatuses.STATUS_UNVERIFIED
+        ).length;
+      }
+
+      return (
+        address.phones.filter(
+          (p) =>
+            p.notes.length &&
+            parseInt(p.notes[0].symbol) ===
+              UTILS.phoneStatuses.STATUS_UNVERIFIED
+        ).length === 0
+      );
+    } else if (mode === "phone") {
+      return false;
+    }
+
     if (!address.notes || !address.notes.length) {
       return filterType === "not-done";
+    }
+
+    if (this.hasWarning(address)) {
+      return false;
     }
 
     const notesSymbols =

@@ -29,6 +29,7 @@ import WebViewExternal from "./src/components/pages/WebViewExternal";
 import WebViewTerritoryMap from "./src/components/pages/WebViewTerritoryMap";
 
 import { colors } from "./src/styles/main";
+import PhoneNumbers from "./src/components/pages/PhoneNumbers";
 
 const App = createStackNavigator(
   {
@@ -53,6 +54,7 @@ const App = createStackNavigator(
     AddressAdd: { screen: AddressAdd },
     PublisherAssignTerritory: { screen: PublisherAssignTerritory },
     Notes: { screen: Notes },
+    PhoneNumbers: { screen: PhoneNumbers },
     WebViewApi: { screen: WebViewApi },
     WebViewExternal: { screen: WebViewExternal },
     WebViewTerritoryMap: { screen: WebViewTerritoryMap },

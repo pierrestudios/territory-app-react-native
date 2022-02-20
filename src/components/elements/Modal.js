@@ -51,22 +51,28 @@ class AnimatedModal extends React.Component {
             }}
           >
             {this.props.customButtons ? (
-              this.props.customButtons.map((buttonProps) => (
-                <Link
-                  key={`${buttonProps.label}-key`}
-                  customStyle={[
-                    {
-                      borderColor: colors["grey-lite"],
-                      borderWidth: 1,
-                      borderRadius: 5,
-                    },
-                    buttonProps.buttonStyle,
-                  ]}
-                  onPress={buttonProps.onPress}
-                >
-                  <Text style={buttonProps.textStyle}>{buttonProps.label}</Text>
-                </Link>
-              ))
+              this.props.customButtons.map((buttonProps) => {
+                return (
+                  <Link
+                    key={`${buttonProps.label}-key`}
+                    customStyle={[
+                      {
+                        borderColor: colors["grey-lite"],
+                        borderWidth: 1,
+                        borderRadius: 5,
+                      },
+                      buttonProps.buttonStyle,
+                    ]}
+                    onPress={buttonProps.onPress}
+                  >
+                    {buttonProps.iconBefore}
+                    <Text style={buttonProps.textStyle}>
+                      {buttonProps.label}
+                    </Text>
+                    {buttonProps.iconAfter}
+                  </Link>
+                );
+              })
             ) : (
               <Link
                 customStyle={{

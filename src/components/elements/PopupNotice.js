@@ -87,10 +87,9 @@ export default class PopupNotice extends React.Component {
     const getCustomButtons = (data) => {
       if (data.actions) {
         return data.actions.map((a) => ({
-          label: a.label,
+          ...a,
           onPress: a.action,
           buttonStyle: a.style,
-          textStyle: a.textStyle,
         }));
       }
     };

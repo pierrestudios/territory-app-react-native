@@ -174,5 +174,26 @@
   "All": "Tout",
   "Worked": "Fini",
   "Not worked": "Poko fini",
-  "Enter your reason for this note": "Mete rezon pou nòt, \"PA FRAPE\""
+  "Enter your reason for this note": "Mete rezon pou nòt, \"PA FRAPE\"",
+  "Mode": "Travay",
+  "Territory Mode": "Travay Teritwa",
+  "Addresses": "Addrès",
+  "Phone Numbers": "Nimero Telefòn Yo",
+  "Work Phone Numbers": "Travay Teritwa Telefòn",
+  "StatusSymbols": {
+    "Unverified": "Absan / Okipe",
+    "Valid": "Gason / Fi",
+    "Not English Speaking": "Pa pale Kreyol",
+    "Not In Service": "Dekonekte",
+    "DO NOT CALL": "PA RELE"
+  },
+  "Call Now!": "Fè Apèl",
+  "Done": "Fini Apèl",
+  "Result from call": "Rezilta aprè apèl la",
+  "Please add notes": "Tampri mete nòt",
+  "No Phone": "Pa gen telefòn",
+  "Update Name": "Chanje non an",
+  "Enter Name": "Mete non an",
+  "Add additional notes for ": "Ajouté plis nòt pou ",
+  "Address & phone not worked": "Adrès ak telefòn poko fini"
 }

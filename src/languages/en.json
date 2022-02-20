@@ -174,5 +174,26 @@
   "All": "All",
   "Worked": "Worked",
   "Not worked": "Not worked",
-  "Enter your reason for this note": "Enter your reason for this note, \"DO NOT CALL\""
+  "Enter your reason for this note": "Enter your reason for this note, \"DO NOT CALL\"",
+  "Mode": "Mode",
+  "Territory Mode": "Territory Mode",
+  "Addresses": "Addresses",
+  "Phone Numbers": "Phone Numbers",
+  "Work Phone Numbers": "Work Phone Numbers",
+  "StatusSymbols": {
+    "Unverified": "No Answer/Busy",
+    "Valid": "Man or Woman",
+    "Not English Speaking": "Not English Speaking",
+    "Not In Service": "Not In Service",
+    "DO NOT CALL": "DO NOT CALL"
+  },
+  "Call Now!": "Call Now!",
+  "Done": "Call Done",
+  "Result from call": "Result from call",
+  "Please add notes": "Please add notes",
+  "No Phone": "No Phone",
+  "Update Name": "Update Name",
+  "Enter Name": "Enter Name",
+  "Add additional notes for ": "Add additional notes for ",
+  "Address & phone not worked": "Address & phone not worked"
 }

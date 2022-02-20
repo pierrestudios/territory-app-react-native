@@ -104,6 +104,11 @@ export default {
   getDateObject(dateStr) {
     if (!dateStr) return new Date();
 
+    // If already Date object
+    if (typeof dateStr.getMonth === "function") {
+      return dateStr;
+    }
+
     const parts = dateStr.match(/(\d+)/g);
     return new Date(parts[0], parts[1] - 1, parts[2]);
   },
@@ -287,4 +292,31 @@ export default {
     { html: "&Iuml;", diacritic: "Ï" },
     { html: "&iuml;", diacritic: "ï" },
   ],
+  phoneStatuses: {
+    STATUS_UNVERIFIED: 0,
+    STATUS_VALID: 1,
+    STATUS_NOT_CURRENT_LANGUAGE: 2,
+    STATUS_NOT_IN_SERVICE: 3,
+    STATUS_DO_NOT_CALL: 4,
+  },
+  phoneStatusLabel(status = 0) {
+    const statusInx = parseInt(status);
+
+    return [
+      "Unverified",
+      "Valid",
+      "Not English Speaking",
+      "Not In Service",
+      "DO NOT CALL",
+    ][statusInx];
+  },
+  canMakeCall({ number, status, notes = [] }) {
+    // Check if condition met for making a call
+    // Example: Not DO NOT CALL, Not In Service, or Not English Speaking
+    // Allow only "Unverified", "Valid", or empty
+    if (notes.length) {
+      return notes[0].symbol === 1 || !notes[0].symbol;
+    }
+    return status === 1 || !status;
+  },
 };

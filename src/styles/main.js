@@ -11,6 +11,7 @@ export const colors = {
   white: "#fff",
   black: "#000",
   green: "#2f9e44",
+  "green-bright": "#00d748",
 };
 
 /*
@@ -397,7 +398,6 @@ export default styles = StyleSheet.create({
     borderRadius: 3,
     alignItems: "center",
     padding: 5,
-    paddingTop: 5,
     marginLeft: 5,
     marginRight: 0,
     marginTop: -3,

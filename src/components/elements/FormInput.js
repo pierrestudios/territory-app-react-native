@@ -13,9 +13,11 @@ import DatePicker from "@react-native-community/datetimepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import style, { colors } from "../../styles/main";
 import { ButtonLink } from "./Button";
+import DatePickerAndroid from "./DatePickerAndroid";
 import SelectPickerIOS from "./SelectPickerIOS";
 import utils from "../../common/utils";
 
@@ -36,6 +38,8 @@ const getLabel = (props) => {
 
 const getIconEl = (name, props) => {
   switch (name) {
+    case "MaterialIcons":
+      return <MaterialIcons {...props} />;
     case "Feather":
       return <Feather {...props} />;
     case "Ionicons":
@@ -78,6 +82,14 @@ const elemWrapper = (props, el) => {
 };
 
 /*
+ * getIconElement
+ * utils function for icon element
+ */
+export const getIconElement = (props) => {
+  return getIconEl(props);
+};
+
+/*
  * Here we export the components
  * InputLabel, TextInput, DateInput, RadioBox, SelectBox, TextBox, Switch, etc...
  */
@@ -109,29 +121,19 @@ export const TextInput = (props) => {
 
 export const DateInput = (props) => {
   const dateValue =
-    typeof props.value.getMonth === "function"
+    props.value && typeof props.value.getMonth === "function"
       ? props.value
       : utils.getDateObject(props.value);
 
-  return (
+  return Platform.OS === "ios" ? (
     <DatePicker
-      style_dis={{
-        ...getStyles({
-          ...props,
-          baseStyle: style["date-input-wrapper"],
-        }),
-        ...{
-          dateText: {
-            fontSize: 16,
-          },
-          dateInput: style["date-input"],
-        },
-      }}
       value={dateValue}
       onChange={(e, date) => {
         props.onChange({ date });
       }}
     />
+  ) : (
+    <DatePickerAndroid {...props} value={dateValue} />
   );
 };
 
@@ -251,7 +253,7 @@ export const Switch = (props) => {
 };
 
 export const SelectBox = (props) => {
-  renderOptions = (options = []) => {
+  const renderOptions = (options = []) => {
     // If no Label option, add it
     if (!options.find((o) => o.value === "" && o.label === props.label)) {
       options.unshift({ value: "", label: props.label });
