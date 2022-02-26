@@ -58,6 +58,7 @@ export default class TerritoryDetails extends React.Component {
     selectorOpened: false,
     addressesFilterOpened: false,
     modeOptionsOpened: false,
+    modeOption: "address",
     filterType: "all",
   };
   componentDidMount() {
@@ -303,7 +304,7 @@ export default class TerritoryDetails extends React.Component {
 
     const modeOptions = [
       {
-        value: "home",
+        value: "address",
         label: Language.translate("Addresses"),
         "icon-name": "home",
       },
@@ -554,7 +555,7 @@ export default class TerritoryDetails extends React.Component {
     // Filter "not-done-at-all", search for not worked
     if (this.state.filterType === "not-done-at-all") {
       const hasPhon = this.matchFilterType(a, "not-done", "phone");
-      const hasAddr = this.matchFilterType(a, "not-done", "home");
+      const hasAddr = this.matchFilterType(a, "not-done", "address");
       return hasPhon && hasAddr;
     }
 
