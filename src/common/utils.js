@@ -173,6 +173,32 @@ export default {
   getListingAddressWithLastNote(list) {
     return `${this.getListingAddress(list)} ${this.getLastNote(list)}`;
   },
+  isCallable({ notes = [], status = 0 }) {
+    if (notes.length) {
+      const fourMonthsAgo = new Date(
+        new Date().setDate(this.getDateObject().getDate() - 120)
+      );
+      return (
+        notes[0].symbol === "" ||
+        notes[0].symbol === this.phoneStatuses.STATUS_UNVERIFIED ||
+        (notes[0].symbol === this.phoneStatuses.STATUS_VALID &&
+          this.getDateObject(notes[0].date) < fourMonthsAgo)
+      );
+    }
+
+    return status === "" || status === this.phoneStatuses.STATUS_UNVERIFIED;
+  },
+  hasWarning({ notes, status }) {
+    if (status === this.phoneStatuses.STATUS_DO_NOT_CALL) {
+      return true;
+    }
+
+    if (!notes) {
+      return false;
+    }
+
+    return notes[0].symbol === this.phoneStatuses.STATUS_DO_NOT_CALL;
+  },
   navigateToUrl(url) {
     window.open(
       window.location.protocol + "//" + window.location.host + url,

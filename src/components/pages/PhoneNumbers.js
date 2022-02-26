@@ -85,15 +85,15 @@ export default class PhoneNumbers extends React.Component {
     </View>
   );
   renderListOfPhones = ({ item }) => {
-    item.hasWarning = this.hasWarning(item);
-    item.isCallable = this.isCallable(item);
+    item.hasWarning = UTILS.hasWarning(item);
+    item.isCallable = UTILS.isCallable(item);
 
     return (
       <View
         style={[
           style["listings-item"],
+          !item.isCallable ? style["listings-item-inactive"] : null,
           item.hasWarning ? style["listings-item-warning"] : null,
-          item.isCallable ? null : style["listings-item-inactive"],
         ]}
       >
         {this.state.user.isManager ||
@@ -160,32 +160,6 @@ export default class PhoneNumbers extends React.Component {
         </View>
       </View>
     );
-  };
-  hasWarning = ({ notes, status }) => {
-    if (status === UTILS.phoneStatuses.STATUS_DO_NOT_CALL) {
-      return true;
-    }
-
-    if (!notes) {
-      return false;
-    }
-
-    return notes[0].symbol === UTILS.phoneStatuses.STATUS_DO_NOT_CALL;
-  };
-  isCallable = ({ notes = [], status = 0 }) => {
-    if (notes.length) {
-      const fourMonthsAgo = new Date(
-        new Date().setDate(UTILS.getDateObject().getDate() - 120)
-      );
-      return (
-        notes[0].symbol === "" ||
-        notes[0].symbol === UTILS.phoneStatuses.STATUS_UNVERIFIED ||
-        (notes[0].symbol === UTILS.phoneStatuses.STATUS_VALID &&
-          UTILS.getDateObject(notes[0].date) < fourMonthsAgo)
-      );
-    }
-
-    return status === "" || status === UTILS.phoneStatuses.STATUS_UNVERIFIED;
   };
   renderListOfNotes = ({ noteId, date, note, symbol }) => {
     // console.log("renderListOfNotes", { noteId, symbol });
