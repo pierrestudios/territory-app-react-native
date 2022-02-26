@@ -665,21 +665,29 @@ export default class TerritoryDetails extends React.Component {
       this.state.data.publisher.lastName
     }`;
 
+    const addressesToShare = this.state.data.addresses
+      .filter((a) => this.state.selectedAddresses.indexOf(a.addressId) != -1)
+      .sort(UTILS.sortAddress);
+
+    let listToShare = [];
+    if (this.state.modeOption === "phone") {
+      addressesToShare.forEach((a) => {
+        const callablePhones = UTILS.getListingCallablePhones(a);
+        if (callablePhones.length) {
+          listToShare.push(UTILS.getListingAddress(a));
+          listToShare.push(...callablePhones);
+        }
+      });
+    } else {
+      listToShare = addressesToShare.map((a) => UTILS.getListingAddress(a));
+    }
+
     try {
       const result = await Share.share({
         title: title,
         dialogTitle: title,
         subject: title,
-        message:
-          title +
-          "\n \n" +
-          this.state.data.addresses
-            .filter(
-              (a) => this.state.selectedAddresses.indexOf(a.addressId) != -1
-            )
-            .sort(UTILS.sortAddress)
-            .map((a) => UTILS.getListingAddress(a))
-            .join("\n"),
+        message: title + "\n \n" + listToShare.join("\n"),
       });
 
       // console.log("result", result);

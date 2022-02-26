@@ -161,6 +161,9 @@ export default {
     };
   },
   getListingAddress(list) {
+    if (!list) {
+      return "";
+    }
     if (list.isApt) return list.building + ", " + list.address;
     if (list.apt) return list.address + " " + list.streetName + " " + list.apt;
     return list.address + " " + list.streetName;
@@ -172,6 +175,18 @@ export default {
   },
   getListingAddressWithLastNote(list) {
     return `${this.getListingAddress(list)} ${this.getLastNote(list)}`;
+  },
+  getListingCallablePhones(address) {
+    if (!address.phones || !address.phones.length) {
+      return "";
+    }
+
+    return address.phones
+      .filter((p) => this.isCallable(p))
+      .map((p) => this.getListingPhoneNumber(p));
+  },
+  getListingPhoneNumber(phone) {
+    return phone && phone.number;
   },
   isCallable({ notes = [], status = 0 }) {
     if (notes.length) {
