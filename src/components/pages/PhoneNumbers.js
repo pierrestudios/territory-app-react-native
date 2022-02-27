@@ -27,7 +27,8 @@ export default class PhoneNumbers extends React.Component {
     const { navigation } = this.props;
     if (navigation.getParam("addressActive")) {
       const { lang: notesSymbolsLang } = Data.user;
-      const { StatusSymbols: statusSymbols = {} } = languages[notesSymbolsLang];
+      const { PhoneNoteSymbols: PhoneNoteSymbols = {} } =
+        languages[notesSymbolsLang];
       this.setState({
         data: navigation.getParam("addressActive"),
         user: Data.user,

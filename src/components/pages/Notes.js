@@ -78,13 +78,15 @@ export default class Notes extends React.Component {
 
     if (!data) return <Loading />;
 
-    const { NotesSymbols: notesSymbols = {} } =
+    // const { NotesSymbols: notesSymbols = {} } = languages[state.notesSymbolsLang];
+    const { AddressNoteSymbols: addressNoteSymbols = {} } =
       languages[state.notesSymbolsLang];
-    const notesSymbolsOptions = Object.keys(notesSymbols).map((k) => ({
+    const notesSymbolsOptions = Object.keys(addressNoteSymbols).map((k) => ({
       value: k,
-      label: notesSymbols[k],
+      label: addressNoteSymbols[k],
       active: noteData.noteSymbol === k,
     }));
+
     const notes = (
       <KeyboardAwareFlatList
         contentContainerStyle={[
@@ -131,7 +133,7 @@ export default class Notes extends React.Component {
               noteData={noteData}
               saveData={this.saveData}
               errors={errors}
-              notesSymbols={notesSymbols}
+              notesSymbols={addressNoteSymbols}
               setModalVisible={this.setModalVisible}
             />
 
