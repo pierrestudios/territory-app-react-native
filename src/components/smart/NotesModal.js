@@ -53,7 +53,7 @@ export default NotesModal = (props) => {
         />
 
         <RadioBox
-          name="noteSymbol"
+          name="symbol"
           labelView={
             <View style={{ flex: 1, flexDirection: "row" }}>
               <InputLabel>
@@ -90,22 +90,20 @@ export const NotesInput = (props) => {
               {
                 fontSize: 18,
                 padding: 5,
-                color: props.noteData.noteSymbol
+                color: props.noteData.symbol
                   ? colors["grey-dark"]
                   : colors["grey-lite"],
               },
             ]}
           >
-            {!!props.noteData.noteSymbol
-              ? `${props.noteData.noteSymbol} - ${
-                  props.notesSymbols[props.noteData.noteSymbol]
-                }`
+            {!!props.noteData.symbol
+              ? `${props.notesSymbols[props.noteData.symbol]}`
               : Language.translate("Add Notes")}
           </Text>
         </TouchableHighlight>
       )}
 
-      {!props.noteData.noteId && !!props.noteData.noteSymbol ? (
+      {!props.noteData.noteId && !!props.noteData.symbol ? (
         <TextInput
           name="notesAddl"
           placeholder={

@@ -40,12 +40,11 @@ export default class Notes extends React.Component {
       ),
     };
   };
-
   notesContainer = null;
   state = {
     noteData: {
       note: "",
-      noteSymbol: "",
+      symbol: 0,
       date: UTILS.getDateObject(),
     },
     errors: {
@@ -78,13 +77,12 @@ export default class Notes extends React.Component {
 
     if (!data) return <Loading />;
 
-    // const { NotesSymbols: notesSymbols = {} } = languages[state.notesSymbolsLang];
     const { AddressNoteSymbols: addressNoteSymbols = {} } =
       languages[state.notesSymbolsLang];
     const notesSymbolsOptions = Object.keys(addressNoteSymbols).map((k) => ({
       value: k,
       label: addressNoteSymbols[k],
-      active: noteData.noteSymbol === k,
+      active: noteData.symbol === k,
     }));
 
     const notes = (
@@ -218,13 +216,6 @@ export default class Notes extends React.Component {
   };
   saveData = (data) => {
     const newData = { ...this.state.noteData, ...data };
-
-    if (!!newData.noteSymbol) {
-      newData.note = !!newData.notesAddl
-        ? `${newData.noteSymbol} - ${newData.notesAddl}`
-        : newData.noteSymbol;
-    }
-
     this.setState({
       noteData: newData,
       errors: {
@@ -241,12 +232,13 @@ export default class Notes extends React.Component {
         date: UTILS.getDateObject(data.date),
         retain: !!data.retain,
         noteId: data.noteId,
+        symbol: data.symbol,
       },
     });
   }
   saveNotesSymbol = (selected) => {
     this.saveData({
-      noteSymbol: selected.option.value,
+      symbol: selected.option.value,
     });
     this.setModalVisible({ NotesOptionsModal: false });
   };
