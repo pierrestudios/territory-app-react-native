@@ -109,6 +109,9 @@ export default class TerritoryDetails extends React.Component {
 
     if (!state.data) return <Loading />;
 
+    const { AddressNoteSymbols: notesSymbols = {} } =
+      languages[this.state.notesSymbolsLang];
+
     const listings = (
       <FlatList
         contentContainerStyle={style.listings}
@@ -228,6 +231,14 @@ export default class TerritoryDetails extends React.Component {
                               item.hasWarning ? style["text-white"] : null,
                             ]}
                           >
+                            {Number.isInteger(item.notes[0].symbol) &&
+                            !item.notes[0].note
+                              ? `${
+                                  Object.values(notesSymbols)[
+                                    item.notes[0].symbol
+                                  ]
+                                } - `
+                              : ""}
                             {UTILS.formatDiacritics(item.notes[0].note)}
                           </Text>,
                         ]
@@ -585,7 +596,10 @@ export default class TerritoryDetails extends React.Component {
         address.name.toLowerCase().indexOf(warningTerms[t]) !== -1 ||
         (!!address.notes &&
           !!address.notes.find(
-            (n) => n.note.toLowerCase().indexOf(warningTerms[t]) !== -1
+            (n) =>
+              (n.note &&
+                n.note.toLowerCase().indexOf(warningTerms[t]) !== -1) ||
+              n.symbol === UTILS.addressStatuses.STATUS_DO_NOT_CALL
           ))
       ) {
         return true;

@@ -360,4 +360,15 @@ export default {
     }
     return status === 1 || !status;
   },
+  addressStatuses: {
+    STATUS_NOT_HOME: 0,
+    STATUS_REVISIT: 1,
+    STATUS_CHILDREN: 2,
+    STATUS_BUSY: 3,
+    STATUS_MAN: 4,
+    STATUS_WOMAN: 5,
+    STATUS_DO_NOT_CALL: 6,
+    STATUS_SENT_LETTER: 7,
+    STATUS_WITNESS_STUDENT: 8,
+  },
 };

@@ -27,7 +27,7 @@ export default class PhoneNumbers extends React.Component {
     const { navigation } = this.props;
     if (navigation.getParam("addressActive")) {
       const { lang: notesSymbolsLang } = Data.user;
-      const { PhoneNoteSymbols: PhoneNoteSymbols = {} } =
+      const { PhoneNoteSymbols: statusSymbols = {} } =
         languages[notesSymbolsLang];
       this.setState({
         data: navigation.getParam("addressActive"),
@@ -98,7 +98,7 @@ export default class PhoneNumbers extends React.Component {
         ]}
       >
         {this.state.user.isManager ||
-        (this.state.user.isEditor && UTILS.canMakeCall(item)) ? (
+        (this.state.user.isNoteEditor && item.isCallable) ? (
           <ButtonLink
             customStyle={[
               style["listings-notes"],

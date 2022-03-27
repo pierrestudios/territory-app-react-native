@@ -44,7 +44,7 @@ export default class Notes extends React.Component {
   state = {
     noteData: {
       note: "",
-      symbol: 0,
+      symbol: null, // Note: init with "null" for validate
       date: UTILS.getDateObject(),
     },
     errors: {
@@ -79,11 +79,13 @@ export default class Notes extends React.Component {
 
     const { AddressNoteSymbols: addressNoteSymbols = {} } =
       languages[state.notesSymbolsLang];
-    const notesSymbolsOptions = Object.keys(addressNoteSymbols).map((k) => ({
-      value: k,
-      label: addressNoteSymbols[k],
-      active: noteData.symbol === k,
-    }));
+    const notesSymbolsOptions = Object.keys(addressNoteSymbols).map(
+      (k, inx) => ({
+        value: inx,
+        label: addressNoteSymbols[k],
+        active: noteData.symbol === inx,
+      })
+    );
 
     const notes = (
       <KeyboardAwareFlatList
@@ -179,38 +181,48 @@ export default class Notes extends React.Component {
       <Text />
     </View>
   );
-  renderListOfNotes = ({ item }) => (
-    <View
-      style={[
-        style["listings-item"],
-        item.noteId === this.state.noteData.noteId
-          ? style["listings-item-inactive"]
-          : null,
-      ]}
-    >
-      {this.state.user.isManager || this.state.user.userId === item.userId ? (
-        <ButtonLink
-          customStyle={[style["listings-notes"], style["listings-notes-edit"]]}
-          onPress={() => this.updateNotes(item)}
-        >
-          {Language.translate("Edit")}
-        </ButtonLink>
-      ) : null}
-      <View style={[style["listings-name"], style["address-listings-name"]]}>
-        <Text
-          style={[
-            style["listings-date-text"],
-            style["listings-notes-date-text"],
-          ]}
-        >
-          {item.date}
-        </Text>
-        <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
-          {UTILS.formatDiacritics(item.note)}
-        </Text>
+  renderListOfNotes = ({ item }) => {
+    const { AddressNoteSymbols: notesSymbols = {} } =
+      languages[this.state.notesSymbolsLang];
+
+    return (
+      <View
+        style={[
+          style["listings-item"],
+          item.noteId === this.state.noteData.noteId
+            ? style["listings-item-inactive"]
+            : null,
+        ]}
+      >
+        {this.state.user.isManager || this.state.user.userId === item.userId ? (
+          <ButtonLink
+            customStyle={[
+              style["listings-notes"],
+              style["listings-notes-edit"],
+            ]}
+            onPress={() => this.updateNotes(item)}
+          >
+            {Language.translate("Edit")}
+          </ButtonLink>
+        ) : null}
+        <View style={[style["listings-name"], style["address-listings-name"]]}>
+          <Text
+            style={[
+              style["listings-date-text"],
+              style["listings-notes-date-text"],
+            ]}
+          >
+            {item.date}
+          </Text>
+          <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
+            {Number.isInteger(item.symbol) &&
+              Object.values(notesSymbols)[item.symbol]}
+            {UTILS.formatDiacritics(item.note)}
+          </Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
   setModalVisible = (modal) => {
     this.setState(modal);
   };
@@ -226,6 +238,7 @@ export default class Notes extends React.Component {
     });
   };
   updateNotes(data) {
+    // console.log("updateNotes()", { data });
     this.setState({
       noteData: {
         note: UTILS.formatDiacritics(data.note),
@@ -253,11 +266,33 @@ export default class Notes extends React.Component {
       errors,
       data: addressData,
     } = this.state;
-    const { noteId, note, date, noteSymbol, notesAddl } = noteData;
+    const { noteId, note, date, symbol, notesAddl } = noteData;
     const { territoryId, addressId } = addressData;
 
+    /*
+    console.log({
+      noteId,
+      note,
+      date,
+      symbol,
+      notesAddl,
+      territoryId,
+      addressId,
+    });
+
+{
+  "addressId": 1351,
+  "date": 2022-02-10T03:37:00.000Z,
+  "note": "",
+  "noteId": undefined,
+  "notesAddl": "Testing ",
+  "symbol": "Revisit",
+  "territoryId": 60,
+}
+    */
+
     // Validate
-    if (!note || !date)
+    if (symbol === null || !date)
       return this.setState({
         errors: {
           ...errors,
@@ -267,15 +302,10 @@ export default class Notes extends React.Component {
         },
       });
 
-    const { NotesSymbols: notesSymbols = {} } = languages[notesSymbolsLang];
+    // const { NotesSymbols: notesSymbols = {} } = languages[notesSymbolsLang];
 
     // Require reason for "DO NOT CALL" and "PA FRAPE"
-    if (
-      noteSymbol &&
-      (noteSymbol === notesSymbols["PA FRAPE"] ||
-        noteSymbol === notesSymbols["DO NOT CALL"]) &&
-      (!notesAddl || note === noteSymbol)
-    ) {
+    if (symbol === UTILS.addressStatuses.STATUS_DO_NOT_CALL && !notesAddl) {
       return this.setState({
         errors: {
           ...errors,
@@ -287,14 +317,11 @@ export default class Notes extends React.Component {
     // Data
     const dataToSave = {
       ...noteData,
+      note: noteData.notesAddl || "",
       date: UTILS.getDateString(date),
     };
 
-    if (
-      noteSymbol &&
-      (noteSymbol === notesSymbols["PA FRAPE"] ||
-        noteSymbol === notesSymbols["DO NOT CALL"])
-    ) {
+    if (symbol === UTILS.addressStatuses.STATUS_DO_NOT_CALL) {
       dataToSave.retain = true; // Retain for "DO NOT CALL", "PA FRAPE"
     }
 
@@ -303,10 +330,13 @@ export default class Notes extends React.Component {
       ? `territories/${territoryId}/notes/edit/${noteId}`
       : `territories/${territoryId}/addresses/${addressId}/notes/add`;
 
+    console.log("saveNotes()", { dataToSave, url });
+    // return;
+
     // save note
     Data.postApiData(url, dataToSave)
       .then((resData) => {
-        // console.log('then() resData', resData)
+        console.log("then() resData", resData);
         // Clear Errors
         this.setState(
           {
