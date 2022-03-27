@@ -215,8 +215,9 @@ export default class Notes extends React.Component {
             {item.date}
           </Text>
           <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
-            {Number.isInteger(item.symbol) &&
-              Object.values(notesSymbols)[item.symbol]}
+            {Number.isInteger(item.symbol) && !item.note
+              ? `${Object.values(notesSymbols)[item.symbol]} - `
+              : ""}
             {UTILS.formatDiacritics(item.note)}
           </Text>
         </View>
@@ -266,7 +267,7 @@ export default class Notes extends React.Component {
       errors,
       data: addressData,
     } = this.state;
-    const { noteId, note, date, symbol, notesAddl } = noteData;
+    const { noteId = null, note, date, symbol, notesAddl = "" } = noteData;
     const { territoryId, addressId } = addressData;
 
     /*
@@ -372,11 +373,12 @@ export default class Notes extends React.Component {
                 newNotes =
                   (addressData.notes && addressData.notes.slice(0)) || [];
                 newNotes.push({
-                  note: resData.content,
+                  note: resData.content || "",
                   date: resData.date,
                   noteId: resData.id,
                   retain: resData.archived === 1,
                   userId: resData.user_id,
+                  symbol: resData.symbol,
                 });
                 newNotes = newNotes.sort(UTILS.sortNotes);
               }

@@ -771,30 +771,52 @@ export default class TerritoryDetails extends React.Component {
       return false;
     }
 
-    const notesSymbols =
+    // Note: Check for legacy notes (before use of symbols)
+    const legacyNoteSymbols =
       languages[this.state.notesSymbolsLang]["NotesSymbols"] || {};
-    const latestNote = address.notes[0].note;
-    const latestNoteSegs = latestNote.split("-") || [];
-    const isNoteSymbol =
-      latestNoteSegs.length && latestNoteSegs[0].trim().length <= 2;
+    const legacyNote = this.getLegacyNote(address.notes[0].note);
+    const isLegacyNote = legacyNote && legacyNote.length <= 2;
 
     switch (filterType) {
       case "done":
+        if (isLegacyNote) {
+          return (
+            Object.keys(legacyNoteSymbols).slice(4, 6).indexOf(legacyNote) !==
+            -1
+          );
+        }
+
         return (
-          !isNoteSymbol ||
-          Object.keys(notesSymbols)
-            .slice(4, 6)
-            .indexOf(latestNoteSegs[0].trim()) !== -1
+          [
+            UTILS.addressStatuses.STATUS_MAN,
+            UTILS.addressStatuses.STATUS_WOMAN,
+            UTILS.addressStatuses.STATUS_SENT_LETTER,
+            UTILS.addressStatuses.STATUS_WITNESS_STUDENT,
+            UTILS.addressStatuses.STATUS_DO_NOT_CALL,
+          ].indexOf(address.notes[0].symbol) !== -1
         );
 
       case "not-done":
+        if (isLegacyNote) {
+          return (
+            Object.keys(legacyNoteSymbols).slice(0, 4).indexOf(legacyNote) !==
+            -1
+          );
+        }
+
         return (
-          !!isNoteSymbol &&
-          Object.keys(notesSymbols)
-            .slice(0, 4)
-            .indexOf(latestNoteSegs[0].trim()) !== -1
+          [
+            UTILS.addressStatuses.STATUS_BUSY,
+            UTILS.addressStatuses.STATUS_CHILDREN,
+            UTILS.addressStatuses.STATUS_NOT_HOME,
+            UTILS.addressStatuses.STATUS_REVISIT,
+          ].indexOf(address.notes[0].symbol) !== -1
         );
     }
+  };
+  getLegacyNote = (note = "") => {
+    const legacyNotes = note.split("-") || [];
+    return (legacyNotes.length && legacyNotes[0].trim()) || "";
   };
   notifyDelete = (address, user) => {
     const messageBlock = (
