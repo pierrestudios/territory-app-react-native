@@ -134,6 +134,8 @@ export default class TerritoryDetails extends React.Component {
         <TerritoryDetailsHeader
           {...{
             ...this,
+            modeOptions,
+            modeOption: state.modeOption,
             selectedAddresses: state.selectedAddresses,
           }}
         />
