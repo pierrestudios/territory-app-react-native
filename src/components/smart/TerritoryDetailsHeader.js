@@ -6,12 +6,12 @@ import { ButtonLink } from "../elements/Button";
 import style, { colors } from "../../styles/main";
 
 export default TerritoryDetailsHeader = ({
-  selectedAddresses,
-  viewMap,
-  viewAddressSelector,
-  sendSelectedAddresses,
-  showModeOptions,
-  showAddressesFilter,
+  selectedAddresses = [],
+  viewMap = () => {},
+  viewAddressSelector = () => {},
+  sendSelectedAddresses = () => {},
+  showModeOptions = () => {},
+  showAddressesFilter = () => {},
 }) => {
   return (
     <View style={style["territory-heading"]}>

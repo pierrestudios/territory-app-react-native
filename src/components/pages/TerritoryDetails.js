@@ -229,7 +229,7 @@ export default class TerritoryDetails extends React.Component {
 
     return false;
   };
-  viewPhoneNumbers(data) {
+  viewPhoneNumbers = (data) => {
     this.setState({ addressActive: data }, () => {
       NavigationService.navigate("PhoneNumbers", {
         addressActive: data,
@@ -237,7 +237,7 @@ export default class TerritoryDetails extends React.Component {
         updateAddress: this.updateAddress,
       });
     });
-  }
+  };
   viewNotes = (data) => {
     // TODO: Find the source of this.props.entity
 

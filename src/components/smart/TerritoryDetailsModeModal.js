@@ -11,11 +11,11 @@ import style, { colors } from "../../styles/main";
 import Modal from "../elements/Modal";
 
 export default TerritoryDetailsModeModal = ({
-  addressesFilterOpened,
-  onCloseModal,
-  saveFilterType,
-  filterType,
-  filterTypes,
+  addressesFilterOpened = false,
+  onCloseModal = () => {},
+  saveFilterType = () => {},
+  filterType = "",
+  filterTypes = [],
 }) => {
   return (
     <Modal

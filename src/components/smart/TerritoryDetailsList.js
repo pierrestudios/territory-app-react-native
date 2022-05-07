@@ -12,21 +12,21 @@ import { Checkbox } from "../elements/FormInput";
 import style, { colors } from "../../styles/main";
 
 export default TerritoryDetailsList = ({
-  data,
-  modeOption,
-  selectedAddresses,
-  filterAddresses,
-  hasWarning,
-  onOpenRow,
-  viewNotes,
-  viewAddress,
-  notifyDelete,
-  selectAddressRow,
-  viewPhoneNumbers,
-  notesSymbols,
-  user,
-  activeRow,
-  selectorOpened,
+  modeOption = "",
+  activeRow = null,
+  selectorOpened = false,
+  hasWarning = false,
+  selectedAddresses = [],
+  notesSymbols = {},
+  user = {},
+  data = {},
+  onOpenRow = () => {},
+  viewNotes = () => {},
+  viewAddress = () => {},
+  notifyDelete = () => {},
+  selectAddressRow = () => {},
+  viewPhoneNumbers = () => {},
+  filterAddresses = () => {},
 }) => {
   return (
     <View
