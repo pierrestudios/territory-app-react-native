@@ -180,12 +180,23 @@
   "Addresses": "Addrès",
   "Phone Numbers": "Nimero Telefòn Yo",
   "Work Phone Numbers": "Travay Teritwa Telefòn",
-  "StatusSymbols": {
+  "PhoneNoteSymbols": {
     "Unverified": "Absan / Okipe",
     "Valid": "Gason / Fi",
     "Not English Speaking": "Pa pale Kreyol",
     "Not In Service": "Dekonekte",
     "DO NOT CALL": "PA RELE"
+  },
+  "AddressNoteSymbols": {
+    "Not Home": "Absan",
+    "Revisit": "Revizite",
+    "Children": "Timoun",
+    "Busy": "Okipe",
+    "Man": "Gason",
+    "Woman": "Fi",
+    "DO NOT CALL": "PA FRAPE",
+    "Sent Letter": "Voye lèt",
+    "Witness/Student": "Temwen/Etidyan"
   },
   "Call Now!": "Fè Apèl",
   "Done": "Fini Apèl",

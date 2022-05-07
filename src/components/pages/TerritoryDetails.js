@@ -58,6 +58,7 @@ export default class TerritoryDetails extends React.Component {
     selectorOpened: false,
     addressesFilterOpened: false,
     modeOptionsOpened: false,
+    modeOption: "address",
     filterType: "all",
   };
   componentDidMount() {
@@ -107,6 +108,9 @@ export default class TerritoryDetails extends React.Component {
     const state = this.state || {};
 
     if (!state.data) return <Loading />;
+
+    const { AddressNoteSymbols: notesSymbols = {} } =
+      languages[this.state.notesSymbolsLang];
 
     const listings = (
       <FlatList
@@ -227,6 +231,14 @@ export default class TerritoryDetails extends React.Component {
                               item.hasWarning ? style["text-white"] : null,
                             ]}
                           >
+                            {Number.isInteger(item.notes[0].symbol) &&
+                            !item.notes[0].note
+                              ? `${
+                                  Object.values(notesSymbols)[
+                                    item.notes[0].symbol
+                                  ]
+                                } - `
+                              : ""}
                             {UTILS.formatDiacritics(item.notes[0].note)}
                           </Text>,
                         ]
@@ -303,7 +315,7 @@ export default class TerritoryDetails extends React.Component {
 
     const modeOptions = [
       {
-        value: "home",
+        value: "address",
         label: Language.translate("Addresses"),
         "icon-name": "home",
       },
@@ -554,7 +566,7 @@ export default class TerritoryDetails extends React.Component {
     // Filter "not-done-at-all", search for not worked
     if (this.state.filterType === "not-done-at-all") {
       const hasPhon = this.matchFilterType(a, "not-done", "phone");
-      const hasAddr = this.matchFilterType(a, "not-done", "home");
+      const hasAddr = this.matchFilterType(a, "not-done", "address");
       return hasPhon && hasAddr;
     }
 
@@ -584,7 +596,10 @@ export default class TerritoryDetails extends React.Component {
         address.name.toLowerCase().indexOf(warningTerms[t]) !== -1 ||
         (!!address.notes &&
           !!address.notes.find(
-            (n) => n.note.toLowerCase().indexOf(warningTerms[t]) !== -1
+            (n) =>
+              (n.note &&
+                n.note.toLowerCase().indexOf(warningTerms[t]) !== -1) ||
+              n.symbol === UTILS.addressStatuses.STATUS_DO_NOT_CALL
           ))
       ) {
         return true;
@@ -665,21 +680,29 @@ export default class TerritoryDetails extends React.Component {
       this.state.data.publisher.lastName
     }`;
 
+    const addressesToShare = this.state.data.addresses
+      .filter((a) => this.state.selectedAddresses.indexOf(a.addressId) != -1)
+      .sort(UTILS.sortAddress);
+
+    let listToShare = [];
+    if (this.state.modeOption === "phone") {
+      addressesToShare.forEach((a) => {
+        const callablePhones = UTILS.getListingCallablePhones(a);
+        if (callablePhones.length) {
+          listToShare.push(UTILS.getListingAddress(a));
+          listToShare.push(...callablePhones);
+        }
+      });
+    } else {
+      listToShare = addressesToShare.map((a) => UTILS.getListingAddress(a));
+    }
+
     try {
       const result = await Share.share({
         title: title,
         dialogTitle: title,
         subject: title,
-        message:
-          title +
-          "\n \n" +
-          this.state.data.addresses
-            .filter(
-              (a) => this.state.selectedAddresses.indexOf(a.addressId) != -1
-            )
-            .sort(UTILS.sortAddress)
-            .map((a) => UTILS.getListingAddress(a))
-            .join("\n"),
+        message: title + "\n \n" + listToShare.join("\n"),
       });
 
       // console.log("result", result);
@@ -748,30 +771,52 @@ export default class TerritoryDetails extends React.Component {
       return false;
     }
 
-    const notesSymbols =
+    // Note: Check for legacy notes (before use of symbols)
+    const legacyNoteSymbols =
       languages[this.state.notesSymbolsLang]["NotesSymbols"] || {};
-    const latestNote = address.notes[0].note;
-    const latestNoteSegs = latestNote.split("-") || [];
-    const isNoteSymbol =
-      latestNoteSegs.length && latestNoteSegs[0].trim().length <= 2;
+    const legacyNote = this.getLegacyNote(address.notes[0].note);
+    const isLegacyNote = legacyNote && legacyNote.length <= 2;
 
     switch (filterType) {
       case "done":
+        if (isLegacyNote) {
+          return (
+            Object.keys(legacyNoteSymbols).slice(4, 6).indexOf(legacyNote) !==
+            -1
+          );
+        }
+
         return (
-          !isNoteSymbol ||
-          Object.keys(notesSymbols)
-            .slice(4, 6)
-            .indexOf(latestNoteSegs[0].trim()) !== -1
+          [
+            UTILS.addressStatuses.STATUS_MAN,
+            UTILS.addressStatuses.STATUS_WOMAN,
+            UTILS.addressStatuses.STATUS_SENT_LETTER,
+            UTILS.addressStatuses.STATUS_WITNESS_STUDENT,
+            UTILS.addressStatuses.STATUS_DO_NOT_CALL,
+          ].indexOf(address.notes[0].symbol) !== -1
         );
 
       case "not-done":
+        if (isLegacyNote) {
+          return (
+            Object.keys(legacyNoteSymbols).slice(0, 4).indexOf(legacyNote) !==
+            -1
+          );
+        }
+
         return (
-          !!isNoteSymbol &&
-          Object.keys(notesSymbols)
-            .slice(0, 4)
-            .indexOf(latestNoteSegs[0].trim()) !== -1
+          [
+            UTILS.addressStatuses.STATUS_BUSY,
+            UTILS.addressStatuses.STATUS_CHILDREN,
+            UTILS.addressStatuses.STATUS_NOT_HOME,
+            UTILS.addressStatuses.STATUS_REVISIT,
+          ].indexOf(address.notes[0].symbol) !== -1
         );
     }
+  };
+  getLegacyNote = (note = "") => {
+    const legacyNotes = note.split("-") || [];
+    return (legacyNotes.length && legacyNotes[0].trim()) || "";
   };
   notifyDelete = (address, user) => {
     const messageBlock = (

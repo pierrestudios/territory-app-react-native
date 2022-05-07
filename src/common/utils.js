@@ -161,6 +161,9 @@ export default {
     };
   },
   getListingAddress(list) {
+    if (!list) {
+      return "";
+    }
     if (list.isApt) return list.building + ", " + list.address;
     if (list.apt) return list.address + " " + list.streetName + " " + list.apt;
     return list.address + " " + list.streetName;
@@ -172,6 +175,44 @@ export default {
   },
   getListingAddressWithLastNote(list) {
     return `${this.getListingAddress(list)} ${this.getLastNote(list)}`;
+  },
+  getListingCallablePhones(address) {
+    if (!address.phones || !address.phones.length) {
+      return "";
+    }
+
+    return address.phones
+      .filter((p) => this.isCallable(p))
+      .map((p) => this.getListingPhoneNumber(p));
+  },
+  getListingPhoneNumber(phone) {
+    return phone && phone.number;
+  },
+  isCallable({ notes = [], status = 0 }) {
+    if (notes.length) {
+      const fourMonthsAgo = new Date(
+        new Date().setDate(this.getDateObject().getDate() - 120)
+      );
+      return (
+        notes[0].symbol === "" ||
+        notes[0].symbol === this.phoneStatuses.STATUS_UNVERIFIED ||
+        (notes[0].symbol === this.phoneStatuses.STATUS_VALID &&
+          this.getDateObject(notes[0].date) < fourMonthsAgo)
+      );
+    }
+
+    return status === "" || status === this.phoneStatuses.STATUS_UNVERIFIED;
+  },
+  hasWarning({ notes, status }) {
+    if (status === this.phoneStatuses.STATUS_DO_NOT_CALL) {
+      return true;
+    }
+
+    if (!notes) {
+      return false;
+    }
+
+    return notes[0].symbol === this.phoneStatuses.STATUS_DO_NOT_CALL;
   },
   navigateToUrl(url) {
     window.open(
@@ -318,5 +359,16 @@ export default {
       return notes[0].symbol === 1 || !notes[0].symbol;
     }
     return status === 1 || !status;
+  },
+  addressStatuses: {
+    STATUS_NOT_HOME: 0,
+    STATUS_REVISIT: 1,
+    STATUS_CHILDREN: 2,
+    STATUS_BUSY: 3,
+    STATUS_MAN: 4,
+    STATUS_WOMAN: 5,
+    STATUS_DO_NOT_CALL: 6,
+    STATUS_SENT_LETTER: 7,
+    STATUS_WITNESS_STUDENT: 8,
   },
 };

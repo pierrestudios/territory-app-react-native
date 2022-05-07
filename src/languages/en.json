@@ -180,12 +180,23 @@
   "Addresses": "Addresses",
   "Phone Numbers": "Phone Numbers",
   "Work Phone Numbers": "Work Phone Numbers",
-  "StatusSymbols": {
+  "PhoneNoteSymbols": {
     "Unverified": "No Answer/Busy",
     "Valid": "Man or Woman",
     "Not English Speaking": "Not English Speaking",
     "Not In Service": "Not In Service",
     "DO NOT CALL": "DO NOT CALL"
+  },
+  "AddressNoteSymbols": {
+    "Not Home": "Not Home",
+    "Revisit": "Revisit",
+    "Children": "Children",
+    "Busy": "Busy",
+    "Man": "Man",
+    "Woman": "Woman",
+    "DO NOT CALL": "DO NOT CALL",
+    "Sent Letter": "Sent Letter",
+    "Witness/Student": "Witness/Student"
   },
   "Call Now!": "Call Now!",
   "Done": "Call Done",
