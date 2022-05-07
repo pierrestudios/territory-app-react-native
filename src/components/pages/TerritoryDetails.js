@@ -1,11 +1,6 @@
 import React from "react";
-import { FlatList, TouchableOpacity, Text, View, Share } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { Text, View, Share } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Swipeout from "react-native-swipeout";
-
 import Data from "../../common/data";
 import Language from "../../common/lang";
 import UTILS from "../../common/utils";
@@ -13,12 +8,15 @@ import NavigationService from "../../common/nav-service";
 import getSiteSetting from "../../common/settings";
 
 import Loading from "../elements/Loading";
-import { ButtonLink, Link, ButtonHeader } from "../elements/Button";
+import { ButtonHeader } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
-import { Checkbox, RadioBox } from "../elements/FormInput";
+import { RadioBox } from "../elements/FormInput";
 
 import style, { colors } from "../../styles/main";
 import Modal from "../elements/Modal";
+import TerritoryDetailsHeader from "../smart/TerritoryDetailsHeader";
+import TerritoryDetailsList from "../smart/TerritoryDetailsList";
+import TerritoryDetailsModeModal from "../smart/TerritoryDetailsModeModal";
 
 const languages = getSiteSetting("languages");
 
@@ -112,201 +110,6 @@ export default class TerritoryDetails extends React.Component {
     const { AddressNoteSymbols: notesSymbols = {} } =
       languages[this.state.notesSymbolsLang];
 
-    const listings = (
-      <FlatList
-        contentContainerStyle={style.listings}
-        ListEmptyComponent={() => (
-          <View style={[style["listings-item"]]}>
-            <Text>
-              {state.modeOption === "phone"
-                ? Language.translate("No Phone")
-                : Language.translate("No Address")}
-            </Text>
-          </View>
-        )}
-        data={state.data.addresses
-          .filter(this.filterAddresses)
-          .sort(UTILS.sortAddress)}
-        keyExtractor={(item) => item.addressId.toString()}
-        renderItem={({ item }) => {
-          const selected =
-            state.selectedAddresses.indexOf(item.addressId) !== -1;
-          item.hasWarning = this.hasWarning(item);
-
-          return (
-            <Swipeout
-              onOpen={() => {
-                this.setState({ activeRow: item.addressId });
-              }}
-              key={item.addressId}
-              right={[
-                {
-                  text: Language.translate("Notes"),
-                  type: "primary",
-                  onPress: () => this.viewNotes(item),
-                },
-                state.user.isEditor
-                  ? {
-                      text: Language.translate("Delete"),
-                      type: "delete",
-                      onPress: () => this.notifyDelete(item, state.user),
-                    }
-                  : { text: "" },
-              ]}
-              rowID={item.addressId}
-              autoClose={true}
-              close={this.state.activeRow !== item.addressId}
-            >
-              <View
-                style={[
-                  style["listings-item"],
-                  item.inActive ? style["listings-item-inactive"] : null,
-                  item.hasWarning ? style["listings-item-warning"] : null,
-                ]}
-              >
-                {this.state.selectorOpened ? (
-                  <View style={{}}>
-                    <Checkbox
-                      style={{ margin: 0 }}
-                      value={selected}
-                      onChange={() => {
-                        this.selectAddressRow(item.addressId, selected);
-                      }}
-                    />
-                  </View>
-                ) : null}
-                {state.modeOption === "phone" ? (
-                  <View style={[style["listings-notes"]]}>
-                    {item.phones && item.phones.length ? (
-                      <ButtonLink
-                        key="listings-add-notes"
-                        customStyle={[style["add-notes"]]}
-                        onPress={() => {
-                          this.viewPhoneNumbers(item);
-                        }}
-                      >
-                        <Text
-                          style={[item.hasWarning ? style["text-white"] : null]}
-                        >
-                          {Language.translate("Phone")}
-                        </Text>
-                      </ButtonLink>
-                    ) : (
-                      <Text
-                        style={{
-                          marginTop: 10,
-                          color: colors.grey,
-                        }}
-                      >
-                        {Language.translate("No Phone")}
-                      </Text>
-                    )}
-                  </View>
-                ) : (
-                  <TouchableOpacity
-                    style={[style["listings-notes"]]}
-                    onPress={() =>
-                      state.user.isNoteEditor
-                        ? this.viewNotes(item)
-                        : console.log("Not Note Editor")
-                    }
-                  >
-                    {item.notes && item.notes.length
-                      ? [
-                          <Text
-                            key="listings-date"
-                            style={[
-                              style["listings-date-text"],
-                              style["listings-notes-date-text"],
-                              item.hasWarning ? style["text-white"] : null,
-                            ]}
-                          >
-                            {item.notes[0].date}
-                          </Text>,
-                          <Text
-                            key="listings-notes"
-                            numberOfLines={1}
-                            style={[
-                              style["listings-notes-note-text"],
-                              item.hasWarning ? style["text-white"] : null,
-                            ]}
-                          >
-                            {Number.isInteger(item.notes[0].symbol) &&
-                            !item.notes[0].note
-                              ? `${
-                                  Object.values(notesSymbols)[
-                                    item.notes[0].symbol
-                                  ]
-                                } - `
-                              : ""}
-                            {UTILS.formatDiacritics(item.notes[0].note)}
-                          </Text>,
-                        ]
-                      : [
-                          state.user.isNoteEditor ? (
-                            <ButtonLink
-                              key="listings-add-notes"
-                              customStyle={[style["add-notes"]]}
-                              onPress={() => this.viewNotes(item)}
-                            >
-                              <Text
-                                style={[
-                                  item.hasWarning ? style["text-white"] : null,
-                                ]}
-                              >
-                                {Language.translate("Add Notes")}
-                              </Text>
-                            </ButtonLink>
-                          ) : null,
-                        ]}
-                  </TouchableOpacity>
-                )}
-                <TouchableOpacity
-                  style={[
-                    style["listings-name"],
-                    style["address-listings-name"],
-                    state.selectorOpened ? { left: 50 } : null,
-                  ]}
-                  onPress={() =>
-                    state.user.isEditor
-                      ? this.viewAddress(item)
-                      : console.log("Not Editor")
-                  }
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={[
-                      style["listings-name-text"],
-                      style["listings-address-name"],
-                      item.hasWarning ? style["text-white"] : null,
-                    ]}
-                  >
-                    {UTILS.formatDiacritics(item.name)}
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    style={[
-                      style["listings-address"],
-                      item.hasWarning ? style["text-white"] : null,
-                    ]}
-                  >
-                    {UTILS.getListingAddress(item)}
-                  </Text>
-                </TouchableOpacity>
-                <View style={[style["listings-right-arrow"]]}>
-                  <Ionicons
-                    name="ios-arrow-forward"
-                    size={24}
-                    color={colors["grey-lite"]}
-                  />
-                </View>
-              </View>
-            </Swipeout>
-          );
-        }}
-      />
-    );
-
     const filterTypes = [
       { value: "all", label: Language.translate("All") },
       { value: "done", label: Language.translate("Worked") },
@@ -328,218 +131,36 @@ export default class TerritoryDetails extends React.Component {
 
     return (
       <View style={[style.section, style.content]}>
-        <View style={style["territory-heading"]}>
-          <ButtonLink
-            onPress={this.viewMap}
-            customStyle={[
-              style["heading-button-link"],
-              style["view-map-button"],
-            ]}
-            textStyle={style["heading-button-link-text"]}
-            textColorWhite
-          >
-            {Language.translate("Map")}
-          </ButtonLink>
-          <ButtonLink
-            onPress={this.viewAddressSelector}
-            customStyle={[style["heading-button-link"], style["select-button"]]}
-            textStyle={style["heading-button-link-text"]}
-            textColorWhite
-          >
-            {Language.translate("Select")}
-          </ButtonLink>
-          <ButtonLink
-            disabled={state.selectedAddresses.length === 0}
-            onPress={this.sendSelectedAddresses}
-            customStyle={[style["heading-button-link"], style["send-button"]]}
-            textStyle={style["heading-button-link-text"]}
-            textColorWhite
-          >
-            {Language.translate("Send")}
-          </ButtonLink>
-
-          <ButtonLink
-            onPress={this.showModeOptions}
-            customStyle={[
-              style["heading-button-link"],
-              {
-                borderColor: colors["grey-lite"],
-                borderWidth: 1,
-                backgroundColor: colors["off-white"],
-              },
-            ]}
-          >
-            {Language.translate("Mode")}
-          </ButtonLink>
-
-          <ButtonLink
-            onPress={this.showAddressesFilter}
-            customStyle={[
-              style["heading-button-link"],
-              {
-                borderColor: colors["grey-lite"],
-                borderWidth: 1,
-                backgroundColor: colors["off-white"],
-                position: "absolute",
-                right: 20,
-                marginTop: 18,
-                paddingTop: 6,
-              },
-            ]}
-            customView={
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "stretch",
-                  justifyContent: "center",
-                  paddingLeft: 5,
-                  paddingRight: 5,
-                }}
-              >
-                <MaterialIcons
-                  name="filter-list"
-                  size={16}
-                  color={colors["grey"]}
-                />
-                {/*<Text
-                  style={{
-                    padding: 0,
-                    marginTop: -2,
-                    paddingLeft: 3,
-                    fontSize: 16,
-                  }}
-                >
-                  {Language.translate("Filter")}
-                </Text>*/}
-              </View>
-            }
-          />
-
-          {/*
-          <View style={style["heading-number"]}>
-            <Text style={style["listings-number-text"]}>
-              {state.data.number}
-            </Text>
-          </View>
-					*/}
-
-          {/** Note: Issues with PDF and CSV buttons - WebViews cannot handle download of files (.pdf and .csv) **/}
-          {/*
-          {state.user.isManager ? [
-						<ButtonLink key="pdf-button" 
-							onPress={() => this.openWebViewApi(`pdf/${state.data.number}`)} 
-							customStyle={[style["heading-button-link"], style['pdf-button']]} 
-							textStyle={style["heading-button-link-text"]} 
-							textColorWhite
-							>
-							{Language.translate('PDF')}
-						</ButtonLink>,
-						<ButtonLink key="csv-button" 
-							onPress={() => this.openWebViewApi(`csv/${state.data.number}`)} 
-							customStyle={[style["heading-button-link"], style['csv-button']]} 
-							textStyle={style["heading-button-link-text"]} 
-							textColorWhite
-							>
-							{Language.translate('CSV')}
-						</ButtonLink>
-					] : null }
-					 
-          {this.allTerritories && state.data.publisher ?
-            <ButtonLink style={style['heading-name-link']} onPress={(e) => this.viewPublisherDetails(state.data.publisher)}>
-              <Text style={style['heading-name']}>{state.data.publisher.firstName} {state.data.publisher.lastName}</Text>
-            </ButtonLink>
-            : null}
-          */}
-        </View>
-        <View
-          style={[
-            style.section,
-            style["listings-results"],
-            style["listings-results-address"],
-          ]}
-        >
-          {listings}
-        </View>
-
+        <TerritoryDetailsHeader
+          {...{
+            ...this,
+            selectedAddresses: state.selectedAddresses,
+          }}
+        />
+        <TerritoryDetailsList
+          {...{
+            ...this,
+            ...state,
+            notesSymbols,
+            onOpenRow: (item) => {
+              this.setState({ activeRow: item.addressId });
+            },
+          }}
+        />
         <Notice
           data={state.noticeMessage}
           closeNotice={() => this.setState({ noticeMessage: null })}
         />
-
-        <Modal
-          animationType="fade"
-          visible={this.state.addressesFilterOpened}
-          onCloseModal={() => {
-            this.setState({ addressesFilterOpened: false });
+        <TerritoryDetailsModeModal
+          {...{
+            ...this,
+            ...state,
+            filterTypes,
+            onCloseModal: () => {
+              this.setState({ addressesFilterOpened: false });
+            },
           }}
-        >
-          <View style={[styles["modal-view"], {}]}>
-            <RadioBox
-              name="filter"
-              label={Language.translate("Filter Addresses")}
-              options={filterTypes.map((f) => ({
-                ...f,
-                active: f.value === state.filterType,
-              }))}
-              onChange={this.saveFilterType}
-            />
-            <Link
-              onPress={() => {
-                this.saveFilterType({
-                  option: {
-                    value: "not-done-at-all",
-                  },
-                });
-              }}
-              customStyle={[
-                style["heading-button-link"],
-                {
-                  height: 60,
-
-                  borderColor: colors["grey-lite"],
-                  borderWidth: 1,
-                },
-                state.filterType === "not-done-at-all"
-                  ? { backgroundColor: colors["territory-blue"] }
-                  : null,
-              ]}
-              customView={
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "stretch",
-                    justifyContent: "center",
-                    paddingBottom: 10,
-                    paddingTop: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color:
-                        state.filterType === "not-done-at-all"
-                          ? colors.white
-                          : colors["grey-dark"],
-                      paddingTop: 5,
-                    }}
-                  >
-                    {Language.translate("Address & phone not worked") + "  "}
-                  </Text>
-                  <FontAwesome
-                    {...{
-                      name: "check-circle",
-                      size: 24,
-                      color:
-                        state.filterType === "not-done-at-all"
-                          ? colors.white
-                          : colors["grey-lite"],
-                    }}
-                  />
-                </View>
-              }
-            ></Link>
-          </View>
-        </Modal>
-
+        />
         <Modal
           animationType="fade"
           visible={this.state.modeOptionsOpened}
@@ -617,7 +238,7 @@ export default class TerritoryDetails extends React.Component {
       });
     });
   }
-  viewNotes(data) {
+  viewNotes = (data) => {
     // TODO: Find the source of this.props.entity
 
     this.setState({ addressActive: data, shouldRender: "Notes" }, () => {
@@ -629,8 +250,8 @@ export default class TerritoryDetails extends React.Component {
             territoryId: data.territoryId,
           });
     });
-  }
-  viewAddress(data) {
+  };
+  viewAddress = (data) => {
     this.setState({ addressActive: data, shouldRender: "addressId" }, () => {
       this.props.entity && typeof this.props.entity.viewAddress === "function"
         ? this.props.entity.viewAddress(data)
@@ -641,7 +262,7 @@ export default class TerritoryDetails extends React.Component {
             updateAddress: this.updateAddress,
           });
     });
-  }
+  };
   viewAddressAdd = () => {
     this.props.entity && typeof this.props.entity.viewAddressAdd === "function"
       ? this.props.entity.viewAddressAdd()
