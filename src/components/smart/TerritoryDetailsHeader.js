@@ -27,14 +27,10 @@ export default TerritoryDetailsHeader = ({
         <ButtonLink
           onPress={() => openCloseSubNav(!subNavOpened)}
           customStyle={[
+            style["heading-button-link"],
+            style["border-grey-bg-lite"],
             {
-              borderColor: colors["grey-lite"],
-              borderWidth: 1,
-              backgroundColor: colors["off-white"],
               marginLeft: 10,
-              marginTop: -3,
-              padding: 5,
-              paddingTop: 5,
             },
           ]}
         >
@@ -44,11 +40,7 @@ export default TerritoryDetailsHeader = ({
           onPress={showModeOptions}
           customStyle={[
             style["heading-button-link"],
-            {
-              borderColor: colors["grey-lite"],
-              borderWidth: 1,
-              backgroundColor: colors["off-white"],
-            },
+            style["border-grey-bg-lite"],
           ]}
         >
           <FontAwesome
@@ -61,10 +53,8 @@ export default TerritoryDetailsHeader = ({
           onPress={showAddressesFilter}
           customStyle={[
             style["heading-button-link"],
+            style["border-grey-bg-lite"],
             {
-              borderColor: colors["grey-lite"],
-              borderWidth: 1,
-              backgroundColor: colors["off-white"],
               position: "absolute",
               right: 20,
               marginTop: 18,
@@ -84,7 +74,7 @@ export default TerritoryDetailsHeader = ({
               <MaterialIcons
                 name="filter-list"
                 size={16}
-                color={colors["grey"]}
+                color={colors["territory-blue"]}
               />
               <Text
                 style={{
@@ -92,6 +82,7 @@ export default TerritoryDetailsHeader = ({
                   marginTop: -2,
                   paddingLeft: 3,
                   fontSize: 16,
+                  color: colors["territory-blue"],
                 }}
               >
                 {Language.translate("Filter")}
