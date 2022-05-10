@@ -371,4 +371,11 @@ export default {
     STATUS_SENT_LETTER: 7,
     STATUS_WITNESS_STUDENT: 8,
   },
+  getLegacyNoteSymbol(note = "") {
+    const legacyNotes = note.split("-") || [];
+    return (legacyNotes.length && legacyNotes[0].trim()) || "";
+  },
+  isLegacyNote(note = "") {
+    return note !== "" && note.length <= 2;
+  },
 };

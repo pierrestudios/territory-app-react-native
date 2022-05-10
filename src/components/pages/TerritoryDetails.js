@@ -397,8 +397,8 @@ export default class TerritoryDetails extends React.Component {
     // Note: Check for legacy notes (before use of symbols)
     const legacyNoteSymbols =
       languages[this.state.notesSymbolsLang]["NotesSymbols"] || {};
-    const legacyNote = this.getLegacyNote(address.notes[0].note);
-    const isLegacyNote = legacyNote && legacyNote.length <= 2;
+    const legacyNote = UTILS.getLegacyNoteSymbol(address.notes[0].note);
+    const isLegacyNote = UTILS.isLegacyNote(legacyNote);
 
     switch (filterType) {
       case "done":
@@ -436,10 +436,6 @@ export default class TerritoryDetails extends React.Component {
           ].indexOf(address.notes[0].symbol) !== -1
         );
     }
-  };
-  getLegacyNote = (note = "") => {
-    const legacyNotes = note.split("-") || [];
-    return (legacyNotes.length && legacyNotes[0].trim()) || "";
   };
   notifyDelete = (address, user) => {
     const messageBlock = (

@@ -150,7 +150,9 @@ export default TerritoryDetailsList = ({
                             ]}
                           >
                             {Number.isInteger(item.notes[0].symbol) &&
-                            !item.notes[0].note
+                            !UTILS.isLegacyNote(
+                              UTILS.getLegacyNoteSymbol(item.notes[0].note)
+                            )
                               ? `${
                                   Object.values(notesSymbols)[
                                     item.notes[0].symbol
