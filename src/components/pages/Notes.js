@@ -318,7 +318,7 @@ export default class Notes extends React.Component {
     // Data
     const dataToSave = {
       ...noteData,
-      note: noteData.notesAddl || "",
+      note: noteData.note || noteData.notesAddl || "",
       date: UTILS.getDateString(date),
     };
 

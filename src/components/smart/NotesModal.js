@@ -72,38 +72,38 @@ export default NotesModal = (props) => {
 export const NotesInput = (props) => {
   return (
     <View>
+      <TouchableHighlight
+        style={style["date-input-wrapper"]}
+        onPress={() => props.setModalVisible({ NotesOptionsModal: true })}
+      >
+        <Text
+          style={[
+            {
+              fontSize: 18,
+              padding: 5,
+              color: Number.isInteger(props.noteData.symbol)
+                ? colors["grey-dark"]
+                : colors["grey-lite"],
+            },
+          ]}
+        >
+          {Number.isInteger(props.noteData.symbol)
+            ? `${Object.values(props.notesSymbols)[props.noteData.symbol]}`
+            : Language.translate("Add Notes")}
+        </Text>
+      </TouchableHighlight>
+
       {props.noteData.noteId ? (
         <TextInput
           name="note"
-          placeholder={Language.translate("Edit Notes")}
+          placeholder={Language.translate("Add Notes")}
           onInput={props.saveData}
           value={props.noteData.note}
           error={props.errors.note}
         />
-      ) : (
-        <TouchableHighlight
-          style={style["date-input-wrapper"]}
-          onPress={() => props.setModalVisible({ NotesOptionsModal: true })}
-        >
-          <Text
-            style={[
-              {
-                fontSize: 18,
-                padding: 5,
-                color: props.noteData.symbol
-                  ? colors["grey-dark"]
-                  : colors["grey-lite"],
-              },
-            ]}
-          >
-            {!!props.noteData.symbol
-              ? `${props.notesSymbols[props.noteData.symbol]}`
-              : Language.translate("Add Notes")}
-          </Text>
-        </TouchableHighlight>
-      )}
+      ) : null}
 
-      {!props.noteData.noteId && !!props.noteData.symbol ? (
+      {!props.noteData.noteId && Number.isInteger(props.noteData.symbol) ? (
         <TextInput
           name="notesAddl"
           placeholder={
