@@ -10,7 +10,7 @@ import getSiteSetting from "../../common/settings";
 import Loading from "../elements/Loading";
 import { ButtonHeader } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
-import { RadioBox } from "../elements/FormInput";
+import { RadioBox, TextInput } from "../elements/FormInput";
 
 import style, { colors } from "../../styles/main";
 import Modal from "../elements/Modal";
@@ -58,6 +58,7 @@ export default class TerritoryDetails extends React.Component {
     modeOptionsOpened: false,
     modeOption: "address",
     filterType: "all",
+    searchModalOpened: false,
   };
   componentDidMount() {
     this.territoryId = this.props.navigation.getParam("territoryId");
@@ -103,12 +104,12 @@ export default class TerritoryDetails extends React.Component {
     }
   }
   render() {
-    const state = this.state || {};
+    const { state } = this;
 
     if (!state.data) return <Loading />;
 
     const { AddressNoteSymbols: notesSymbols = {} } =
-      languages[this.state.notesSymbolsLang];
+      languages[state.notesSymbolsLang];
 
     const filterTypes = [
       { value: "all", label: Language.translate("All") },
@@ -165,7 +166,7 @@ export default class TerritoryDetails extends React.Component {
         />
         <Modal
           animationType="fade"
-          visible={this.state.modeOptionsOpened}
+          visible={state.modeOptionsOpened}
           onCloseModal={() => {
             this.setState({ modeOptionsOpened: false });
           }}
@@ -179,6 +180,31 @@ export default class TerritoryDetails extends React.Component {
                 active: m.value === state.modeOption,
               }))}
               onChange={this.saveModeOption}
+            />
+          </View>
+        </Modal>
+        <Modal
+          animationType="fade"
+          visible={state.searchModalOpened}
+          onCloseModal={() => {
+            this.setState({ searchModalOpened: false });
+          }}
+        >
+          <View style={[styles["modal-view"], {}]}>
+            <TextInput
+              label={Language.translate(
+                state.modeOption === "phone"
+                  ? "Search for phone"
+                  : "Search for name"
+              )}
+              showLabel={true}
+              value={state.searchQuery}
+              name="search"
+              onInput={({ search: searchQuery }) => {
+                this.setState({ searchQuery }, () => {
+                  this.performSearch(searchQuery);
+                });
+              }}
             />
           </View>
         </Modal>
@@ -361,6 +387,12 @@ export default class TerritoryDetails extends React.Component {
       modeOptionsOpened: false,
     });
   };
+  showSearchModal = () => {
+    this.setState({
+      searchModalOpened: this.state.searchModalOpened === false,
+    });
+  };
+  performSearch = (queryText) => {};
   saveNotesSymbolsLang = (selectedLang) => {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
