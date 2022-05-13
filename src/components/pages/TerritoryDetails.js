@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Share, FlatList } from "react-native";
+import { Text, View, Share, ScrollView } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Data from "../../common/data";
 import Language from "../../common/lang";
@@ -210,58 +210,55 @@ export default class TerritoryDetails extends React.Component {
               }}
             />
             {state.searchQueryResults.length ? (
-              <FlatList
-                contentContainerStyle={style.listings}
-                ListEmptyComponent={() => (
-                  <View style={[style["listings-item"]]}>
-                    <Text>{"..."}</Text>
-                  </View>
-                )}
-                data={state.searchQueryResults.slice(0, SEARCH_RESULTS_LIMIT)}
-                keyExtractor={(item) => item.addressId.toString()}
-                renderItem={({ item }) => {
-                  let nameText = UTILS.formatDiacritics(item.name);
-                  let entryText = UTILS.getListingAddress(item);
-                  let notesFn = () => this.viewNotes(item);
+              <ScrollView>
+                {state.searchQueryResults
+                  .slice(0, SEARCH_RESULTS_LIMIT)
+                  .map((item) => {
+                    let nameText = UTILS.formatDiacritics(item.name);
+                    let entryText = UTILS.getListingAddress(item);
+                    let notesFn = () => this.viewNotes(item);
 
-                  if (state.modeOption === "phone") {
-                    const resultEntry = item.phones.find(({ number }) =>
-                      UTILS.getNumbersOnly(number).match(
-                        UTILS.getNumbersOnly(state.searchQuery)
-                      )
+                    if (state.modeOption === "phone") {
+                      const resultEntry = item.phones.find(({ number }) =>
+                        UTILS.getNumbersOnly(number).match(
+                          UTILS.getNumbersOnly(state.searchQuery)
+                        )
+                      );
+                      nameText =
+                        (resultEntry &&
+                          UTILS.formatDiacritics(resultEntry.name)) ||
+                        "";
+                      entryText = (resultEntry && resultEntry.number) || "";
+                      notesFn = () => this.viewPhoneNumbers(item, resultEntry);
+                    }
+
+                    return (
+                      <View
+                        key={item.addressId}
+                        style={[style["listings-item"]]}
+                      >
+                        <Text>{nameText}</Text>
+                        <Text>{entryText}</Text>
+                        {state.user.isNoteEditor ? (
+                          <ButtonLink
+                            key="listings-add-notes"
+                            customStyle={[
+                              style["add-notes"],
+                              {
+                                marginTop: -3,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                              },
+                            ]}
+                            onPress={notesFn}
+                          >
+                            <Text>{Language.translate("Notes")}</Text>
+                          </ButtonLink>
+                        ) : null}
+                      </View>
                     );
-                    nameText =
-                      (resultEntry &&
-                        UTILS.formatDiacritics(resultEntry.name)) ||
-                      "";
-                    entryText = (resultEntry && resultEntry.number) || "";
-                    notesFn = () => this.viewPhoneNumbers(item, resultEntry);
-                  }
-
-                  return (
-                    <View style={[style["listings-item"], { borderWidth: 0 }]}>
-                      <Text>{nameText}</Text>
-                      <Text>{entryText}</Text>
-                      {state.user.isNoteEditor ? (
-                        <ButtonLink
-                          key="listings-add-notes"
-                          customStyle={[
-                            style["add-notes"],
-                            {
-                              marginTop: -3,
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                            },
-                          ]}
-                          onPress={notesFn}
-                        >
-                          <Text>{Language.translate("Notes")}</Text>
-                        </ButtonLink>
-                      ) : null}
-                    </View>
-                  );
-                }}
-              />
+                  })}
+              </ScrollView>
             ) : null}
           </View>
         </Modal>
