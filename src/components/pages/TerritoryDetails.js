@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Share } from "react-native";
+import { Text, View, Share, FlatList } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Data from "../../common/data";
 import Language from "../../common/lang";
@@ -8,7 +8,7 @@ import NavigationService from "../../common/nav-service";
 import getSiteSetting from "../../common/settings";
 
 import Loading from "../elements/Loading";
-import { ButtonHeader } from "../elements/Button";
+import { ButtonHeader, ButtonLink } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
 import { RadioBox, TextInput } from "../elements/FormInput";
 
@@ -19,6 +19,7 @@ import TerritoryDetailsList from "../smart/TerritoryDetailsList";
 import TerritoryDetailsModeModal from "../smart/TerritoryDetailsModeModal";
 
 const languages = getSiteSetting("languages");
+const SEARCH_RESULTS_LIMIT = 5;
 
 export default class TerritoryDetails extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -59,6 +60,8 @@ export default class TerritoryDetails extends React.Component {
     modeOption: "address",
     filterType: "all",
     searchModalOpened: false,
+    searchQuery: "",
+    searchQueryResults: [],
   };
   componentDidMount() {
     this.territoryId = this.props.navigation.getParam("territoryId");
@@ -206,6 +209,57 @@ export default class TerritoryDetails extends React.Component {
                 });
               }}
             />
+            {state.searchQueryResults.length ? (
+              <FlatList
+                contentContainerStyle={style.listings}
+                ListEmptyComponent={() => (
+                  <View style={[style["listings-item"]]}>
+                    <Text>{"..."}</Text>
+                  </View>
+                )}
+                data={state.searchQueryResults.slice(0, SEARCH_RESULTS_LIMIT)}
+                keyExtractor={(item) => item.addressId.toString()}
+                renderItem={({ item }) => {
+                  let nameText = UTILS.formatDiacritics(item.name);
+                  let entryText = UTILS.getListingAddress(item);
+                  let notesButton = state.user.isNoteEditor ? (
+                    <ButtonLink
+                      key="listings-add-notes"
+                      customStyle={[
+                        style["add-notes"],
+                        {
+                          marginTop: -3,
+                          paddingLeft: 5,
+                          paddingRight: 5,
+                        },
+                      ]}
+                      onPress={() => {}}
+                    >
+                      <Text>{Language.translate("Notes")}</Text>
+                    </ButtonLink>
+                  ) : null;
+                  if (state.modeOption === "phone") {
+                    const resultEntry = item.phones.find(({ number }) =>
+                      UTILS.getNumbersOnly(number).match(
+                        UTILS.getNumbersOnly(state.searchQuery)
+                      )
+                    );
+                    nameText =
+                      (resultEntry &&
+                        UTILS.formatDiacritics(resultEntry.name)) ||
+                      "";
+                    entryText = (resultEntry && resultEntry.number) || "";
+                  }
+                  return (
+                    <View style={[style["listings-item"], { borderWidth: 0 }]}>
+                      <Text>{nameText}</Text>
+                      <Text>{entryText}</Text>
+                      {notesButton}
+                    </View>
+                  );
+                }}
+              />
+            ) : null}
           </View>
         </Modal>
       </View>
@@ -392,7 +446,31 @@ export default class TerritoryDetails extends React.Component {
       searchModalOpened: this.state.searchModalOpened === false,
     });
   };
-  performSearch = (queryText) => {};
+  performSearch = (queryText) => {
+    if (queryText.length < 3) {
+      return this.setState({ searchQueryResults: [] });
+    }
+
+    if (this.state.modeOption === "address") {
+      const namesMatched = this.state.data.addresses.filter(({ name }) => {
+        return name.match(queryText);
+      });
+      this.setState({
+        searchQueryResults: namesMatched || [],
+      });
+    } else {
+      const phonesMatched = this.state.data.addresses.filter(({ phones }) => {
+        return (
+          phones.filter(({ number }) =>
+            UTILS.getNumbersOnly(number).match(UTILS.getNumbersOnly(queryText))
+          ) || []
+        ).length;
+      });
+      this.setState({
+        searchQueryResults: phonesMatched || [],
+      });
+    }
+  };
   saveNotesSymbolsLang = (selectedLang) => {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };

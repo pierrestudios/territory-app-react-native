@@ -360,6 +360,9 @@ export default {
     }
     return status === 1 || !status;
   },
+  getNumbersOnly(str) {
+    return str.replace(/[^0-9]+/gi, "");
+  },
   addressStatuses: {
     STATUS_NOT_HOME: 0,
     STATUS_REVISIT: 1,
