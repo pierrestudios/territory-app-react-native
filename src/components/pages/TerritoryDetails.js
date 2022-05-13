@@ -222,22 +222,8 @@ export default class TerritoryDetails extends React.Component {
                 renderItem={({ item }) => {
                   let nameText = UTILS.formatDiacritics(item.name);
                   let entryText = UTILS.getListingAddress(item);
-                  let notesButton = state.user.isNoteEditor ? (
-                    <ButtonLink
-                      key="listings-add-notes"
-                      customStyle={[
-                        style["add-notes"],
-                        {
-                          marginTop: -3,
-                          paddingLeft: 5,
-                          paddingRight: 5,
-                        },
-                      ]}
-                      onPress={() => {}}
-                    >
-                      <Text>{Language.translate("Notes")}</Text>
-                    </ButtonLink>
-                  ) : null;
+                  let notesFn = () => this.viewNotes(item);
+
                   if (state.modeOption === "phone") {
                     const resultEntry = item.phones.find(({ number }) =>
                       UTILS.getNumbersOnly(number).match(
@@ -249,12 +235,29 @@ export default class TerritoryDetails extends React.Component {
                         UTILS.formatDiacritics(resultEntry.name)) ||
                       "";
                     entryText = (resultEntry && resultEntry.number) || "";
+                    notesFn = () => this.viewPhoneNumbers(item, resultEntry);
                   }
+
                   return (
                     <View style={[style["listings-item"], { borderWidth: 0 }]}>
                       <Text>{nameText}</Text>
                       <Text>{entryText}</Text>
-                      {notesButton}
+                      {state.user.isNoteEditor ? (
+                        <ButtonLink
+                          key="listings-add-notes"
+                          customStyle={[
+                            style["add-notes"],
+                            {
+                              marginTop: -3,
+                              paddingLeft: 5,
+                              paddingRight: 5,
+                            },
+                          ]}
+                          onPress={notesFn}
+                        >
+                          <Text>{Language.translate("Notes")}</Text>
+                        </ButtonLink>
+                      ) : null}
                     </View>
                   );
                 }}
@@ -311,10 +314,11 @@ export default class TerritoryDetails extends React.Component {
 
     return false;
   };
-  viewPhoneNumbers = (data) => {
+  viewPhoneNumbers = (data, phoneData = null) => {
     this.setState({ addressActive: data }, () => {
       NavigationService.navigate("PhoneNumbers", {
         addressActive: data,
+        phoneActive: phoneData,
         territoryId: data.territoryId,
         updateAddress: this.updateAddress,
       });

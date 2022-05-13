@@ -22,7 +22,13 @@ export default class PhoneNumbers extends React.Component {
       headerRight: () => null,
     };
   };
-  state = {};
+  state = {
+    data: null,
+    user: null,
+    statusSymbols: null,
+    activePhone: null,
+    activePhoneOpened: false,
+  };
   componentDidMount() {
     const { navigation } = this.props;
     if (navigation.getParam("addressActive")) {
@@ -34,8 +40,12 @@ export default class PhoneNumbers extends React.Component {
         user: Data.user,
         statusSymbols,
       });
+    }
 
-      // console.log({ statusSymbols, address: navigation.getParam("addressActive"), });
+    if (navigation.getParam("phoneActive")) {
+      this.setState({
+        activePhone: navigation.getParam("phoneActive"),
+      });
     }
   }
   componentDidUpdate(prevProps, prevState) {
@@ -43,6 +53,10 @@ export default class PhoneNumbers extends React.Component {
     if (!!navigation.getParam("saveNotes")) {
       this.saveNotes();
       navigation.setParams({ saveNotes: false });
+    }
+
+    if (this.state.activePhone && !this.state.activePhoneOpened) {
+      this.callPhoneNumber(this.state.activePhone, true);
     }
   }
   render() {
@@ -276,7 +290,10 @@ export default class PhoneNumbers extends React.Component {
         });
       });
   };
-  callPhoneNumber = ({ name, number, phoneId, territoryId, notes = [] }) => {
+  callPhoneNumber = (
+    { name, number, phoneId, territoryId, notes = [] },
+    activePhoneOpened = false
+  ) => {
     const messageBlock = (
       <View>
         {(notes && notes.slice(0, 1).map(this.renderListOfNotes)) || null}
@@ -455,6 +472,7 @@ export default class PhoneNumbers extends React.Component {
           });
         },
       },
+      activePhoneOpened,
       shouldRender: "Territory",
     });
   };
