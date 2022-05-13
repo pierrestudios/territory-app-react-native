@@ -16,8 +16,9 @@ export default TerritoryDetailsHeader = ({
   sendSelectedAddresses = () => {},
   showModeOptions = () => {},
   showAddressesFilter = () => {},
+  showSearchModal = () => {},
 }) => {
-  const [subNavOpened, openCloseSubNav] = useState(false);
+  const [subNavOpened, openCloseSubNav] = useState(true);
   const selectedMode =
     modeOptions.find((opt) => opt.value === modeOption) || {};
 
@@ -129,6 +130,20 @@ export default TerritoryDetailsHeader = ({
           textColorWhite
         >
           {Language.translate("Send")}
+        </ButtonLink>
+        <ButtonLink
+          onPress={showSearchModal}
+          customStyle={[
+            style["heading-button-link"],
+            {
+              borderColor: colors["grey-lite"],
+              borderWidth: 1,
+              backgroundColor: colors["off-white"],
+            },
+          ]}
+        >
+          <FontAwesome name={"search"} size={16} />{" "}
+          {Language.translate("Search")}
         </ButtonLink>
       </View>
     </>
