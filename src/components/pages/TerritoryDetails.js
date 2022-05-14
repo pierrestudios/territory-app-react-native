@@ -462,9 +462,13 @@ export default class TerritoryDetails extends React.Component {
     } else {
       const phonesMatched = this.state.data.addresses.filter(({ phones }) => {
         return (
-          phones.filter(({ number }) =>
-            UTILS.getNumbersOnly(number).match(UTILS.getNumbersOnly(queryText))
-          ) || []
+          (phones &&
+            phones.filter(({ number }) =>
+              UTILS.getNumbersOnly(number).match(
+                UTILS.getNumbersOnly(queryText)
+              )
+            )) ||
+          []
         ).length;
       });
       this.setState({
