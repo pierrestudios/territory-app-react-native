@@ -487,6 +487,10 @@ export default class TerritoryDetails extends React.Component {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   matchFilterType = (address, filterType, mode = this.state.modeOption) => {
+    if (this.hasWarning(address)) {
+      return false;
+    }
+
     if (
       mode === UTILS.modeOptionsValues.PHONE &&
       !!address.phones &&
@@ -515,10 +519,6 @@ export default class TerritoryDetails extends React.Component {
 
     if (!address.notes || !address.notes.length) {
       return filterType === "not-done";
-    }
-
-    if (this.hasWarning(address)) {
-      return false;
     }
 
     // Note: Check for legacy notes (before use of symbols)
