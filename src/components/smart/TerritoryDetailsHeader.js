@@ -19,8 +19,8 @@ export default TerritoryDetailsHeader = ({
   showSearchModal = () => {},
 }) => {
   const [subNavOpened, openCloseSubNav] = useState(true);
-  const selectedMode =
-    modeOptions.find((opt) => opt.value === modeOption) || {};
+  const modeToSelect =
+    modeOptions.find((opt) => opt.value !== modeOption) || {};
 
   return (
     <>
@@ -45,10 +45,10 @@ export default TerritoryDetailsHeader = ({
           ]}
         >
           <FontAwesome
-            name={selectedMode["icon-name"] || "check-circle"}
+            name={modeToSelect["icon-name"] || "check-circle"}
             size={18}
           />{" "}
-          {selectedMode.label}
+          {Language.translate("Select")} {modeToSelect.label}
         </ButtonLink>
         <ButtonLink
           onPress={showAddressesFilter}
