@@ -381,4 +381,8 @@ export default {
   isLegacyNote(note = "") {
     return note !== "" && note.length <= 2;
   },
+  modeOptionsValues: {
+    PHONE: "phone",
+    ADDRESS: "address",
+  },
 };

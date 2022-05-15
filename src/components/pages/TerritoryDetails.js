@@ -57,7 +57,7 @@ export default class TerritoryDetails extends React.Component {
     selectorOpened: false,
     addressesFilterOpened: false,
     modeOptionsOpened: false,
-    modeOption: "address",
+    modeOption: UTILS.modeOptionsValues.ADDRESS,
     filterType: "all",
     searchModalOpened: false,
     searchQuery: "",
@@ -122,12 +122,12 @@ export default class TerritoryDetails extends React.Component {
 
     const modeOptions = [
       {
-        value: "address",
+        value: UTILS.modeOptionsValues.ADDRESS,
         label: Language.translate("Addresses"),
         "icon-name": "home",
       },
       {
-        value: "phone",
+        value: UTILS.modeOptionsValues.PHONE,
         label: Language.translate("Phone"),
         "icon-name": "phone",
       },
@@ -196,7 +196,7 @@ export default class TerritoryDetails extends React.Component {
           <View style={[styles["modal-view"], {}]}>
             <TextInput
               label={Language.translate(
-                state.modeOption === "phone"
+                state.modeOption === UTILS.modeOptionsValues.PHONE
                   ? "Search for phone"
                   : "Search for name"
               )}
@@ -218,7 +218,7 @@ export default class TerritoryDetails extends React.Component {
                     let entryText = UTILS.getListingAddress(item);
                     let notesFn = () => this.viewNotes(item);
 
-                    if (state.modeOption === "phone") {
+                    if (state.modeOption === UTILS.modeOptionsValues.PHONE) {
                       const resultEntry = item.phones.find(({ number }) =>
                         UTILS.getNumbersOnly(number).match(
                           UTILS.getNumbersOnly(state.searchQuery)
@@ -268,14 +268,22 @@ export default class TerritoryDetails extends React.Component {
   filterAddresses = (a) => {
     // Filter "not-done-at-all", search for not worked
     if (this.state.filterType === "not-done-at-all") {
-      const hasPhon = this.matchFilterType(a, "not-done", "phone");
-      const hasAddr = this.matchFilterType(a, "not-done", "address");
+      const hasPhon = this.matchFilterType(
+        a,
+        "not-done",
+        UTILS.modeOptionsValues.PHONE
+      );
+      const hasAddr = this.matchFilterType(
+        a,
+        "not-done",
+        UTILS.modeOptionsValues.ADDRESS
+      );
       return hasPhon && hasAddr;
     }
 
     // Note: for modeOption: "phone", if no phones, show ONLY for Managers
     if (
-      this.state.modeOption === "phone" &&
+      this.state.modeOption === UTILS.modeOptionsValues.PHONE &&
       (!a.phones || !a.phones.length) &&
       !this.state.user.isManager
     ) {
@@ -389,7 +397,7 @@ export default class TerritoryDetails extends React.Component {
       .sort(UTILS.sortAddress);
 
     let listToShare = [];
-    if (this.state.modeOption === "phone") {
+    if (this.state.modeOption === UTILS.modeOptionsValues.PHONE) {
       addressesToShare.forEach((a) => {
         const callablePhones = UTILS.getListingCallablePhones(a);
         if (callablePhones.length) {
@@ -452,7 +460,7 @@ export default class TerritoryDetails extends React.Component {
       return this.setState({ searchQueryResults: [] });
     }
 
-    if (this.state.modeOption === "address") {
+    if (this.state.modeOption === UTILS.modeOptionsValues.ADDRESS) {
       const namesMatched = this.state.data.addresses.filter(({ name }) => {
         return name.match(queryText);
       });
@@ -480,7 +488,11 @@ export default class TerritoryDetails extends React.Component {
     this.setState({ notesSymbolsLang: selectedLang.option.value });
   };
   matchFilterType = (address, filterType, mode = this.state.modeOption) => {
-    if (mode === "phone" && !!address.phones && !!address.phones.length) {
+    if (
+      mode === UTILS.modeOptionsValues.PHONE &&
+      !!address.phones &&
+      !!address.phones.length
+    ) {
       if (filterType === "not-done") {
         return address.phones.filter(
           (p) =>
@@ -497,7 +509,7 @@ export default class TerritoryDetails extends React.Component {
               UTILS.phoneStatuses.STATUS_UNVERIFIED
         ).length === 0
       );
-    } else if (mode === "phone") {
+    } else if (mode === UTILS.modeOptionsValues.PHONE) {
       return false;
     }
 
