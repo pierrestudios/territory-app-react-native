@@ -47,7 +47,6 @@ export default class TerritoryDetails extends React.Component {
         ) : null,
     };
   };
-
   addressList = null;
   territoryNumber = null;
   territoryId = null;
@@ -497,14 +496,15 @@ export default class TerritoryDetails extends React.Component {
         return address.phones.filter(
           (p) =>
             !p.notes ||
-            p.notes[0].symbol === UTILS.phoneStatuses.STATUS_UNVERIFIED
+            parseInt(p.notes[0].symbol) ===
+              UTILS.phoneStatuses.STATUS_UNVERIFIED
         ).length;
       }
 
       return (
         address.phones.filter(
           (p) =>
-            p.notes.length &&
+            p.notes.length === 0 ||
             parseInt(p.notes[0].symbol) ===
               UTILS.phoneStatuses.STATUS_UNVERIFIED
         ).length === 0
