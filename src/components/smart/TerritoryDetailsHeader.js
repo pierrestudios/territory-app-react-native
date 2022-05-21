@@ -48,7 +48,7 @@ export default TerritoryDetailsHeader = ({
             name={modeToSelect["icon-name"] || "check-circle"}
             size={18}
           />{" "}
-          {Language.translate("Select")} {modeToSelect.label}
+          {Language.translate("Territory Mode")}
         </ButtonLink>
         <ButtonLink
           onPress={showAddressesFilter}
