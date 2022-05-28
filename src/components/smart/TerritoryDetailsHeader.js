@@ -19,6 +19,7 @@ export default TerritoryDetailsHeader = ({
   showSearchModal = () => {},
 }) => {
   const [subNavOpened, openCloseSubNav] = useState(true);
+  const currentMode = modeOptions.find((opt) => opt.value === modeOption) || {};
   const modeToSelect =
     modeOptions.find((opt) => opt.value !== modeOption) || {};
 
@@ -32,23 +33,11 @@ export default TerritoryDetailsHeader = ({
             style["border-grey-bg-lite"],
             {
               marginLeft: 10,
+              display: "none", // Note: Hide this button, for now
             },
           ]}
         >
           <FontAwesome name={"bars"} color={colors.grey} size={18} />
-        </ButtonLink>
-        <ButtonLink
-          onPress={showModeOptions}
-          customStyle={[
-            style["heading-button-link"],
-            style["border-grey-bg-lite"],
-          ]}
-        >
-          <FontAwesome
-            name={modeToSelect["icon-name"] || "check-circle"}
-            size={18}
-          />{" "}
-          {Language.translate("Territory Mode")}
         </ButtonLink>
         <ButtonLink
           onPress={showAddressesFilter}
@@ -57,7 +46,7 @@ export default TerritoryDetailsHeader = ({
             style["border-grey-bg-lite"],
             {
               position: "absolute",
-              right: 20,
+              left: 20,
               marginTop: 18,
               paddingTop: 6,
             },
@@ -91,6 +80,47 @@ export default TerritoryDetailsHeader = ({
             </View>
           }
         />
+        <View
+          style={{
+            position: "absolute",
+            right: 20,
+            flex: 1,
+            flexDirection: "row",
+          }}
+        >
+          <Text
+            style={{
+              marginRight: 10,
+              marginTop: 18,
+              paddingTop: 6,
+              fontSize: 16,
+              fontWeight: "600",
+              color: colors["territory-blue"],
+            }}
+          >
+            {Language.translate("Mode")}
+            {": "}
+            <FontAwesome
+              name={currentMode["icon-name"] || "check-circle"}
+              size={16}
+            />{" "}
+            {currentMode.label}
+          </Text>
+          <ButtonLink
+            onPress={showModeOptions}
+            customStyle={[
+              style["heading-button-link"],
+              style["border-grey-bg-lite"],
+              {
+                backgroundColor: colors.white,
+                marginTop: 18,
+                paddingTop: 6,
+              },
+            ]}
+          >
+            {Language.translate("Change")}
+          </ButtonLink>
+        </View>
       </View>
 
       <View
