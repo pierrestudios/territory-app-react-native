@@ -215,27 +215,31 @@ export default class TerritoryDetails extends React.Component {
                   .map((item) => {
                     let nameText = UTILS.formatDiacritics(item.name);
                     let entryText = UTILS.getListingAddress(item);
+                    let itemKey = item.addressId;
                     let notesFn = () => this.viewNotes(item);
 
                     if (state.modeOption === UTILS.modeOptionsValues.PHONE) {
-                      const resultEntry = item.phones.find(({ number }) =>
-                        UTILS.getNumbersOnly(number).match(
-                          UTILS.getNumbersOnly(state.searchQuery)
-                        )
-                      );
+                      const resultEntry =
+                        item.phones &&
+                        item.phones.find(({ number }) =>
+                          UTILS.getNumbersOnly(number).match(
+                            UTILS.getNumbersOnly(state.searchQuery)
+                          )
+                        );
+
                       nameText =
                         (resultEntry &&
                           UTILS.formatDiacritics(resultEntry.name)) ||
                         "";
                       entryText = (resultEntry && resultEntry.number) || "";
+                      itemKey = resultEntry
+                        ? `${itemKey}-${resultEntry.phoneId}`
+                        : itemKey;
                       notesFn = () => this.viewPhoneNumbers(item, resultEntry);
                     }
 
                     return (
-                      <View
-                        key={item.addressId}
-                        style={[style["listings-item"]]}
-                      >
+                      <View key={itemKey} style={[style["listings-item"]]}>
                         <Text>{nameText}</Text>
                         <Text>{entryText}</Text>
                         {state.user.isNoteEditor ? (
@@ -467,19 +471,42 @@ export default class TerritoryDetails extends React.Component {
         searchQueryResults: namesMatched || [],
       });
     } else {
-      const phonesMatched = this.state.data.addresses.filter(({ phones }) => {
-        return (
-          (phones &&
+      let multiPhonesMatchedFound;
+      let addlPhonesMatchedFound = [];
+      const phonesMatched = this.state.data.addresses.filter(
+        ({ phones, ...address }) => {
+          const phonesMatchedFound =
+            phones &&
             phones.filter(({ number }) =>
               UTILS.getNumbersOnly(number).match(
                 UTILS.getNumbersOnly(queryText)
               )
-            )) ||
-          []
-        ).length;
-      });
+            );
+
+          if (phonesMatchedFound.length > 1) {
+            phonesMatchedFound.forEach((phone) => {
+              addlPhonesMatchedFound.push({
+                ...address,
+                phones: [phone],
+              });
+            });
+
+            return false;
+          }
+
+          return phonesMatchedFound.length > 0;
+        }
+      );
+
+      if (addlPhonesMatchedFound.length > 0) {
+        multiPhonesMatchedFound = phonesMatched.concat(addlPhonesMatchedFound);
+      }
+
       this.setState({
-        searchQueryResults: phonesMatched || [],
+        searchQueryResults:
+          multiPhonesMatchedFound && multiPhonesMatchedFound.length > 0
+            ? multiPhonesMatchedFound
+            : phonesMatched || [],
       });
     }
   };
