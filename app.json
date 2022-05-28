@@ -3,7 +3,7 @@
     "name": "TerritoryApp",
     "slug": "territory-app",
     "icon": "./src/assets/app-icon.png",
-    "version": "1.43",
+    "version": "1.44",
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "contain",
@@ -14,7 +14,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "pierrestudios.com.TerritoryApp.1",
-      "buildNumber": "43"
+      "buildNumber": "44"
     },
     "android": {
       "package": "com.pierrestudios.jehu.territoryap",
