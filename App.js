@@ -1,33 +1,35 @@
 import React from "react";
-import { createStackNavigator } from "react-navigation";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 
-import Logo from "./components/elements/Logo";
-import Splash from "./components/pages/Splash";
-import UserPrefs from "./components/pages/UserPrefs";
-import PasswordRetrieve from "./components/pages/PasswordRetrieve";
-import Signup from "./components/pages/Signup";
-import Login from "./components/pages/Login";
-import Home from "./components/pages/Home";
-import Users from "./components/pages/Users";
-import UserDetails from "./components/pages/UserDetails";
-import UserEdit from "./components/pages/UserEdit";
-import PublisherAttachUser from "./components/pages/PublisherAttachUser";
-import Publishers from "./components/pages/Publishers";
-import PublisherDetails from "./components/pages/PublisherDetails";
-import PublisherEdit from "./components/pages/PublisherEdit";
-import PublisherAdd from "./components/pages/PublisherAdd";
-import PublisherAssignTerritory from "./components/pages/PublisherAssignTerritory";
-import Territories from "./components/pages/Territories";
-import MyTerritories from "./components/pages/MyTerritories";
-import TerritoryDetails from "./components/pages/TerritoryDetails";
-import AddressEdit from "./components/pages/AddressEdit";
-import AddressAdd from "./components/pages/AddressAdd";
-import Notes from "./components/pages/Notes";
-import WebViewApi from "./components/pages/WebViewApi";
-import WebViewExternal from "./components/pages/WebViewExternal";
-import WebViewTerritoryMap from "./components/pages/WebViewTerritoryMap";
+import Logo from "./src/components/elements/Logo";
+import Splash from "./src/components/pages/Splash";
+import UserPrefs from "./src/components/pages/UserPrefs";
+import PasswordRetrieve from "./src/components/pages/PasswordRetrieve";
+import Signup from "./src/components/pages/Signup";
+import Login from "./src/components/pages/Login";
+import Home from "./src/components/pages/Home";
+import Users from "./src/components/pages/Users";
+import UserDetails from "./src/components/pages/UserDetails";
+import UserEdit from "./src/components/pages/UserEdit";
+import PublisherAttachUser from "./src/components/pages/PublisherAttachUser";
+import Publishers from "./src/components/pages/Publishers";
+import PublisherDetails from "./src/components/pages/PublisherDetails";
+import PublisherEdit from "./src/components/pages/PublisherEdit";
+import PublisherAdd from "./src/components/pages/PublisherAdd";
+import PublisherAssignTerritory from "./src/components/pages/PublisherAssignTerritory";
+import Territories from "./src/components/pages/Territories";
+import MyTerritories from "./src/components/pages/MyTerritories";
+import TerritoryDetails from "./src/components/pages/TerritoryDetails";
+import AddressEdit from "./src/components/pages/AddressEdit";
+import AddressAdd from "./src/components/pages/AddressAdd";
+import Notes from "./src/components/pages/Notes";
+import WebViewApi from "./src/components/pages/WebViewApi";
+import WebViewExternal from "./src/components/pages/WebViewExternal";
+import WebViewTerritoryMap from "./src/components/pages/WebViewTerritoryMap";
 
-import { colors } from "./components/styles/main";
+import { colors } from "./src/styles/main";
+import PhoneNumbers from "./src/components/pages/PhoneNumbers";
 
 const App = createStackNavigator(
   {
@@ -52,19 +54,20 @@ const App = createStackNavigator(
     AddressAdd: { screen: AddressAdd },
     PublisherAssignTerritory: { screen: PublisherAssignTerritory },
     Notes: { screen: Notes },
+    PhoneNumbers: { screen: PhoneNumbers },
     WebViewApi: { screen: WebViewApi },
     WebViewExternal: { screen: WebViewExternal },
-    WebViewTerritoryMap: { screen: WebViewTerritoryMap }
+    WebViewTerritoryMap: { screen: WebViewTerritoryMap },
   },
   {
     initialRouteName: "Splash",
     navigationOptions: {
       headerStyle: {
-        backgroundColor: colors["territory-blue"]
+        backgroundColor: colors["territory-blue"],
       },
-      headerTitle: <Logo />
-    }
+      headerTitle: () => <Logo />,
+    },
   }
 );
 
-export default App;
+export default createAppContainer(App);
