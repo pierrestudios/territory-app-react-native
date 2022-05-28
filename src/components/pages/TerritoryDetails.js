@@ -240,8 +240,12 @@ export default class TerritoryDetails extends React.Component {
 
                     return (
                       <View key={itemKey} style={[style["listings-item"]]}>
-                        <Text>{nameText}</Text>
-                        <Text>{entryText}</Text>
+                        <Text ellipsizeMode="tail" style={{ flex: 1 }}>
+                          {nameText}
+                        </Text>
+                        <Text ellipsizeMode="tail" style={{ flex: 1 }}>
+                          {entryText}
+                        </Text>
                         {state.user.isNoteEditor ? (
                           <ButtonLink
                             key="listings-add-notes"
