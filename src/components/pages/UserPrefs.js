@@ -15,6 +15,7 @@ import Message from "../elements/Message";
 import Loading from "../elements/Loading";
 import Line from "../elements/Line";
 import LineBlank from "../elements/LineBlank";
+import Version from "../version";
 
 import style from "../../styles/main";
 
@@ -138,6 +139,7 @@ export default class UserPrefs extends React.Component {
             </Link>
           </View>
         </ScrollView>
+        <Version />
       </View>
     );
   }

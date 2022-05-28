@@ -9,7 +9,9 @@ export default () => {
     <View style={{ marginBottom: 10, marginTop: 10 }}>
       <Text>
         VER: {appVersion ? appVersion[`${Platform.OS}-version`] : ""}
-        {packageVersion ? `-DEV-${packageVersion}` : ""}
+        {packageVersion && packageVersion !== "release"
+          ? `-DEV-${packageVersion}`
+          : ""}
       </Text>
     </View>
   );

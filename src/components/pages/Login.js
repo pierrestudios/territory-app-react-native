@@ -15,6 +15,7 @@ import Heading from "../elements/Heading";
 import Message from "../elements/Message";
 import Loading from "../elements/Loading";
 import Line from "../elements/Line";
+import Version from "../version";
 
 import style from "../../styles/main";
 
@@ -143,6 +144,7 @@ export default class Login extends React.Component {
             </Link>
           </View>
         </ScrollView>
+        <Version />
       </View>
     );
   }

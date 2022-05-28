@@ -13,9 +13,10 @@ import Heading from "../elements/Heading";
 import Message from "../elements/Message";
 import Loading from "../elements/Loading";
 import Line from "../elements/Line";
+import NavigationService from "../../common/nav-service";
+import Version from "../version";
 
 import style from "../../styles/main";
-import NavigationService from "../../common/nav-service";
 
 export default class Signup extends React.Component {
   static navigationOptions = {
@@ -116,6 +117,7 @@ export default class Signup extends React.Component {
             </Link>
           </View>
         </ScrollView>
+        <Version />
       </View>
     );
   }
