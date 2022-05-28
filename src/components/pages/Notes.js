@@ -185,6 +185,10 @@ export default class Notes extends React.Component {
     const { AddressNoteSymbols: notesSymbols = {} } =
       languages[this.state.notesSymbolsLang];
 
+    const isLegacyNote = UTILS.isLegacyNote(
+      UTILS.getLegacyNoteSymbol(item.note)
+    );
+
     return (
       <View
         style={[
@@ -215,7 +219,8 @@ export default class Notes extends React.Component {
             {item.date}
           </Text>
           <Text numberOfLines={1} style={style["listings-notes-note-text"]}>
-            {Number.isInteger(item.symbol) && !item.note
+            {Number.isInteger(item.symbol) &&
+            !UTILS.isLegacyNote(UTILS.getLegacyNoteSymbol(item.note))
               ? `${Object.values(notesSymbols)[item.symbol]} - `
               : ""}
             {UTILS.formatDiacritics(item.note)}
@@ -318,7 +323,7 @@ export default class Notes extends React.Component {
     // Data
     const dataToSave = {
       ...noteData,
-      note: noteData.notesAddl || "",
+      note: noteData.note || noteData.notesAddl || "",
       date: UTILS.getDateString(date),
     };
 

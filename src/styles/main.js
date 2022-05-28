@@ -398,9 +398,16 @@ export default styles = StyleSheet.create({
     borderRadius: 3,
     alignItems: "center",
     padding: 5,
+    paddingTop: 5,
     marginLeft: 5,
     marginRight: 0,
     marginTop: -3,
+  },
+
+  "border-grey-bg-lite": {
+    borderColor: colors["grey-lite"],
+    borderWidth: 1,
+    backgroundColor: colors["off-white"],
   },
 
   "heading-button-link-text": {

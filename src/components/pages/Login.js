@@ -57,7 +57,7 @@ export default class Login extends React.Component {
 
     this.loadUserData();
   }
-  componentWillUpdate(props, state) {
+  UNSAFE_componentWillUpdate(props, state) {
     // console.log('componentWillUpdate() state', state)
 
     const user = Data.unAuthUser;
