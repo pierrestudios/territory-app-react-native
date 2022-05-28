@@ -469,7 +469,7 @@ export default class TerritoryDetails extends React.Component {
 
     if (this.state.modeOption === UTILS.modeOptionsValues.ADDRESS) {
       const namesMatched = this.state.data.addresses.filter(({ name }) => {
-        return name.match(queryText);
+        return name.toLowerCase().match(queryText.toLowerCase());
       });
       this.setState({
         searchQueryResults: namesMatched || [],
