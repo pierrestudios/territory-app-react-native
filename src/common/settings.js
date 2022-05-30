@@ -66,7 +66,9 @@ class UserData {
     }
   };
   getSetting(key) {
-    if (!!this._settings && !!key) return this._settings[key];
+    if (!!this._settings && !!key) {
+      return this._settings[key] || "";
+    }
 
     if (!!this._settings) return this._settings;
   }

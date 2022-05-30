@@ -34,7 +34,7 @@ class Data {
   }
   loadSavedUser = async () => {
     return this.getSavedUser().then((user) => {
-      if ((!user || !user.userId || !user.token) && !!user.apiPath) {
+      if ((!user || !user.userId || !user.token) && !!user && !!user.apiPath) {
         reLogin();
       }
       this._user = user;
