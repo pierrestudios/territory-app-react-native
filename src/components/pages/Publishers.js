@@ -2,7 +2,6 @@ import React from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Swipeout from "react-native-swipeout";
 
 import Data from "../../common/data";
 import Language from "../../common/lang";
@@ -91,46 +90,27 @@ export default class Publishers extends React.Component {
         data={data.sort(UTILS.sortPublisher)}
         keyExtractor={(item) => item.publisherId.toString()}
         renderItem={({ item }) => (
-          <Swipeout
-            key={item.publisherId}
-            right={[
-              {
-                text: Language.translate("Details"),
-                type: "primary",
-                onPress: () => this.viewDetails(item),
-              },
-              {
-                text: Language.translate("Edit"),
-                backgroundColor: colors.green,
-                onPress: () => this.editPublisher(item),
-              },
-              // { text: Language.translate('Delete'), type: 'delete', onPress: () => this.notifyDelete(item, state.user) }
-            ]}
-            autoClose={true}
-            close={true}
-          >
-            <View style={[styles["listings-item"]]}>
-              <TouchableOpacity
-                style={[
-                  styles["listings-name"],
-                  styles["publisher-listings-name"],
-                ]}
-                onPress={() => this.viewDetails(item)}
-              >
-                <Text numberOfLines={1} style={[styles["listings-name-text"]]}>
-                  {UTILS.formatDiacritics(item.firstName)}{" "}
-                  {UTILS.formatDiacritics(item.lastName)}
-                </Text>
-              </TouchableOpacity>
-              <View style={styles["listings-right-arrow"]}>
-                <Ionicons
-                  name="ios-arrow-forward"
-                  size={24}
-                  color={colors["grey-lite"]}
-                />
-              </View>
+          <View style={[styles["listings-item"]]}>
+            <TouchableOpacity
+              style={[
+                styles["listings-name"],
+                styles["publisher-listings-name"],
+              ]}
+              onPress={() => this.viewDetails(item)}
+            >
+              <Text numberOfLines={1} style={[styles["listings-name-text"]]}>
+                {UTILS.formatDiacritics(item.firstName)}{" "}
+                {UTILS.formatDiacritics(item.lastName)}
+              </Text>
+            </TouchableOpacity>
+            <View style={styles["listings-right-arrow"]}>
+              <Ionicons
+                name="ios-arrow-forward"
+                size={24}
+                color={colors["grey-lite"]}
+              />
             </View>
-          </Swipeout>
+          </View>
         )}
       />
     );

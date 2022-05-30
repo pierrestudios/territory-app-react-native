@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
-import Swipeout from "react-native-swipeout";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import Data from "../../common/data";
@@ -63,83 +62,60 @@ export default class Users extends React.Component {
         data={data.sort(UTILS.sortUser)}
         keyExtractor={(item) => item.userId.toString()}
         renderItem={({ item }) => (
-          <Swipeout
-            key={item.userId}
-            right={[
-              {
-                text: Language.translate("Details"),
-                type: "primary",
-                onPress: () => this.viewDetails(item),
-              },
-              {
-                text: Language.translate("Edit"),
-                backgroundColor: colors.green,
-                onPress: () => this.editUser(item),
-              },
-              {
-                text: Language.translate("Delete"),
-                type: "delete",
-                onPress: () => this.notifyDelete(item, state.user),
-              }, // backgroundColor: colors.red
-            ]}
-            autoClose={true}
-            close={true}
-          >
-            <View style={[styles["listings-item"]]}>
-              <TouchableOpacity
+          <View style={[styles["listings-item"]]}>
+            <TouchableOpacity
+              style={[
+                styles["listings-name"],
+                styles["user-listings-name"],
+                { width: "95%" },
+              ]}
+              onPress={() => this.viewDetails(item)}
+            >
+              <View
                 style={[
                   styles["listings-name"],
-                  styles["user-listings-name"],
-                  { width: "95%" },
+                  { marginTop: 5, left: 5, width: "50%" },
                 ]}
-                onPress={() => this.viewDetails(item)}
               >
-                <View
-                  style={[
-                    styles["listings-name"],
-                    { marginTop: 5, left: 5, width: "50%" },
-                  ]}
-                >
-                  {item.publisher ? (
-                    <Text
-                      numberOfLines={1}
-                      style={[
-                        styles["listings-name-text"],
-                        { fontWeight: "bold", color: colors.black },
-                      ]}
-                    >
-                      {item.publisher.firstName + " " + item.publisher.lastName}
-                    </Text>
-                  ) : (
-                    <Text
-                      numberOfLines={1}
-                      style={[
-                        styles["listings-name-text"],
-                        { color: colors["grey-lite"] },
-                      ]}
-                    >
-                      {Language.translate("No Publisher")}
-                    </Text>
-                  )}
-                </View>
-                <View style={[styles["listings-email"], { marginTop: -3 }]}>
-                  <Text numberOfLines={1} style={styles["listings-type-text"]}>
-                    {UTILS.userTypeLabel(item.userType)}
+                {item.publisher ? (
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      styles["listings-name-text"],
+                      { fontWeight: "bold", color: colors.black },
+                    ]}
+                  >
+                    {item.publisher.firstName + " " + item.publisher.lastName}
                   </Text>
-                  <Text numberOfLines={1} style={styles["listings-email-text"]}>
-                    {item.email}
+                ) : (
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      styles["listings-name-text"],
+                      { color: colors["grey-lite"] },
+                    ]}
+                  >
+                    {Language.translate("No Publisher")}
                   </Text>
-                </View>
-              </TouchableOpacity>
-              <View style={[styles["listings-right-arrow"]]}>
-                <Ionicons
-                  name="ios-arrow-forward"
-                  size={24}
-                  color={colors["grey-lite"]}
-                />
+                )}
               </View>
+              <View style={[styles["listings-email"], { marginTop: -3 }]}>
+                <Text numberOfLines={1} style={styles["listings-type-text"]}>
+                  {UTILS.userTypeLabel(item.userType)}
+                </Text>
+                <Text numberOfLines={1} style={styles["listings-email-text"]}>
+                  {item.email}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View style={[styles["listings-right-arrow"]]}>
+              <Ionicons
+                name="ios-arrow-forward"
+                size={24}
+                color={colors["grey-lite"]}
+              />
             </View>
-          </Swipeout>
+          </View>
         )}
       />
     );
