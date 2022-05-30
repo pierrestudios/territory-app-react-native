@@ -8,8 +8,9 @@ import {
   TextInput,
   InputLabel,
 } from "../elements/FormInput";
+import Modal from "../elements/Modal";
 
-import style, { colors } from "../../styles/main";
+import styles, { colors } from "../../styles/main";
 
 export default function NotesModal(props) {
   return (
@@ -73,7 +74,7 @@ export const NotesInput = (props) => {
   return (
     <View>
       <TouchableHighlight
-        style={style["date-input-wrapper"]}
+        style={styles["date-input-wrapper"]}
         onPress={() => props.setModalVisible({ NotesOptionsModal: true })}
       >
         <Text

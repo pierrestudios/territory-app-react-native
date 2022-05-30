@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 
+import styles from "../../styles/main";
 import { TextInput, DateInput, SelectBox, RadioBox, Switch } from "./FormInput";
 import Message from "./Message";
 import Modal from "./Modal";

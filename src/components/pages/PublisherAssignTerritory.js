@@ -68,8 +68,8 @@ export default class PublisherAssignTerritory extends React.Component {
     return (
       <View
         style={[
-          styles.section,
-          styles.content,
+          style.section,
+          style.content,
           {
             borderColor: colors.red,
             borderWidth: 0,

@@ -8,18 +8,18 @@ import UTILS from "../common/utils";
 import { Link } from "./elements/Button";
 import Strong from "./elements/Strong";
 
-import style from "../styles/main";
+import styles from "../styles/main";
 
 export default class UserFn {
   getListings(data = [], caller, callerName) {
     return (
       <FlatList
-        contentContainerStyle={style.list}
+        contentContainerStyle={styles.list}
         data={data.sort(UTILS.sortUser)}
         keyExtractor={(item) => item.userId.toString()}
         renderItem={({ item }) => (
           <Link
-            customStyle={style["list-button"]}
+            customStyle={styles["list-button"]}
             onPress={(e) => this.editUserModal(item, caller, callerName)}
           >
             <Text style={{ fontSize: 12 }}>

@@ -7,7 +7,7 @@ import Language from "../../common/lang";
 import { Link } from "../elements/Button";
 import { RadioBox } from "../elements/FormInput";
 
-import style, { colors } from "../../styles/main";
+import styles, { colors } from "../../styles/main";
 import Modal from "../elements/Modal";
 
 export default function TerritoryDetailsModeModal({
@@ -42,7 +42,7 @@ export default function TerritoryDetailsModeModal({
             });
           }}
           customStyle={[
-            style["heading-button-link"],
+            styles["heading-button-link"],
             {
               height: 60,
 

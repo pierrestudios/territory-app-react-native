@@ -12,7 +12,7 @@ import { ButtonHeader, ButtonLink } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
 import { RadioBox, TextInput } from "../elements/FormInput";
 
-import style, { colors } from "../../styles/main";
+import styles, { colors } from "../../styles/main";
 import Modal from "../elements/Modal";
 import TerritoryDetailsHeader from "../smart/TerritoryDetailsHeader";
 import TerritoryDetailsList from "../smart/TerritoryDetailsList";
@@ -133,7 +133,7 @@ export default class TerritoryDetails extends React.Component {
     ];
 
     return (
-      <View style={[style.section, style.content]}>
+      <View style={[styles.section, styles.content]}>
         <TerritoryDetailsHeader
           {...{
             ...this,
@@ -239,7 +239,7 @@ export default class TerritoryDetails extends React.Component {
                     }
 
                     return (
-                      <View key={itemKey} style={[style["listings-item"]]}>
+                      <View key={itemKey} style={[styles["listings-item"]]}>
                         <Text ellipsizeMode="tail" style={{ flex: 1 }}>
                           {nameText}
                         </Text>
@@ -250,7 +250,7 @@ export default class TerritoryDetails extends React.Component {
                           <ButtonLink
                             key="listings-add-notes"
                             customStyle={[
-                              style["add-notes"],
+                              styles["add-notes"],
                               {
                                 marginTop: -3,
                                 paddingLeft: 5,
@@ -601,7 +601,7 @@ export default class TerritoryDetails extends React.Component {
         <Text style={{ fontSize: 16 }}>
           {Language.translate("Delete_Address_Sure")}
         </Text>
-        <Text style={[style["text-strong"], { fontSize: 16 }]}>
+        <Text style={[styles["text-strong"], { fontSize: 16 }]}>
           {address.name} {UTILS.getListingAddress(address)}
         </Text>
       </View>
