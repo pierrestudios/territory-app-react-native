@@ -11,7 +11,7 @@ import {
 
 import style, { colors } from "../../styles/main";
 
-export default NotesModal = (props) => {
+export default function NotesModal(props) {
   return (
     <Modal
       visible={props.visible}
@@ -67,7 +67,7 @@ export default NotesModal = (props) => {
       </ScrollView>
     </Modal>
   );
-};
+}
 
 export const NotesInput = (props) => {
   return (

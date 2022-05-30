@@ -103,8 +103,8 @@ class AnimatedModal extends React.Component {
   }
 }
 
-export default Modal = (props) => {
+export default function Modal(props) {
   return !props.visible ? null : (
     <AnimatedModal {...props}>{props.children}</AnimatedModal>
   );
-};
+}

@@ -10,13 +10,13 @@ import { RadioBox } from "../elements/FormInput";
 import style, { colors } from "../../styles/main";
 import Modal from "../elements/Modal";
 
-export default TerritoryDetailsModeModal = ({
+export default function TerritoryDetailsModeModal({
   addressesFilterOpened = false,
   onCloseModal = () => {},
   saveFilterType = () => {},
   filterType = "",
   filterTypes = [],
-}) => {
+}) {
   return (
     <Modal
       animationType="fade"
@@ -90,4 +90,4 @@ export default TerritoryDetailsModeModal = ({
       </View>
     </Modal>
   );
-};
+}

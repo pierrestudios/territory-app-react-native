@@ -5,7 +5,7 @@ import UTILS from "../../common/utils";
 
 import styles from "../../styles/main";
 
-export default Heading = (props) => {
+export default function Heading(props) {
   return (
     <View {...UTILS.getElementStyles(props)}>
       <Text
@@ -19,7 +19,7 @@ export default Heading = (props) => {
       </Text>
     </View>
   );
-};
+}
 
 export const HeadingBlue = (props) => {
   return (

@@ -2,6 +2,7 @@ import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 
 import UTILS from "../../common/utils";
+import styles from "../../styles/main";
 
 export const Link = (props) => {
   return (

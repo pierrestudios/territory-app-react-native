@@ -240,6 +240,6 @@ class UnassignModal extends React.Component {
   }
 }
 
-export default ListTerritories = (props) => {
+export default function ListTerritories(props) {
   return <UnassignModal {...props}>{props.children}</UnassignModal>;
-};
+}

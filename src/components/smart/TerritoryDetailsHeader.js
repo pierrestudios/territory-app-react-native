@@ -7,7 +7,7 @@ import Language from "../../common/lang";
 import { ButtonLink } from "../elements/Button";
 import style, { colors } from "../../styles/main";
 
-export default TerritoryDetailsHeader = ({
+export default function TerritoryDetailsHeader({
   modeOption = "",
   selectedAddresses = [],
   modeOptions = [],
@@ -17,7 +17,7 @@ export default TerritoryDetailsHeader = ({
   showModeOptions = () => {},
   showAddressesFilter = () => {},
   showSearchModal = () => {},
-}) => {
+}) {
   const [subNavOpened, openCloseSubNav] = useState(true);
   const currentMode = modeOptions.find((opt) => opt.value === modeOption) || {};
   const modeToSelect =
@@ -178,4 +178,4 @@ export default TerritoryDetailsHeader = ({
       </View>
     </>
   );
-};
+}

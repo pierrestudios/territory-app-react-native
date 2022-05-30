@@ -20,7 +20,7 @@ export const colors = {
  * Layout Props: https://facebook.github.io/react-native/docs/layout-props
  */
 
-export default styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
