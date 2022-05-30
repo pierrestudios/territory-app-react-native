@@ -55,8 +55,7 @@ export default class PublisherEdit extends React.Component {
     }
   }
   render() {
-    const state = this.state || {};
-    const props = this.props || {};
+    const { state, props } = this;
     // console.log('render:state', state)
     // console.log('render:props', props);
 

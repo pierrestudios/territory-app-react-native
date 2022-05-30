@@ -57,8 +57,7 @@ export default class Publishers extends React.Component {
     }
   }
   render() {
-    const state = this.state || {};
-    const props = this.props || {};
+    const { state, props } = this;
     // console.log('render:props', props)
     // console.log('state', state)
 

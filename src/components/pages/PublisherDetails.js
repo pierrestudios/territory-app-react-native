@@ -100,8 +100,8 @@ export default class PublisherDetails extends React.Component {
     });
   };
   render() {
-    const state = this.state || {};
-    const props = this.props || {};
+    const { state, props } = this;
+
     // console.log('Territories:render:props', props)
     // console.log('Territories:render:state', state)
 

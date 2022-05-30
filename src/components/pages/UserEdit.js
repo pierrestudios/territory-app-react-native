@@ -54,7 +54,7 @@ export default class UserEdit extends React.Component {
     }
   }
   render() {
-    const state = this.state || {};
+    const { state } = this;
 
     if (!state.data) return <Loading />;
 
