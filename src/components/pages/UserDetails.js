@@ -82,7 +82,7 @@ export default class UserDetails extends React.Component {
     });
   };
   render() {
-    const state = this.state || {};
+    const { state } = this;
 
     return (
       <View style={[styles.section, styles.content]}>

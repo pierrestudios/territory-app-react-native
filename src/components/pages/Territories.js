@@ -77,8 +77,7 @@ export default class Territories extends React.Component {
     });
   }
   render() {
-    const state = this.state || {};
-    const props = this.props || {};
+    const { state, props } = this;
 
     // if "id", Load Territory Details
     if (!!props.id && !this.loadingTerritories) {
