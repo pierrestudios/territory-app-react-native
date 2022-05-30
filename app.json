@@ -10,7 +10,7 @@
       "backgroundColor": "#ffffff"
     },
     "orientation": "portrait",
-    "platforms": ["ios", "android"],
+    "platforms": ["ios", "android", "web"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "pierrestudios.com.TerritoryApp.1",
