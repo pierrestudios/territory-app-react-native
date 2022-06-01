@@ -25,7 +25,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/assets/favicon.png"
     },
     "description": "Mobile client for iOS and Android built with React Native for Territory Services API is a RESTful api. It was developed to provide easy management for congregation territories.",
     "githubUrl": "https://github.com/pierrestudios/territory-app-react-native.git"
