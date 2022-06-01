@@ -174,17 +174,14 @@ export default class UserPrefs extends React.Component {
     });
   };
   saveSettings = () => {
-    // First, reset errors
     const errors = {
       "api-url": "",
       language: "",
       message: "",
     };
 
-    this.setState({ errors, waitingForResponse: true });
-
     // Validate
-    if (!this.state.data["api-url"] || !this.state.data["language"])
+    if (!this.state.data["api-url"] || !this.state.data["language"]) {
       return this.setState({
         errors: {
           ...errors,
@@ -197,6 +194,9 @@ export default class UserPrefs extends React.Component {
         },
         waitingForResponse: false,
       });
+    } else {
+      this.setState({ errors, waitingForResponse: true });
+    }
 
     // Validate https (SSL)
     if (!UTILS.urlHasValidProtocol(this.state.data["api-url"])) {
@@ -209,85 +209,83 @@ export default class UserPrefs extends React.Component {
       });
     }
 
-    // All good, validate
+    // Now, validate URL
     fetch(UTILS.addSlashToUrl(this.state.data["api-url"]) + "validate")
       .then((res) => {
         // console.log("res", res);
         if (!!res.ok) {
-          const apiPath = UTILS.addSlashToUrl(this.state.data["api-url"]);
-          const apiPathSegs = apiPath.split("/");
-          const apiUrl = apiPathSegs.slice(0, -2).join("/");
-
-          // Save the user data, first
-          Data.saveUser({
-            ...Data.unAuthUser,
-            apiUrl,
-            apiPath,
-            lang: this.state.data["language"].value,
-          });
-
-          // Wait for the user data to save
-          UTILS.waitForIt(
-            () => Data.unAuthUser.apiUrl === apiUrl,
-            () => {
-              // Then reload the Settings for the app
-              userData.loadSavedUser();
-
-              // Wait for the Settings to load
-              UTILS.waitForIt(
-                () =>
-                  getSiteSetting("apiPath") === apiPath &&
-                  getSiteSetting("lang") === this.state.data["language"].value,
-                () => {
-                  const user = Data.user;
-                  Alert.alert(
-                    "Settings Saved",
-                    "Your Settings has been saved",
-                    [
-                      {
-                        text: "OK",
-                        onPress: () =>
-                          !!user && !!user.token
-                            ? NavigationService.navigate("Home")
-                            : NavigationService.navigate("Login"),
-                      },
-                    ]
-                    // { cancelable: false }
-                  );
-                }
-              );
-
-              this.setState({
-                errors: {},
-                waitingForResponse: false,
-              });
-            }
-          );
+          this.saveSettingsDone();
         } else {
-          const errorMessage =
-            res.statusText || Language.translate("Server Url is not correct");
-          this.setState({
-            errors: {
-              ...errors,
-              message: errorMessage,
-            },
-            waitingForResponse: false,
-          });
+          this.saveSettingsError(res.statusText);
         }
       })
       .catch((e) => {
         console.log("error", e);
-        const errorMessage =
-          typeof e === "string"
-            ? e
-            : Language.translate("Server Url is not correct");
+        this.saveSettingsError(
+          (typeof e === "string" && e) ||
+            Language.translate("Server Url is not correct")
+        );
+      });
+  };
+  saveSettingsDone = () => {
+    const apiPath = UTILS.addSlashToUrl(this.state.data["api-url"]);
+    const apiPathSegs = apiPath.split("/");
+    const apiUrl = apiPathSegs.slice(0, -2).join("/");
+
+    // Save the user data, first
+    Data.saveUser({
+      ...Data.unAuthUser,
+      apiUrl,
+      apiPath,
+      lang: this.state.data["language"].value,
+    });
+
+    // Wait for the user data to save
+    UTILS.waitForIt(
+      () => Data.unAuthUser.apiUrl === apiUrl,
+      () => {
+        // Then reload the Settings for the app
+        userData.loadSavedUser();
+
+        // Wait for the Settings to load
+        UTILS.waitForIt(
+          () =>
+            getSiteSetting("apiPath") === apiPath &&
+            getSiteSetting("lang") === this.state.data["language"].value,
+          () => {
+            const user = Data.user;
+            Alert.alert(
+              "Settings Saved",
+              "Your Settings has been saved",
+              [
+                {
+                  text: "OK",
+                  onPress: () =>
+                    !!user && !!user.token
+                      ? NavigationService.navigate("Home")
+                      : NavigationService.navigate("Login"),
+                },
+              ]
+              // { cancelable: false }
+            );
+          }
+        );
+
         this.setState({
-          errors: {
-            ...errors,
-            message: errorMessage,
-          },
+          errors: {},
           waitingForResponse: false,
         });
-      });
+      }
+    );
+  };
+  saveSettingsError = (errorMessage = "") => {
+    this.setState({
+      errors: {
+        ...errors,
+        message:
+          errorMessage || Language.translate("Server Url is not correct"),
+      },
+      waitingForResponse: false,
+    });
   };
 }
