@@ -1,6 +1,6 @@
 {
   "name": "territory-react-app",
-  "version": "0.1.26",
+  "version": "0.1.27",
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.12.9"

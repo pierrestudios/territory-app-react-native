@@ -16,6 +16,7 @@ import Loading from "../elements/Loading";
 import Line from "../elements/Line";
 import LineBlank from "../elements/LineBlank";
 import Version from "../version";
+import keys from "../../../env-keys";
 
 import style from "../../styles/main";
 
@@ -47,8 +48,25 @@ export default class UserPrefs extends React.Component {
     });
 
     const apiPath = getSiteSetting("apiPath");
-    const lang = getSiteSetting("lang");
-    const defaultLang = lang || getSiteSetting("defaultLang");
+    const defaultLang = getSiteSetting("lang") || getSiteSetting("defaultLang");
+
+    // Autoload "serverUrl" from ENV, if set
+    if (keys.serverUrl && !(apiPath === UTILS.addSlashToUrl(keys.serverUrl))) {
+      return this.setState(
+        {
+          data: {
+            ...this.state.data,
+            language: {
+              value: defaultLang,
+              label: languageLabels[defaultLang],
+            },
+            "api-url": keys.serverUrl,
+          },
+        },
+        this.saveSettingsDone
+      );
+    }
+
     this.setState({
       languages: languages
         ? Object.keys(languages).map((l) => ({
