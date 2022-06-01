@@ -68,8 +68,7 @@ export default class UserPrefs extends React.Component {
     });
   }
   render() {
-    const state = this.state;
-    // console.log('UserPrefs:render() state', state)
+    const { state } = this;
 
     if (state.waitingForResponse) return <Loading />;
 
@@ -79,7 +78,14 @@ export default class UserPrefs extends React.Component {
     return (
       <View style={[style.container]}>
         <Heading>{Language.translate("Account Settings")}</Heading>
-        <ScrollView contentContainerStyle={style["scroll-view"]}>
+        <ScrollView
+          contentContainerStyle={[
+            style["scroll-view"],
+            {
+              maxWidth: "100%",
+            },
+          ]}
+        >
           <Message error={state.errors.message} message={state.data.message} />
           <TextInput
             showLabel={true}
