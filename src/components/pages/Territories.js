@@ -34,7 +34,7 @@ export default class Territories extends React.Component {
     Data.getApiData(
       `territories${filter ? "/filter" : ""}`,
       filter,
-      filter ? "POST" : ""
+      filter ? "POST" : "GET"
     )
       .then((data) => {
         this.loadingTerritories = false;
