@@ -30,6 +30,9 @@ export default class Publishers extends React.Component {
       headerTitle: Language.translate("All Publishers"),
     };
   };
+  state = {
+    publishers: null,
+  };
   componentDidMount() {
     if (!Data.user) return;
 
