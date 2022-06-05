@@ -73,7 +73,7 @@ export default class Login extends React.Component {
 
     if (state.waitingForResponse) return <Loading />;
 
-    const apiPath = getSiteSetting("apiPath");
+    const apiUrl = getSiteSetting("apiUrl");
     const user = state.user;
     const isLoggedIn = !!user && !!user.token;
 
@@ -111,7 +111,7 @@ export default class Login extends React.Component {
           <Line />
 
           <View style={style["inner-content"]}>
-            {!!apiPath && (!user || !user.token) ? (
+            {!!apiUrl && (!user || !user.token) ? (
               [
                 <Link
                   key="PasswordRetrieve"

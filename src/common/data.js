@@ -34,7 +34,7 @@ class Data {
   }
   loadSavedUser = async () => {
     return this.getSavedUser().then((user) => {
-      if ((!user || !user.userId || !user.token) && !!user && !!user.apiPath) {
+      if ((!user || !user.userId || !user.token) && !!user && !!user.apiUrl) {
         reLogin();
       }
       this._user = user;
@@ -62,7 +62,6 @@ class Data {
 
         // Preferences may be null in new data, use old data
         apiUrl: user.apiUrl || this._user.apiUrl,
-        apiPath: user.apiPath || this._user.apiPath,
         lang: user.lang || this._user.lang,
       };
       await AsyncStorage.setItem("user", JSON.stringify(newUser));

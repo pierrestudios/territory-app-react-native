@@ -31,11 +31,7 @@ export default class Splash extends React.Component {
           return NavigationService.navigate("UserPrefs");
         }
 
-        if (
-          (!user || !user.userId || !user.token) &&
-          !!user &&
-          !!user.apiPath
-        ) {
+        if ((!user || !user.userId || !user.token) && !!user && !!user.apiUrl) {
           return NavigationService.navigate("Login");
         }
 

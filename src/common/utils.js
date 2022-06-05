@@ -224,6 +224,13 @@ export default {
   addSlashToUrl(url) {
     return url + (url.slice(-1) === "/" ? "" : "/");
   },
+  removeLegacyV1(url) {
+    if (url.indexOf("v1") !== -1) {
+      return url.replace("v1", "");
+    }
+
+    return url;
+  },
   removeLastSlashFromUrl(url) {
     return url.slice(-1) === "/" ? url.substring(0, url.length - 1) : url;
   },

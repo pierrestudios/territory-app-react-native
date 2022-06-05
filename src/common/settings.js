@@ -49,7 +49,6 @@ class UserData {
         const prefs = {
           lang: this._user.lang || DEFAULT_LANG,
           apiUrl: this._user.apiUrl,
-          apiPath: this._user.apiPath,
           GAKey: GOOGLE_API_KEY,
         };
 

@@ -2,14 +2,15 @@ import getSiteSetting from "./settings";
 import UTILS from "./utils";
 import reLogin from "./reLogin";
 
-export default (url, data, type = "GET", headerData = undefined) => {
-  const API_URL = getSiteSetting("apiPath");
+export default (endpoint, data, type = "GET", headerData = undefined) => {
+  const API_VERSION = "v1";
+  const API_URL = getSiteSetting("apiUrl");
 
   if (!API_URL) {
     return Promise.reject('"Server Url" is not set');
   }
 
-  return fetch(UTILS.addSlashToUrl(API_URL) + url, {
+  return fetch(`${UTILS.addSlashToUrl(API_URL)}${API_VERSION}/${endpoint}`, {
     method: type,
     headers: {
       ...headerData,

@@ -17,7 +17,6 @@ export default async function reLogin() {
 
       // Preferences may be null in new data, use old data
       apiUrl: user.apiUrl || "",
-      apiPath: user.apiPath || "",
       lang: user.lang || "",
     };
     await AsyncStorage.setItem("user", JSON.stringify(newUser));

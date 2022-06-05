@@ -31,7 +31,7 @@ export default class UserPrefs extends React.Component {
   state = {
     data: {
       "api-url": "",
-      language: "",
+      language: null,
     },
     errors: {
       "api-url": "",
@@ -47,11 +47,11 @@ export default class UserPrefs extends React.Component {
       languageLabels[l] = languages[l]["lang-name"];
     });
 
-    const apiPath = getSiteSetting("apiPath");
+    const apiUrl = getSiteSetting("apiUrl");
     const defaultLang = getSiteSetting("lang") || getSiteSetting("defaultLang");
 
     // Autoload "serverUrl" from ENV, if set
-    if (keys.serverUrl && !(apiPath === UTILS.addSlashToUrl(keys.serverUrl))) {
+    if (keys.serverUrl && !(apiUrl === UTILS.addSlashToUrl(keys.serverUrl))) {
       return this.setState(
         {
           data: {
@@ -63,7 +63,7 @@ export default class UserPrefs extends React.Component {
             "api-url": keys.serverUrl,
           },
         },
-        this.saveSettingsDone
+        this.validateSettingsDone
       );
     }
 
@@ -81,7 +81,7 @@ export default class UserPrefs extends React.Component {
           value: defaultLang,
           label: languageLabels[defaultLang],
         },
-        "api-url": apiPath,
+        "api-url": apiUrl,
       },
     });
   }
@@ -90,7 +90,7 @@ export default class UserPrefs extends React.Component {
 
     if (state.waitingForResponse) return <Loading />;
 
-    const apiPath = getSiteSetting("apiPath");
+    const apiUrl = getSiteSetting("apiUrl");
     const user = Data.user;
 
     return (
@@ -118,24 +118,26 @@ export default class UserPrefs extends React.Component {
             showLabel={true}
             label={Language.translate("Select Language")}
             options={state.languages}
-            value={{
-              value: state.data.language.value,
-              label: state.data.language.label,
-            }}
+            value={
+              state.data.language || {
+                value: "",
+                label: "",
+              }
+            }
             error={state.errors.language}
             onInput={this.saveOptionData}
           />
 
           <LineBlank />
 
-          <Button onPress={this.saveSettings}>
+          <Button onPress={this.validateSettings}>
             {Language.translate("Save")}
           </Button>
 
           <Line />
 
           <View style={style["inner-content"]}>
-            {!!apiPath && (!user || !user.token) ? (
+            {!!apiUrl && (!user || !user.token) ? (
               <Link
                 onPress={() => NavigationService.navigate("Login")}
                 textStyle={{ fontSize: 16 }}
@@ -191,7 +193,7 @@ export default class UserPrefs extends React.Component {
       },
     });
   };
-  saveSettings = () => {
+  validateSettings = () => {
     const errors = {
       "api-url": "",
       language: "",
@@ -232,29 +234,28 @@ export default class UserPrefs extends React.Component {
       .then((res) => {
         // console.log("res", res);
         if (!!res.ok) {
-          this.saveSettingsDone();
+          this.validateSettingsDone();
         } else {
-          this.saveSettingsError(res.statusText);
+          this.validateSettingsError(res.statusText);
         }
       })
       .catch((e) => {
         console.log("error", e);
-        this.saveSettingsError(
+        this.validateSettingsError(
           (typeof e === "string" && e) ||
             Language.translate("Server Url is not correct")
         );
       });
   };
-  saveSettingsDone = () => {
-    const apiPath = UTILS.addSlashToUrl(this.state.data["api-url"]);
-    const apiPathSegs = apiPath.split("/");
-    const apiUrl = apiPathSegs.slice(0, -2).join("/");
+  validateSettingsDone = () => {
+    const apiUrl = UTILS.removeLegacyV1(
+      UTILS.addSlashToUrl(this.state.data["api-url"])
+    );
 
     // Save the user data, first
     Data.saveUser({
       ...Data.unAuthUser,
       apiUrl,
-      apiPath,
       lang: this.state.data["language"].value,
     });
 
@@ -268,7 +269,7 @@ export default class UserPrefs extends React.Component {
         // Wait for the Settings to load
         UTILS.waitForIt(
           () =>
-            getSiteSetting("apiPath") === apiPath &&
+            getSiteSetting("apiUrl") === apiUrl &&
             getSiteSetting("lang") === this.state.data["language"].value,
           () => {
             const user = Data.user;
@@ -296,7 +297,7 @@ export default class UserPrefs extends React.Component {
       }
     );
   };
-  saveSettingsError = (errorMessage = "") => {
+  validateSettingsError = (errorMessage = "") => {
     this.setState({
       errors: {
         ...errors,
