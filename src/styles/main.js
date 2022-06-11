@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 export const colors = {
   "territory-blue": "#337ab7",
@@ -210,7 +210,7 @@ export default StyleSheet.create({
   "listings-name": {
     padding: 5,
     overflow: "hidden",
-    marginTop: 10,
+    marginTop: Platform.OS === "web" ? 0 : 10,
     position: "absolute",
     left: 50,
     width: "55%",
@@ -224,7 +224,7 @@ export default StyleSheet.create({
   "listings-date": {
     position: "absolute",
     right: 15,
-    marginTop: 15,
+    marginTop: Platform.OS === "web" ? 5 : 15,
     height: 40,
   },
 
@@ -380,7 +380,7 @@ export default StyleSheet.create({
     flexDirection: "row-reverse", // enum('row', 'row-reverse', 'column', 'column-reverse')
     justifyContent: "flex-start",
     height: 60,
-    padding: 20,
+    padding: Platform.OS === "web" ? 0 : 20,
   },
 
   "heading-number": {
@@ -401,7 +401,7 @@ export default StyleSheet.create({
     paddingTop: 5,
     marginLeft: 5,
     marginRight: 0,
-    marginTop: -3,
+    marginTop: Platform.OS === "web" ? 13 : -3,
   },
 
   "border-grey-bg-lite": {

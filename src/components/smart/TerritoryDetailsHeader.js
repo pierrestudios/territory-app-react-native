@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -138,7 +138,13 @@ export default function TerritoryDetailsHeader({
       >
         <ButtonLink
           onPress={viewMap}
-          customStyle={[style["heading-button-link"], style["view-map-button"]]}
+          customStyle={[
+            style["heading-button-link"],
+            style["view-map-button"],
+            {
+              marginRight: Platform.OS === "web" ? 15 : 0,
+            },
+          ]}
           textStyle={style["heading-button-link-text"]}
           textColorWhite
         >
