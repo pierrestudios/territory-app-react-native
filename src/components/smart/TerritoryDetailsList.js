@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, TouchableOpacity, Text, View } from "react-native";
+import { FlatList, TouchableOpacity, Text, View, Platform } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import Language from "../../common/lang";
@@ -55,6 +55,7 @@ export default function TerritoryDetailsList({
                 style["listings-item"],
                 item.inActive ? style["listings-item-inactive"] : null,
                 item.hasWarning ? style["listings-item-warning"] : null,
+                { minHeight: Platform.OS === "web" ? 70 : 50 },
               ]}
             >
               {selectorOpened ? (
@@ -161,6 +162,7 @@ export default function TerritoryDetailsList({
                   style["listings-name"],
                   style["address-listings-name"],
                   selectorOpened ? { left: 50 } : null,
+                  Platform.OS === "web" ? { height: "auto" } : null,
                 ]}
                 onPress={() =>
                   user.isEditor ? viewAddress(item) : console.log("Not Editor")
@@ -172,6 +174,7 @@ export default function TerritoryDetailsList({
                     style["listings-name-text"],
                     style["listings-address-name"],
                     item.hasWarning ? style["text-white"] : null,
+                    Platform.OS === "web" ? { marginBottom: 10 } : null,
                   ]}
                 >
                   {UTILS.formatDiacritics(item.name)}
@@ -186,13 +189,15 @@ export default function TerritoryDetailsList({
                   {UTILS.getListingAddress(item)}
                 </Text>
               </TouchableOpacity>
-              <View style={[style["listings-right-arrow"]]}>
-                <Ionicons
-                  name="ios-arrow-forward"
-                  size={24}
-                  color={colors["grey-lite"]}
-                />
-              </View>
+              {Platform.OS === "web" ? null : (
+                <View style={[style["listings-right-arrow"]]}>
+                  <Ionicons
+                    name="ios-arrow-forward"
+                    size={24}
+                    color={colors["grey-lite"]}
+                  />
+                </View>
+              )}
             </View>
           );
         }}
