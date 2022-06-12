@@ -23,23 +23,22 @@ function onRequest(req, res) {
     return;
   }
 
+  const host = apiUrl.replace("https://", "");
+
   const options = {
-    hostname: apiUrl.replace("https://", ""),
+    host: host,
+    hostname: host,
     port: 443,
     path: req.url,
     method: req.method,
-    rejectUnauthorized: false,
     headers: {
       ...req.headers,
+      host: host,
+      hostname: host,
     },
   };
 
   const proxy = https.request(options, function (incoming) {
-    var data = "";
-    incoming.on("readable", function () {
-      data += incoming.read();
-    });
-
     incoming.pipe(res, {
       end: true,
     });
