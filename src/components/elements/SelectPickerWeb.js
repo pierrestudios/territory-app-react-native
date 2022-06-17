@@ -1,4 +1,4 @@
-import styles from "../../styles/main";
+import { webStyles } from "../../styles/main";
 
 export default function SelectPickerWeb({
   name,
@@ -18,13 +18,7 @@ export default function SelectPickerWeb({
           option: options.find((o) => o.value == target.value),
         });
       }}
-      style={{
-        backgroundColor: "rgb(255, 255, 255)",
-        borderColor: "rgb(204, 204, 204)",
-        borderRadius: 3,
-        height: 50,
-        padding: 10,
-      }}
+      style={webStyles.select}
     >
       {options.map(({ label, value }) => (
         <option key={`${value}-key`} value={value}>

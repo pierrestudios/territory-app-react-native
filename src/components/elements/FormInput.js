@@ -15,7 +15,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-import style, { colors } from "../../styles/main";
+import style, { colors, webStyles } from "../../styles/main";
 import { ButtonLink } from "./Button";
 import DatePickerAndroid from "./DatePickerAndroid";
 import SelectPickerIOS from "./SelectPickerIOS";
@@ -126,16 +126,18 @@ export const DateInput = (props) => {
       ? props.value
       : utils.getDateObject(props.value);
 
-  return Platform.OS === "ios" ? (
-    <DatePicker
-      value={dateValue}
-      onChange={(e, date) => {
-        props.onChange({ date });
-      }}
-    />
-  ) : (
-    <DatePickerAndroid {...props} value={dateValue} />
-  );
+  return {
+    android: <DatePickerAndroid {...props} value={dateValue} />,
+    ios: (
+      <DatePicker
+        value={dateValue}
+        onChange={(e, date) => {
+          props.onChange({ date });
+        }}
+      />
+    ),
+    web: <input {...props} type="date" style={webStyles.date} />,
+  }[Platform.OS];
 };
 
 export const RadioBox = (props) => {
