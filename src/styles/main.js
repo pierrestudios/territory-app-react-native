@@ -14,13 +14,7 @@ export const colors = {
   "green-bright": "#00d748",
 };
 
-/*
- * View Style Props: https://facebook.github.io/react-native/docs/view-style-props
- * Text Style Props: https://facebook.github.io/react-native/docs/text-style-props
- * Layout Props: https://facebook.github.io/react-native/docs/layout-props
- */
-
-export default StyleSheet.create({
+const allStyles = {
   container: {
     flex: 1,
     alignItems: "center",
@@ -547,4 +541,22 @@ export default StyleSheet.create({
     marginBottom: 5,
     backgroundColor: colors.green,
   },
-});
+};
+
+export const webStyles = {
+  date: {
+    ...allStyles.input,
+    height: 30,
+  },
+  select: {
+    ...allStyles.input,
+  },
+};
+
+/*
+ * View Style Props: https://facebook.github.io/react-native/docs/view-style-props
+ * Text Style Props: https://facebook.github.io/react-native/docs/text-style-props
+ * Layout Props: https://facebook.github.io/react-native/docs/layout-props
+ */
+
+export default StyleSheet.create(allStyles);
