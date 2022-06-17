@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Linking } from "react-native";
+import { Text, View, Linking, Platform } from "react-native";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -109,6 +109,7 @@ export default class PhoneNumbers extends React.Component {
           style["listings-item"],
           !item.isCallable ? style["listings-item-inactive"] : null,
           item.hasWarning ? style["listings-item-warning"] : null,
+          Platform.OS === "web" ? { minHeight: 70, width: 640 } : null,
         ]}
       >
         {this.state.user.isManager ||
