@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, Platform } from "react-native";
 import {
   KeyboardAwareScrollView,
   KeyboardAwareFlatList,
@@ -91,18 +91,19 @@ export default class Notes extends React.Component {
       <KeyboardAwareFlatList
         contentContainerStyle={[
           style.listings,
-          { minWidth: "80%", marginBottom: 40 },
+          { minWidth: "80%", marginBottom: 40, width: 640 },
         ]}
         data={data.notes}
         extraData={state}
         keyExtractor={(item) => item.noteId.toString()}
         ListEmptyComponent={this.emptyListResult}
         renderItem={this.renderListOfNotes}
+        nativeID="notes-previous-notes-keyboard-aware-flatList"
       />
     );
 
     return (
-      <View style={[style.container]}>
+      <View style={[style.container]} nativeID="notes">
         <KeyboardAwareScrollView
           style={[style["scroll-view"], { marginBottom: 40 }]}
           enableAutomaticScroll={true}
@@ -124,6 +125,7 @@ export default class Notes extends React.Component {
               style["notes-content"],
               { padding: 5, minHeight: 250 },
             ]}
+            nativeID="notes-view-notes-content"
           >
             <Message error={errors.message} message={data.message} />
 
@@ -196,6 +198,7 @@ export default class Notes extends React.Component {
           item.noteId === this.state.noteData.noteId
             ? style["listings-item-inactive"]
             : null,
+          { minHeight: Platform.OS === "web" ? 70 : 50 },
         ]}
       >
         {this.state.user.isManager || this.state.user.userId === item.userId ? (
