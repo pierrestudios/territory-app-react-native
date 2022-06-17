@@ -20,6 +20,7 @@ import { ButtonLink } from "./Button";
 import DatePickerAndroid from "./DatePickerAndroid";
 import SelectPickerIOS from "./SelectPickerIOS";
 import utils from "../../common/utils";
+import SelectPickerWeb from "./SelectPickerWeb";
 
 const getStyles = (props) => {
   const styles = props.baseStyle ? [props.baseStyle] : [style.input];
@@ -269,27 +270,30 @@ export const SelectBox = (props) => {
       {props.showLabel ? (
         <InputLabel>{props.label || props.placeholder}</InputLabel>
       ) : null}
-
-      {Platform.OS === "android" ? (
-        <Picker
-          prompt={props.label}
-          selectedValue={props.value.value}
-          style={style["select-options-wrapper"]}
-          itemStyle={style["select-options"]}
-          onValueChange={(selectedValue) =>
-            !!props.onInput &&
-            props.onInput({
-              name: props.name,
-              "data-name": props["data-name"],
-              option: props.options.find((o) => o.value === selectedValue),
-            })
-          }
-        >
-          {renderOptions(props.options)}
-        </Picker>
-      ) : (
-        <SelectPickerIOS {...props} renderOptions={renderOptions} />
-      )}
+      {
+        {
+          android: (
+            <Picker
+              prompt={props.label}
+              selectedValue={props.value.value}
+              style={style["select-options-wrapper"]}
+              itemStyle={style["select-options"]}
+              onValueChange={(selectedValue) =>
+                !!props.onInput &&
+                props.onInput({
+                  name: props.name,
+                  "data-name": props["data-name"],
+                  option: props.options.find((o) => o.value === selectedValue),
+                })
+              }
+            >
+              {renderOptions(props.options)}
+            </Picker>
+          ),
+          ios: <SelectPickerIOS {...props} renderOptions={renderOptions} />,
+          web: <SelectPickerWeb {...props} />,
+        }[Platform.OS]
+      }
       {getError(props)}
     </View>
   );
