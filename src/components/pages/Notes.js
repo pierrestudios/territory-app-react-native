@@ -91,7 +91,8 @@ export default class Notes extends React.Component {
       <KeyboardAwareFlatList
         contentContainerStyle={[
           style.listings,
-          { minWidth: "80%", marginBottom: 40, width: 640 },
+          { minWidth: "80%", marginBottom: 40 },
+          Platform.OS === "web" ? { width: 640 } : null,
         ]}
         data={data.notes}
         extraData={state}
