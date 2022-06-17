@@ -11,13 +11,7 @@ import Heading from "../elements/Heading";
 import Loading from "../elements/Loading";
 import Message from "../elements/Message";
 import Line from "../elements/Line";
-import {
-  Link,
-  ButtonLink,
-  Button,
-  ButtonIcon,
-  ButtonHeader,
-} from "../elements/Button";
+import { ButtonIcon, ButtonHeader } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
 import {
   TextInput,
@@ -34,6 +28,7 @@ import NotesModal, { NotesInput } from "../smart/NotesModal";
 
 import style, { colors } from "../../styles/main";
 import getSiteSetting from "../../common/settings";
+import { Platform } from "react-native";
 
 const languages = getSiteSetting("languages");
 
@@ -144,8 +139,6 @@ export default class AddressEdit extends React.Component {
   }
   render() {
     const { state, props } = this;
-    // console.log("render:state", state);
-    // console.log('render:props', props);
 
     if (!state.user) return <Loading />;
 
@@ -158,17 +151,33 @@ export default class AddressEdit extends React.Component {
     }));
 
     return (
-      <View style={[style.container]}>
+      <View
+        style={[
+          style.container,
+          Platform.OS === "web"
+            ? {
+                margin: "auto",
+                padding: 20,
+                width: 640,
+              }
+            : null,
+        ]}
+        nativeID="address-edit"
+      >
         {/*
          * KeyboardAwareScrollView -
          * details: https://medium.freecodecamp.org/how-to-make-your-react-native-app-respond-gracefully-when-the-keyboard-pops-up-7442c1535580
          */}
         <KeyboardAwareScrollView
-          contentContainerStyle={[style["scroll-view"], { marginBottom: 40 }]}
+          contentContainerStyle={[
+            style["scroll-view"],
+            { marginBottom: 40, width: Platform.OS === "web" ? 640 : "auto" },
+          ]}
           keyboardDismissMode="interactive"
           innerRef={(ref) => {
             this.scrollView = ref;
           }}
+          nativeID="address-edit-keyboard-aware-scroll-view"
         >
           <Message error={state.errors.message} message={state.data.message} />
 
@@ -332,7 +341,6 @@ export default class AddressEdit extends React.Component {
               onInput={this.saveData}
               value={state.data.apt}
               error={state.errors.apt}
-              showLabel={true}
             />
           ) : null}
 
