@@ -49,25 +49,7 @@ export default class UserPrefs extends React.Component {
 
     const apiUrl = getSiteSetting("apiUrl");
     const defaultLang = getSiteSetting("lang") || getSiteSetting("defaultLang");
-
-    // Autoload "serverUrl" from ENV, if set
-    if (keys.serverUrl && !(apiUrl === UTILS.addSlashToUrl(keys.serverUrl))) {
-      return this.setState(
-        {
-          data: {
-            ...this.state.data,
-            language: {
-              value: defaultLang,
-              label: languageLabels[defaultLang],
-            },
-            "api-url": keys.serverUrl,
-          },
-        },
-        this.validateSettingsDone
-      );
-    }
-
-    this.setState({
+    const initialState = {
       languages: languages
         ? Object.keys(languages).map((l) => ({
             value: l,
@@ -83,7 +65,14 @@ export default class UserPrefs extends React.Component {
         },
         "api-url": apiUrl,
       },
-    });
+    };
+
+    // Autoload "serverUrl" from ENV, if set
+    if (keys.serverUrl && !(apiUrl === UTILS.addSlashToUrl(keys.serverUrl))) {
+      return this.setState(initialState, this.validateSettingsDone);
+    }
+
+    this.setState(initialState);
   }
   render() {
     const { state } = this;
@@ -194,6 +183,7 @@ export default class UserPrefs extends React.Component {
     });
   };
   validateSettings = () => {
+    const apiVersion = keys.apiVersion;
     const errors = {
       "api-url": "",
       language: "",
@@ -230,7 +220,11 @@ export default class UserPrefs extends React.Component {
     }
 
     // Now, validate URL
-    fetch(UTILS.addSlashToUrl(this.state.data["api-url"]) + "validate")
+    fetch(
+      `${UTILS.removeLegacyV1(
+        UTILS.addSlashToUrl(this.state.data["api-url"])
+      )}${apiVersion}/validate`
+    )
       .then((res) => {
         // console.log("res", res);
         if (!!res.ok) {
@@ -240,7 +234,6 @@ export default class UserPrefs extends React.Component {
         }
       })
       .catch((e) => {
-        console.log("error", e);
         this.validateSettingsError(
           (typeof e === "string" && e) ||
             Language.translate("Server Url is not correct")
@@ -300,7 +293,7 @@ export default class UserPrefs extends React.Component {
   validateSettingsError = (errorMessage = "") => {
     this.setState({
       errors: {
-        ...errors,
+        ...this.state.errors,
         message:
           errorMessage || Language.translate("Server Url is not correct"),
       },
