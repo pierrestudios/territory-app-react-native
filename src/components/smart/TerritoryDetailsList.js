@@ -59,15 +59,13 @@ export default function TerritoryDetailsList({
               ]}
             >
               {selectorOpened ? (
-                <View style={{}}>
-                  <Checkbox
-                    style={{ margin: 0 }}
-                    value={selected}
-                    onChange={() => {
-                      selectAddressRow(item.addressId, selected);
-                    }}
-                  />
-                </View>
+                <Checkbox
+                  style={{ margin: 0 }}
+                  value={selected}
+                  onChange={() => {
+                    selectAddressRow(item.addressId, selected);
+                  }}
+                />
               ) : null}
               {modeOption === "phone" ? (
                 <View style={[style["listings-notes"]]}>

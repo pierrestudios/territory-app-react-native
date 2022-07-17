@@ -2,8 +2,8 @@ import { webStyles } from "../../styles/main";
 
 export default function SelectPickerWeb({
   name,
-  options,
-  onInput,
+  options = [],
+  onInput = () => {},
   value: { value: selectedValue },
   ...props
 }) {
