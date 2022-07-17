@@ -4,7 +4,7 @@ const https = require("https");
 
 dotenv.config();
 
-const { REACT_APP_PROXY_PORT: port, REACT_APP_SERVER_URL: apiUrl } =
+const { REACT_APP_PROXY_PORT: port, API_PROXY_APP_SERVER_URL: apiUrl } =
   process.env;
 
 function onRequest(req, res) {
@@ -49,6 +49,8 @@ function onRequest(req, res) {
   req.pipe(proxy, {
     end: true,
   });
+
+  console.log("Request::", { data: req.body, url: req.url });
 }
 
 http.createServer(onRequest).listen(port);
