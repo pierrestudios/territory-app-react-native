@@ -69,7 +69,13 @@ export default class UserPrefs extends React.Component {
 
     // Autoload "serverUrl" from ENV, if set
     if (keys.serverUrl && !(apiUrl === UTILS.addSlashToUrl(keys.serverUrl))) {
-      return this.setState(initialState, this.validateSettingsDone);
+      return this.setState(
+        {
+          ...initialState,
+          data: { ...initialState.data, "api-url": keys.serverUrl },
+        },
+        this.validateSettingsDone
+      );
     }
 
     this.setState(initialState);
