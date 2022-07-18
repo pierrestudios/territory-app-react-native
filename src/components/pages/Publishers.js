@@ -73,7 +73,12 @@ export default class Publishers extends React.Component {
     );
 
     return (
-      <View style={[styles.section, styles.content]}>
+      <View
+        style={[
+          styles.section,
+          Platform.OS === "web" ? { ...webStyles.section } : null,
+        ]}
+      >
         <View style={[styles.section, styles["listings-results"]]}>
           {listings}
         </View>

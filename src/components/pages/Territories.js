@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, FlatList, TouchableOpacity } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Platform } from "react-native";
 
 import Data from "../../common/data";
 import Language from "../../common/lang";
@@ -9,7 +9,7 @@ import NavigationService from "../../common/nav-service";
 import Heading from "../elements/Heading";
 import Loading from "../elements/Loading";
 
-import styles from "../../styles/main";
+import styles, { webStyles } from "../../styles/main";
 
 export default class Territories extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -93,6 +93,15 @@ export default class Territories extends React.Component {
       <Heading>{Language.translate("You have no territories")}</Heading>
     );
 
-    return <View style={[styles.section, styles.content]}>{listings}</View>;
+    return (
+      <View
+        style={[
+          styles.section,
+          Platform.OS === "web" ? { ...webStyles.section } : null,
+        ]}
+      >
+        {listings}
+      </View>
+    );
   }
 }

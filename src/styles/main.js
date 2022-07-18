@@ -551,6 +551,11 @@ export const webStyles = {
   select: {
     ...allStyles.input,
   },
+  section: {
+    ...allStyles.section,
+    width: 650,
+    margin: "auto",
+  },
 };
 
 /*

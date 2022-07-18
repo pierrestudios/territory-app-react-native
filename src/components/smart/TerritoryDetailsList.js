@@ -8,7 +8,7 @@ import UTILS from "../../common/utils";
 import { ButtonLink } from "../elements/Button";
 import { Checkbox } from "../elements/FormInput";
 
-import style, { colors } from "../../styles/main";
+import style, { colors, webStyles } from "../../styles/main";
 
 export default function TerritoryDetailsList({
   modeOption = "",
@@ -30,6 +30,7 @@ export default function TerritoryDetailsList({
         style.section,
         style["listings-results"],
         style["listings-results-address"],
+        Platform.OS === "web" ? { ...webStyles.section } : null,
       ]}
     >
       <FlatList
