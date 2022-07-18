@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, FlatList, TouchableOpacity } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Platform } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -92,20 +92,32 @@ export default class Publishers extends React.Component {
         data={data.sort(UTILS.sortPublisher)}
         keyExtractor={(item) => item.publisherId.toString()}
         renderItem={({ item }) => (
-          <View style={[styles["listings-item"]]}>
+          <View
+            style={[
+              styles["listings-item"],
+              { minHeight: Platform.OS === "web" ? 70 : 50 },
+            ]}
+            nativeID="publisher-listings-item-flatList"
+          >
             <TouchableOpacity
               style={[
                 styles["listings-name"],
                 styles["publisher-listings-name"],
               ]}
               onPress={() => this.viewDetails(item)}
+              nativeID="publisher-listings-name-flatList"
             >
               <Text numberOfLines={1} style={[styles["listings-name-text"]]}>
                 {UTILS.formatDiacritics(item.firstName)}{" "}
                 {UTILS.formatDiacritics(item.lastName)}
               </Text>
             </TouchableOpacity>
-            <View style={styles["listings-right-arrow"]}>
+            <View
+              style={[
+                styles["listings-right-arrow"],
+                { right: Platform.OS === "web" ? 25 : 5 },
+              ]}
+            >
               <Ionicons
                 name="ios-arrow-forward"
                 size={24}
