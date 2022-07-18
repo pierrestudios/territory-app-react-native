@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, FlatList, TouchableOpacity } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Platform } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import Data from "../../common/data";
@@ -8,7 +8,7 @@ import UTILS from "../../common/utils";
 import NavigationService from "../../common/nav-service";
 import Loading from "../elements/Loading";
 
-import styles, { colors } from "../../styles/main";
+import styles, { colors, webStyles } from "../../styles/main";
 
 export default class Users extends React.Component {
   static navigationOptions = () => {
@@ -48,8 +48,13 @@ export default class Users extends React.Component {
     );
 
     return (
-      <View style={[styles.section, styles.content]}>
-        <View style={[styles.section, styles["users-results"]]}>
+      <View style={[styles.section]}>
+        <View
+          style={[
+            styles.section,
+            Platform.OS === "web" ? { ...webStyles.section } : null,
+          ]}
+        >
           {listings}
         </View>
       </View>
@@ -62,7 +67,12 @@ export default class Users extends React.Component {
         data={data.sort(UTILS.sortUser)}
         keyExtractor={(item) => item.userId.toString()}
         renderItem={({ item }) => (
-          <View style={[styles["listings-item"]]}>
+          <View
+            style={[
+              styles["listings-item"],
+              { minHeight: Platform.OS === "web" ? 70 : 50 },
+            ]}
+          >
             <TouchableOpacity
               style={[
                 styles["listings-name"],
@@ -108,7 +118,12 @@ export default class Users extends React.Component {
                 </Text>
               </View>
             </TouchableOpacity>
-            <View style={[styles["listings-right-arrow"]]}>
+            <View
+              style={[
+                styles["listings-right-arrow"],
+                { right: Platform.OS === "web" ? 25 : 5 },
+              ]}
+            >
               <Ionicons
                 name="ios-arrow-forward"
                 size={24}
