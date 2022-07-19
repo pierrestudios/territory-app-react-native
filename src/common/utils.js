@@ -225,6 +225,10 @@ export default {
     return url + (url.slice(-1) === "/" ? "" : "/");
   },
   removeLegacyV1(url) {
+    if (url.indexOf("v1/") !== -1) {
+      return url.replace("v1/", "");
+    }
+
     if (url.indexOf("v1") !== -1) {
       return url.replace("v1", "");
     }
