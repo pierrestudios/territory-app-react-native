@@ -136,7 +136,16 @@ export const DateInput = (props) => {
         }}
       />
     ),
-    web: <input {...props} type="date" style={webStyles.date} />,
+    web: (
+      <input
+        {...{ ...props, value: utils.formatDate(props.value, "YYYY-MM-DD") }}
+        onChange={({ target }) => {
+          props.onChange({ date: utils.getDateObject(target.value) });
+        }}
+        type="date"
+        style={webStyles.date}
+      />
+    ),
   }[Platform.OS];
 };
 
