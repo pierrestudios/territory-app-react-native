@@ -18,7 +18,7 @@
     },
     "android": {
       "package": "com.pierrestudios.jehu.territoryap",
-      "versionCode": 14,
+      "versionCode": 15,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/app-icon.png",
         "backgroundColor": "#FFFFFF"
