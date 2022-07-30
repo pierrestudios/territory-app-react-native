@@ -284,7 +284,9 @@ export const Switch = (props) => {
           props.onChange && props.onChange({ [props.name]: value })
         }
         value={props.value}
-        trackColor={colors["territory-blue"]}
+        trackColor={
+          Platform.OS === "web" ? colors.grey : colors["territory-blue"]
+        }
         ios_backgroundColor={colors["grey-lite"]}
       />
     </View>
