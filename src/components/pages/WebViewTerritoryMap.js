@@ -8,6 +8,7 @@ import getSiteSetting from "../../common/settings";
 import mapPage from "../../assets/map-view-web-page.html";
 
 const isAndroid = Platform.OS === "android";
+const isWeb = Platform.OS === "web";
 
 export default class WebViewTerritoryMap extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -30,6 +31,10 @@ export default class WebViewTerritoryMap extends React.Component {
   // react-native-webview issue with "android_asset"
   // Workaround using Image.resolveAssetSource fn
   componentDidMount() {
+    if (isWeb || (isAndroid && Platform.Version < 21)) {
+      return;
+    }
+
     (async () => {
       const src = Image.resolveAssetSource(mapPage);
       const mapPageContent = await fetch(src.uri).then((r) => r.text());
@@ -39,7 +44,7 @@ export default class WebViewTerritoryMap extends React.Component {
   render() {
     // Webview not executing injectedJavaScript on Android < 4.4
     // More info: https://stackoverflow.com/questions/42517079/reactnative-webview-not-executing-injectedjavascript-on-android
-    if (isAndroid && Platform.Version < 21) {
+    if (isWeb || (isAndroid && Platform.Version < 21)) {
       return (
         <View>
           <Text>
@@ -50,7 +55,7 @@ export default class WebViewTerritoryMap extends React.Component {
     }
 
     const { mapPageContent } = this.state;
-    const html = isAndroid // && !UTILS.isExpo()
+    const html = isAndroid
       ? { html: mapPageContent }
       : require("../../assets/map-view-web-page.html");
 
