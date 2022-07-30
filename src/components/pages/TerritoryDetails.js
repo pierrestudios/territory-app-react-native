@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Share, ScrollView } from "react-native";
+import { Text, View, Share, ScrollView, Platform } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Data from "../../common/data";
 import Language from "../../common/lang";
@@ -17,6 +17,7 @@ import Modal from "../elements/Modal";
 import TerritoryDetailsHeader from "../smart/TerritoryDetailsHeader";
 import TerritoryDetailsList from "../smart/TerritoryDetailsList";
 import TerritoryDetailsModeModal from "../smart/TerritoryDetailsModeModal";
+import Heading from "../elements/Heading";
 
 const languages = getSiteSetting("languages");
 const SEARCH_RESULTS_LIMIT = 5;
@@ -61,6 +62,7 @@ export default class TerritoryDetails extends React.Component {
     searchModalOpened: false,
     searchQuery: "",
     searchQueryResults: [],
+    webShareModal: null,
   };
   componentDidMount() {
     this.territoryId = this.props.navigation.getParam("territoryId");
@@ -269,6 +271,41 @@ export default class TerritoryDetails extends React.Component {
             ) : null}
           </View>
         </Modal>
+        <Modal
+          visible={this.state.webShareModal}
+          onCloseModal={() => {
+            this.setState({ webShareModal: null });
+          }}
+        >
+          {this.state.webShareModal === null ? null : (
+            <View style={{ padding: 10 }}>
+              <Heading
+                textStyle={{
+                  marginBottom: 0,
+                  marginTop: 0,
+                  borderWidth: 0,
+                  borderColor: colors.red,
+                }}
+              >
+                {Language.translate("Copy and paste to share")}
+              </Heading>
+              <View>
+                <Text
+                  style={{
+                    flexWrap: "wrap",
+                    fontSize: 18,
+                    margin: 10,
+                    padding: 10,
+                    color: colors["territory-blue"],
+                    backgroundColor: colors.white,
+                  }}
+                >
+                  {this.state.webShareModal.message}
+                </Text>
+              </View>
+            </View>
+          )}
+        </Modal>
       </View>
     );
   }
@@ -414,6 +451,16 @@ export default class TerritoryDetails extends React.Component {
       });
     } else {
       listToShare = addressesToShare.map((a) => UTILS.getListingAddress(a));
+    }
+
+    // Note: Alternative for web
+    if (Platform.OS === "web") {
+      return this.setState({
+        webShareModal: {
+          title,
+          message: title + "\n \n" + listToShare.join("\n"),
+        },
+      });
     }
 
     try {

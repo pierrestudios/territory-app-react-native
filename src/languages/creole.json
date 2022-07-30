@@ -47,7 +47,6 @@
   "Publisher": "Pwoklamatè",
   "Publishers": "Pwoklamatè",
   "Territory": "Teritwa",
-  "Territories": "Teritwa",
   "View All Publishers": "Tout Pwoklamatè",
   "View All Territories": "Tout Teritwa",
   "Territory Activities": "Tout Activité",
@@ -128,7 +127,6 @@
   "Territory Addresses": "Adrès Teritwa Yo",
   "Active": "Actif",
   "Not Active": "Pa Actif",
-  "Yes": "Wi",
   "No": "Non",
   "Coordinates": "Coordinates",
   "Lat": "Lat",
@@ -209,5 +207,6 @@
   "Address & phone not worked": "Adrès ak telefòn poko fini",
   "Search": "Chèche",
   "Search for phone": "Chèche telefòn",
-  "Search for name": "Chèche non moun"
+  "Search for name": "Chèche non moun",
+  "Copy and paste to share": "Kopi enfomasyon an pou w voye li"
 }

@@ -46,7 +46,6 @@
   "Publisher": "Publisher",
   "Publishers": "Publishers",
   "Territory": "Territory",
-  "Territories": "Territories",
   "View All Publishers": "View All Publishers",
   "View All Territories": "View All Territories",
   "Territory Activities": "Territory Activities",
@@ -125,10 +124,8 @@
   "Phone": "Phone",
   "Notes": "Notes",
   "Territory Addresses": "Territory Addresses",
-  "Edit Address": "Edit Address",
   "Active": "Active",
   "Not Active": "Not Active",
-  "Yes": "Yes",
   "No": "No",
   "Coordinates": "Coordinates",
   "Lat": "Lat",
@@ -209,5 +206,6 @@
   "Address & phone not worked": "Address & phone not worked",
   "Search": "Search",
   "Search for phone": "Search for phone",
-  "Search for name": "Search for name"
+  "Search for name": "Search for name",
+  "Copy and paste to share": "Copy and paste to share"
 }
