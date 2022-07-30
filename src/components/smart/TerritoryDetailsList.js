@@ -6,7 +6,7 @@ import Language from "../../common/lang";
 import UTILS from "../../common/utils";
 
 import { ButtonLink } from "../elements/Button";
-import { Checkbox } from "../elements/FormInput";
+import { CheckboxRounded } from "../elements/FormInput";
 
 import style, { colors, webStyles } from "../../styles/main";
 
@@ -60,7 +60,7 @@ export default function TerritoryDetailsList({
               ]}
             >
               {selectorOpened ? (
-                <Checkbox
+                <CheckboxRounded
                   style={{ margin: 0 }}
                   value={selected}
                   onChange={() => {

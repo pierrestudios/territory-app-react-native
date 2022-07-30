@@ -8,7 +8,6 @@ import {
   Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import CheckBoxRN from "@react-native-community/checkbox";
 import DatePicker from "@react-native-community/datetimepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -219,15 +218,7 @@ export const RadioBox = (props) => {
   );
 };
 
-export const Checkbox = (props) => {
-  /*
-Warning: React.jsx: type is invalid -- expected a string (for built-in components) 
-or a class/function (for composite components) but got: undefined. You likely forgot 
-to export your component from the file it's defined in, or you might have mixed up 
-default and named imports.
-
-Check the render method of `Checkbox`.
-  */
+export const CheckboxRounded = (props) => {
   return (
     <View
       nativeID={`checkbox-${props.name || Math.random()}`}
@@ -244,33 +235,6 @@ Check the render method of `Checkbox`.
           style={props.value === true ? style["check-box-checked"] : null}
         />
       </TouchableOpacity>
-      {/*
-        {
-          ios: (
-            <TouchableOpacity
-              style={[style["check-box"], props.style]}
-              onPress={(value) =>
-                props.onChange && props.onChange({ [props.name]: value })
-              }
-            >
-              <View
-                style={props.value === true ? style["check-box-checked"] : null}
-              />
-            </TouchableOpacity>
-          ),
-          android:
-            Platform.OS === "web" ? null : (
-              <CheckBoxRN
-                style={style["check-box"]}
-                onChange={(value) =>
-                  props.onChange && props.onChange({ [props.name]: value })
-                }
-                value={props.value}
-              />
-            ),
-          web: <input type="checkbox" />,
-        }[Platform.OS]
-      */}
     </View>
   );
 };
