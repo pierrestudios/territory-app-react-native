@@ -7,7 +7,7 @@ dotenv.config();
 const { REACT_APP_PROXY_PORT: port, API_PROXY_APP_SERVER_URL: apiUrl } =
   process.env;
 
-function onRequest(req, res) {
+async function onRequest(req, res) {
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
@@ -50,7 +50,15 @@ function onRequest(req, res) {
     end: true,
   });
 
-  console.log("Request::", { data: req.body, url: req.url });
+  const buffers = [];
+
+  for await (const chunk of req) {
+    buffers.push(chunk);
+  }
+
+  const data = Buffer.concat(buffers).toString();
+
+  console.log("Request", { data, url: req.url });
 }
 
 http.createServer(onRequest).listen(port);
