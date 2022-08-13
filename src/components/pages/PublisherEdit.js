@@ -91,7 +91,7 @@ export default class PublisherEdit extends React.Component {
     );
   }
   saveData = (data) => {
-    console.log("data", data);
+    // console.log("data", data);
     const newData = { ...this.state.data, ...data };
 
     return this.setState({
@@ -133,7 +133,7 @@ export default class PublisherEdit extends React.Component {
     // Update Publisher
     Data.postApiData(url, postData)
       .then((res) => {
-        console.log("then() res", res);
+        // console.log("then() res", res);
 
         if (!res || res.error) {
           return this.setState({
