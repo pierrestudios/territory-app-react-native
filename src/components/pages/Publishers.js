@@ -12,7 +12,7 @@ import Loading from "../elements/Loading";
 import { ButtonHeader } from "../elements/Button";
 import Notice from "../elements/PopupNotice";
 
-import styles, { colors } from "../../styles/main";
+import styles, { webStyles, colors } from "../../styles/main";
 
 export default class Publishers extends React.Component {
   static navigationOptions = ({ navigation }) => {
