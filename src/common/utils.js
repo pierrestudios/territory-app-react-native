@@ -1,5 +1,6 @@
 import { colors } from "../styles/main";
 import { dependencies as Mods } from "../../package";
+import Language from "./lang";
 
 export default {
   isExpo() {
@@ -165,7 +166,16 @@ export default {
       return "";
     }
     if (list.isApt) return list.building + ", " + list.address;
-    if (list.apt) return list.address + " " + list.streetName + " " + list.apt;
+    if (list.apt)
+      return (
+        list.address +
+        " " +
+        list.streetName +
+        ", " +
+        Language.translate("Door") +
+        " " +
+        list.apt
+      );
     return list.address + " " + list.streetName;
   },
   getLastNote(list) {
