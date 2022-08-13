@@ -529,11 +529,13 @@ export default class TerritoryDetails extends React.Component {
         ({ phones, ...address }) => {
           const phonesMatchedFound =
             phones &&
-            phones.filter(({ number }) =>
-              UTILS.getNumbersOnly(number).match(
-                UTILS.getNumbersOnly(queryText)
-              )
-            );
+            phones.filter(({ number }) => {
+              const queryInt = UTILS.getNumbersOnly(queryText);
+              const matched =
+                queryInt && UTILS.getNumbersOnly(number).match(queryInt);
+
+              return matched;
+            });
 
           if (phonesMatchedFound.length > 1) {
             phonesMatchedFound.forEach((phone) => {
