@@ -339,13 +339,13 @@ export default class Notes extends React.Component {
       ? `territories/${territoryId}/notes/edit/${noteId}`
       : `territories/${territoryId}/addresses/${addressId}/notes/add`;
 
-    console.log("saveNotes()", { dataToSave, url });
+    // console.log("saveNotes()", { dataToSave, url });
     // return;
 
     // save note
     Data.postApiData(url, dataToSave)
       .then((resData) => {
-        console.log("then() resData", resData);
+        // console.log("then() resData", resData);
         // Clear Errors
         this.setState(
           {
