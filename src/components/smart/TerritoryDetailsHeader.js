@@ -9,6 +9,7 @@ import style, { colors } from "../../styles/main";
 
 export default function TerritoryDetailsHeader({
   modeOption = "",
+  selectorOpened = false,
   selectedAddresses = [],
   modeOptions = [],
   viewMap = () => {},
@@ -159,7 +160,7 @@ export default function TerritoryDetailsHeader({
           {Language.translate("Select")}
         </ButtonLink>
         <ButtonLink
-          disabled={selectedAddresses.length === 0}
+          disabled={!selectorOpened || selectedAddresses.length === 0}
           onPress={sendSelectedAddresses}
           customStyle={[style["heading-button-link"], style["send-button"]]}
           textStyle={style["heading-button-link-text"]}
