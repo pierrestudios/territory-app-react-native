@@ -503,6 +503,8 @@ export default class TerritoryDetails extends React.Component {
     this.setState({
       modeOption: data.option.value,
       modeOptionsOpened: false,
+      searchQuery: "",
+      searchQueryResults: [],
     });
   };
   showSearchModal = () => {
