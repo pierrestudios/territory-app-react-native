@@ -6,6 +6,8 @@ import Language from "../../common/lang";
 import UTILS from "../../common/utils";
 import getSiteSetting from "../../common/settings";
 import mapPage from "../../assets/map-view-web-page.html";
+import TerritoryMapWeb from "../smart/TerritoryMapWeb";
+import Data from "../../common/data";
 
 const isAndroid = Platform.OS === "android";
 const isWeb = Platform.OS === "web";
@@ -44,7 +46,7 @@ export default class WebViewTerritoryMap extends React.Component {
   render() {
     // Webview not executing injectedJavaScript on Android < 4.4
     // More info: https://stackoverflow.com/questions/42517079/reactnative-webview-not-executing-injectedjavascript-on-android
-    if (isWeb || (isAndroid && Platform.Version < 21)) {
+    if (isAndroid && Platform.Version < 21) {
       return (
         <View>
           <Text>
@@ -53,36 +55,21 @@ export default class WebViewTerritoryMap extends React.Component {
         </View>
       );
     }
-
+    const { addresses, boundaries } = this.props.navigation.getParam("data");
     const { mapPageContent } = this.state;
+
+    if (isWeb) {
+      return this.loadMapJS({ addresses, boundaries });
+    }
+
+    return this.renderWebView({ mapPageContent, addresses, boundaries });
+  }
+  renderWebView({ mapPageContent, addresses, boundaries }) {
     const html = isAndroid
       ? { html: mapPageContent }
       : require("../../assets/map-view-web-page.html");
 
-    const apiKey = getSiteSetting("GAKey");
-    const { addresses, boundaries } = this.props.navigation.getParam("data");
-    const addressesStr = `${JSON.stringify(addresses)}`;
-    const boundariesStr = boundaries.toString();
-    const debugging = `
-     // Debug
-     console = new Object();
-     console.log = function(log) {
-       window.webViewBridge.send("console", log);
-     };
-     console.debug = console.log;
-     console.info = console.log;
-     console.warn = console.log;
-     console.error = console.log;
-     `;
-    const jsScript = `
-        ${debugging} 
-        MapFn.initScript("https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=drawing,geometry&callback=MapFn.initGA", 
-        function(){ 
-          MapFn.initializeMap(
-            ${addressesStr},
-            ${boundariesStr}
-          );
-        });`;
+    const jsScript = this.getMapJS({ addresses, boundaries });
 
     return (
       <WebView
@@ -99,6 +86,44 @@ export default class WebViewTerritoryMap extends React.Component {
         onMessage={(event) =>
           console.log("onMessage", { data: event.nativeEvent.data })
         }
+      />
+    );
+  }
+  getMapJS({ addresses, boundaries }) {
+    const apiKey = getSiteSetting("GAKey");
+    const addressesStr = `${JSON.stringify(addresses)}`;
+    const boundariesStr = boundaries.toString();
+    const debugging = `
+    // Debug
+    console = new Object();
+    console.log = function(log) {
+      window.webViewBridge.send("console", log);
+    };
+    console.debug = console.log;
+    console.info = console.log;
+    console.warn = console.log;
+    console.error = console.log;
+    `;
+
+    return `
+      ${debugging} 
+      MapFn.initScript("https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=drawing,geometry&callback=MapFn.initGA", 
+      function(){ 
+        MapFn.initializeMap(
+          ${addressesStr},
+          ${boundariesStr}
+        );
+      });`;
+  }
+  loadMapJS({ addresses, boundaries }) {
+    const apiKey = getSiteSetting("GAKey");
+    return (
+      <TerritoryMapWeb
+        {...{
+          mapData: { addresses, boundaries },
+          user: Data.user,
+          apiKey,
+        }}
       />
     );
   }
